@@ -1,8 +1,6 @@
 """마삼 3-모드 상태머신 — 순수 함수, I/O 없음."""
 from __future__ import annotations
 from datetime import date
-import pandas as pd
-import numpy as np
 
 
 # ── 모드 결정 ──────────────────────────────────────────────────
@@ -57,7 +55,9 @@ def calc_target_allocation(
     if mode == "CRISIS_STAKING":
         if rate_env == "NON_ZERO":
             return {"stock_pct": 50, "hedge_pct": 30, "cash_pct": 20, "label": "50% 말뚝박기 (비제로금리)"}
-        return {"stock_pct": 25, "hedge_pct": 35, "cash_pct": 40, "label": "25% 말뚝박기 (제로금리)"}
+        if rate_env == "ZERO":
+            return {"stock_pct": 25, "hedge_pct": 35, "cash_pct": 40, "label": "25% 말뚝박기 (제로금리)"}
+        raise ValueError(f"calc_target_allocation: unknown rate_env={rate_env!r}")
     if panic_type == "EMERGENCY":
         return {"stock_pct": 0, "hedge_pct": 0, "cash_pct": 100, "label": "현금 100% (공황 비상)"}
     return {"stock_pct": 0, "hedge_pct": 70, "cash_pct": 30, "label": "헤지 운용 (공황 기본)"}
