@@ -58,35 +58,108 @@ def test_mode_panic_basic_no_prev_year():
 # ── calc_target_allocation ───────────────────────────────────
 
 
-def test_allocation_rebalancing():
+def test_allocation_rebalancing_no_drawdown():
     from engines.masam_engine import calc_target_allocation
-    result = calc_target_allocation("REBALANCING", None, "NON_ZERO")
+    result = calc_target_allocation("REBALANCING", None, "NON_ZERO", ath_drawdown_pct=0.0)
     assert result["stock_pct"] == 100
+    assert result["cash_pct"] == 0
 
 
-def test_allocation_crisis_non_zero():
+def test_allocation_rebalancing_1_level():
     from engines.masam_engine import calc_target_allocation
-    result = calc_target_allocation("CRISIS_STAKING", None, "NON_ZERO")
-    assert result["stock_pct"] == 50
+    # ATH -3% → level=1 (floor(3/2.5)=1) → 10% 현금화 → stock 90%
+    result = calc_target_allocation("REBALANCING", None, "NON_ZERO", ath_drawdown_pct=-3.0)
+    assert result["stock_pct"] == 90
+    assert result["cash_pct"] == 10
 
 
-def test_allocation_crisis_zero():
+def test_allocation_rebalancing_capped_at_max():
     from engines.masam_engine import calc_target_allocation
-    result = calc_target_allocation("CRISIS_STAKING", None, "ZERO")
-    assert result["stock_pct"] == 25
+    # ATH -20% → level=8 → 80% 현금화, but max=25 → cash 25%, stock 75%
+    result = calc_target_allocation("REBALANCING", None, "NON_ZERO",
+                                    ath_drawdown_pct=-20.0, max_rebalancing_pct=25)
+    assert result["stock_pct"] == 75
+    assert result["cash_pct"] == 25
 
 
-def test_allocation_panic_emergency():
+def test_allocation_crisis_non_zero_level0():
     from engines.masam_engine import calc_target_allocation
-    result = calc_target_allocation("PANIC", "EMERGENCY", "NON_ZERO")
+    # ATH -3% → level=0 (floor(3/5)=0) → stock 0%
+    result = calc_target_allocation("CRISIS_STAKING", None, "NON_ZERO", ath_drawdown_pct=-3.0)
     assert result["stock_pct"] == 0
     assert result["cash_pct"] == 100
 
 
-def test_allocation_panic_basic():
+def test_allocation_crisis_non_zero_level1():
     from engines.masam_engine import calc_target_allocation
-    result = calc_target_allocation("PANIC", "BASIC", "NON_ZERO")
+    # ATH -6% → level=1 (floor(6/5)=1) → stock 10%
+    result = calc_target_allocation("CRISIS_STAKING", None, "NON_ZERO", ath_drawdown_pct=-6.0)
+    assert result["stock_pct"] == 10
+    assert result["cash_pct"] == 90
+
+
+def test_allocation_crisis_non_zero_level5():
+    from engines.masam_engine import calc_target_allocation
+    # ATH -26% → level=5 → stock 50% ("초기 50%" 상태)
+    result = calc_target_allocation("CRISIS_STAKING", None, "NON_ZERO", ath_drawdown_pct=-26.0)
+    assert result["stock_pct"] == 50
+
+
+def test_allocation_crisis_non_zero_hedge_tlt():
+    from engines.masam_engine import calc_target_allocation
+    # hedge_type=TLT → non_stock goes to hedge_pct
+    result = calc_target_allocation("CRISIS_STAKING", None, "NON_ZERO",
+                                    ath_drawdown_pct=-11.0, hedge_type="TLT")
+    assert result["stock_pct"] == 20
+    assert result["hedge_pct"] == 80
+    assert result["cash_pct"] == 0
+
+
+def test_allocation_crisis_zero_level1():
+    from engines.masam_engine import calc_target_allocation
+    # ATH -3% → level=1 (floor(3/2.5)=1) → stock 10%
+    result = calc_target_allocation("CRISIS_STAKING", None, "ZERO", ath_drawdown_pct=-3.0)
+    assert result["stock_pct"] == 10
+
+
+def test_allocation_panic_emergency():
+    from engines.masam_engine import calc_target_allocation
+    result = calc_target_allocation("PANIC", "EMERGENCY", "NON_ZERO", ath_drawdown_pct=-30.0)
     assert result["stock_pct"] == 0
+    assert result["cash_pct"] == 100
+
+
+def test_allocation_panic_basic_dollar():
+    from engines.masam_engine import calc_target_allocation
+    result = calc_target_allocation("PANIC", "BASIC", "NON_ZERO",
+                                    ath_drawdown_pct=-30.0, hedge_type="DOLLAR")
+    assert result["stock_pct"] == 0
+    assert result["cash_pct"] == 100
+    assert result["hedge_pct"] == 0
+
+
+def test_allocation_panic_basic_tlt():
+    from engines.masam_engine import calc_target_allocation
+    result = calc_target_allocation("PANIC", "BASIC", "NON_ZERO",
+                                    ath_drawdown_pct=-30.0, hedge_type="TLT")
+    assert result["stock_pct"] == 0
+    assert result["hedge_pct"] == 100
+    assert result["cash_pct"] == 0
+
+
+def test_allocation_sum_always_100():
+    from engines.masam_engine import calc_target_allocation
+    cases = [
+        ("REBALANCING", None, "NON_ZERO", -10.0, "DOLLAR"),
+        ("CRISIS_STAKING", None, "NON_ZERO", -11.0, "TLT"),
+        ("CRISIS_STAKING", None, "ZERO", -5.0, "IAU_GLD_TIP"),
+        ("PANIC", "EMERGENCY", "NON_ZERO", -40.0, "DOLLAR"),
+        ("PANIC", "BASIC", "NON_ZERO", -40.0, "TLT"),
+    ]
+    for mode, panic_type, rate_env, dd, ht in cases:
+        r = calc_target_allocation(mode, panic_type, rate_env, dd, ht)
+        total = r["stock_pct"] + r["hedge_pct"] + r["cash_pct"]
+        assert total == 100, f"{mode}/{panic_type}/{rate_env}: total={total}"
 
 
 # ── calc_hedge_type ──────────────────────────────────────────

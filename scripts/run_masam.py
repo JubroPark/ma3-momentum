@@ -58,8 +58,12 @@ def run() -> dict:
 
     # 4. 상태 결정
     mode, panic_type = determine_mode(masam_result["month_count"], masam_result["prev_year_return"])
-    target_alloc = calc_target_allocation(mode, panic_type, ctx["rate_env"])
     hedge_alloc = calc_hedge_type(ctx["rate_env"], ctx["qe_active"], ctx["qe_state"])
+    target_alloc = calc_target_allocation(
+        mode, panic_type, ctx["rate_env"],
+        ath_drawdown_pct=masam_result["ath_drawdown"],
+        hedge_type=hedge_alloc["type"],
+    )
 
     allin_conds = check_allin_conditions(
         masam_result["latest_masam_date"], close_ixic, close_leader, as_of

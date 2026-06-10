@@ -43,26 +43,67 @@ def calc_target_allocation(
     mode: str,
     panic_type: str | None,
     rate_env: str,
+    ath_drawdown_pct: float = 0.0,
+    hedge_type: str = "DOLLAR",
+    max_rebalancing_pct: int = 25,
 ) -> dict:
     """
     모드별 목표 비중 (주식/헤지/현금 %).
 
-    REBALANCING   : 주식 100%
-    CRISIS_STAKING: 비제로 → 50% 말뚝 / 제로 → 25% 말뚝
+    REBALANCING:
+      -2.5% 구간마다 10% 매도. stock = 100 - level*10 (하한: 100 - max_rebalancing_pct)
+      비제로금리: -5% 구간마다 10% 매수. stock = level*10 (상한: 100%)
+      제로금리:  -2.5% 구간마다 10% 매수. stock = level*10 (상한: 100%)
     PANIC EMERGENCY: 현금 100%
-    PANIC BASIC   : 주식 0%, 헤지 운용
+    PANIC BASIC: 주식 0%, 나머지 헤지
+
+    ath_drawdown_pct: 음수 % (예: -6.5 = ATH 대비 6.5% 하락)
+    hedge_type: "DOLLAR" | "TLT" | "IAU_GLD_TIP"
+    max_rebalancing_pct: 리밸런싱 현금화 상한 (25 or 50)
     """
+    dd = abs(ath_drawdown_pct)
+
     if mode == "REBALANCING":
-        return {"stock_pct": 100, "hedge_pct": 0, "cash_pct": 0, "label": "1등주 보유 유지"}
+        level = int(dd / 2.5)
+        cash_from_rebalancing = min(level * 10, max_rebalancing_pct)
+        stock_pct = 100 - cash_from_rebalancing
+        return {
+            "stock_pct": stock_pct,
+            "hedge_pct": 0,
+            "cash_pct": cash_from_rebalancing,
+            "label": f"리밸런싱 {cash_from_rebalancing}% 현금화 ({level}구간 / -2.5% 그리드)",
+        }
+
     if mode == "CRISIS_STAKING":
         if rate_env == "NON_ZERO":
-            return {"stock_pct": 50, "hedge_pct": 30, "cash_pct": 20, "label": "50% 말뚝박기 (비제로금리)"}
-        if rate_env == "ZERO":
-            return {"stock_pct": 25, "hedge_pct": 35, "cash_pct": 40, "label": "25% 말뚝박기 (제로금리)"}
-        raise ValueError(f"calc_target_allocation: unknown rate_env={rate_env!r}")
-    if panic_type == "EMERGENCY":
-        return {"stock_pct": 0, "hedge_pct": 0, "cash_pct": 100, "label": "현금 100% (공황 비상)"}
-    return {"stock_pct": 0, "hedge_pct": 70, "cash_pct": 30, "label": "헤지 운용 (공황 기본)"}
+            interval = 5.0
+        elif rate_env == "ZERO":
+            interval = 2.5
+        else:
+            raise ValueError(f"calc_target_allocation: unknown rate_env={rate_env!r}")
+        level = int(dd / interval)
+        stock_pct = min(level * 10, 100)
+        non_stock = 100 - stock_pct
+        if hedge_type in ("TLT", "IAU_GLD_TIP"):
+            hedge_pct, cash_pct = non_stock, 0
+        else:
+            hedge_pct, cash_pct = 0, non_stock
+        return {
+            "stock_pct": stock_pct,
+            "hedge_pct": hedge_pct,
+            "cash_pct": cash_pct,
+            "label": f"말뚝박기 {stock_pct}% ({level}구간 / -{interval}% 그리드)",
+        }
+
+    if mode == "PANIC":
+        if panic_type == "EMERGENCY":
+            return {"stock_pct": 0, "hedge_pct": 0, "cash_pct": 100, "label": "현금 100% (공황 비상)"}
+        non_stock = 100
+        if hedge_type in ("TLT", "IAU_GLD_TIP"):
+            return {"stock_pct": 0, "hedge_pct": non_stock, "cash_pct": 0, "label": "헤지 운용 (공황 기본)"}
+        return {"stock_pct": 0, "hedge_pct": 0, "cash_pct": non_stock, "label": "현금 보유 (공황 기본)"}
+
+    raise ValueError(f"calc_target_allocation: unknown mode={mode!r}")
 
 
 # ── 헤지 배치 ──────────────────────────────────────────────────
