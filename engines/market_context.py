@@ -5,11 +5,10 @@ from fredapi import Fred
 from dotenv import load_dotenv
 
 load_dotenv()
-_FRED_API_KEY = os.getenv("FRED_API_KEY")
 _QE_THRESHOLD = 0.1  # %
 
 
-def get_market_context(fred: Fred = None) -> dict:
+def get_market_context(fred: "Fred | None" = None) -> dict:
     """
     금리환경(DFF)과 QE 상태(WALCL)를 하나의 dict로 반환.
 
@@ -22,7 +21,10 @@ def get_market_context(fred: Fred = None) -> dict:
         last_updated: str (YYYY-MM-DD)
     """
     if fred is None:
-        fred = Fred(api_key=_FRED_API_KEY)
+        key = os.getenv("FRED_API_KEY")
+        if not key:
+            raise EnvironmentError("FRED_API_KEY environment variable is not set")
+        fred = Fred(api_key=key)
 
     rate = _get_rate_env(fred)
     qe = _get_qe_state(fred)
@@ -37,12 +39,14 @@ def get_market_context(fred: Fred = None) -> dict:
     }
 
 
-def _get_rate_env(fred: Fred) -> dict:
+def _get_rate_env(fred: "Fred") -> dict:
     """
     FRED DFF(연방기금금리 실효치)로 금리환경 판단.
     DFF ≤ 0.25% → ZERO / DFF > 0.25% → NON_ZERO
     """
     series = fred.get_series("DFF").dropna()
+    if series.empty:
+        raise ValueError("FRED DFF series returned no data")
     latest = float(series.iloc[-1])
     last_date = series.index[-1].strftime("%Y-%m-%d")
 
@@ -55,7 +59,7 @@ def _get_rate_env(fred: Fred) -> dict:
     }
 
 
-def _get_qe_state(fred: Fred) -> dict:
+def _get_qe_state(fred: "Fred") -> dict:
     """
     FRED WALCL(연준 총자산) 4주 이동평균 기울기로 QE 자동 감지.
     기울기 > +0.1% → QE_ON / 기울기 < -0.1% → QE_OFF / 그 사이 → AMBIGUOUS
@@ -70,6 +74,7 @@ def _get_qe_state(fred: Fred) -> dict:
             "slope_pct": 0.0,
         }
 
+    # slope_pct: percent change from previous 4-week MA to current (weekly series, 8-point window)
     slope_pct = round(float((ma4.iloc[-1] / ma4.iloc[-2] - 1) * 100), 4)
 
     if slope_pct > _QE_THRESHOLD:

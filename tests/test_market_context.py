@@ -10,10 +10,16 @@ def _make_fred(dff: float, walcl_values: list) -> MagicMock:
         walcl_values,
         index=pd.date_range("2026-04-01", periods=len(walcl_values), freq="W"),
     )
-    mock.get_series.side_effect = [
-        pd.Series([dff], index=pd.to_datetime(["2026-06-08"])),
-        walcl_series,
-    ]
+    dff_series = pd.Series([dff], index=pd.to_datetime(["2026-06-08"]))
+
+    def _side_effect(series_id):
+        if series_id == "DFF":
+            return dff_series
+        if series_id == "WALCL":
+            return walcl_series
+        raise ValueError(f"Unexpected series_id: {series_id}")
+
+    mock.get_series.side_effect = _side_effect
     return mock
 
 
