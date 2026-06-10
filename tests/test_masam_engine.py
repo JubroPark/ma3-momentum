@@ -113,3 +113,126 @@ def test_hedge_ambiguous():
     from engines.masam_engine import calc_hedge_type
     result = calc_hedge_type("NON_ZERO", False, "AMBIGUOUS")
     assert result["type"] == "DOLLAR"
+
+
+# ── _calc_rsi14 ───────────────────────────────────────────────
+
+
+def test_rsi14_all_up_returns_near_100():
+    from engines.masam_engine import _calc_rsi14
+    closes = pd.Series([float(100 + i) for i in range(20)])
+    rsi = _calc_rsi14(closes)
+    assert rsi is not None
+    assert rsi == pytest.approx(100.0, abs=1.0)
+
+
+def test_rsi14_insufficient_data_returns_none():
+    from engines.masam_engine import _calc_rsi14
+    closes = pd.Series([100.0, 101.0, 102.0])
+    rsi = _calc_rsi14(closes)
+    assert rsi is None
+
+
+def test_rsi14_normal_range():
+    from engines.masam_engine import _calc_rsi14
+    np.random.seed(42)
+    closes = pd.Series(100.0 + np.cumsum(np.random.randn(50)))
+    rsi = _calc_rsi14(closes)
+    assert rsi is not None
+    assert 0 <= rsi <= 100
+
+
+# ── check_allin_conditions ────────────────────────────────────
+
+
+def _make_series(closes: list, start: str = "2026-01-02") -> pd.Series:
+    dates = pd.bdate_range(start, periods=len(closes))
+    return pd.Series(closes, index=dates)
+
+
+def test_allin_cond1_met_after_31_days():
+    from engines.masam_engine import check_allin_conditions
+    from datetime import date
+    last_masam = pd.Timestamp("2026-05-09")  # 32일 전
+    ixic = _make_series([100.0] * 20)
+    leader = _make_series([100.0] * 20)
+    conds = check_allin_conditions(last_masam, ixic, leader, date(2026, 6, 10))
+    assert conds[0]["met"] is True
+
+
+def test_allin_cond1_not_met_within_30_days():
+    from engines.masam_engine import check_allin_conditions
+    from datetime import date
+    last_masam = pd.Timestamp("2026-06-05")  # 5일 전
+    ixic = _make_series([100.0] * 20)
+    leader = _make_series([100.0] * 20)
+    conds = check_allin_conditions(last_masam, ixic, leader, date(2026, 6, 10))
+    assert conds[0]["met"] is False
+
+
+def test_allin_cond2_8_consecutive_up():
+    from engines.masam_engine import check_allin_conditions
+    from datetime import date
+    closes = [float(100 + i) for i in range(9)]  # 9일 연속 상승
+    ixic = _make_series(closes)
+    leader = _make_series([100.0] * 9)
+    conds = check_allin_conditions(None, ixic, leader, date(2026, 1, 13))
+    assert conds[1]["met"] is True
+
+
+def test_allin_cond2_not_met_with_down_day():
+    from engines.masam_engine import check_allin_conditions
+    from datetime import date
+    closes = [100.0, 101.0, 100.5, 101.5, 102.5, 103.5, 104.5, 105.5, 106.5]
+    ixic = _make_series(closes)
+    leader = _make_series([100.0] * 9)
+    conds = check_allin_conditions(None, ixic, leader, date(2026, 1, 13))
+    assert conds[1]["met"] is False  # 3번째 날 하락
+
+
+def test_allin_cond4_ixic_ath():
+    from engines.masam_engine import check_allin_conditions
+    from datetime import date
+    closes = [100.0, 95.0, 98.0, 101.0]  # 101 = 신고점
+    ixic = _make_series(closes)
+    leader = _make_series([100.0, 95.0, 98.0, 97.0])  # 리더는 신고점 아님
+    conds = check_allin_conditions(None, ixic, leader, date(2026, 1, 5))
+    assert conds[3]["met"] is True
+    assert conds[2]["met"] is False
+
+
+# ── build_masam_json ──────────────────────────────────────────
+
+
+def test_build_masam_json_structure():
+    from engines.masam_engine import build_masam_json
+    from datetime import date
+
+    result = build_masam_json(
+        as_of=date(2026, 6, 10),
+        mode="CRISIS_STAKING",
+        panic_type=None,
+        rate_env="NON_ZERO",
+        qe_active=False,
+        masam_month_count=1,
+        masam_cumulative=1,
+        last_masam_date=pd.Timestamp("2026-06-05"),
+        leader_status={"rank1_ticker": "NVDA", "rank1_mcap": 3_500_000_000_000,
+                       "rank2_ticker": "AAPL", "rank2_mcap": 3_100_000_000_000,
+                       "gap_pct": 11.4, "overtake_detected": False, "gap_below_10pct": False},
+        target_allocation={"stock_pct": 50, "hedge_pct": 30, "cash_pct": 20, "label": "50% 말뚝"},
+        hedge_allocation={"type": "TLT", "rationale": "비제로+QE이전", "exit_trigger": ""},
+        distance_to_triggers={"v_allin_pct_needed": 10.0, "emergency_allin_pct_away": -1.5},
+        allin_conditions=[{"id": 1, "label": "한달+1일 무마삼", "met": False, "grade": "약"}],
+        additional_buy_signal={"rsi14": 55.0, "mfi14": None, "both_below_50": False, "label": ""},
+        recommended_action="말뚝박기 진입",
+        alerts=[],
+    )
+
+    assert result["as_of"] == "2026-06-10"
+    assert result["mode"] == "CRISIS_STAKING"
+    assert result["masam"]["month_count"] == 1
+    assert result["masam"]["last_masam_date"] == "2026-06-05"
+    assert result["leader_status"]["rank1_ticker"] == "NVDA"
+    assert result["target_allocation"]["stock_pct"] == 50
+    assert result["hedge_allocation"]["type"] == "TLT"

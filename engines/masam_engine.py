@@ -1,6 +1,8 @@
 """마삼 3-모드 상태머신 — 순수 함수, I/O 없음."""
 from __future__ import annotations
 from datetime import date
+import pandas as pd
+import numpy as np
 
 
 # ── 모드 결정 ──────────────────────────────────────────────────
@@ -94,4 +96,155 @@ def calc_hedge_type(
         "type": "DOLLAR",
         "rationale": "QE 여부 모호 — 달러 현금 보유",
         "exit_trigger": "QE 명확해지면 TLT or IAU+GLD+TIP 전환",
+    }
+
+
+# ── RSI14 ────────────────────────────────────────────────────
+
+
+def _calc_rsi14(close: pd.Series) -> float | None:
+    """1등주 종가 기준 RSI14. 데이터 15개 미만이면 None."""
+    if len(close) < 15:
+        return None
+    delta = close.diff().dropna()
+    gain = delta.clip(lower=0).rolling(14).mean()
+    loss = (-delta.clip(upper=0)).rolling(14).mean()
+    # Handle cases: if loss=0, RSI=100; if gain=0, RSI=0
+    rsi = pd.Series(index=gain.index, dtype=float)
+    for i in range(len(gain)):
+        if loss.iloc[i] == 0:
+            rsi.iloc[i] = 100.0 if gain.iloc[i] > 0 else 0.0
+        elif gain.iloc[i] == 0:
+            rsi.iloc[i] = 0.0
+        else:
+            rs = gain.iloc[i] / loss.iloc[i]
+            rsi.iloc[i] = 100 - (100 / (1 + rs))
+    valid = rsi.dropna()
+    return float(valid.iloc[-1]) if not valid.empty else None
+
+
+# ── 올인 조건 4종 ────────────────────────────────────────────
+
+
+def check_allin_conditions(
+    last_masam_date: "pd.Timestamp | None",
+    close_ixic: pd.Series,
+    close_leader: pd.Series,
+    as_of: date,
+) -> list[dict]:
+    """
+    MODE 2 올인 조건 4종 체크 (CLAUDE.md §5-2).
+    1. 한달+1일 무마삼 (≥31일)
+    2. 8거래일 연속 상승
+    3. 1등주 전고 돌파
+    4. 나스닥 전고 돌파
+    """
+    today = pd.Timestamp(as_of)
+
+    # 조건 1
+    cond1 = False
+    if last_masam_date is not None:
+        cond1 = (today - last_masam_date).days >= 31
+
+    # 조건 2: 최근 8 거래일 모두 양봉
+    if len(close_ixic) >= 9:
+        last9 = close_ixic.iloc[-9:]
+        changes = last9.pct_change().dropna()
+        cond2 = len(changes) >= 8 and bool((changes.iloc[-8:] > 0).all())
+    else:
+        cond2 = False
+
+    # 조건 3: 1등주 신고점
+    cond3 = float(close_leader.iloc[-1]) >= float(close_leader.max())
+
+    # 조건 4: 나스닥 신고점
+    cond4 = float(close_ixic.iloc[-1]) >= float(close_ixic.max())
+
+    return [
+        {"id": 1, "label": "한달+1일 무마삼", "met": cond1, "grade": "약"},
+        {"id": 2, "label": "8거래일 연속 상승", "met": cond2, "grade": "중"},
+        {"id": 3, "label": "1등주 전고 돌파", "met": cond3, "grade": "강"},
+        {"id": 4, "label": "나스닥 전고 돌파", "met": cond4, "grade": "강"},
+    ]
+
+
+# ── 트리거 거리 ───────────────────────────────────────────────
+
+
+def calc_distance_to_triggers(
+    close_ixic: pd.Series,
+    rate_env: str,
+) -> dict:
+    """
+    V자 올인 기준 및 긴급 올인 레벨까지 거리.
+    v_allin_pct_needed : 비제로 +10%(2구간) / 제로 +5%(2구간)
+    emergency_allin_pct_away : 현재가 vs 고점-30% 레벨 거리(%, 양수=아직 멀었음)
+    """
+    ixic_ath = float(close_ixic.max())
+    current = float(close_ixic.iloc[-1])
+    v_allin_pct_needed = 10.0 if rate_env == "NON_ZERO" else 5.0
+    emergency_level = ixic_ath * 0.70
+    emergency_allin_pct_away = round((current / emergency_level - 1) * 100, 2)
+    return {
+        "v_allin_pct_needed": v_allin_pct_needed,
+        "emergency_allin_pct_away": emergency_allin_pct_away,
+    }
+
+
+# ── 추가 자금 투입 신호 ───────────────────────────────────────
+
+
+def check_additional_buy_signal(close_leader: pd.Series) -> dict:
+    """추가 자금 투입 조건: 1등주 RSI14 ≤ 50."""
+    rsi = _calc_rsi14(close_leader)
+    both = rsi is not None and rsi <= 50
+    return {
+        "rsi14": round(rsi, 1) if rsi is not None else None,
+        "mfi14": None,  # volume 데이터 Phase 2에서 추가
+        "both_below_50": both,
+        "label": "RSI14 ≤ 50 — 추가 자금 투입 조건 충족" if both else "",
+    }
+
+
+# ── masam.json 빌더 ────────────────────────────────────────────
+
+
+def build_masam_json(
+    as_of: date,
+    mode: str,
+    panic_type: "str | None",
+    rate_env: str,
+    qe_active: bool,
+    masam_month_count: int,
+    masam_cumulative: int,
+    last_masam_date: "pd.Timestamp | None",
+    leader_status: dict,
+    target_allocation: dict,
+    hedge_allocation: dict,
+    distance_to_triggers: dict,
+    allin_conditions: list,
+    additional_buy_signal: dict,
+    recommended_action: str,
+    alerts: list,
+) -> dict:
+    return {
+        "as_of": str(as_of),
+        "mode": mode,
+        "panic_type": panic_type,
+        "rate_env": rate_env,
+        "qe_active": qe_active,
+        "masam": {
+            "month_count": masam_month_count,
+            "cumulative_count": masam_cumulative,
+            "last_masam_date": str(last_masam_date.date()) if last_masam_date else None,
+        },
+        "leader_status": leader_status,
+        "target_allocation": target_allocation,
+        "hedge_allocation": hedge_allocation,
+        "distance_to_triggers": distance_to_triggers,
+        "all_in_conditions": allin_conditions,
+        "additional_buy_signal": additional_buy_signal,
+        "panic_reentry": {"stage": 0, "next_tranche_pct": 35, "tranches": [35, 35, 30]},
+        "recommended_action": recommended_action,
+        "alerts": alerts,
     }
