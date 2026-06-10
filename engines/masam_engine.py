@@ -106,21 +106,15 @@ def _calc_rsi14(close: pd.Series) -> float | None:
     """1등주 종가 기준 RSI14. 데이터 15개 미만이면 None."""
     if len(close) < 15:
         return None
-    delta = close.diff().dropna()
+    delta = close.diff()
     gain = delta.clip(lower=0).rolling(14).mean()
     loss = (-delta.clip(upper=0)).rolling(14).mean()
-    # Handle cases: if loss=0, RSI=100; if gain=0, RSI=0
-    rsi = pd.Series(index=gain.index, dtype=float)
-    for i in range(len(gain)):
-        if loss.iloc[i] == 0:
-            rsi.iloc[i] = 100.0 if gain.iloc[i] > 0 else 0.0
-        elif gain.iloc[i] == 0:
-            rsi.iloc[i] = 0.0
-        else:
-            rs = gain.iloc[i] / loss.iloc[i]
-            rsi.iloc[i] = 100 - (100 / (1 + rs))
-    valid = rsi.dropna()
-    return float(valid.iloc[-1]) if not valid.empty else None
+    last_loss = float(loss.iloc[-1])
+    last_gain = float(gain.iloc[-1])
+    if last_loss == 0:
+        return 100.0 if last_gain > 0 else 50.0
+    rsi = 100 - (100 / (1 + last_gain / last_loss))
+    return float(rsi)
 
 
 # ── 올인 조건 4종 ────────────────────────────────────────────
@@ -182,7 +176,12 @@ def calc_distance_to_triggers(
     """
     ixic_ath = float(close_ixic.max())
     current = float(close_ixic.iloc[-1])
-    v_allin_pct_needed = 10.0 if rate_env == "NON_ZERO" else 5.0
+    if rate_env == "NON_ZERO":
+        v_allin_pct_needed = 10.0
+    elif rate_env == "ZERO":
+        v_allin_pct_needed = 5.0
+    else:
+        raise ValueError(f"calc_distance_to_triggers: unknown rate_env={rate_env!r}")
     emergency_level = ixic_ath * 0.70
     emergency_allin_pct_away = round((current / emergency_level - 1) * 100, 2)
     return {

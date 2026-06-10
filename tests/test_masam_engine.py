@@ -1,6 +1,7 @@
 import pytest
 import pandas as pd
 import numpy as np
+from datetime import date
 
 
 # ── determine_mode ───────────────────────────────────────────
@@ -236,3 +237,72 @@ def test_build_masam_json_structure():
     assert result["leader_status"]["rank1_ticker"] == "NVDA"
     assert result["target_allocation"]["stock_pct"] == 50
     assert result["hedge_allocation"]["type"] == "TLT"
+
+
+# ── additional coverage ───────────────────────────────────────
+
+
+def test_allin_cond1_none_masam_date_returns_false():
+    from engines.masam_engine import check_allin_conditions
+    ixic = _make_series([100.0] * 20)
+    leader = _make_series([100.0] * 20)
+    conds = check_allin_conditions(None, ixic, leader, date(2026, 6, 10))
+    assert conds[0]["met"] is False
+
+
+def test_calc_distance_to_triggers_non_zero():
+    from engines.masam_engine import calc_distance_to_triggers
+    closes = pd.Series([100.0, 95.0, 90.0, 80.0])  # ATH=100, current=80
+    result = calc_distance_to_triggers(closes, "NON_ZERO")
+    assert result["v_allin_pct_needed"] == 10.0
+    # emergency_level = 100 * 0.70 = 70. current=80 → (80/70 - 1)*100 ≈ +14.29%
+    assert result["emergency_allin_pct_away"] == pytest.approx(14.29, abs=0.1)
+
+
+def test_calc_distance_to_triggers_zero():
+    from engines.masam_engine import calc_distance_to_triggers
+    closes = pd.Series([100.0, 95.0])
+    result = calc_distance_to_triggers(closes, "ZERO")
+    assert result["v_allin_pct_needed"] == 5.0
+
+
+def test_check_additional_buy_signal_below_50():
+    from engines.masam_engine import check_additional_buy_signal
+    closes = pd.Series([float(100 - i * 0.5) for i in range(20)])  # downtrend → RSI < 50
+    result = check_additional_buy_signal(closes)
+    assert result["mfi14"] is None
+    assert result["rsi14"] is not None
+    assert result["both_below_50"] is True
+
+
+def test_check_additional_buy_signal_above_50():
+    from engines.masam_engine import check_additional_buy_signal
+    closes = pd.Series([float(100 + i) for i in range(20)])  # uptrend → RSI > 50
+    result = check_additional_buy_signal(closes)
+    assert result["both_below_50"] is False
+
+
+def test_build_masam_json_panic_reentry_tranches():
+    from engines.masam_engine import build_masam_json
+    from datetime import date
+    result = build_masam_json(
+        as_of=date(2026, 6, 10),
+        mode="PANIC",
+        panic_type="BASIC",
+        rate_env="NON_ZERO",
+        qe_active=False,
+        masam_month_count=4,
+        masam_cumulative=4,
+        last_masam_date=pd.Timestamp("2026-06-05"),
+        leader_status={"rank1_ticker": "NVDA", "rank1_mcap": 3_500_000_000_000,
+                       "rank2_ticker": "AAPL", "rank2_mcap": 3_100_000_000_000,
+                       "gap_pct": 11.4, "overtake_detected": False, "gap_below_10pct": False},
+        target_allocation={"stock_pct": 0, "hedge_pct": 70, "cash_pct": 30, "label": "헤지"},
+        hedge_allocation={"type": "TLT", "rationale": "", "exit_trigger": ""},
+        distance_to_triggers={"v_allin_pct_needed": 10.0, "emergency_allin_pct_away": 5.0},
+        allin_conditions=[],
+        additional_buy_signal={"rsi14": None, "mfi14": None, "both_below_50": False, "label": ""},
+        recommended_action="헤지 운용",
+        alerts=[],
+    )
+    assert result["panic_reentry"]["tranches"] == [35, 35, 30]
