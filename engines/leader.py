@@ -1,5 +1,6 @@
 """1등주 판정 — 대형주 상위 10개 시총 비교."""
 from __future__ import annotations
+import warnings
 import yfinance as yf
 
 # 분기 1회 수동 갱신 (CLAUDE.md §5-3)
@@ -25,15 +26,15 @@ def get_leader_status(tickers: list[str] | None = None) -> dict:
     if tickers is None:
         tickers = _DEFAULT_LARGE_CAP_LIST
 
-    mcaps: dict[str, int] = {}
+    mcaps: dict[str, int | float] = {}
     for t in tickers:
         try:
             info = yf.Ticker(t).info
             mcap = info.get("marketCap") or 0
             if mcap > 0:
                 mcaps[t] = mcap
-        except Exception:
-            continue
+        except Exception as e:
+            warnings.warn(f"leader: failed to fetch marketCap for {t}: {e}")
 
     if len(mcaps) < 2:
         return {

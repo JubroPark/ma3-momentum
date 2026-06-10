@@ -64,3 +64,21 @@ def test_leader_insufficient_data_returns_none_fields():
 
     assert result["rank1_ticker"] is None
     assert result["rank2_ticker"] is None
+
+
+def test_leader_all_tickers_raise_exception_returns_none_fields():
+    from engines.leader import get_leader_status
+
+    def error_factory(t):
+        raise RuntimeError("network error")
+
+    with patch("yfinance.Ticker", side_effect=error_factory):
+        result = get_leader_status(tickers=["AAPL", "MSFT", "NVDA"])
+
+    assert result["rank1_ticker"] is None
+    assert result["rank2_ticker"] is None
+    assert result["rank1_mcap"] is None
+    assert result["rank2_mcap"] is None
+    assert result["gap_pct"] is None
+    assert result["overtake_detected"] is False
+    assert result["gap_below_10pct"] is False
