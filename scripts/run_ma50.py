@@ -18,8 +18,11 @@ from engines.ma50_signals import (
     transition_state, calc_score,
 )
 from engines.ma50_engine import build_signal_item, build_signals_json
+from scripts.state_manager import load_positions, save_positions, get_position, update_position
+from engines.backtest_ma50 import calc_stop_level
 
 _OUTPUT_SIGNALS = Path(__file__).parent.parent / "outputs" / "signals.json"
+_STATE_PATH = Path(__file__).parent.parent / "state" / "positions.json"
 
 _SECTOR_MAP: dict = {
     "AAPL": "XLK", "MSFT": "XLK", "NVDA": "XLK", "AVGO": "XLK",
@@ -34,12 +37,14 @@ _SECTOR_MAP: dict = {
 _DEFAULT_WATCHLIST = list(_SECTOR_MAP.keys())
 
 
-def run(watchlist: list = None) -> dict:
+def run(watchlist: list = None, state_path: str = None) -> dict:
     print("=" * 50)
     print("MA50 스크리너 엔진 실행")
     print("=" * 50)
 
     tickers = watchlist or _DEFAULT_WATCHLIST
+    _path = Path(state_path) if state_path else _STATE_PATH
+    positions = load_positions(str(_path))
     params  = dict(MA50_DEFAULT_PARAMS)
 
     print(f"SPY + {len(tickers)}종목 다운로드 중...")
@@ -74,7 +79,8 @@ def run(watchlist: list = None) -> dict:
         close_s  = get_series(raw, ticker, "Close")
         high_s   = get_series(raw, ticker, "High")
         low_s    = get_series(raw, ticker, "Low")
-        volume_s = get_series(raw, ticker, "Volume")
+        volume_s   = get_series(raw, ticker, "Volume")
+        open_s     = get_series(raw, ticker, "Open")
 
         if close_s is None or high_s is None or len(close_s) < 60:
             continue
@@ -89,6 +95,7 @@ def run(watchlist: list = None) -> dict:
             continue
 
         close_last  = float(close_s.iloc[-1])
+        today_open  = float(open_s.iloc[-1]) if open_s is not None else close_last
         ma50_last   = float(ma50_valid.iloc[-1])
         ma200_last  = float(ma200_valid.iloc[-1]) if not ma200_valid.empty else 0.0
         vol_last    = float(volume_s.iloc[-1]) if volume_s is not None else 0.0
@@ -108,35 +115,71 @@ def run(watchlist: list = None) -> dict:
             slope_pct=slope_pct, high_n=high_n, atr14=atr14, sector_etf=sector,
         )
 
-        buy  = get_buy_signal(
-            close_s, high_s, low_s if low_s is not None else high_s,
-            ma50, ma200, vol_ratio, gap50, slope_pct, rs_pct_val, regime, params,
-        )
-        sell = get_sell_signal(
-            "HOLDING", close_s, ma50, ma200, rs_pct_val, 0, regime, params,
-        ) if close_last < ma50_last else None
+        # 저장된 state 로드
+        saved      = get_position(positions, ticker)
+        prev_state = saved["state"]
+        prev_days  = saved["days_in_state"]
 
-        if buy:
-            state       = "BUY"
-            signal_type = buy
-            trigger     = f"MA50 {buy.replace('_', ' ')}"
-        elif sell:
-            state       = "SELL" if sell == "SELL" else "SELL_WATCH"
-            signal_type = sell
-            trigger     = "MA50 하향 이탈"
-        elif close_last >= ma50_last:
-            state       = "HOLDING"
-            signal_type = "OK"
-            trigger     = ""
+        # 상태에 따라 시그널 산출
+        buy_sig  = None
+        sell_sig = None
+        if prev_state == "WATCH":
+            buy_sig = get_buy_signal(
+                close_s, high_s, low_s if low_s is not None else high_s,
+                ma50, ma200, vol_ratio, gap50, slope_pct, rs_pct_val, regime, params,
+            )
+        elif prev_state in ("HOLDING", "SELL_WATCH"):
+            sell_sig = get_sell_signal(
+                prev_state, close_s, ma50, ma200,
+                rs_pct_val, prev_days, regime, params,
+            )
+        # BUY / SELL: 전일 보류 주문 → transition만 수행
+
+        new_state = transition_state(prev_state, buy_sig, sell_sig)
+        new_days  = 0 if new_state != prev_state else prev_days + 1
+
+        # 포지션 필드 결정
+        if new_state == "HOLDING" and prev_state == "BUY":
+            new_entry   = round(today_open, 2)
+            new_stop    = round(calc_stop_level(new_entry, ma50_last, atr14), 2)
+            new_entered = str(as_of_dt)
+            new_stype   = saved.get("signal_type")
+        elif new_state == "WATCH" and prev_state == "SELL":
+            new_entry   = None
+            new_stop    = None
+            new_entered = None
+            new_stype   = None
+        elif new_state == "BUY":
+            new_entry   = None
+            new_stop    = None
+            new_entered = None
+            new_stype   = buy_sig
         else:
-            state       = "WATCH"
-            signal_type = "OK"
-            trigger     = ""
+            new_entry   = saved.get("entry_price")
+            new_stop    = saved.get("stop_level")
+            new_entered = saved.get("entered_at")
+            new_stype   = saved.get("signal_type")
+
+        positions = update_position(
+            positions, ticker, new_state, new_days,
+            new_entered, new_entry, new_stop, new_stype,
+        )
+
+        # signals.json 출력용
+        signal_type  = buy_sig or sell_sig or "OK"
+        state        = new_state
+        trigger      = (
+            f"MA50 {buy_sig.replace('_', ' ')}" if buy_sig
+            else ("MA50 하향 이탈" if sell_sig else "")
+        )
 
         score = calc_score(vol_ratio, gap50, rs_pct_val, slope_pct,
                            ma50_last, ma200_last, params)
 
         items.append(build_signal_item(ticker, signal_type, state, score, trigger, metrics))
+
+    save_positions(positions, str(_path))
+    print(f"state 저장: {_path}")
 
     items.sort(key=lambda x: x["score"], reverse=True)
 
