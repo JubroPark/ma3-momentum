@@ -1,0 +1,862 @@
+{
+  "as_of": "2026-06-11",
+  "period": "5y",
+  "tickers": [
+    "AAPL",
+    "MSFT",
+    "GOOGL",
+    "AMZN",
+    "NVDA",
+    "META",
+    "TSLA",
+    "LLY",
+    "UNH",
+    "JNJ",
+    "JPM",
+    "V",
+    "XOM",
+    "WMT",
+    "PG",
+    "MA"
+  ],
+  "params": {
+    "breakout_high_lookback": 20,
+    "lookback_below": 7,
+    "vol_mult": 1.5,
+    "vol_cap": 3.0,
+    "overshoot_max": 0.07,
+    "proximity_pct": 0.03,
+    "break_tol": 0.01,
+    "sell_tol": 0.01,
+    "consec_below_sell": 2,
+    "max_hold_watch_days": 5,
+    "rs_early_th": 80.0,
+    "slope_cap": 0.05,
+    "regime_mode": "strict",
+    "early_trend_enabled": false,
+    "bounce_lookback": 5
+  },
+  "results": [
+    {
+      "ticker": "AAPL",
+      "trades": [
+        {
+          "ticker": "AAPL",
+          "entry_date": "2024-11-26",
+          "exit_date": "2025-01-14",
+          "entry_price": 231.85,
+          "exit_price": 233.26,
+          "shares": 1365.9057,
+          "pnl": 1925.93,
+          "hold_days": 49
+        },
+        {
+          "ticker": "AAPL",
+          "entry_date": "2025-12-22",
+          "exit_date": "2026-01-05",
+          "entry_price": 272.35,
+          "exit_price": 270.14,
+          "shares": 1779.7767,
+          "pnl": -3933.31,
+          "hold_days": 14
+        },
+        {
+          "ticker": "AAPL",
+          "entry_date": "2026-05-01",
+          "exit_date": "2026-06-10",
+          "entry_price": 278.6,
+          "exit_price": 291.58,
+          "shares": 739.1553,
+          "pnl": 9594.24,
+          "hold_days": 40,
+          "open_position": true
+        }
+      ],
+      "performance": {
+        "total_return_pct": 7.59,
+        "cagr_pct": 1.54,
+        "max_drawdown_pct": -3.86,
+        "sharpe": 5.92,
+        "win_rate_pct": 66.7,
+        "num_trades": 3,
+        "avg_hold_days": 34.3
+      }
+    },
+    {
+      "ticker": "MSFT",
+      "trades": [
+        {
+          "ticker": "MSFT",
+          "entry_date": "2023-12-18",
+          "exit_date": "2024-04-17",
+          "entry_price": 362.41,
+          "exit_price": 410.05,
+          "shares": 746.0532,
+          "pnl": 35541.97,
+          "hold_days": 121
+        },
+        {
+          "ticker": "MSFT",
+          "entry_date": "2025-09-22",
+          "exit_date": "2025-09-25",
+          "entry_price": 512.35,
+          "exit_price": 505.1,
+          "shares": 1080.8141,
+          "pnl": -7835.9,
+          "hold_days": 3
+        }
+      ],
+      "performance": {
+        "total_return_pct": 27.71,
+        "cagr_pct": 5.23,
+        "max_drawdown_pct": -5.78,
+        "sharpe": 7.17,
+        "win_rate_pct": 50.0,
+        "num_trades": 2,
+        "avg_hold_days": 62.0
+      }
+    },
+    {
+      "ticker": "GOOGL",
+      "trades": [
+        {
+          "ticker": "GOOGL",
+          "entry_date": "2024-02-05",
+          "exit_date": "2024-02-21",
+          "entry_price": 141.56,
+          "exit_price": 140.21,
+          "shares": 2146.0946,
+          "pnl": -2897.23,
+          "hold_days": 16
+        },
+        {
+          "ticker": "GOOGL",
+          "entry_date": "2024-03-19",
+          "exit_date": "2024-07-22",
+          "entry_price": 146.86,
+          "exit_price": 179.21,
+          "shares": 1433.8064,
+          "pnl": 46383.64,
+          "hold_days": 125
+        },
+        {
+          "ticker": "GOOGL",
+          "entry_date": "2024-10-29",
+          "exit_date": "2024-11-25",
+          "entry_price": 166.67,
+          "exit_price": 165.04,
+          "shares": 1716.9435,
+          "pnl": -2798.62,
+          "hold_days": 27
+        }
+      ],
+      "performance": {
+        "total_return_pct": 40.69,
+        "cagr_pct": 7.38,
+        "max_drawdown_pct": -2.9,
+        "sharpe": 7.57,
+        "win_rate_pct": 33.3,
+        "num_trades": 3,
+        "avg_hold_days": 56.0
+      }
+    },
+    {
+      "ticker": "AMZN",
+      "trades": [
+        {
+          "ticker": "AMZN",
+          "entry_date": "2023-08-04",
+          "exit_date": "2023-08-18",
+          "entry_price": 141.06,
+          "exit_price": 132.68,
+          "shares": 1192.9109,
+          "pnl": -9996.59,
+          "hold_days": 14,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "AMZN",
+          "entry_date": "2024-02-02",
+          "exit_date": "2024-04-23",
+          "entry_price": 169.19,
+          "exit_price": 178.08,
+          "shares": 1304.9967,
+          "pnl": 11601.42,
+          "hold_days": 81
+        },
+        {
+          "ticker": "AMZN",
+          "entry_date": "2024-06-24",
+          "exit_date": "2024-07-18",
+          "entry_price": 189.33,
+          "exit_price": 182.4,
+          "shares": 1443.596,
+          "pnl": -10004.12,
+          "hold_days": 24,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "AMZN",
+          "entry_date": "2025-09-05",
+          "exit_date": "2025-09-23",
+          "entry_price": 235.19,
+          "exit_price": 225.74,
+          "shares": 1057.8812,
+          "pnl": -9996.98,
+          "hold_days": 18,
+          "stop_triggered": true
+        }
+      ],
+      "performance": {
+        "total_return_pct": -18.4,
+        "cagr_pct": -4.15,
+        "max_drawdown_pct": -19.69,
+        "sharpe": -6.76,
+        "win_rate_pct": 25.0,
+        "num_trades": 4,
+        "avg_hold_days": 34.2
+      }
+    },
+    {
+      "ticker": "NVDA",
+      "trades": [],
+      "performance": {
+        "total_return_pct": 0.0,
+        "cagr_pct": 0.0,
+        "max_drawdown_pct": 0.0,
+        "sharpe": 0.0,
+        "win_rate_pct": 0.0,
+        "num_trades": 0,
+        "avg_hold_days": 0.0
+      }
+    },
+    {
+      "ticker": "META",
+      "trades": [
+        {
+          "ticker": "META",
+          "entry_date": "2023-12-18",
+          "exit_date": "2024-04-22",
+          "entry_price": 334.85,
+          "exit_price": 486.42,
+          "shares": 569.4721,
+          "pnl": 86314.89,
+          "hold_days": 126
+        },
+        {
+          "ticker": "META",
+          "entry_date": "2025-01-13",
+          "exit_date": "2025-03-05",
+          "entry_price": 604.67,
+          "exit_price": 638.44,
+          "shares": 490.5885,
+          "pnl": 16567.17,
+          "hold_days": 51
+        }
+      ],
+      "performance": {
+        "total_return_pct": 102.88,
+        "cagr_pct": 15.89,
+        "max_drawdown_pct": 0.0,
+        "sharpe": 16.56,
+        "win_rate_pct": 100.0,
+        "num_trades": 2,
+        "avg_hold_days": 88.5
+      }
+    },
+    {
+      "ticker": "TSLA",
+      "trades": [
+        {
+          "ticker": "TSLA",
+          "entry_date": "2024-09-06",
+          "exit_date": "2024-09-06",
+          "entry_price": 232.6,
+          "exit_price": 220.93,
+          "shares": 856.9546,
+          "pnl": -10000.66,
+          "hold_days": 0,
+          "stop_triggered": true
+        }
+      ],
+      "performance": {
+        "total_return_pct": -10.0,
+        "cagr_pct": -2.17,
+        "max_drawdown_pct": -10.0,
+        "sharpe": 0.0,
+        "win_rate_pct": 0.0,
+        "num_trades": 1,
+        "avg_hold_days": 0.0
+      }
+    },
+    {
+      "ticker": "LLY",
+      "trades": [
+        {
+          "ticker": "LLY",
+          "entry_date": "2023-11-14",
+          "exit_date": "2023-12-11",
+          "entry_price": 597.77,
+          "exit_price": 560.39,
+          "shares": 267.474,
+          "pnl": -9998.18,
+          "hold_days": 27,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "LLY",
+          "entry_date": "2024-05-22",
+          "exit_date": "2024-07-26",
+          "entry_price": 789.97,
+          "exit_price": 800.69,
+          "shares": 280.9899,
+          "pnl": 3012.21,
+          "hold_days": 65
+        },
+        {
+          "ticker": "LLY",
+          "entry_date": "2024-09-23",
+          "exit_date": "2024-09-27",
+          "entry_price": 909.58,
+          "exit_price": 873.76,
+          "shares": 279.1533,
+          "pnl": -9999.27,
+          "hold_days": 4,
+          "stop_triggered": true
+        }
+      ],
+      "performance": {
+        "total_return_pct": -16.99,
+        "cagr_pct": -3.81,
+        "max_drawdown_pct": -16.99,
+        "sharpe": -11.96,
+        "win_rate_pct": 33.3,
+        "num_trades": 3,
+        "avg_hold_days": 32.0
+      }
+    },
+    {
+      "ticker": "UNH",
+      "trades": [
+        {
+          "ticker": "UNH",
+          "entry_date": "2022-12-01",
+          "exit_date": "2022-12-16",
+          "entry_price": 517.27,
+          "exit_price": 493.31,
+          "shares": 355.9945,
+          "pnl": -8529.63,
+          "hold_days": 15
+        },
+        {
+          "ticker": "UNH",
+          "entry_date": "2023-12-01",
+          "exit_date": "2023-12-14",
+          "entry_price": 524.83,
+          "exit_price": 508.52,
+          "shares": 613.0338,
+          "pnl": -9998.58,
+          "hold_days": 13,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "UNH",
+          "entry_date": "2024-07-01",
+          "exit_date": "2024-07-03",
+          "entry_price": 487.15,
+          "exit_price": 472.74,
+          "shares": 693.9047,
+          "pnl": -9999.17,
+          "hold_days": 2,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "UNH",
+          "entry_date": "2025-08-18",
+          "exit_date": "2025-11-04",
+          "entry_price": 306.75,
+          "exit_price": 322.93,
+          "shares": 416.6904,
+          "pnl": 6742.05,
+          "hold_days": 78
+        }
+      ],
+      "performance": {
+        "total_return_pct": -21.79,
+        "cagr_pct": -4.99,
+        "max_drawdown_pct": -28.53,
+        "sharpe": -10.6,
+        "win_rate_pct": 25.0,
+        "num_trades": 4,
+        "avg_hold_days": 27.0
+      }
+    },
+    {
+      "ticker": "JNJ",
+      "trades": [
+        {
+          "ticker": "JNJ",
+          "entry_date": "2023-07-21",
+          "exit_date": "2023-08-24",
+          "entry_price": 154.08,
+          "exit_price": 150.28,
+          "shares": 2081.9071,
+          "pnl": -7911.25,
+          "hold_days": 34
+        },
+        {
+          "ticker": "JNJ",
+          "entry_date": "2023-12-01",
+          "exit_date": "2023-12-13",
+          "entry_price": 145.52,
+          "exit_price": 141.95,
+          "shares": 2802.2254,
+          "pnl": -10003.94,
+          "hold_days": 12,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "JNJ",
+          "entry_date": "2025-01-28",
+          "exit_date": "2025-04-02",
+          "entry_price": 146.5,
+          "exit_price": 148.98,
+          "shares": 1750.5719,
+          "pnl": 4341.42,
+          "hold_days": 64
+        },
+        {
+          "ticker": "JNJ",
+          "entry_date": "2025-09-22",
+          "exit_date": "2026-04-08",
+          "entry_price": 173.06,
+          "exit_price": 235.29,
+          "shares": 2083.8572,
+          "pnl": 129678.43,
+          "hold_days": 198
+        }
+      ],
+      "performance": {
+        "total_return_pct": 116.1,
+        "cagr_pct": 17.43,
+        "max_drawdown_pct": -17.92,
+        "sharpe": 6.84,
+        "win_rate_pct": 50.0,
+        "num_trades": 4,
+        "avg_hold_days": 77.0
+      }
+    },
+    {
+      "ticker": "JPM",
+      "trades": [
+        {
+          "ticker": "JPM",
+          "entry_date": "2023-04-17",
+          "exit_date": "2023-04-26",
+          "entry_price": 130.7,
+          "exit_price": 125.81,
+          "shares": 2045.2747,
+          "pnl": -10001.39,
+          "hold_days": 9,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "JPM",
+          "entry_date": "2023-06-30",
+          "exit_date": "2023-08-23",
+          "entry_price": 135.05,
+          "exit_price": 137.62,
+          "shares": 2165.6098,
+          "pnl": 5565.62,
+          "hold_days": 54
+        },
+        {
+          "ticker": "JPM",
+          "entry_date": "2024-05-22",
+          "exit_date": "2024-06-12",
+          "entry_price": 190.78,
+          "exit_price": 184.07,
+          "shares": 1490.7413,
+          "pnl": -10002.87,
+          "hold_days": 21,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "JPM",
+          "entry_date": "2024-07-01",
+          "exit_date": "2024-08-06",
+          "entry_price": 194.46,
+          "exit_price": 188.37,
+          "shares": 1420.8276,
+          "pnl": -8652.84,
+          "hold_days": 36
+        },
+        {
+          "ticker": "JPM",
+          "entry_date": "2025-01-16",
+          "exit_date": "2025-03-05",
+          "entry_price": 247.63,
+          "exit_price": 244.95,
+          "shares": 1104.5934,
+          "pnl": -2960.31,
+          "hold_days": 48
+        },
+        {
+          "ticker": "JPM",
+          "entry_date": "2025-09-22",
+          "exit_date": "2025-10-14",
+          "entry_price": 305.35,
+          "exit_price": 294.83,
+          "shares": 950.0903,
+          "pnl": -9994.95,
+          "hold_days": 22,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "JPM",
+          "entry_date": "2025-12-22",
+          "exit_date": "2026-01-15",
+          "entry_price": 314.47,
+          "exit_price": 306.9,
+          "shares": 810.4879,
+          "pnl": -6135.39,
+          "hold_days": 24
+        }
+      ],
+      "performance": {
+        "total_return_pct": -42.18,
+        "cagr_pct": -10.79,
+        "max_drawdown_pct": -42.18,
+        "sharpe": -16.65,
+        "win_rate_pct": 14.3,
+        "num_trades": 7,
+        "avg_hold_days": 30.6
+      }
+    },
+    {
+      "ticker": "V",
+      "trades": [
+        {
+          "ticker": "V",
+          "entry_date": "2023-05-01",
+          "exit_date": "2023-05-04",
+          "entry_price": 227.17,
+          "exit_price": 219.89,
+          "shares": 1373.3193,
+          "pnl": -9997.76,
+          "hold_days": 3,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "V",
+          "entry_date": "2023-11-16",
+          "exit_date": "2024-04-03",
+          "entry_price": 243.95,
+          "exit_price": 275.76,
+          "shares": 1726.1826,
+          "pnl": 54909.87,
+          "hold_days": 139
+        },
+        {
+          "ticker": "V",
+          "entry_date": "2024-10-31",
+          "exit_date": "2025-01-14",
+          "entry_price": 288.29,
+          "exit_price": 305.31,
+          "shares": 1050.4054,
+          "pnl": 17877.9,
+          "hold_days": 75
+        },
+        {
+          "ticker": "V",
+          "entry_date": "2025-06-02",
+          "exit_date": "2025-06-13",
+          "entry_price": 359.93,
+          "exit_price": 349.55,
+          "shares": 963.3112,
+          "pnl": -9999.17,
+          "hold_days": 11,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "V",
+          "entry_date": "2025-12-12",
+          "exit_date": "2026-01-13",
+          "entry_price": 346.57,
+          "exit_price": 334.43,
+          "shares": 823.9334,
+          "pnl": -10002.55,
+          "hold_days": 32,
+          "stop_triggered": true
+        }
+      ],
+      "performance": {
+        "total_return_pct": 42.79,
+        "cagr_pct": 7.71,
+        "max_drawdown_pct": -12.29,
+        "sharpe": 4.75,
+        "win_rate_pct": 40.0,
+        "num_trades": 5,
+        "avg_hold_days": 52.0
+      }
+    },
+    {
+      "ticker": "XOM",
+      "trades": [
+        {
+          "ticker": "XOM",
+          "entry_date": "2023-02-01",
+          "exit_date": "2023-03-01",
+          "entry_price": 103.09,
+          "exit_price": 98.03,
+          "shares": 1668.5247,
+          "pnl": -8442.73,
+          "hold_days": 28
+        },
+        {
+          "ticker": "XOM",
+          "entry_date": "2024-05-07",
+          "exit_date": "2024-05-24",
+          "entry_price": 108.94,
+          "exit_price": 107.54,
+          "shares": 3051.0335,
+          "pnl": -4271.45,
+          "hold_days": 17
+        },
+        {
+          "ticker": "XOM",
+          "entry_date": "2025-09-24",
+          "exit_date": "2025-10-16",
+          "entry_price": 112.06,
+          "exit_price": 108.22,
+          "shares": 2599.5414,
+          "pnl": -9982.24,
+          "hold_days": 22,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "XOM",
+          "entry_date": "2025-12-10",
+          "exit_date": "2026-04-14",
+          "entry_price": 117.15,
+          "exit_price": 149.06,
+          "shares": 2231.6725,
+          "pnl": 71212.67,
+          "hold_days": 125
+        },
+        {
+          "ticker": "XOM",
+          "entry_date": "2026-05-18",
+          "exit_date": "2026-05-26",
+          "entry_price": 157.32,
+          "exit_price": 152.6,
+          "shares": 2119.9571,
+          "pnl": -10006.2,
+          "hold_days": 8,
+          "stop_triggered": true
+        }
+      ],
+      "performance": {
+        "total_return_pct": 38.51,
+        "cagr_pct": 7.03,
+        "max_drawdown_pct": -22.7,
+        "sharpe": 3.44,
+        "win_rate_pct": 20.0,
+        "num_trades": 5,
+        "avg_hold_days": 40.0
+      }
+    },
+    {
+      "ticker": "WMT",
+      "trades": [
+        {
+          "ticker": "WMT",
+          "entry_date": "2023-05-19",
+          "exit_date": "2023-05-24",
+          "entry_price": 48.85,
+          "exit_price": 47.44,
+          "shares": 7126.6401,
+          "pnl": -10048.56,
+          "hold_days": 5,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "WMT",
+          "entry_date": "2023-08-17",
+          "exit_date": "2023-08-17",
+          "entry_price": 52.09,
+          "exit_price": 50.6,
+          "shares": 6669.3004,
+          "pnl": -9937.26,
+          "hold_days": 0,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "WMT",
+          "entry_date": "2023-08-21",
+          "exit_date": "2023-10-03",
+          "entry_price": 51.04,
+          "exit_price": 51.7,
+          "shares": 12060.0789,
+          "pnl": 7959.65,
+          "hold_days": 43
+        },
+        {
+          "ticker": "WMT",
+          "entry_date": "2024-05-17",
+          "exit_date": "2024-08-07",
+          "entry_price": 63.06,
+          "exit_price": 66.62,
+          "shares": 4554.0026,
+          "pnl": 16212.25,
+          "hold_days": 82
+        },
+        {
+          "ticker": "WMT",
+          "entry_date": "2024-11-20",
+          "exit_date": "2025-02-25",
+          "entry_price": 85.25,
+          "exit_price": 93.09,
+          "shares": 3258.8154,
+          "pnl": 25549.11,
+          "hold_days": 97
+        },
+        {
+          "ticker": "WMT",
+          "entry_date": "2025-06-02",
+          "exit_date": "2025-06-12",
+          "entry_price": 98.02,
+          "exit_price": 93.95,
+          "shares": 2455.993,
+          "pnl": -9995.89,
+          "hold_days": 10,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "WMT",
+          "entry_date": "2025-06-30",
+          "exit_date": "2025-07-10",
+          "entry_price": 96.42,
+          "exit_price": 95.86,
+          "shares": 6830.1815,
+          "pnl": -3824.9,
+          "hold_days": 10
+        },
+        {
+          "ticker": "WMT",
+          "entry_date": "2025-10-15",
+          "exit_date": "2025-10-28",
+          "entry_price": 106.68,
+          "exit_price": 102.49,
+          "shares": 2387.9564,
+          "pnl": -10005.54,
+          "hold_days": 13,
+          "stop_triggered": true
+        }
+      ],
+      "performance": {
+        "total_return_pct": 5.91,
+        "cagr_pct": 1.2,
+        "max_drawdown_pct": -19.99,
+        "sharpe": 0.83,
+        "win_rate_pct": 37.5,
+        "num_trades": 8,
+        "avg_hold_days": 32.5
+      }
+    },
+    {
+      "ticker": "PG",
+      "trades": [
+        {
+          "ticker": "PG",
+          "entry_date": "2024-06-03",
+          "exit_date": "2024-07-02",
+          "entry_price": 155.54,
+          "exit_price": 154.26,
+          "shares": 2938.0332,
+          "pnl": -3760.68,
+          "hold_days": 29
+        },
+        {
+          "ticker": "PG",
+          "entry_date": "2024-09-04",
+          "exit_date": "2024-10-04",
+          "entry_price": 165.74,
+          "exit_price": 161.41,
+          "shares": 2312.6169,
+          "pnl": -10013.63,
+          "hold_days": 30,
+          "stop_triggered": true
+        }
+      ],
+      "performance": {
+        "total_return_pct": -13.77,
+        "cagr_pct": -3.04,
+        "max_drawdown_pct": -13.77,
+        "sharpe": -24.73,
+        "win_rate_pct": 0.0,
+        "num_trades": 2,
+        "avg_hold_days": 29.5
+      }
+    },
+    {
+      "ticker": "MA",
+      "trades": [
+        {
+          "ticker": "MA",
+          "entry_date": "2023-04-28",
+          "exit_date": "2023-05-31",
+          "entry_price": 366.03,
+          "exit_price": 353.65,
+          "shares": 807.8414,
+          "pnl": -10001.08,
+          "hold_days": 33,
+          "stop_triggered": true
+        },
+        {
+          "ticker": "MA",
+          "entry_date": "2023-07-03",
+          "exit_date": "2023-09-26",
+          "entry_price": 384.51,
+          "exit_price": 393.59,
+          "shares": 820.1155,
+          "pnl": 7446.65,
+          "hold_days": 85
+        },
+        {
+          "ticker": "MA",
+          "entry_date": "2023-12-18",
+          "exit_date": "2024-04-12",
+          "entry_price": 413.4,
+          "exit_price": 460.55,
+          "shares": 873.021,
+          "pnl": 41162.94,
+          "hold_days": 116
+        },
+        {
+          "ticker": "MA",
+          "entry_date": "2024-11-04",
+          "exit_date": "2025-01-07",
+          "entry_price": 504.6,
+          "exit_price": 509.1,
+          "shares": 617.5492,
+          "pnl": 2778.97,
+          "hold_days": 64
+        }
+      ],
+      "performance": {
+        "total_return_pct": 41.39,
+        "cagr_pct": 7.49,
+        "max_drawdown_pct": -10.0,
+        "sharpe": 7.52,
+        "win_rate_pct": 75.0,
+        "num_trades": 4,
+        "avg_hold_days": 74.5
+      }
+    }
+  ],
+  "summary": {
+    "total_tickers_run": 16,
+    "total_trades": 57
+  }
+}
