@@ -40,13 +40,15 @@ export default function BuyTab() {
     <div className="inset" style={{ margin: '20px' }}>
       <div className="tx">
         데이터를 불러올 수 없습니다
-        <s>잠시 후 다시 시도해주세요</s>
+        <span style={{ color: 'var(--t2)', fontSize: 13, marginTop: 4, display: 'block' }}>잠시 후 다시 시도해주세요</span>
       </div>
     </div>
   );
   if (!data) return null;
 
-  const buyItems = data.items.filter(i => BUY_SIGNALS.includes(i.signal_type as SignalType));
+  const buyItems = data.items
+    .filter(i => BUY_SIGNALS.includes(i.signal_type as SignalType))
+    .sort((a, b) => b.score - a.score);
   const counts = {
     STRONG_BREAKOUT: buyItems.filter(i => i.signal_type === 'STRONG_BREAKOUT').length,
     EARLY_TREND: buyItems.filter(i => i.signal_type === 'EARLY_TREND').length,

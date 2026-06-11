@@ -7,16 +7,16 @@ const mockData: SignalsJson = {
   regime: 'RISK_ON',
   items: [
     {
-      ticker: 'NVDA', signal_type: 'STRONG_BREAKOUT', state: 'WATCH',
-      score: 88, trigger_reason: '',
-      metrics: { close: 150, ma50: 140, ma200: 130, gap50: 0.07, gap200: 0.077,
-        vol_ratio: 2.1, rs_pct: 93, ma50_slope_pct: 0.04, high_n: 148, atr14: 3.2, sector_etf: 'XLK' },
-    },
-    {
       ticker: 'AAPL', signal_type: 'EARLY_TREND', state: 'WATCH',
       score: 72, trigger_reason: '',
       metrics: { close: 200, ma50: 195, ma200: 180, gap50: 0.02, gap200: 0.083,
         vol_ratio: 1.6, rs_pct: 75, ma50_slope_pct: 0.02, high_n: 199, atr14: 2.1, sector_etf: 'XLK' },
+    },
+    {
+      ticker: 'NVDA', signal_type: 'STRONG_BREAKOUT', state: 'WATCH',
+      score: 88, trigger_reason: '',
+      metrics: { close: 150, ma50: 140, ma200: 130, gap50: 0.07, gap200: 0.077,
+        vol_ratio: 2.1, rs_pct: 93, ma50_slope_pct: 0.04, high_n: 148, atr14: 3.2, sector_etf: 'XLK' },
     },
   ],
 };
