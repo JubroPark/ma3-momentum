@@ -82,15 +82,17 @@ def check_early_trend(
     params: dict,
 ) -> bool:
     """
-    진입: close[0] > MA50[0]
+    돌파: close[0] > MA50[0] AND close[-1] ≤ MA50[-1]
     안전장치: RS_pct ≥ rs_early_th AND slope_pct > 0
     """
-    if len(close) < 1 or len(ma50.dropna()) < 1:
+    if len(close) < 2 or len(ma50.dropna()) < 2:
         return False
-    today_close = float(close.iloc[-1])
-    today_ma50  = float(ma50.dropna().iloc[-1])
+    today_close     = float(close.iloc[-1])
+    today_ma50      = float(ma50.dropna().iloc[-1])
+    yesterday_close = float(close.iloc[-2])
+    yesterday_ma50  = float(ma50.dropna().iloc[-2])
 
-    if not (today_close > today_ma50):
+    if not (today_close > today_ma50 and yesterday_close <= yesterday_ma50):
         return False
     if rs_pct < params["rs_early_th"]:
         return False

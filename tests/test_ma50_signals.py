@@ -81,7 +81,8 @@ def test_early_trend_fires():
     from engines.ma50_signals import check_early_trend
     from engines.ma50_indicators import calc_ma
     p = _default_params()
-    closes = [95.0] * 55 + [99.0, 101.0]
+    # MA50[-2]=100.0, yesterday=99<100 ✓, today=101>100 ✓
+    closes = [100.0] * 50 + [99.0, 101.0]
     close = make_series(closes)
     ma50  = calc_ma(close, 50)
     assert check_early_trend(close, ma50, slope_pct=0.01, rs_pct=85.0, params=p) is True
@@ -91,7 +92,7 @@ def test_early_trend_fails_low_rs():
     from engines.ma50_signals import check_early_trend
     from engines.ma50_indicators import calc_ma
     p = _default_params()
-    closes = [95.0] * 55 + [99.0, 101.0]
+    closes = [100.0] * 50 + [99.0, 101.0]
     close = make_series(closes)
     ma50  = calc_ma(close, 50)
     # rs_pct=70 < rs_early_th=80
@@ -102,7 +103,7 @@ def test_early_trend_fails_negative_slope():
     from engines.ma50_signals import check_early_trend
     from engines.ma50_indicators import calc_ma
     p = _default_params()
-    closes = [95.0] * 55 + [99.0, 101.0]
+    closes = [100.0] * 50 + [99.0, 101.0]
     close = make_series(closes)
     ma50  = calc_ma(close, 50)
     assert check_early_trend(close, ma50, slope_pct=-0.01, rs_pct=85.0, params=p) is False
