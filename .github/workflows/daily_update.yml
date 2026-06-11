@@ -1,0 +1,61 @@
+name: Daily Market Update
+
+on:
+  schedule:
+    - cron: '0 22 * * 1-5'   # 평일 22:00 UTC (여름 18:00 ET / 겨울 17:00 ET)
+  workflow_dispatch:           # 수동 실행 지원
+
+jobs:
+  update:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+
+    steps:
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Setup Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+          cache: 'pip'
+
+      - name: Install dependencies
+        run: pip install -r requirements.txt
+
+      - name: Restore state from data branch
+        run: |
+          mkdir -p state outputs
+          git fetch origin data || true
+          git show origin/data:state/positions.json > state/positions.json 2>/dev/null \
+            || echo '{"as_of": null, "positions": {}}' > state/positions.json
+
+      - name: Run masam engine
+        run: python scripts/run_masam.py
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+
+      - name: Run MA50 engine
+        run: python scripts/run_ma50.py
+
+      - name: Publish to data branch
+        run: |
+          # git rm 전에 /tmp에 미리 저장 (git rm -rf 가 파일도 삭제하므로)
+          cp state/positions.json /tmp/positions.json
+          cp outputs/signals.json /tmp/signals.json
+          cp outputs/masam.json   /tmp/masam.json
+
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git checkout --orphan data-new
+          git rm -rf . --quiet
+          mkdir -p state outputs
+          cp /tmp/positions.json state/positions.json
+          cp /tmp/signals.json   outputs/signals.json
+          cp /tmp/masam.json     outputs/masam.json
+          git add state/ outputs/
+          git commit -m "[cron] $(date -u +%Y-%m-%d)"
+          git push origin data-new:data --force
