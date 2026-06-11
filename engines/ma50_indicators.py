@@ -1,5 +1,6 @@
 """MA50 스크리너 — 지표 계산 순수 함수."""
 from __future__ import annotations
+from typing import Optional
 import pandas as pd
 
 
@@ -78,6 +79,28 @@ def calc_regime(close_spy: pd.Series) -> str:
     return "RISK_ON" if float(close_spy.iloc[-1]) > float(ma200.iloc[-1]) else "RISK_OFF"
 
 
+def calc_horizontal_support(low: pd.Series, lookback: int = 60) -> float:
+    """직전 파동의 스윙 로우를 수평 지지선으로 반환.
+
+    스윙 로우: 좌우 2봉 대비 최저점. 가장 최근 스윙 로우를 반환.
+    """
+    low_window = low.iloc[-lookback:]
+    vals = low_window.values
+    if len(vals) < 5:
+        return float(low_window.min()) if not low_window.empty else 0.0
+    swing_lows = []
+    for i in range(2, len(vals) - 2):
+        if (vals[i] <= vals[i - 1] and vals[i] <= vals[i - 2]
+                and vals[i] <= vals[i + 1] and vals[i] <= vals[i + 2]):
+            swing_lows.append(float(vals[i]))
+    return swing_lows[-1] if swing_lows else float(low_window.min())
+
+
+def calc_recent_high(today_close: float, today_high: float, prev_recent_high: float) -> float:
+    """Trailing high watermark 갱신. 포지션 보유 기간 동안 매일 호출."""
+    return max(today_close, today_high, max(prev_recent_high, 0.0))
+
+
 def build_metrics(
     close_last: float,
     ma50_last: float,
@@ -89,9 +112,12 @@ def build_metrics(
     high_n: float,
     atr14: float,
     sector_etf: str,
+    trailing_stop: Optional[float] = None,
+    recent_high: Optional[float] = None,
+    horizontal_support: Optional[float] = None,
 ) -> dict:
     """signals.json metrics 필드용 직렬화 가능 dict."""
-    return {
+    d: dict = {
         "close":          round(close_last, 2),
         "ma50":           round(ma50_last, 2),
         "ma200":          round(ma200_last, 2),
@@ -105,3 +131,10 @@ def build_metrics(
         "atr14":          round(atr14, 2),
         "sector_etf":     sector_etf,
     }
+    if trailing_stop is not None:
+        d["trailing_stop"] = round(trailing_stop, 2)
+    if recent_high is not None and recent_high > 0:
+        d["recent_high"] = round(recent_high, 2)
+    if horizontal_support is not None and horizontal_support > 0:
+        d["horizontal_support"] = round(horizontal_support, 2)
+    return d

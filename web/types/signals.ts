@@ -26,7 +26,12 @@ export type Metrics = {
   high_n: number;
   atr14: number;
   sector_etf: string;
+  trailing_stop?: number;
+  recent_high?: number;
+  horizontal_support?: number;
 };
+
+export type PositionStatus = '1차' | '2차' | '3차';
 
 export type SignalItem = {
   ticker: string;
@@ -35,6 +40,7 @@ export type SignalItem = {
   score: number;
   trigger_reason: string;
   metrics: Metrics;
+  position_status?: PositionStatus;
 };
 
 export type SignalsJson = {

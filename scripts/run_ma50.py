@@ -12,6 +12,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 from engines.ma50_indicators import (
     calc_ma, calc_slope_pct, calc_gap, calc_highN,
     calc_atr14, calc_rs_raw, calc_rs_pct, calc_regime, build_metrics,
+    calc_horizontal_support, calc_recent_high,
 )
 from engines.ma50_signals import (
     MA50_DEFAULT_PARAMS, get_buy_signal, get_sell_signal,
@@ -109,16 +110,24 @@ def run(watchlist: list = None, state_path: str = None) -> dict:
         rs_pct_val  = calc_rs_pct(ticker, rs_raw_map)
         sector      = _SECTOR_MAP.get(ticker, "SPY")
 
-        metrics = build_metrics(
-            close_last=close_last, ma50_last=ma50_last, ma200_last=ma200_last,
-            vol_ratio=vol_ratio, rs_pct=rs_pct_val, rs_sector_pct=rs_pct_val,
-            slope_pct=slope_pct, high_n=high_n, atr14=atr14, sector_etf=sector,
-        )
-
         # 저장된 state 로드
         saved      = get_position(positions, ticker)
         prev_state = saved["state"]
         prev_days  = saved["days_in_state"]
+
+        # 수평 지지선 계산
+        horiz_support = (
+            calc_horizontal_support(low_s)
+            if low_s is not None else 0.0
+        )
+
+        # recent_high: 포지션 보유 중이면 먼저 오늘 high로 갱신 (sell 판단 기준)
+        saved_recent_high = float(saved.get("recent_high", 0.0) or 0.0)
+        today_high_val = float(high_s.iloc[-1])
+        if prev_state in ("BUY", "HOLDING", "SELL_WATCH"):
+            running_recent_high = calc_recent_high(close_last, today_high_val, saved_recent_high)
+        else:
+            running_recent_high = 0.0
 
         # 상태에 따라 시그널 산출
         buy_sig  = None
@@ -132,6 +141,7 @@ def run(watchlist: list = None, state_path: str = None) -> dict:
             sell_sig = get_sell_signal(
                 prev_state, close_s, ma50, ma200,
                 rs_pct_val, prev_days, regime, params,
+                recent_high=running_recent_high,
             )
         # BUY / SELL: 전일 보류 주문 → transition만 수행
 
@@ -160,9 +170,45 @@ def run(watchlist: list = None, state_path: str = None) -> dict:
             new_entered = saved.get("entered_at")
             new_stype   = saved.get("signal_type")
 
+        # recent_high 최종값 (신규 진입 시 오늘부터 시작, 청산 시 초기화)
+        if new_state in ("BUY", "HOLDING", "SELL_WATCH"):
+            new_recent_high = running_recent_high if running_recent_high > 0 else max(close_last, today_high_val)
+        else:
+            new_recent_high = 0.0
+
+        trailing_stop_pct = params.get("trailing_stop_pct", 0.20)
+        new_trailing_stop = (
+            round(new_recent_high * (1 - trailing_stop_pct), 2)
+            if new_recent_high > 0 else None
+        )
+
+        # position_status: 1차(강돌파/초기추세) / 2차(지지반등)
+        _STATUS_MAP = {"STRONG_BREAKOUT": "1차", "EARLY_TREND": "1차", "BOUNCE": "2차"}
+        if new_state in ("WATCH", "SELL"):
+            new_position_status = None
+        elif new_state == "BUY":
+            new_position_status = _STATUS_MAP.get(buy_sig or "", None)
+        else:
+            new_position_status = _STATUS_MAP.get(
+                new_stype or "", saved.get("position_status")
+            )
+
+        metrics = build_metrics(
+            close_last=close_last, ma50_last=ma50_last, ma200_last=ma200_last,
+            vol_ratio=vol_ratio, rs_pct=rs_pct_val, rs_sector_pct=rs_pct_val,
+            slope_pct=slope_pct, high_n=high_n, atr14=atr14, sector_etf=sector,
+            trailing_stop=new_trailing_stop,
+            recent_high=new_recent_high if new_recent_high > 0 else None,
+            horizontal_support=horiz_support if horiz_support > 0 else None,
+        )
+
         positions = update_position(
             positions, ticker, new_state, new_days,
             new_entered, new_entry, new_stop, new_stype,
+            recent_high=new_recent_high,
+            trailing_stop_line=new_trailing_stop,
+            position_status=new_position_status,
+            horizontal_support=round(horiz_support, 2) if horiz_support > 0 else None,
         )
 
         # signals.json 출력용
@@ -176,7 +222,10 @@ def run(watchlist: list = None, state_path: str = None) -> dict:
         score = calc_score(vol_ratio, gap50, rs_pct_val, slope_pct,
                            ma50_last, ma200_last, params)
 
-        items.append(build_signal_item(ticker, signal_type, state, score, trigger, metrics))
+        items.append(build_signal_item(
+            ticker, signal_type, state, score, trigger, metrics,
+            position_status=new_position_status,
+        ))
 
     save_positions(positions, str(_path))
     print(f"state 저장: {_path}")

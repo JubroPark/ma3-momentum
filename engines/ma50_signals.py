@@ -7,7 +7,7 @@ from engines.ma50_indicators import calc_highN
 MA50_DEFAULT_PARAMS: dict = {
     "breakout_high_lookback": 20,
     "lookback_below":         7,
-    "vol_mult":               1.5,
+    "vol_mult":               1.5,   # 스코어 가중치용 (hard gate 아님)
     "vol_cap":                3.0,
     "overshoot_max":          0.07,
     "proximity_pct":          0.03,
@@ -21,23 +21,34 @@ MA50_DEFAULT_PARAMS: dict = {
     "regime_mode":            "strict",
     "early_trend_enabled":    False,
     "bounce_lookback":        5,
+    "trailing_stop_pct":      0.20,  # 최근 고점 대비 -20% 하락 시 SELL
 }
 
 
 def check_common_gate(
-    vol_ratio: float,
+    vol_ratio: float,  # noqa: ARG001 — 거래량은 스코어에만 반영, hard gate 아님
     gap50: float,
     regime: str,
     params: dict,
 ) -> bool:
-    """레짐 + gap50 ≤ overshoot_max + vol_ratio ≥ vol_mult."""
+    """레짐 + gap50 ≤ overshoot_max. 거래량은 스코어에만 반영 (hard gate 아님)."""
     if regime == "RISK_OFF" and params.get("regime_mode", "strict") == "strict":
         return False
     if gap50 > params["overshoot_max"]:
         return False
-    if vol_ratio < params["vol_mult"]:
-        return False
     return True
+
+
+def check_trailing_stop(
+    close_last: float,
+    recent_high: float,
+    params: dict,
+) -> bool:
+    """최근 고점 대비 trailing_stop_pct 이상 하락 시 True."""
+    if recent_high <= 0:
+        return False
+    stop_line = recent_high * (1 - params.get("trailing_stop_pct", 0.20))
+    return close_last < stop_line
 
 
 def check_strong_breakout(
@@ -213,9 +224,11 @@ def get_sell_signal(
     days_in_state: int,
     regime: str,
     params: dict,
+    recent_high: float = 0.0,
 ) -> Optional[str]:
     """
     우선순위순 매도 판단. Returns "SELL" | "HOLD_WATCH" | None
+    0. Trailing stop (HOLDING/SELL_WATCH) → SELL
     1. close >= MA50 → None (OK)
     2. 연속 consec_below_sell일 → SELL
     3. SELL_WATCH + days > max_hold_watch_days → SELL
@@ -232,6 +245,11 @@ def get_sell_signal(
     if regime == "RISK_OFF":
         consec = 1
         max_watch = 3
+
+    # 우선순위 0: Trailing stop (HOLDING/SELL_WATCH)
+    if state in ("HOLDING", "SELL_WATCH") and recent_high > 0:
+        if check_trailing_stop(today_close, recent_high, params):
+            return "SELL"
 
     # 우선순위 1
     if today_close >= today_ma50:

@@ -37,11 +37,55 @@ def test_common_gate_fails_overshoot():
     assert check_common_gate(vol_ratio=2.0, gap50=0.08, regime="RISK_ON", params=p) is False
 
 
-def test_common_gate_fails_low_volume():
+def test_common_gate_passes_with_low_volume():
     from engines.ma50_signals import check_common_gate
     p = _default_params()
-    # vol_ratio=1.2 < vol_mult=1.5
-    assert check_common_gate(vol_ratio=1.2, gap50=0.03, regime="RISK_ON", params=p) is False
+    # 거래량은 hard gate 아님 — 낮아도 통과
+    assert check_common_gate(vol_ratio=0.5, gap50=0.03, regime="RISK_ON", params=p) is True
+
+
+# ── check_trailing_stop ──────────────────────────────────────
+
+
+def test_trailing_stop_triggers_when_below_threshold():
+    from engines.ma50_signals import check_trailing_stop
+    p = _default_params()
+    p["trailing_stop_pct"] = 0.20
+    # recent_high=100, stop_line=80, close=79 → 트리거
+    assert check_trailing_stop(close_last=79.0, recent_high=100.0, params=p) is True
+
+
+def test_trailing_stop_does_not_trigger_above_threshold():
+    from engines.ma50_signals import check_trailing_stop
+    p = _default_params()
+    p["trailing_stop_pct"] = 0.20
+    # recent_high=100, stop_line=80, close=85 → 미트리거
+    assert check_trailing_stop(close_last=85.0, recent_high=100.0, params=p) is False
+
+
+def test_trailing_stop_skips_when_no_recent_high():
+    from engines.ma50_signals import check_trailing_stop
+    p = _default_params()
+    # recent_high=0 → 추적 안 함
+    assert check_trailing_stop(close_last=50.0, recent_high=0.0, params=p) is False
+
+
+def test_trailing_stop_triggers_sell_in_get_sell_signal():
+    from engines.ma50_signals import get_sell_signal
+    from engines.ma50_indicators import calc_ma
+    p = _default_params()
+    p["trailing_stop_pct"] = 0.20
+    p["consec_below_sell"] = 10  # consec 조건 실질적 비활성
+    # close=78 < recent_high(100)*0.8=80 → trailing stop 발동
+    close = make_series([100.0] * 10 + [78.0])
+    ma50  = make_series([100.0] * 11)
+    ma200 = make_series([90.0] * 11)
+    result = get_sell_signal(
+        "HOLDING", close, ma50, ma200, rs_pct=60.0,
+        days_in_state=1, regime="RISK_ON", params=p,
+        recent_high=100.0,
+    )
+    assert result == "SELL"
 
 
 # ── check_strong_breakout ─────────────────────────────────────

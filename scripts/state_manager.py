@@ -12,6 +12,10 @@ _DEFAULT_POSITION: dict = {
     "entry_price": None,
     "stop_level": None,
     "signal_type": None,
+    "recent_high": 0.0,
+    "trailing_stop_line": None,
+    "position_status": None,
+    "horizontal_support": None,
 }
 
 
@@ -46,6 +50,10 @@ def update_position(
     entry_price: Optional[float],
     stop_level: Optional[float],
     signal_type: Optional[str],
+    recent_high: float = 0.0,
+    trailing_stop_line: Optional[float] = None,
+    position_status: Optional[str] = None,
+    horizontal_support: Optional[float] = None,
 ) -> dict:
     """불변 패턴 — 새 dict 반환. 원본 positions 변경 없음."""
     updated_positions = dict(positions.get("positions", {}))
@@ -56,6 +64,10 @@ def update_position(
         "entry_price": entry_price,
         "stop_level": stop_level,
         "signal_type": signal_type,
+        "recent_high": recent_high,
+        "trailing_stop_line": trailing_stop_line,
+        "position_status": position_status,
+        "horizontal_support": horizontal_support,
     }
     return {
         "as_of": str(date.today()),
