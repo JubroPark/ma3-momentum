@@ -60,7 +60,7 @@ def calc_rs_raw(
     )
 
 
-def calc_rs_pct(ticker: str, rs_raw_map: dict) -> float:
+def calc_rs_pct(ticker: str, rs_raw_map: "dict[str, float]") -> float:
     """RS 퍼센타일 (0~100). ticker의 RS_raw가 universe 내 몇 %ile인지."""
     values = list(rs_raw_map.values())
     if not values:
