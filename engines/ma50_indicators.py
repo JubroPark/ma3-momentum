@@ -1,7 +1,6 @@
 """MA50 스크리너 — 지표 계산 순수 함수."""
 from __future__ import annotations
 import pandas as pd
-import numpy as np
 
 
 def calc_ma(close: pd.Series, window: int) -> pd.Series:
