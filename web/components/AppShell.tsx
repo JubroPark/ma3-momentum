@@ -17,9 +17,10 @@ export default function AppShell() {
 
   useEffect(() => {
     const s = localStorage.getItem('strategy') as Strategy | null;
-    const t = localStorage.getItem('ma50Tab') as Ma50Tab | null;
+    const VALID_TABS: Ma50Tab[] = ['buy', 'hold', 'market', 'settings'];
+    const t = localStorage.getItem('ma50Tab');
     if (s === 'masam' || s === 'ma50') setStrategy(s);
-    if (t) setTab(t);
+    if (t && (VALID_TABS as string[]).includes(t)) setTab(t as Ma50Tab);
   }, []);
 
   const switchStrategy = (s: Strategy) => {

@@ -4,9 +4,6 @@ import AppShell from '@/components/AppShell';
 jest.mock('@/hooks/useSignals', () => ({
   useSignals: () => ({ data: null, error: null, isLoading: false }),
 }));
-jest.mock('@/hooks/useMasam', () => ({
-  useMasam: () => ({ data: null, error: null, isLoading: false }),
-}));
 
 test('전략 토글 버튼이 두 개 렌더된다', () => {
   render(<AppShell />);
