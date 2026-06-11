@@ -2,14 +2,16 @@
 import { useSignals } from '@/hooks/useSignals';
 import { tickerColor, tickerInitials, fmtPct } from '@/lib/utils';
 
-const STATE_CHIP: Record<string, string> = {
+type HoldState = 'HOLDING' | 'SELL_WATCH' | 'SELL' | 'BUY';
+
+const STATE_CHIP: Record<HoldState, string> = {
   HOLDING: 'chip ok',
   SELL_WATCH: 'chip hold',
   SELL: 'chip sell',
   BUY: 'chip buy',
 };
 
-const STATE_LABEL: Record<string, string> = {
+const STATE_LABEL: Record<HoldState, string> = {
   HOLDING: '보유중',
   SELL_WATCH: 'HOLD-WATCH',
   SELL: '매도',
@@ -60,8 +62,8 @@ export default function HoldTab() {
                 <div className="meta">
                   <div className="nm">
                     {item.ticker}
-                    <span className={STATE_CHIP[item.state] ?? 'chip ok'}>
-                      {STATE_LABEL[item.state] ?? item.state}
+                    <span className={STATE_CHIP[item.state as HoldState] ?? 'chip ok'}>
+                      {STATE_LABEL[item.state as HoldState] ?? item.state}
                     </span>
                   </div>
                   <div className="sb">
@@ -71,8 +73,7 @@ export default function HoldTab() {
                 </div>
                 <div className="rt">
                   <div className="v" style={{ fontSize: 13, color: 'var(--t2)' }}>
-                    gap {item.metrics.gap50 >= 0 ? '+' : ''}
-                    {(item.metrics.gap50 * 100).toFixed(1)}%
+                    gap {fmtPct(item.metrics.gap50)}
                   </div>
                 </div>
               </div>
