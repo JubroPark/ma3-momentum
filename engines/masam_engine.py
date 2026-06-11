@@ -61,7 +61,7 @@ def calc_target_allocation(
     hedge_type: "DOLLAR" | "TLT" | "IAU_GLD_TIP"
     max_rebalancing_pct: 리밸런싱 현금화 상한 (25 or 50)
     """
-    dd = abs(ath_drawdown_pct)
+    dd = abs(ath_drawdown_pct) if not pd.isna(ath_drawdown_pct) else 0.0
 
     if mode == "REBALANCING":
         level = int(dd / 2.5)
