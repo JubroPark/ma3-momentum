@@ -105,3 +105,103 @@ def test_calc_performance_returns_all_keys():
     for key in ("total_return_pct", "cagr_pct", "max_drawdown_pct",
                 "sharpe", "win_rate_pct", "num_trades", "avg_hold_days"):
         assert key in p, f"Missing key: {key}"
+
+
+# ── backtest_ticker ────────────────────────────────────────────
+
+def _make_data(n: int = 300, trend: float = 0.15, seed: int = 42):
+    """합성 OHLCV + SPY 데이터 생성."""
+    import numpy as np
+    rng = np.random.default_rng(seed)
+    dates = pd.bdate_range("2023-01-03", periods=n)
+    prices = [100.0]
+    for _ in range(n - 1):
+        prices.append(prices[-1] * (1 + trend / 252 + rng.normal(0, 0.012)))
+    close  = pd.Series(prices, index=dates)
+    open_  = close.shift(1).bfill()
+    high   = close * 1.006
+    low    = close * 0.994
+    volume = pd.Series(
+        [1_500_000.0 if i % 7 != 0 else 3_000_000.0 for i in range(n)],
+        index=dates,
+    )
+    spy = pd.Series(
+        [p * (0.92 + rng.normal(0, 0.01)) for p in prices],
+        index=dates,
+    )
+    return close, open_, high, low, volume, spy
+
+
+def test_backtest_ticker_returns_required_keys():
+    from engines.backtest_ma50 import backtest_ticker
+    from engines.ma50_signals import MA50_DEFAULT_PARAMS
+    close, open_, high, low, volume, spy = _make_data()
+    result = backtest_ticker(
+        close=close, open_=open_, high=high, low=low, volume=volume,
+        spy_close=spy, ticker="TEST",
+        params=dict(MA50_DEFAULT_PARAMS),
+    )
+    assert "ticker" in result
+    assert "trades" in result
+    assert "performance" in result
+    assert result["ticker"] == "TEST"
+    assert isinstance(result["trades"], list)
+
+
+def test_backtest_ticker_no_lookahead():
+    """entry_date < exit_date for every trade."""
+    from engines.backtest_ma50 import backtest_ticker
+    from engines.ma50_signals import MA50_DEFAULT_PARAMS
+    close, open_, high, low, volume, spy = _make_data(n=300)
+    result = backtest_ticker(
+        close=close, open_=open_, high=high, low=low, volume=volume,
+        spy_close=spy, ticker="TEST",
+        params=dict(MA50_DEFAULT_PARAMS),
+    )
+    for trade in result["trades"]:
+        assert trade["entry_date"] < trade["exit_date"], (
+            f"look-ahead: entry={trade['entry_date']} >= exit={trade['exit_date']}"
+        )
+
+
+def test_backtest_ticker_pnl_matches_prices():
+    """pnl = (exit_price - entry_price) * shares for every trade."""
+    from engines.backtest_ma50 import backtest_ticker
+    from engines.ma50_signals import MA50_DEFAULT_PARAMS
+    close, open_, high, low, volume, spy = _make_data(n=300)
+    result = backtest_ticker(
+        close=close, open_=open_, high=high, low=low, volume=volume,
+        spy_close=spy, ticker="TEST",
+        params=dict(MA50_DEFAULT_PARAMS),
+    )
+    for trade in result["trades"]:
+        expected = (trade["exit_price"] - trade["entry_price"]) * trade["shares"]
+        assert abs(trade["pnl"] - expected) < 0.02, (
+            f"pnl mismatch: stored={trade['pnl']:.2f} expected={expected:.2f}"
+        )
+
+
+def test_backtest_ticker_performance_consistent():
+    """performance.num_trades == len(trades)."""
+    from engines.backtest_ma50 import backtest_ticker
+    from engines.ma50_signals import MA50_DEFAULT_PARAMS
+    close, open_, high, low, volume, spy = _make_data(n=300)
+    result = backtest_ticker(
+        close=close, open_=open_, high=high, low=low, volume=volume,
+        spy_close=spy, ticker="TEST",
+        params=dict(MA50_DEFAULT_PARAMS),
+    )
+    assert result["performance"]["num_trades"] == len(result["trades"])
+
+
+def test_backtest_ticker_short_data_returns_empty():
+    """데이터 60일 미만 → trades=[], performance zeros."""
+    from engines.backtest_ma50 import backtest_ticker
+    from engines.ma50_signals import MA50_DEFAULT_PARAMS
+    close, open_, high, low, volume, spy = _make_data(n=40)
+    result = backtest_ticker(
+        close=close, open_=open_, high=high, low=low, volume=volume,
+        spy_close=spy, ticker="SHORT",
+        params=dict(MA50_DEFAULT_PARAMS),
+    )
+    assert result["trades"] == []
