@@ -178,3 +178,143 @@ def get_buy_signal(
     if check_bounce(close, low, ma50, ma200, slope_pct, params):
         return "BOUNCE"
     return None
+
+
+# ── 매도 시그널 ────────────────────────────────────────────────
+
+
+def check_breakdown(
+    close: pd.Series,
+    ma50: pd.Series,
+    params: dict,
+) -> bool:
+    """
+    hard: close[0] < MA50*(1-sell_tol)
+    soft: close[0]<MA50 AND close[-1]<MA50
+    """
+    if len(close) < 2 or len(ma50) < 2:
+        return False
+    today_close     = float(close.iloc[-1])
+    today_ma50      = float(ma50.iloc[-1])
+    yesterday_close = float(close.iloc[-2])
+    yesterday_ma50  = float(ma50.iloc[-2])
+    sell_tol = params["sell_tol"]
+    hard = today_close < today_ma50 * (1 - sell_tol)
+    soft = today_close < today_ma50 and yesterday_close < yesterday_ma50
+    return bool(hard or soft)
+
+
+def get_sell_signal(
+    state: str,
+    close: pd.Series,
+    ma50: pd.Series,
+    ma200: pd.Series,
+    rs_pct: float,
+    days_in_state: int,
+    regime: str,
+    params: dict,
+) -> Optional[str]:
+    """
+    우선순위순 매도 판단. Returns "SELL" | "HOLD_WATCH" | None
+    1. close >= MA50 → None (OK)
+    2. 연속 consec_below_sell일 → SELL
+    3. SELL_WATCH + days > max_hold_watch_days → SELL
+    4. breakdown AND close < MA200 → SELL
+    5. breakdown AND close > MA200 AND RS > 50 → HOLD_WATCH
+    6. breakdown (그 외) → SELL
+    """
+    today_close = float(close.iloc[-1])
+    today_ma50  = float(ma50.iloc[-1])
+    today_ma200 = float(ma200.iloc[-1])
+
+    consec = params["consec_below_sell"]
+    max_watch = params["max_hold_watch_days"]
+    if regime == "RISK_OFF":
+        consec = 1
+        max_watch = 3
+
+    # 우선순위 1
+    if today_close >= today_ma50:
+        return None
+
+    # 우선순위 2
+    if len(close) >= consec and len(ma50) >= consec:
+        recent_c = close.iloc[-consec:]
+        recent_m = ma50.iloc[-consec:]
+        if bool((recent_c.values < recent_m.values).all()):
+            return "SELL"
+
+    # 우선순위 3
+    if state == "SELL_WATCH" and days_in_state > max_watch:
+        return "SELL"
+
+    bd = check_breakdown(close, ma50, params)
+    if bd:
+        if today_close < today_ma200:
+            return "SELL"
+        if today_close > today_ma200 and rs_pct > 50:
+            return "HOLD_WATCH"
+        return "SELL"
+
+    return None
+
+
+# ── 상태머신 전이 ─────────────────────────────────────────────
+
+
+def transition_state(
+    current_state: str,
+    buy_signal: Optional[str],
+    sell_signal: Optional[str],
+) -> str:
+    """
+    WATCH → BUY → HOLDING → SELL_WATCH → SELL → WATCH
+    """
+    if current_state == "WATCH":
+        return "BUY" if buy_signal is not None else "WATCH"
+    if current_state == "BUY":
+        return "HOLDING"
+    if current_state == "HOLDING":
+        if sell_signal == "SELL":
+            return "SELL"
+        if sell_signal == "HOLD_WATCH":
+            return "SELL_WATCH"
+        return "HOLDING"
+    if current_state == "SELL_WATCH":
+        if sell_signal == "SELL":
+            return "SELL"
+        if sell_signal is None:  # 회복
+            return "HOLDING"
+        return "SELL_WATCH"
+    if current_state == "SELL":
+        return "WATCH"
+    return current_state
+
+
+# ── 스코어 ────────────────────────────────────────────────────
+
+
+def calc_score(
+    vol_ratio: float,
+    gap50: float,
+    rs_pct: float,
+    slope_pct: float,
+    ma50_last: float,
+    ma200_last: float,
+    params: dict,
+) -> float:
+    """0~100 점수. 가중합 공식."""
+    w1, w2, w3, w4 = params.get("score_weights", (0.25, 0.25, 0.25, 0.25))
+    vol_cap   = params.get("vol_cap", 3.0)
+    overshoot = params.get("overshoot_max", 0.07)
+    slope_cap = params.get("slope_cap", 0.05)
+
+    vol_score      = min(vol_ratio / vol_cap, 1.0) if vol_cap > 0 else 0.0
+    breakout_score = min(gap50 / overshoot, 1.0) if overshoot > 0 else 0.0
+    rs_score       = rs_pct / 100.0
+    trend_score    = (
+        0.5 * min(slope_pct / slope_cap, 1.0) if slope_cap > 0 else 0.0
+    ) + 0.5 * (1.0 if ma50_last > ma200_last else 0.0)
+
+    raw = 100.0 * (w1 * vol_score + w2 * breakout_score + w3 * rs_score + w4 * trend_score)
+    return round(max(0.0, min(100.0, raw)), 1)
