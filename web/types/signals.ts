@@ -3,6 +3,7 @@ export type SignalType =
   | 'STRONG_BREAKOUT'
   | 'BOUNCE'
   | 'SELL'
+  | 'HOLD_WATCH'
   | 'OK';
 
 export type TickerState =
@@ -17,6 +18,7 @@ export type Metrics = {
   ma50: number;
   ma200: number;
   gap50: number;
+  gap200: number;
   vol_ratio: number;
   rs_pct: number;
   rs_sector_pct?: number;

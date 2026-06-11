@@ -1,4 +1,6 @@
 import { renderHook, waitFor } from '@testing-library/react';
+import { SWRConfig } from 'swr';
+import React from 'react';
 import { useSignals } from '@/hooks/useSignals';
 
 const mockData = {
@@ -13,19 +15,24 @@ const mockData = {
       trigger_reason: '',
       metrics: {
         close: 150, ma50: 140, ma200: 130,
-        gap50: 0.07, vol_ratio: 2.1, rs_pct: 93,
+        gap50: 0.07, gap200: 0.077, vol_ratio: 2.1, rs_pct: 93,
         ma50_slope_pct: 0.04, high_n: 148, atr14: 3.2, sector_etf: 'XLK',
       },
     },
   ],
 };
 
-global.fetch = jest.fn(() =>
-  Promise.resolve({ json: () => Promise.resolve(mockData) } as Response)
-);
+const freshWrapper = ({ children }: { children: React.ReactNode }) =>
+  React.createElement(SWRConfig, { value: { provider: () => new Map() } }, children);
+
+beforeEach(() => {
+  global.fetch = jest.fn(() =>
+    Promise.resolve({ ok: true, json: () => Promise.resolve(mockData) } as Response)
+  );
+});
 
 test('signals.json을 fetch해 데이터를 반환한다', async () => {
-  const { result } = renderHook(() => useSignals());
+  const { result } = renderHook(() => useSignals(), { wrapper: freshWrapper });
   await waitFor(() => expect(result.current.isLoading).toBe(false));
   expect(result.current.data?.regime).toBe('RISK_ON');
   expect(result.current.data?.items[0].ticker).toBe('NVDA');
@@ -34,7 +41,6 @@ test('signals.json을 fetch해 데이터를 반환한다', async () => {
 
 test('fetch 실패 시 error를 반환한다', async () => {
   (global.fetch as jest.Mock).mockRejectedValueOnce(new Error('Network Error'));
-  const { result } = renderHook(() => useSignals());
-  await waitFor(() => expect(result.current.isLoading).toBe(false));
-  expect(result.current.error).toBeDefined();
+  const { result } = renderHook(() => useSignals(), { wrapper: freshWrapper });
+  await waitFor(() => expect(result.current.error).toBeDefined());
 });
