@@ -12,7 +12,6 @@ const CHIP_CLASS: Record<string, string> = {
   BOUNCE: 'chip bounce',
   SELL: 'chip sell',
   OK: 'chip ok',
-  BUY: 'chip buy',
 };
 
 const CHIP_LABEL: Record<string, string> = {
@@ -21,10 +20,16 @@ const CHIP_LABEL: Record<string, string> = {
   BOUNCE: '지지반등',
   SELL: '매도',
   OK: 'OK',
-  BUY: '매수대기',
 };
 
 const BUY_SIGNALS: SignalType[] = ['STRONG_BREAKOUT', 'EARLY_TREND', 'BOUNCE'];
+
+const FILTER_LABEL: Record<Filter, string> = {
+  STRONG_BREAKOUT: '강돌파',
+  EARLY_TREND: '초기추세',
+  BOUNCE: '지지반등',
+  all: '전체',
+};
 
 export default function BuyTab() {
   const [filter, setFilter] = useState<Filter>('all');
@@ -46,8 +51,8 @@ export default function BuyTab() {
   );
   if (!data) return null;
 
-  const buyItems = data.items
-    .filter(i => BUY_SIGNALS.includes(i.signal_type as SignalType))
+  const buyItems = [...data.items]
+    .filter(i => BUY_SIGNALS.includes(i.signal_type))
     .sort((a, b) => b.score - a.score);
   const counts = {
     STRONG_BREAKOUT: buyItems.filter(i => i.signal_type === 'STRONG_BREAKOUT').length,
@@ -72,7 +77,7 @@ export default function BuyTab() {
             className={`tile ${filter === f ? 'on' : ''}`}
             onClick={() => setFilter(f)}
           >
-            {{ STRONG_BREAKOUT: '강돌파', EARLY_TREND: '초기추세', BOUNCE: '지지반등', all: '전체' }[f]}
+            {FILTER_LABEL[f]}
             {f !== 'all' ? ` ${counts[f]}` : ''}
           </button>
         ))}
