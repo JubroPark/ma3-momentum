@@ -2,13 +2,15 @@
 import { useState } from 'react';
 import { useMasam } from '@/hooks/useMasam';
 import PhaseTab from './PhaseTab';
+import GridTab from './GridTab';
 import GuideTab from './GuideTab';
 import MasamMarketTab from './MasamMarketTab';
 
-type MasamTab = 'phase' | 'guide' | 'market';
+type MasamTab = 'phase' | 'grid' | 'guide' | 'market';
 
 const TAB_LABEL: Record<MasamTab, string> = {
   phase:  '현재 국면',
+  grid:   '구간 현황',
   guide:  '행동 가이드',
   market: '시장환경/설정',
 };
@@ -45,6 +47,7 @@ export default function MasamShell() {
       </div>
 
       {tab === 'phase'  && <PhaseTab />}
+      {tab === 'grid'   && <GridTab />}
       {tab === 'guide'  && <GuideTab />}
       {tab === 'market' && <MasamMarketTab />}
     </div>

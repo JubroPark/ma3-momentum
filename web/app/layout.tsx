@@ -3,7 +3,7 @@ import './globals.css';
 
 export const metadata: Metadata = {
   title: 'ma3 momentum',
-  description: '마삼 대응 · MA50 스크리너',
+  description: '나스닥 마삼룰 · 모멘텀 탑픽',
   manifest: '/manifest.json',
 };
 

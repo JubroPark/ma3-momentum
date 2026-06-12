@@ -100,14 +100,14 @@ def test_allocation_crisis_non_zero_level1():
 
 def test_allocation_crisis_non_zero_level5():
     from engines.masam_engine import calc_target_allocation
-    # ATH -26% → level=5 → stock 50% ("초기 50%" 상태)
+    # ATH -26% → level=5 (floor(26/5)=5) → stock 50%
     result = calc_target_allocation("CRISIS_STAKING", None, "NON_ZERO", ath_drawdown_pct=-26.0)
     assert result["stock_pct"] == 50
 
 
 def test_allocation_crisis_non_zero_hedge_tlt():
     from engines.masam_engine import calc_target_allocation
-    # hedge_type=TLT → non_stock goes to hedge_pct
+    # ATH -11% → level=2 (floor(11/5)=2) → stock 20%; hedge_type=TLT → hedge=80%
     result = calc_target_allocation("CRISIS_STAKING", None, "NON_ZERO",
                                     ath_drawdown_pct=-11.0, hedge_type="TLT")
     assert result["stock_pct"] == 20
@@ -117,7 +117,7 @@ def test_allocation_crisis_non_zero_hedge_tlt():
 
 def test_allocation_crisis_zero_level1():
     from engines.masam_engine import calc_target_allocation
-    # ATH -3% → level=1 (floor(3/2.5)=1) → stock 10%
+    # ZERO: ATH -3% → level=1 (floor(3/2.5)=1) → stock 10%
     result = calc_target_allocation("CRISIS_STAKING", None, "ZERO", ath_drawdown_pct=-3.0)
     assert result["stock_pct"] == 10
 
@@ -294,6 +294,8 @@ def test_build_masam_json_structure():
         leader_status={"rank1_ticker": "NVDA", "rank1_mcap": 3_500_000_000_000,
                        "rank2_ticker": "AAPL", "rank2_mcap": 3_100_000_000_000,
                        "gap_pct": 11.4, "overtake_detected": False, "gap_below_10pct": False},
+        leader_prices={"ath": 150.0, "current": 127.5, "crisis_low": 120.0},
+        qqq_prices={"ath": 500.0, "current": 450.0, "crisis_low": 430.0},
         target_allocation={"stock_pct": 50, "hedge_pct": 30, "cash_pct": 20, "label": "50% 말뚝"},
         hedge_allocation={"type": "TLT", "rationale": "비제로+QE이전", "exit_trigger": ""},
         distance_to_triggers={"v_allin_pct_needed": 10.0, "emergency_allin_pct_away": -1.5},
@@ -326,17 +328,24 @@ def test_allin_cond1_none_masam_date_returns_false():
 def test_calc_distance_to_triggers_non_zero():
     from engines.masam_engine import calc_distance_to_triggers
     closes = pd.Series([100.0, 95.0, 90.0, 80.0])  # ATH=100, current=80
-    result = calc_distance_to_triggers(closes, "NON_ZERO")
+    # crisis_low=80 → v_trigger=80*1.10=88 → pct_away=(88/80-1)*100=10%
+    result = calc_distance_to_triggers(closes, "NON_ZERO", leader_ath=100.0, crisis_low=80.0)
     assert result["v_allin_pct_needed"] == 10.0
+    assert result["v_allin_pct_away"] == pytest.approx(10.0, abs=0.01)
+    assert result["v_allin_trigger_price"] == pytest.approx(88.0, abs=0.01)
     # emergency_level = 100 * 0.70 = 70. current=80 → (80/70 - 1)*100 ≈ +14.29%
     assert result["emergency_allin_pct_away"] == pytest.approx(14.29, abs=0.1)
+    assert result["emergency_trigger_price"] == pytest.approx(70.0, abs=0.01)
 
 
 def test_calc_distance_to_triggers_zero():
     from engines.masam_engine import calc_distance_to_triggers
-    closes = pd.Series([100.0, 95.0])
-    result = calc_distance_to_triggers(closes, "ZERO")
+    closes = pd.Series([100.0, 95.0])  # current=95
+    # crisis_low=95 → v_trigger=95*1.05=99.75 → pct_away=(99.75/95-1)*100≈5%
+    result = calc_distance_to_triggers(closes, "ZERO", leader_ath=100.0, crisis_low=95.0)
     assert result["v_allin_pct_needed"] == 5.0
+    assert result["v_allin_pct_away"] == pytest.approx(5.0, abs=0.01)
+    assert result["emergency_trigger_price"] == pytest.approx(70.0, abs=0.01)
 
 
 def test_check_additional_buy_signal_below_50():
@@ -370,6 +379,8 @@ def test_build_masam_json_panic_reentry_tranches():
         leader_status={"rank1_ticker": "NVDA", "rank1_mcap": 3_500_000_000_000,
                        "rank2_ticker": "AAPL", "rank2_mcap": 3_100_000_000_000,
                        "gap_pct": 11.4, "overtake_detected": False, "gap_below_10pct": False},
+        leader_prices={"ath": 150.0, "current": 127.5, "crisis_low": None},
+        qqq_prices={"ath": 500.0, "current": 450.0, "crisis_low": None},
         target_allocation={"stock_pct": 0, "hedge_pct": 70, "cash_pct": 30, "label": "헤지"},
         hedge_allocation={"type": "TLT", "rationale": "", "exit_trigger": ""},
         distance_to_triggers={"v_allin_pct_needed": 10.0, "emergency_allin_pct_away": 5.0},

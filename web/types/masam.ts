@@ -38,9 +38,22 @@ export type MasamJson = {
     rationale: string;
     exit_trigger: string;
   };
+  leader_prices: {
+    ath: number;
+    current: number;
+    crisis_low: number | null;
+  };
+  qqq_prices: {
+    ath: number;
+    current: number;
+    crisis_low: number | null;
+  };
   distance_to_triggers: {
     v_allin_pct_needed: number;
+    v_allin_pct_away: number;
+    v_allin_trigger_price: number;
     emergency_allin_pct_away: number;
+    emergency_trigger_price: number;
   };
   all_in_conditions: AllInCondition[];
   additional_buy_signal: {

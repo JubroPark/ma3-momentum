@@ -1,4 +1,5 @@
 const BASE =
+  process.env.NEXT_PUBLIC_DATA_BASE ??
   'https://raw.githubusercontent.com/JubroPark/ma3-momentum/data';
 
 export const URLS = {

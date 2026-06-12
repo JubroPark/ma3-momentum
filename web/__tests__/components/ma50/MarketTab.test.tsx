@@ -1,13 +1,6 @@
 import { render, screen } from '@testing-library/react';
 import MarketTab from '@/components/ma50/MarketTab';
 
-jest.mock('@/hooks/useSignals', () => ({
-  useSignals: () => ({
-    data: { as_of: '2026-06-09', regime: 'RISK_ON', items: [] },
-    error: null, isLoading: false,
-  }),
-}));
-
 jest.mock('@/hooks/useMarket', () => ({
   useMarket: () => ({
     data: {
@@ -19,9 +12,9 @@ jest.mock('@/hooks/useMarket', () => ({
   }),
 }));
 
-test('거시 지표 섹션이 렌더된다', () => {
+test('핵심 지표 섹션이 렌더된다', () => {
   render(<MarketTab />);
-  expect(screen.getByText('거시 지표')).toBeInTheDocument();
+  expect(screen.getByText('핵심 지표')).toBeInTheDocument();
 });
 
 test('VIX 값이 표시된다', () => {

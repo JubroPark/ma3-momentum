@@ -37,11 +37,30 @@ export default function AppShell() {
     <div className="phone">
       {/* TopBar */}
       <div className="topbar">
-        <div>
-          <div className="topbar-title">ma3 momentum</div>
-          {data?.as_of && (
-            <div className="topbar-date">기준일 {data.as_of}</div>
-          )}
+        <div className="topbar-left">
+          <div className="topbar-title">
+            ma3 momentum
+            {data?.as_of && <b> {data.as_of}</b>}
+          </div>
+        </div>
+        <div className="topbar-icons">
+          {/* 즐겨찾기 */}
+          <svg viewBox="0 0 24 24">
+            <polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" strokeLinecap="round" strokeLinejoin="round"/>
+          </svg>
+          {/* 검색 */}
+          <svg viewBox="0 0 24 24">
+            <circle cx="11" cy="11" r="7"/>
+            <line x1="21" y1="21" x2="16.65" y2="16.65" strokeLinecap="round"/>
+          </svg>
+          {/* 메뉴 (알림 dot) */}
+          <div className="bdot" style={{ display: 'flex', alignItems: 'center' }}>
+            <svg viewBox="0 0 24 24">
+              <line x1="4" y1="7" x2="20" y2="7" strokeLinecap="round"/>
+              <line x1="4" y1="12" x2="20" y2="12" strokeLinecap="round"/>
+              <line x1="4" y1="17" x2="14" y2="17" strokeLinecap="round"/>
+            </svg>
+          </div>
         </div>
       </div>
 
@@ -50,11 +69,11 @@ export default function AppShell() {
         <button
           className={strategy === 'masam' ? 'on' : ''}
           onClick={() => switchStrategy('masam')}
-        >마삼 대응</button>
+        >나스닥 마삼룰</button>
         <button
           className={strategy === 'ma50' ? 'on' : ''}
           onClick={() => switchStrategy('ma50')}
-        >MA50 스크리너</button>
+        >모멘텀 탑픽</button>
       </div>
 
       {/* Content */}

@@ -34,7 +34,7 @@ test('종목 리스트가 score 내림차순으로 렌더된다', () => {
 
 test('강돌파 필터 클릭 시 초기추세 종목이 사라진다', () => {
   render(<BuyTab />);
-  fireEvent.click(screen.getByText('강돌파'));
+  fireEvent.click(screen.getByText('강돌파 1'));
   expect(screen.queryByText('AAPL')).not.toBeInTheDocument();
   expect(screen.getByText('NVDA')).toBeInTheDocument();
 });

@@ -16,7 +16,13 @@ const mockData: MasamJson = {
   },
   target_allocation: { stock_pct: 10, hedge_pct: 0, cash_pct: 90, label: '말뚝박기 10%' },
   hedge_allocation: { type: 'DOLLAR', rationale: 'QE 모호', exit_trigger: 'QE 명확시 전환' },
-  distance_to_triggers: { v_allin_pct_needed: 10.0, emergency_allin_pct_away: 32.71 },
+  leader_prices: { ath: 235.47, current: 204.87, crisis_low: 199.34 },
+  qqq_prices: { ath: 543.21, current: 510.00, crisis_low: 490.00 },
+  distance_to_triggers: {
+    v_allin_pct_needed: 10.0, v_allin_pct_away: 7.03,
+    v_allin_trigger_price: 219.27, emergency_allin_pct_away: 24.29,
+    emergency_trigger_price: 164.83,
+  },
   all_in_conditions: [
     { id: 1, label: '한달+1일 무마삼', met: false, grade: '약' },
     { id: 2, label: '8거래일 연속 상승', met: false, grade: '중' },

@@ -50,6 +50,14 @@ def check_masam(df_ixic: pd.DataFrame = None) -> dict:
     # 현재 달력 월 마삼 횟수 (월 독립 집계 — 롤링 아님)
     # 데이터의 마지막 날짜를 기준으로 현재 월 판단
     reference_date = close.index[-1]
+
+    # 위기 시작일: 최근 90일 내 첫 마삼 (위기 전체 구간의 장중 저가를 보기 위해)
+    if latest_masam_date is not None:
+        ninety_days_ago = reference_date - pd.Timedelta(days=90)
+        recent_masams = masam[masam.index >= ninety_days_ago]
+        first_masam_date = recent_masams.index[0] if not recent_masams.empty else latest_masam_date
+    else:
+        first_masam_date = None
     month_mask = (masam.index.year == reference_date.year) & (masam.index.month == reference_date.month)
     month_count = int(month_mask.sum())
 
@@ -70,6 +78,7 @@ def check_masam(df_ixic: pd.DataFrame = None) -> dict:
     return {
         "status": "PASS",
         "latest_masam_date": latest_masam_date,
+        "first_masam_date": first_masam_date,
         "latest_masam_pct": latest_masam_pct,
         "month_count": month_count,
         "prev_year_return": prev_year_return,

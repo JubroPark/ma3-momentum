@@ -82,6 +82,7 @@ def calc_target_allocation(
         else:
             raise ValueError(f"calc_target_allocation: unknown rate_env={rate_env!r}")
         level = int(dd / interval)
+        # 전고점 대비 -interval% 구간마다 10%씩 누적 (비제로: 10단계×10%=100%)
         stock_pct = min(level * 10, 100)
         non_stock = 100 - stock_pct
         if hedge_type in ("TLT", "IAU_GLD_TIP"):
@@ -207,27 +208,40 @@ def check_allin_conditions(
 
 
 def calc_distance_to_triggers(
-    close_ixic: pd.Series,
+    close_leader: pd.Series,
     rate_env: str,
+    leader_ath: float,
+    crisis_low: "float | None" = None,
 ) -> dict:
     """
-    V자 올인 기준 및 긴급 올인 레벨까지 거리.
-    v_allin_pct_needed : 비제로 +10%(2구간) / 제로 +5%(2구간)
-    emergency_allin_pct_away : 현재가 vs 고점-30% 레벨 거리(%, 양수=아직 멀었음)
+    V자 올인 기준 및 긴급 올인 레벨까지 거리 — 1등주 가격 기준.
+
+    V자 올인: 위기 저점(장중 저가)에서 2구간 반등 시 올인
+      비제로 +10% / 제로 +5%
+    긴급 올인: 1등주 ATH 대비 -30% 레벨
     """
-    ixic_ath = float(close_ixic.max())
-    current = float(close_ixic.iloc[-1])
+    current = float(close_leader.iloc[-1])
     if rate_env == "NON_ZERO":
-        v_allin_pct_needed = 10.0
+        interval = 5.0
     elif rate_env == "ZERO":
-        v_allin_pct_needed = 5.0
+        interval = 2.5
     else:
         raise ValueError(f"calc_distance_to_triggers: unknown rate_env={rate_env!r}")
-    emergency_level = ixic_ath * 0.70
+
+    v_allin_pct_needed = round(2 * interval, 1)
+    base = crisis_low if crisis_low is not None else current
+    v_trigger = base * (1 + 2 * interval / 100)
+    v_allin_pct_away = round((v_trigger / current - 1) * 100, 2)
+
+    emergency_level = leader_ath * 0.70
     emergency_allin_pct_away = round((current / emergency_level - 1) * 100, 2)
+
     return {
         "v_allin_pct_needed": v_allin_pct_needed,
+        "v_allin_pct_away": v_allin_pct_away,
+        "v_allin_trigger_price": round(v_trigger, 2),
         "emergency_allin_pct_away": emergency_allin_pct_away,
+        "emergency_trigger_price": round(emergency_level, 2),
     }
 
 
@@ -259,6 +273,8 @@ def build_masam_json(
     masam_cumulative: int,
     last_masam_date: "pd.Timestamp | None",
     leader_status: dict,
+    leader_prices: dict,
+    qqq_prices: dict,
     target_allocation: dict,
     hedge_allocation: dict,
     distance_to_triggers: dict,
@@ -279,6 +295,8 @@ def build_masam_json(
             "last_masam_date": str(last_masam_date.date()) if last_masam_date else None,
         },
         "leader_status": leader_status,
+        "leader_prices": leader_prices,
+        "qqq_prices": qqq_prices,
         "target_allocation": target_allocation,
         "hedge_allocation": hedge_allocation,
         "distance_to_triggers": distance_to_triggers,

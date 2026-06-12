@@ -11,19 +11,19 @@ jest.mock('@/hooks/useMasam', () => ({
 
 test('전략 토글 버튼이 두 개 렌더된다', () => {
   render(<AppShell />);
-  expect(screen.getByText('마삼 대응')).toBeInTheDocument();
-  expect(screen.getByText('MA50 스크리너')).toBeInTheDocument();
+  expect(screen.getByText('나스닥 마삼룰')).toBeInTheDocument();
+  expect(screen.getByText('모멘텀 탑픽')).toBeInTheDocument();
 });
 
-test('기본값은 MA50 스크리너다', () => {
+test('기본값은 모멘텀 탑픽다', () => {
   render(<AppShell />);
-  const ma50Btn = screen.getByText('MA50 스크리너');
+  const ma50Btn = screen.getByText('모멘텀 탑픽');
   expect(ma50Btn).toHaveClass('on');
 });
 
-test('마삼 대응 클릭 시 마삼 탭이 표시된다', () => {
+test('나스닥 마삼룰 클릭 시 마삼 탭이 표시된다', () => {
   render(<AppShell />);
-  fireEvent.click(screen.getByText('마삼 대응'));
+  fireEvent.click(screen.getByText('나스닥 마삼룰'));
   expect(screen.getByText('현재 국면')).toBeInTheDocument();
   expect(screen.getByText('행동 가이드')).toBeInTheDocument();
 });
