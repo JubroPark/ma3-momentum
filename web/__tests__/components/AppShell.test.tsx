@@ -5,6 +5,10 @@ jest.mock('@/hooks/useSignals', () => ({
   useSignals: () => ({ data: null, error: null, isLoading: false }),
 }));
 
+jest.mock('@/hooks/useMasam', () => ({
+  useMasam: () => ({ data: null, error: null, isLoading: false }),
+}));
+
 test('전략 토글 버튼이 두 개 렌더된다', () => {
   render(<AppShell />);
   expect(screen.getByText('마삼 대응')).toBeInTheDocument();
@@ -17,10 +21,11 @@ test('기본값은 MA50 스크리너다', () => {
   expect(ma50Btn).toHaveClass('on');
 });
 
-test('마삼 대응 클릭 시 placeholder가 표시된다', () => {
+test('마삼 대응 클릭 시 마삼 탭이 표시된다', () => {
   render(<AppShell />);
   fireEvent.click(screen.getByText('마삼 대응'));
-  expect(screen.getByText('준비 중')).toBeInTheDocument();
+  expect(screen.getByText('현재 국면')).toBeInTheDocument();
+  expect(screen.getByText('행동 가이드')).toBeInTheDocument();
 });
 
 test('면책 문구가 항상 표시된다', () => {

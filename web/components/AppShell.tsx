@@ -5,7 +5,7 @@ import BuyTab from './ma50/BuyTab';
 import HoldTab from './ma50/HoldTab';
 import MarketTab from './ma50/MarketTab';
 import SettingsTab from './ma50/SettingsTab';
-import MasamPlaceholder from './masam/MasamPlaceholder';
+import MasamShell from './masam/MasamShell';
 
 type Strategy = 'masam' | 'ma50';
 type Ma50Tab = 'buy' | 'hold' | 'market' | 'settings';
@@ -59,7 +59,7 @@ export default function AppShell() {
 
       {/* Content */}
       <div className="scroll">
-        {strategy === 'masam' && <MasamPlaceholder />}
+        {strategy === 'masam' && <MasamShell />}
         {strategy === 'ma50' && (
           <>
             {tab === 'buy' && <BuyTab />}

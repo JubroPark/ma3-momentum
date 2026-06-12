@@ -41,12 +41,18 @@ jobs:
       - name: Run MA50 engine
         run: python scripts/run_ma50.py
 
+      - name: Run market context
+        run: python scripts/run_market.py
+        env:
+          FRED_API_KEY: ${{ secrets.FRED_API_KEY }}
+
       - name: Publish to data branch
         run: |
           # git rm 전에 /tmp에 미리 저장 (git rm -rf 가 파일도 삭제하므로)
           cp state/positions.json /tmp/positions.json
           cp outputs/signals.json /tmp/signals.json
           cp outputs/masam.json   /tmp/masam.json
+          cp outputs/market.json  /tmp/market.json
 
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
@@ -56,6 +62,7 @@ jobs:
           cp /tmp/positions.json state/positions.json
           cp /tmp/signals.json   outputs/signals.json
           cp /tmp/masam.json     outputs/masam.json
+          cp /tmp/market.json    outputs/market.json
           git add state/ outputs/
           git commit -m "[cron] $(date -u +%Y-%m-%d)"
           git push origin data-new:data --force

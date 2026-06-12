@@ -3,5 +3,6 @@ const BASE =
 
 export const URLS = {
   signals: `${BASE}/outputs/signals.json`,
-  masam: `${BASE}/outputs/masam.json`,
+  masam:   `${BASE}/outputs/masam.json`,
+  market:  `${BASE}/outputs/market.json`,
 } as const;

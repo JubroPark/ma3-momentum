@@ -49,8 +49,4 @@ export type SignalsJson = {
   items: SignalItem[];
 };
 
-export type MasamJson = {
-  as_of: string;
-  mode: 'REBALANCING' | 'CRISIS_STAKING' | 'PANIC';
-  [key: string]: unknown;
-};
+export type { MasamJson, MasamMode, AllInCondition } from './masam';
