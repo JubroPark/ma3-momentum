@@ -1,0 +1,95 @@
+{
+  "as_of": "2026-06-12",
+  "mode": "CRISIS_STAKING",
+  "panic_type": null,
+  "rate_env": "NON_ZERO",
+  "qe_active": false,
+  "masam": {
+    "month_count": 1,
+    "cumulative_count": 1,
+    "last_masam_date": "2026-06-05"
+  },
+  "leader_status": {
+    "rank1_ticker": "NVDA",
+    "rank1_mcap": 4969906831360,
+    "rank2_ticker": "GOOGL",
+    "rank2_mcap": 4386274148352,
+    "gap_pct": 11.7,
+    "overtake_detected": false,
+    "gap_below_10pct": false
+  },
+  "leader_prices": {
+    "ath": 235.47,
+    "current": 205.19,
+    "crisis_low": 199.34
+  },
+  "qqq_prices": {
+    "ath": 746.16,
+    "current": 721.34,
+    "crisis_low": 686.37
+  },
+  "target_allocation": {
+    "stock_pct": 30,
+    "hedge_pct": 0,
+    "cash_pct": 70,
+    "label": "말뚝박기 30% (3구간 / -5.0% 그리드)"
+  },
+  "hedge_allocation": {
+    "type": "DOLLAR",
+    "rationale": "QE 여부 모호 — 달러 현금 보유",
+    "exit_trigger": "QE 명확해지면 TLT or IAU+GLD+TIP 전환"
+  },
+  "distance_to_triggers": {
+    "v_allin_pct_needed": 10.0,
+    "v_allin_pct_away": 6.86,
+    "v_allin_trigger_price": 219.27,
+    "emergency_allin_pct_away": 24.49,
+    "emergency_trigger_price": 164.83
+  },
+  "all_in_conditions": [
+    {
+      "id": 1,
+      "label": "한달+1일 무마삼",
+      "met": false,
+      "grade": "약"
+    },
+    {
+      "id": 2,
+      "label": "8거래일 연속 상승",
+      "met": false,
+      "grade": "중"
+    },
+    {
+      "id": 3,
+      "label": "1등주 전고 돌파",
+      "met": false,
+      "grade": "강"
+    },
+    {
+      "id": 4,
+      "label": "나스닥 전고 돌파",
+      "met": false,
+      "grade": "강"
+    }
+  ],
+  "additional_buy_signal": {
+    "rsi14": 42.3,
+    "mfi14": null,
+    "both_below_50": true,
+    "label": "RSI14 ≤ 50 — 추가 자금 투입 조건 충족"
+  },
+  "panic_reentry": {
+    "stage": 0,
+    "next_tranche_pct": 35,
+    "tranches": [
+      35,
+      35,
+      30
+    ]
+  },
+  "recommended_action": "말뚝박기 진입. 초기 50% 매수. -5% 하락마다 +10% 추가 매수.",
+  "alerts": [
+    "이번 달 마삼 1회 — 공황 확정까지 3회 남음",
+    "추가 자금 투입 조건 충족: 1등주 RSI14 <= 50"
+  ]
+}
