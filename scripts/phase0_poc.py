@@ -8,13 +8,12 @@ from dotenv import load_dotenv
 
 load_dotenv()
 FRED_API_KEY = os.getenv("FRED_API_KEY")
+GEMINI_API_KEY = os.getenv("GEMINI_API_KEY")
 
 
 def _get_close(df: pd.DataFrame) -> pd.Series:
     """yfinance MultiIndex 또는 단일 컬럼 DataFrame 모두에서 Close 추출."""
-    if isinstance(df.columns, pd.MultiIndex):
-        return df["Close"].squeeze()
-    return df["Close"].squeeze()
+    return df["Close"].squeeze().dropna()
 
 
 def check_masam(df_ixic: pd.DataFrame = None) -> dict:
@@ -177,6 +176,7 @@ def _calc_rs_pct(prices: pd.DataFrame, spy: pd.Series) -> dict:
     RS_raw = 0.5·r20 + 0.3·r60 + 0.2·r120 (각 종목 vs SPY 초과수익률)
     RS_pct = 샘플 내 percentile rank (0~100)
     """
+    spy = spy.dropna()
     rs_raw = {}
     for ticker in prices.columns:
         s = prices[ticker].dropna()
@@ -242,47 +242,75 @@ def check_rs_percentile(prices: pd.DataFrame = None, spy: pd.Series = None) -> d
     }
 
 
-def check_pmi_source(fred: "Fred" = None) -> dict:
+def check_pmi_source(gemini_key: str = None) -> dict:
     """
-    FRED NAPM(ISM 제조업 PMI) 가용성 탐색.
-    마지막 갱신이 3개월 이내 → PASS / 초과 또는 실패 → WARN (수동입력 폴백 권장).
+    Gemini Google Search grounding으로 최신 ISM 제조업 PMI 조회.
+    FRED NAPM 시리즈가 더 이상 존재하지 않아 Gemini 웹검색으로 대체.
     """
-    if fred is None:
-        fred = Fred(api_key=FRED_API_KEY)
+    import re
+    from google import genai
+    from google.genai.types import Tool, GenerateContentConfig, GoogleSearch
 
-    series_id = "NAPM"
+    key = gemini_key or GEMINI_API_KEY
+    if not key:
+        return {
+            "status": "WARN",
+            "pmi_value": None,
+            "release_month": None,
+            "warn_message": "GEMINI_API_KEY 미설정 → 수동입력 폴백",
+        }
+
     try:
-        series = fred.get_series(series_id).dropna()
-        if series.empty:
-            raise ValueError("빈 시리즈")
+        client = genai.Client(api_key=key)
+        today = pd.Timestamp.today()
+        prompt = (
+            f"오늘은 {today.strftime('%Y년 %m월 %d일')}입니다. "
+            "가장 최신 ISM 제조업 PMI(Manufacturing PMI) 수치를 검색해서 알려주세요. "
+            "반드시 아래 형식으로만 답하세요:\n"
+            "PMI: [숫자]\n발표월: [YYYY-MM]"
+        )
+        response = client.models.generate_content(
+            model="gemini-2.5-flash",
+            contents=prompt,
+            config=GenerateContentConfig(
+                tools=[Tool(google_search=GoogleSearch())]
+            ),
+        )
+        text = response.text
+        pmi_match = re.search(r"PMI:\s*([\d.]+)", text)
+        month_match = re.search(r"발표월:\s*(\d{4}-\d{2})", text)
 
-        last_date = series.index[-1]
-        last_value = round(float(series.iloc[-1]), 1)
-        months_ago = (pd.Timestamp.today() - last_date).days / 30
-
-        if months_ago <= 3:
-            return {
-                "status": "PASS",
-                "series_id": series_id,
-                "last_updated": last_date.strftime("%Y-%m-%d"),
-                "last_value": last_value,
-                "warn_message": None,
-            }
-        else:
+        if not pmi_match:
             return {
                 "status": "WARN",
-                "series_id": series_id,
-                "last_updated": last_date.strftime("%Y-%m-%d"),
-                "last_value": last_value,
-                "warn_message": f"FRED {series_id} 마지막 갱신 {months_ago:.0f}개월 전 → 수동입력 폴백 권장",
+                "pmi_value": None,
+                "release_month": None,
+                "warn_message": f"Gemini 응답 파싱 실패 → 수동입력 폴백: {text[:80]}",
             }
+
+        pmi_value = float(pmi_match.group(1))
+        release_month = month_match.group(1) if month_match else "미확인"
+
+        if not 30 <= pmi_value <= 70:
+            return {
+                "status": "WARN",
+                "pmi_value": pmi_value,
+                "release_month": release_month,
+                "warn_message": f"PMI 범위 이상({pmi_value}) — 수동 확인 필요",
+            }
+
+        return {
+            "status": "PASS",
+            "pmi_value": pmi_value,
+            "release_month": release_month,
+            "warn_message": None,
+        }
     except Exception as e:
         return {
             "status": "WARN",
-            "series_id": series_id,
-            "last_updated": None,
-            "last_value": None,
-            "warn_message": f"FRED {series_id} 조회 실패({e}) → 수동입력 폴백 권장",
+            "pmi_value": None,
+            "release_month": None,
+            "warn_message": f"Gemini PMI 조회 실패({e}) → 수동입력 폴백",
         }
 
 
@@ -327,7 +355,7 @@ def _print_result(name: str, result: dict) -> None:
         if result.get("warn_message"):
             print(f"       {result['warn_message']}")
         else:
-            print(f"       FRED NAPM 최신: {result['last_updated']}  값: {result['last_value']}")
+            print(f"       ISM 제조업 PMI: {result['pmi_value']}  ({result['release_month']})")
 
 
 def main() -> None:
@@ -349,7 +377,7 @@ def main() -> None:
         ("전고점 대비 하락",       lambda: check_drawdown(df_ixic=df_ixic)),
         ("WALCL QE 자동감지",     lambda: check_qe(fred=fred)),
         ("MA50 RS percentile",    check_rs_percentile),
-        ("PMI 소스",               lambda: check_pmi_source(fred=fred)),
+        ("PMI 소스",               check_pmi_source),
     ]
 
     counts = {"PASS": 0, "WARN": 0, "FAIL": 0}

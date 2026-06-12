@@ -4,7 +4,6 @@ import json
 import sys
 from datetime import date
 from pathlib import Path
-
 import yfinance as yf
 import pandas as pd
 
@@ -53,11 +52,15 @@ def main() -> None:
 
     # SPY 다운로드
     print("SPY 다운로드 중...")
-    spy_raw = yf.download("SPY", period=PERIOD, auto_adjust=True, progress=False)
-    spy_raw = spy_raw.dropna()
-    if isinstance(spy_raw.columns, pd.MultiIndex):
-        spy_raw.columns = spy_raw.columns.get_level_values(0)
-    spy_close = spy_raw["Close"]
+    try:
+        spy_raw = yf.download("SPY", period=PERIOD, auto_adjust=True, progress=False)
+        spy_raw = spy_raw.dropna()
+        if isinstance(spy_raw.columns, pd.MultiIndex):
+            spy_raw.columns = spy_raw.columns.get_level_values(0)
+        spy_close = spy_raw["Close"]
+    except Exception as e:
+        print(f"[ERROR] SPY 다운로드 실패: {e}")
+        sys.exit(1)
 
     params = dict(MA50_DEFAULT_PARAMS)
     results = []
