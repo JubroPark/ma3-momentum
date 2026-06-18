@@ -1,0 +1,51 @@
+{
+  "as_of": "2026-06-18",
+  "regime": "GREEN",
+  "items": [
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA",
+      "status": "ENTRY_2",
+      "toppick_score": 91,
+      "avg_price": 118.40,
+      "weight": 0.70,
+      "deployed_tranches": [1, 2],
+      "recent_high": 153.13,
+      "trailing_stop_line": 122.50,
+      "horizontal_support": 110.00,
+      "cooldown_until": null,
+      "next_action": "HOLD",
+      "reason": "50MA 위 안착, 트레일링 스탑 원거리"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms",
+      "status": "ENTRY_1",
+      "toppick_score": 84,
+      "avg_price": 612.30,
+      "weight": 0.20,
+      "deployed_tranches": [1],
+      "recent_high": 741.80,
+      "trailing_stop_line": 593.44,
+      "horizontal_support": 580.00,
+      "cooldown_until": null,
+      "next_action": "HOLD",
+      "reason": "1차 진입 후 보유 중"
+    },
+    {
+      "symbol": "AAPL",
+      "name": "Apple",
+      "status": "WATCH",
+      "toppick_score": 76,
+      "avg_price": null,
+      "weight": 0,
+      "deployed_tranches": [],
+      "recent_high": null,
+      "trailing_stop_line": null,
+      "horizontal_support": 195.00,
+      "cooldown_until": null,
+      "next_action": "HOLD",
+      "reason": "50MA 하회 — 1차 진입 대기"
+    }
+  ]
+}

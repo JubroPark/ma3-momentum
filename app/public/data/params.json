@@ -1,0 +1,31 @@
+{
+  "masam": {
+    "rebalancing_max_pct": 25,
+    "appendix_z": {
+      "B4_trigger_grade": true,
+      "D2_1_vix_fg_panel": true,
+      "B1_dynamic_masam": false,
+      "C1_emergency_split": false,
+      "C2_allin_relax": false,
+      "C4_stoploss": false
+    }
+  },
+  "momentum": {
+    "toppick_threshold": 70,
+    "max_symbols": 15,
+    "tranche_1": 0.30,
+    "tranche_2": 0.40,
+    "tranche_3": 0.20,
+    "reserve": 0.10,
+    "ma50_support_band": 0.03,
+    "trail_mode": "hybrid",
+    "trail_fixed_pct": 0.20,
+    "trail_atr_mult": 5.0,
+    "trail_floor_pct": 0.15,
+    "trail_ceiling_pct": 0.30,
+    "vol_breakout_min": 1.30,
+    "vol_spike_warn": 1.50,
+    "cooldown_days": 5,
+    "rescore_cadence": "quarterly"
+  }
+}

@@ -1,0 +1,102 @@
+{
+  "as_of": "2026-06-18",
+  "mode": "NORMAL",
+  "rate_env": "NON_ZERO",
+  "qe_active": false,
+  "treasury_10y_trend": "UP",
+  "masam": {
+    "month_count": 0,
+    "last_masam_date": "2026-05-21",
+    "crisis_end_dday": null,
+    "panic_end_dday": null
+  },
+  "leader_status": {
+    "rank1_ticker": "NVDA",
+    "rank2_ticker": "MSFT",
+    "gap_pct": 18.4,
+    "overtake_detected": false,
+    "gap_within_10pct": false
+  },
+  "target_allocation": {
+    "stock_pct": 100,
+    "hedge_pct": 0,
+    "cash_pct": 0,
+    "label": "1등주 집중"
+  },
+  "hedge_allocation": {
+    "type": "NONE",
+    "rationale": "평상시 — 헤지 불필요",
+    "exit_trigger": ""
+  },
+  "rebalancing": {
+    "cash_raised_pct": 0,
+    "max_pct": 25,
+    "qqq_pct": 0
+  },
+  "staking": {
+    "rate_env": "NON_ZERO",
+    "grid_pct": 5,
+    "target_pct": 50,
+    "deployed_pct": 0
+  },
+  "all_in_conditions": [
+    {
+      "id": 1,
+      "label": "한달+1일 무마삼",
+      "met": true,
+      "grade": "약",
+      "detail": "충족"
+    },
+    {
+      "id": 2,
+      "label": "8거래일 연속 상승",
+      "met": false,
+      "grade": "중",
+      "detail": "3일 연속"
+    },
+    {
+      "id": 3,
+      "label": "1등주 전고 돌파",
+      "met": false,
+      "grade": "강",
+      "detail": "-4.2%"
+    },
+    {
+      "id": 4,
+      "label": "나스닥 전고 돌파",
+      "met": false,
+      "grade": "강",
+      "detail": "-2.1%"
+    },
+    {
+      "id": 5,
+      "label": "2구간 V자(+10%/+5%)",
+      "met": false,
+      "grade": "중",
+      "detail": "해당없음"
+    },
+    {
+      "id": 6,
+      "label": "긴급 올인(-30%/-15%)",
+      "met": false,
+      "grade": "강",
+      "detail": "해당없음"
+    }
+  ],
+  "additional_buy": {
+    "target": "rank1",
+    "rsi14": 58,
+    "mfi14": 62,
+    "both_below_50": false
+  },
+  "panic_hold": {
+    "active": false,
+    "until_new_high": true
+  },
+  "panic_reentry": {
+    "stage": 0,
+    "tranches": [35, 35, 30]
+  },
+  "recommended_action": "리밸런싱 유지 — 1등주(NVDA) 집중",
+  "alerts": []
+}
