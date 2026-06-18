@@ -1,0 +1,1522 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<title>토스증권</title>
+<link rel="stylesheet" as="style" crossorigin href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/variable/pretendardvariable.min.css">
+<script src="https://code.iconify.design/3/3.1.1/iconify.min.js"></script>
+<script src="https://cdn.jsdelivr.net/npm/@twemoji/api@latest/dist/twemoji.min.js" crossorigin="anonymous"></script>
+<style>
+  :root{
+    --bg:#17171C;--bg-deep:#0E0E12;--surface:#202027;--surface-2:#26262E;--surface-3:#2C2C35;
+    --line:#2A2A31;--txt:#F4F5F7;--txt-2:#9A9AA3;--txt-3:#6B6B73;
+    --up:#F04452;--down:#4593FC;--blue:#3182F6;--teal:#2BC4B6;--purple:#8B5CF6;--green:#2BC4B6;
+  }
+  *{margin:0;padding:0;box-sizing:border-box;
+    font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
+    -webkit-font-smoothing:antialiased;-webkit-tap-highlight-color:transparent;}
+  html,body{height:100%;}
+  body{background:var(--bg);color:var(--txt);overflow:hidden;}
+
+  .app{
+    width:100%;height:100%;max-width:390px;margin:0 auto;
+    background:var(--bg);position:relative;display:flex;flex-direction:column;
+    box-shadow:0 0 34px rgba(0,0,0,.4);
+  }
+  /* 상태바: 실제 기기 노치 영역 회피용 safe-area */
+  .safe-top{flex:0 0 auto;height:env(safe-area-inset-top,0px);}
+
+  .view{display:none;flex:1;min-height:0;flex-direction:column;}
+  .view.active{display:flex;animation:fade .26s ease;}
+  @keyframes fade{from{opacity:0;transform:translateY(5.1px)}to{opacity:1;transform:none}}
+  .body{flex:1;overflow-y:auto;overflow-x:hidden;-webkit-overflow-scrolling:touch;}
+  .body::-webkit-scrollbar{display:none;}
+
+  .topbar{display:flex;align-items:center;justify-content:flex-end;gap:17px;padding:11.9px 17px 3.4px;}
+  .topbar .left{margin-right:auto;}
+  .topbar svg,.topbar .iconify{width:20px;height:20px;cursor:pointer;}
+  .topbar .menu{position:relative;}
+  .topbar .menu .dot{position:absolute;top:-1px;right:-1px;width:6px;height:6px;border-radius:50%;background:var(--up);}
+  .strat-tog{position:relative;display:flex;background:#1e1e26;border-radius:10px;padding:3px;gap:2px;}
+  .strat-tog .thumb{position:absolute;top:3px;bottom:3px;left:3px;background:#2e2e3a;border-radius:8px;transition:transform .25s cubic-bezier(.4,0,.2,1),width .25s cubic-bezier(.4,0,.2,1);pointer-events:none;}
+  .strat-tog .st{position:relative;border:none;background:none;color:#6b6b7a;font-family:inherit;font-size:12px;font-weight:500;padding:4.5px 12px;border-radius:8px;cursor:pointer;letter-spacing:-.02em;transition:color .2s;white-space:nowrap;}
+  .strat-tog .st.on{color:#f4f5f7;}
+  .up{color:var(--up);}.down{color:var(--down);}
+
+  .scr-title{display:flex;align-items:flex-end;gap:10.2px;padding:5.1px 17px 2px;margin-top:6px;}
+  .scr-title h2{font-size:18.7px;font-weight:700;letter-spacing:-0.5px;}
+  .scr-title .idx{font-size:11.9px;color:var(--txt-2);font-weight:500;display:flex;gap:6px;align-items:baseline;}
+  .scr-title .idx .v{font-weight:700;}
+  .idx-roll-wrap{display:grid;overflow:hidden;}
+  .idx-roll-item{grid-area:1/1;display:flex;gap:5px;align-items:baseline;font-size:11.9px;font-weight:500;color:var(--txt-2);opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;white-space:nowrap;}
+  .idx-roll-item.active{opacity:1;transform:translateY(0);}
+  .idx-roll-item.exit{opacity:0;transform:translateY(-6px);}
+  .idx-roll-item .idx-lbl{color:#fff;}
+  .idx-roll-item .v{font-weight:700;}
+
+  .cat-row{display:flex;gap:10.2px;padding:15.3px 17px 5.1px;overflow-x:auto;}
+  .cat-row::-webkit-scrollbar{display:none;}
+  .cat{flex:0 0 78.2px;height:78px;background:var(--surface);border-radius:15.3px;display:flex;
+    flex-direction:column;align-items:center;justify-content:center;gap:7px;cursor:pointer;
+    transition:transform .12s,background .12s;}
+  .cat:active{transform:scale(.95);background:var(--surface-2);}
+  .momt-cat{background:var(--surface);}
+  .momt-cat.active-cat{background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6) border-box;border:1.4px solid transparent;}
+  .cat .circ{width:26px;height:26px;display:flex;align-items:center;justify-content:center;}
+  .cat .circ img.emoji{width:26px;height:26px;}
+  .cat span{font-size:11.9px;font-weight:600;color:#e9e9ef;}
+  .cat.econ{height:91.8px;}
+  .cat.econ .circ{width:39.1px;height:39.1px;border-radius:50%;background:var(--surface-2);font-size:11px;font-weight:800;}
+  .bar{height:7px;border-radius:99px;background:var(--surface-2);margin:14px 0 6px;position:relative;overflow:visible;}
+  .bar i{position:absolute;inset:0 auto 0 0;border-radius:99px;}
+  .bar .mk{position:absolute;top:-4px;width:3px;height:15px;background:#fff;border-radius:2px;transform:translateX(-50%);}
+  @keyframes barFill{from{width:0;opacity:0}to{opacity:1}}
+  .bar i.anim{animation:barFill .9s cubic-bezier(.4,0,.2,1) forwards;}
+  .bar .mk.anim{animation:barFill .9s cubic-bezier(.4,0,.2,1) forwards;}
+  .flag{width:39.1px;height:39.1px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22.1px;}
+
+  .idx-row{display:flex;padding:15.3px 17px 8.5px;}
+  .idx-cell{flex:1;padding-right:11.9px;}
+  .idx-cell + .idx-cell{border-left:1px solid var(--line);padding-left:15.3px;}
+  .idx-cell .lbl{font-size:11px;color:var(--txt-3);margin-bottom:8px;}
+  .idx-cell .val{font-size:12.8px;font-weight:600;display:flex;gap:6.8px;align-items:baseline;flex-wrap:wrap;}
+  .idx-cell .val small{font-size:11px;font-weight:600;}
+  .idx-cell .txt{font-size:11.9px;color:#d4d4db;font-weight:500;line-height:1.35;}
+
+  .ai-banner{margin:6.8px 17px 3.4px;border-radius:13.6px;padding:1.4px;
+    background:linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6);cursor:pointer;}
+  .price-roll-wrap{display:grid;overflow:hidden;}
+  .price-roll-item{grid-area:1/1;opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s;font-size:13px;font-weight:600;color:#fff;}
+  .price-roll-item.active{opacity:1;transform:translateY(0);}
+  .price-roll-item.exit{opacity:0;transform:translateY(-5px);}
+  .ai-banner .inner{background:var(--bg);border-radius:12.8px;padding:14.4px 15.3px;display:flex;align-items:center;gap:14px;}
+  .ai-banner .tag{font-size:12.8px;font-weight:700;background:linear-gradient(90deg,#7c6dff,#4593FC);
+    -webkit-background-clip:text;background-clip:text;color:transparent;display:flex;align-items:center;gap:4.2px;white-space:nowrap;}
+  .ai-banner .msg{font-size:12.8px;font-weight:600;color:#eee;display:flex;align-items:center;gap:6px;
+    overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;}
+  .ai-banner .msg .n{color:var(--txt-2);font-weight:700;}
+  .ai-banner .chev{color:var(--txt-3);font-size:15.3px;}
+
+  .sec-h{font-size:18.7px;font-weight:700;letter-spacing:-0.5px;padding:22.1px 17px 3.4px;}
+  .tabs{display:flex;align-items:center;gap:18.7px;padding:11.9px 17px 0;border-bottom:1px solid var(--line);}
+  .tabs .spacer{flex:1;}
+  .tabs .pct-tog{display:flex;background:#1e1e26;border-radius:10px;padding:3px;gap:2px;margin-bottom:8px;}
+  .tabs .pct-tog button{border:none;background:none;color:#6b6b7a;font-family:inherit;font-size:11px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+  .tabs .pct-tog button.on{background:#2e2e3a;color:#f4f5f7;}
+  .tabs .t{font-size:13.5px;font-weight:600;color:var(--txt-3);padding-bottom:11.9px;position:relative;cursor:pointer;transition:color .15s;}
+  .tabs .t.on{color:var(--txt);}
+  .tabs .t.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2.1px;background:#fff;border-radius:2px;}
+
+  .rank{display:flex;align-items:center;gap:13.6px;padding:13.6px 17px;cursor:pointer;transition:background .12s;}
+  .rank:active{background:var(--surface);}
+  .rank .no{width:11.9px;text-align:center;font-size:13px;font-weight:500;color:#d4d4db;}
+  .rank .ava{width:44.2px;height:44.2px;border-radius:50%;position:relative;flex:0 0 44.2px;display:flex;
+    align-items:center;justify-content:center;font-size:11.9px;font-weight:800;color:#1a1a1a;}
+  .rank .ava .mf{position:absolute;right:-2px;bottom:-2px;width:17px;height:17px;border-radius:50%;
+    border:2px solid var(--bg);background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;overflow:hidden;}
+  .rank .info{flex:1;min-width:0;}
+  .rank .info .nm{font-size:13.5px;font-weight:600;letter-spacing:-0.3px;}
+  .rank .info .pr{font-size:12px;color:var(--txt-2);margin-top:3.4px;display:flex;gap:7.6px;align-items:baseline;}
+  .rank .heart{width:23.8px;height:23.8px;flex:0 0 23.8px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
+  .rank .heart svg{width:22.1px;height:22.1px;transition:transform .18s;}
+  .rank .heart:active svg{transform:scale(1.3);}
+
+  .insert{margin:2px 17px 6.8px 68px;background:var(--surface);border-radius:11.9px;padding:12.8px 13.6px;
+    display:flex;align-items:center;gap:11px;cursor:pointer;}
+  .insert .fire{font-size:20.4px;}
+  .insert .it{flex:1;}
+  .insert .it .a{font-size:12.8px;font-weight:600;color:#e8e8ee;}
+  .insert .it .b{font-size:11px;color:var(--txt-3);margin-top:2.5px;}
+  .insert .chev{color:var(--txt-3);font-size:14.4px;}
+
+  .ai-sig{padding:15.3px 17px 0;}
+  .ai-sig .h{font-size:12.8px;font-weight:700;color:#a99bff;display:flex;align-items:center;gap:4.2px;cursor:pointer;}
+  .ai-sig .m{font-size:14.4px;font-weight:500;color:#d6d6dd;margin-top:11px;line-height:1.35;}
+  .ai-sig .m b{font-weight:800;color:#fff;}
+  .ai-sig .dv{height:1px;background:var(--line);margin-top:15.3px;}
+  .pill-tabs{display:flex;gap:11.9px;padding:18.7px 17px 0;align-items:center;}
+  .pill-tabs .pt{font-size:14.4px;font-weight:700;color:var(--txt-3);cursor:pointer;padding:7.6px 3.4px;transition:color .15s;}
+  .pill-tabs .pt.on{color:var(--blue);}
+  .pill-tabs .pt.pill.on{color:#fff;background:var(--surface-2);padding:7.6px 15.3px;border-radius:17px;}
+  .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:51px 34px;}
+  .empty .emo{font-size:54.4px;margin-bottom:20.4px;}
+  .empty h3{font-size:19.6px;font-weight:800;line-height:1.4;letter-spacing:-0.4px;}
+  .empty p{font-size:12.8px;color:var(--txt-3);margin-top:11.9px;}
+  .empty .btn{margin-top:22.1px;background:var(--blue);color:#fff;font-size:14.4px;font-weight:700;
+    padding:12.8px 34px;border-radius:11.9px;border:none;cursor:pointer;transition:transform .12s,background .12s;}
+  .empty .btn:active{transform:scale(.96);background:#2671e0;}
+  .feedback{display:flex;align-items:center;gap:11.9px;padding:18.7px 17px;border-top:1px solid var(--line);cursor:pointer;}
+  .feedback .env{font-size:20.4px;}
+  .feedback .ft{flex:1;}
+  .feedback .ft .a{font-size:14.4px;font-weight:700;}
+  .feedback .ft .b{font-size:11.9px;color:var(--txt-3);margin-top:2.5px;}
+  .feedback .chev{color:var(--txt-3);font-size:15.3px;}
+
+  .promo{margin:11.9px 17px 0;background:var(--surface);border-radius:13.6px;padding:15.3px;display:flex;align-items:center;gap:11.9px;
+    overflow:hidden;transition:opacity .25s,max-height .3s,margin .3s,padding .3s;max-height:102px;}
+  .promo.hide{opacity:0;max-height:0;padding-top:0;padding-bottom:0;margin-top:0;}
+  .promo .pf{width:34px;height:34px;border-radius:7.6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:18.7px;}
+  .promo .pt{flex:1;}
+  .promo .pt .a{font-size:14.4px;font-weight:700;}
+  .promo .pt .b{font-size:12.8px;color:var(--blue);font-weight:600;margin-top:3.4px;}
+  .promo .x{color:var(--txt-3);font-size:17px;cursor:pointer;padding:3.4px;}
+  .acct{display:flex;align-items:center;padding:20.4px 17px 0;}
+  .acct .ad{width:22.1px;height:22.1px;border-radius:50%;background:var(--blue);margin-right:7.6px;}
+  .acct .an{font-size:16.1px;font-weight:700;}
+  .acct .av{margin-left:auto;font-size:12.8px;color:var(--txt-2);cursor:pointer;}
+  .bal-row{display:flex;gap:10.2px;padding:15.3px 17px 0;}
+  .bal{flex:1;background:var(--surface);border-radius:12.8px;padding:15.3px;}
+  .bal .l{font-size:11.9px;color:var(--txt-3);}
+  .bal .v{font-size:17.8px;font-weight:700;margin-top:6.8px;}
+  .myinv{padding:25.5px 17px 0;}
+  .myinv .l{font-size:15.3px;font-weight:700;color:#d4d4db;}
+  .myinv .big{font-size:28.9px;font-weight:800;letter-spacing:-1px;margin-top:11.9px;display:flex;align-items:center;gap:5.1px;}
+  .myinv .big .chev{color:var(--txt-3);font-size:20.4px;font-weight:400;}
+  .myinv .sub{font-size:14.4px;font-weight:700;color:var(--up);margin-top:8.5px;}
+  .ctrl{display:flex;align-items:center;padding:20.4px 17px 0;}
+  .ctrl .sort{background:var(--surface-2);font-size:11.9px;color:#c4c4cc;padding:7.6px 11.9px;border-radius:9.3px;font-weight:600;cursor:pointer;}
+  .ctrl .rgt{margin-left:auto;display:flex;gap:8.5px;}
+  .ctrl .seg{background:var(--surface-2);border-radius:9.3px;display:flex;font-size:11.9px;font-weight:600;overflow:hidden;}
+  .ctrl .seg span{padding:7.6px 11px;color:var(--txt-3);cursor:pointer;transition:.12s;}
+  .ctrl .seg span.on{background:var(--surface-3);color:#fff;}
+  .hold-h{display:flex;padding:25.5px 17px 0;}
+  .hold-h .l{font-size:12.8px;color:var(--txt-3);}
+  .hold-h .r{margin-left:auto;font-size:12.8px;color:var(--txt-3);cursor:pointer;}
+  .hold{display:flex;align-items:center;gap:12.8px;padding:17px;cursor:pointer;transition:background .12s;}
+  .hold:active{background:var(--surface);}
+  .hold .lg{width:45.9px;height:45.9px;border-radius:50%;background:#E31937;display:flex;align-items:center;justify-content:center;font-size:25.5px;color:#fff;font-weight:700;}
+  .hold .nm{font-size:17px;font-weight:700;}
+  .hold .sh{font-size:11.9px;color:var(--txt-3);margin-top:3.4px;}
+  .hold .rv{margin-left:auto;text-align:right;}
+  .hold .rv .a{font-size:17px;font-weight:700;}
+  .hold .rv .b{font-size:12.3px;font-weight:600;margin-top:3.4px;}
+  .teal-band{margin-top:5.1px;background:rgba(43,196,182,.09);text-align:center;padding:22.1px 17px;
+    font-size:13.6px;font-weight:700;color:var(--teal);line-height:1.5;}
+  .detail-more{text-align:center;font-size:14.4px;font-weight:700;color:#bcbcc4;padding:25.5px 17px;display:flex;align-items:center;justify-content:center;gap:6.8px;cursor:pointer;}
+  .detail-more svg{width:15.3px;height:15.3px;stroke:#9a9aa3;}
+
+  .feed-card{margin:13.6px 17px 0;background:var(--surface);border-radius:15.3px;padding:17px;}
+  .feed-card .fh{display:flex;align-items:center;gap:9.3px;margin-bottom:11px;}
+  .feed-card .av2{width:32.3px;height:32.3px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15.3px;}
+  .feed-card .nm{font-size:12.8px;font-weight:700;}
+  .feed-card .tm{font-size:11px;color:var(--txt-3);}
+  .feed-card .ct{font-size:13.6px;line-height:1.5;color:#e2e2e8;}
+  .feed-card .tk{display:inline-block;margin-top:11.9px;font-size:11.9px;font-weight:700;color:var(--blue);
+    background:rgba(49,130,246,.12);padding:6px 11px;border-radius:8.5px;}
+  .feed-card .react{display:flex;gap:17px;margin-top:13.6px;font-size:11.9px;color:var(--txt-2);}
+  .feed-card .react span{cursor:pointer;}
+
+  .toast{position:absolute;left:50%;bottom:81.6px;transform:translateX(-50%) translateY(17px);
+    background:rgba(40,40,48,.96);color:#fff;font-size:11.9px;font-weight:600;padding:11px 17px;border-radius:11px;
+    opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;z-index:40;box-shadow:0 6.8px 20.4px rgba(0,0,0,.4);}
+  .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
+
+  .digit-roll{display:inline-flex;align-items:flex-end;}
+  .digit-slot{overflow:hidden;height:1.25em;display:inline-block;vertical-align:bottom;}
+  .digit-track{display:flex;flex-direction:column;will-change:transform;}
+  .digit-track span{display:block;line-height:1.25em;}
+
+  .tabbar{flex:0 0 auto;display:flex;align-items:center;padding:8.5px 15.3px;background:var(--bg);
+    border-top:1px solid rgba(255,255,255,.04);position:relative;z-index:30;
+    padding-bottom:calc(16px + env(safe-area-inset-bottom,12px));}
+  .tabbar .back{position:absolute;left:15.3px;top:5.1px;width:42.5px;height:42.5px;border-radius:50%;
+    background:rgba(255,255,255,.07);display:flex;align-items:center;justify-content:center;cursor:pointer;transition:background .12s;}
+  .tabbar .back:active{background:rgba(255,255,255,.15);}
+  .tabbar .back svg,.tabbar .back .iconify{width:18px;height:18px;color:#cfcfd6;}
+  .tabbar .navset{flex:1;display:flex;justify-content:space-around;}
+  .navi{display:flex;flex-direction:column;align-items:center;gap:4.2px;font-size:9.3px;color:var(--txt-3);cursor:pointer;transition:color .15s;flex:1;}
+  .navi.on{color:#fff;}
+  .navi svg,.navi .iconify{width:20px;height:20px;}
+  .navi:active{transform:scale(.92);}
+  /* range rows */
+  .rt-head{display:flex;align-items:center;padding:8px 17px;border-bottom:1px solid var(--line);}
+  .rt-row{display:flex;align-items:center;padding:11px 17px;border-bottom:1px solid var(--line);transition:background .12s;}
+  .rt-row.rt-cur{background:rgba(49,130,246,.08);}
+  .rt-col-zone{width:46px;flex:0 0 46px;font-size:13px;font-weight:700;text-align:center;}
+  .rt-col-price{flex:1;padding-left:8px;}
+  .rt-col-stock{width:44px;flex:0 0 44px;text-align:center;font-size:13px;font-weight:600;}
+  .rt-col-cash{width:44px;flex:0 0 44px;text-align:center;font-size:13px;font-weight:600;}
+  .rt-col-status{width:32px;flex:0 0 32px;display:flex;justify-content:flex-end;align-items:center;}
+  @keyframes rt-ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.4);opacity:0}}
+  @keyframes trophy-shine{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15) drop-shadow(0 0 3px #F7C94866)}}
+  @keyframes trophy-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  .rt-ping{position:relative;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;}
+  .rt-ping::before{content:'';position:absolute;width:8px;height:8px;border-radius:50%;background:var(--blue);opacity:.4;animation:rt-ping 1.4s ease-out infinite;}
+  .rt-ping .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);position:relative;z-index:1;}
+  .rt-done{display:inline-flex;align-items:center;justify-content:center;color:#fff;}
+  .rt-none{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;}
+  .rt-none::after{content:'';display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--txt-3);opacity:.4;}
+  .rt-custom{display:flex;align-items:center;gap:8px;padding:12px 17px 4px;}
+  .rt-custom span{font-size:11px;font-weight:500;color:var(--txt-3);white-space:nowrap;}
+  .rt-custom input{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:8px;
+    padding:6px 10px;font-size:13px;font-weight:600;color:#fff;outline:none;font-family:inherit;}
+  /* F&G 스펙트럼 바 */
+  .fg-bar{position:relative;height:5px;border-radius:3px;background:linear-gradient(90deg,#E84C5A 0%,#E84C5A 25%,#F7A13A 25%,#F7A13A 45%,#9A9AA3 45%,#9A9AA3 55%,#2BC4B6 55%,#2BC4B6 75%,#3182F6 75%,#3182F6 100%);}
+  .fg-needle{position:absolute;top:-4px;width:3px;height:13px;background:#fff;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 4px rgba(255,255,255,.5);}
+  /* 경제지표 공통 */
+  .esec{display:flex;align-items:center;justify-content:space-between;padding:20px 17px 8px;}
+  .esec .etit{font-size:18.7px;font-weight:800;letter-spacing:-.5px;color:var(--txt);}
+  .esec .ebadge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;}
+  /* duo 카드 */
+  .duo{display:flex;gap:10px;padding:0 17px;}
+  .duo .c{flex:1;background:var(--surface);border-radius:13.6px;padding:15px 16px;}
+  .duo .c .l{font-size:11px;color:var(--txt-3);font-weight:500;margin-bottom:6px;}
+  .duo .c .v{font-size:20px;font-weight:800;letter-spacing:-.03em;}
+  .duo .c .d{font-size:11.5px;font-weight:600;margin-top:4px;}
+  /* 인셋 노티스 */
+  .inset{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:12px;padding:13px 15px;margin:8px 17px 0;}
+  .inset .tx{flex:1;font-size:12.5px;font-weight:600;line-height:1.45;}
+  .inset .tx s{display:block;font-size:11px;color:var(--txt-2);text-decoration:none;font-weight:500;margin-top:2px;}
+  /* 칩 */
+  .chip{font-size:10.5px;font-weight:800;padding:3px 7px;border-radius:6px;flex:none;}
+  .srow{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line);}
+  .srow:last-child{border-bottom:none;}
+  .srow .sk{font-size:13px;font-weight:500;}
+  .srow .sk s{display:block;font-size:11.5px;color:var(--txt-3);font-weight:500;text-decoration:none;margin-top:3px;}
+  .srow .sv{font-size:14px;font-weight:700;color:#3182F6;}
+  .tg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px;}
+  .tg button{border:none;background:none;color:var(--txt-2);font-family:inherit;font-size:11px;font-weight:600;padding:5px 14px;border-radius:999px;cursor:pointer;}
+  .tg button.on{background:#3182F6;color:#fff;}
+  .chip.up-chip{background:rgba(240,68,82,.14);color:var(--up);}
+  .chip.teal-chip{background:rgba(43,196,182,.14);color:var(--teal);}
+  .chip.amber-chip{background:rgba(247,169,59,.14);color:#F7A93B;}
+  .chip.gray-chip{background:rgba(154,154,163,.12);color:var(--txt-2);}
+</style>
+</head>
+<body>
+
+<div class="app">
+  <div class="safe-top"></div>
+
+  <!-- ============ 증권 메인 ============ -->
+  <div class="view" data-view="증권">
+    <div class="body">
+      <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+      </div>
+      <div class="scr-title"><h2>토스증권</h2><div class="idx">VIX <span class="v down">19.06</span><span class="down">-1.9%</span></div></div>
+      <div class="promo" id="promo">
+        <div class="pf">🇺🇸</div>
+        <div class="pt"><div class="a">SPCX 신규상장 안내</div><div class="b">자세히 보기 ›</div></div>
+        <div class="x" onclick="closePromo(event)">✕</div>
+      </div>
+      <div class="acct"><div class="ad"></div><div class="an">기본계좌 ⌄</div><div class="av" onclick="toast('계좌 목록')">계좌보기</div></div>
+      <div class="bal-row">
+        <div class="bal"><div class="l">원화</div><div class="v">20원</div></div>
+        <div class="bal"><div class="l">달러</div><div class="v">$0.04</div></div>
+      </div>
+      <div class="myinv"><div class="l">내 투자</div>
+        <div class="big">14,953원 <span class="chev">›</span></div>
+        <div class="sub">+6,081원 (68.5%)</div>
+      </div>
+      <div class="ctrl">
+        <div class="sort" onclick="toast('정렬: 가나다 순')">가나다 순 ⌄</div>
+        <div class="rgt">
+          <div class="seg"><span onclick="seg(this)">현재가</span><span class="on" onclick="seg(this)">평가금</span></div>
+          <div class="seg"><span onclick="seg(this)">$</span><span class="on" onclick="seg(this)">원</span></div>
+        </div>
+      </div>
+      <div class="hold-h"><div class="l">해외주식</div><div class="r" onclick="toast('해외주식 전체보기')">보기</div></div>
+      <div class="hold" onclick="toast('테슬라 상세')">
+        <div class="lg">T</div>
+        <div><div class="nm">테슬라</div><div class="sh">0.02474주</div></div>
+        <div class="rv"><div class="a">14,953원</div><div class="b up">+6,081 (68.5%)</div></div>
+      </div>
+      <div class="teal-band">상장 폐지되거나, 직접 숨긴 종목은<br>여기서 한번에 확인하세요</div>
+      <div class="detail-more" onclick="toast('내 투자 자세히')">자세히보기 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>
+    </div>
+  </div>
+
+  <!-- ============ 관심 ============ -->
+  <div class="view" data-view="관심">
+    <div class="body" style="display:flex;flex-direction:column">
+      <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+      </div>
+      <div class="scr-title"><h2>시가총액 순위</h2>
+        <div class="idx-roll-wrap" id="mcap-roll">
+          <div class="idx-roll-item active">
+            <span class="idx-lbl">달러 환율</span>
+            <span class="v down">1,522.20</span>
+            <span class="down">-0.3%</span>
+          </div>
+          <div class="idx-roll-item">
+            <span class="idx-lbl">VIX</span>
+            <span class="v down">19.06</span>
+            <span class="down">-1.9%</span>
+          </div>
+          <div class="idx-roll-item">
+            <span class="idx-lbl">공포탐욕</span>
+            <span class="v up">62</span>
+            <span class="up">탐욕 구간</span>
+          </div>
+        </div>
+      </div>
+      <div id="mcap-list" style="margin-top:10px;"></div>
+      <script>
+      function logoFallback(img, domain, initial) {
+        if (!img.dataset.tried) {
+          img.dataset.tried = '1';
+          img.src = 'https://www.google.com/s2/favicons?sz=64&domain=' + domain;
+        } else {
+          img.style.display = 'none';
+          const s = document.createElement('span');
+          s.style.cssText = 'font-size:15px;font-weight:700;color:#fff;';
+          s.textContent = initial;
+          img.parentElement.appendChild(s);
+        }
+      }
+      (function(){
+        const MCAP = [
+          { rank:1,  ticker:'NVDA',   name:'엔비디아',       domain:'nvidia.com',            si:'nvidia/76b900',  flag:'🇺🇸', mcap:'$3.35T', chg:'+2.1%', up:true  },
+          { rank:2,  ticker:'MSFT',   name:'마이크로소프트',  domain:'microsoft.com',         si:'microsoft',      flag:'🇺🇸', mcap:'$3.12T', chg:'-0.4%', up:false },
+          { rank:3,  ticker:'AAPL',   name:'애플',           domain:'apple.com',             si:'apple/ffffff',   flag:'🇺🇸', mcap:'$3.01T', chg:'+0.6%', up:true  },
+          { rank:4,  ticker:'AMZN',   name:'아마존',          domain:'amazon.com',            si:'amazon/ff9900',  flag:'🇺🇸', mcap:'$2.18T', chg:'+1.3%', up:true  },
+          { rank:5,  ticker:'GOOGL',  name:'알파벳',          domain:'google.com',            si:'google',         flag:'🇺🇸', mcap:'$2.03T', chg:'-0.2%', up:false },
+          { rank:6,  ticker:'META',   name:'메타',            domain:'meta.com',              si:'meta/1877f2',    flag:'🇺🇸', mcap:'$1.82T', chg:'+0.9%', up:true  },
+          { rank:7,  ticker:'2222',   name:'사우디 아람코',   domain:'aramco.com',            si:null,             flag:'🇸🇦', mcap:'$1.61T', chg:'-1.1%', up:false },
+          { rank:8,  ticker:'TSM',    name:'TSMC',           domain:'tsmc.com',              si:null,             flag:'🇹🇼', mcap:'$1.09T', chg:'+1.7%', up:true  },
+          { rank:9,  ticker:'AVGO',   name:'브로드컴',        domain:'broadcom.com',          si:null,             flag:'🇺🇸', mcap:'$1.02T', chg:'+0.5%', up:true  },
+          { rank:10, ticker:'TSLA',   name:'테슬라',          domain:'tesla.com',             si:'tesla/cc0000',   flag:'🇺🇸', mcap:'$0.91T', chg:'+3.2%', up:true  },
+          { rank:11, ticker:'WMT',    name:'월마트',          domain:'walmart.com',           si:'walmart/0071ce', flag:'🇺🇸', mcap:'$0.82T', chg:'+0.3%', up:true  },
+          { rank:12, ticker:'JPM',    name:'JP모건',          domain:'jpmorganchase.com',     si:null,             flag:'🇺🇸', mcap:'$0.78T', chg:'-0.5%', up:false },
+          { rank:13, ticker:'LLY',    name:'일라이 릴리',     domain:'lilly.com',             si:null,             flag:'🇺🇸', mcap:'$0.74T', chg:'+1.2%', up:true  },
+          { rank:14, ticker:'BRK.B',  name:'버크셔 해서웨이', domain:'berkshirehathaway.com', si:null,             flag:'🇺🇸', mcap:'$0.71T', chg:'+0.1%', up:true  },
+          { rank:15, ticker:'V',      name:'비자',            domain:'visa.com',              si:'visa/ffffff',    flag:'🇺🇸', mcap:'$0.64T', chg:'+0.4%', up:true  },
+          { rank:16, ticker:'MC.PA',  name:'LVMH',           domain:'lvmh.com',              si:null,             flag:'🇫🇷', mcap:'$0.60T', chg:'-0.8%', up:false },
+          { rank:17, ticker:'XOM',    name:'엑슨모빌',        domain:'exxonmobil.com',        si:null,             flag:'🇺🇸', mcap:'$0.57T', chg:'-1.3%', up:false },
+          { rank:18, ticker:'UNH',    name:'유나이티드헬스',  domain:'unitedhealthgroup.com', si:null,             flag:'🇺🇸', mcap:'$0.54T', chg:'+0.7%', up:true  },
+          { rank:19, ticker:'NVO',    name:'노보 노디스크',   domain:'novonordisk.com',       si:null,             flag:'🇩🇰', mcap:'$0.51T', chg:'-0.3%', up:false },
+          { rank:20, ticker:'005930', name:'삼성전자',         domain:'samsung.com',           si:'samsung/ffffff', flag:'🇰🇷', mcap:'$0.38T', chg:'+1.9%', up:true  },
+        ];
+        const top = parseFloat(MCAP[0].mcap.replace('$','').replace('T',''));
+        const el = document.getElementById('mcap-list');
+        const more = `<div style="border-top:1px solid var(--line);"></div><div class="detail-more" style="font-weight:400;" onclick="toast('전체 시가총액 순위')">순위 더 보기 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>`;
+        el.innerHTML = MCAP.map(d => {
+          const val = parseFloat(d.mcap.replace('$','').replace('T',''));
+          const gap = d.rank === 1
+            ? `<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3c6.svg" style="width:20px;height:20px;animation:trophy-shine 3s ease-in-out infinite;">`
+            : `<div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;text-align:right;">1등주 대비</div>
+               <div style="font-size:13.5px;font-weight:500;color:#fff">-${((top-val)/top*100).toFixed(2)}%</div>`;
+          const rankStyle = d.rank === 1
+            ? `background:var(--surface);border-radius:15.3px;margin:6px 17px;`
+            : '';
+          return `
+          <div class="rank" style="${rankStyle}">
+            <div class="no">${d.rank}</div>
+            <div class="ava" style="background:transparent;width:36px;height:36px;flex:0 0 36px;overflow:visible;">
+              <div style="width:36px;height:36px;border-radius:50%;background:#1e1f24;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+                <img src="${d.si ? `https://cdn.simpleicons.org/${d.si}` : `https://logo.clearbit.com/${d.domain}`}" style="width:22px;height:22px;object-fit:contain;"
+                  onerror="logoFallback(this,'${d.domain}','${d.ticker[0]}')">
+              </div>
+            </div>
+            <div class="info">
+              <div class="nm">${d.name} <span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker}</span></div>
+              <div class="pr"><span>${d.mcap}</span><span class="${d.up?'up':'down'}">${d.chg}</span></div>
+            </div>
+            <div style="text-align:right;flex:none;">${gap}</div>
+          </div>`;
+        }).join('') + more;
+        twemoji && twemoji.parse(el, {folder:'svg',ext:'.svg'});
+        if (window.Iconify) Iconify.scan(el);
+      })();
+      </script>
+    </div>
+  </div>
+
+  <!-- ============ 발견 ============ -->
+  <div class="view active" data-view="발견">
+    <div class="body">
+      <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+      </div>
+      <div class="scr-title">
+        <h2>현재 상태</h2>
+        <div class="idx-roll-wrap" id="main-roll">
+          <div class="idx-roll-item active" data-idx="0">
+            <span class="idx-lbl">나스닥</span>
+            <span class="v up">25,824.30</span>
+            <span class="up">+0.05%</span>
+          </div>
+          <div class="idx-roll-item" data-idx="1">
+            <span class="idx-lbl">S&amp;P 500</span>
+            <span class="v up">7,412.42</span>
+            <span class="up">+0.2%</span>
+          </div>
+          <div class="idx-roll-item" data-idx="2">
+            <span class="idx-lbl">다우존스</span>
+            <span class="v down">43,870.15</span>
+            <span class="down">-0.1%</span>
+          </div>
+        </div>
+      </div>
+      <div class="cat-row">
+        <div class="cat" onclick="toast('리밸런싱')">
+          <div class="circ" style="font-size:18px">⚖️</div>
+          <span>리밸런싱</span>
+        </div>
+        <div class="cat" onclick="toast('말뚝박기')" style="background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6) border-box;border:1.4px solid transparent;">
+          <div class="circ" style="font-size:18px">⚓</div>
+          <span>말뚝박기</span>
+        </div>
+        <div class="cat" onclick="toast('V자반등')">
+          <div class="circ" style="font-size:18px">🚀</div>
+          <span>V자반등</span>
+        </div>
+        <div class="cat" onclick="toast('올인')">
+          <div class="circ" style="font-size:18px">🔥</div>
+          <span>올인</span>
+        </div>
+        <div class="cat" onclick="toast('마삼해제')">
+          <div class="circ" style="font-size:18px">🔓</div>
+          <span>마삼해제</span>
+        </div>
+      </div>
+      <div class="idx-row">
+        <div class="idx-cell">
+          <div style="display:inline-block;background:rgba(240,68,82,.15);color:var(--up);font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.04em;margin-bottom:8px;">CRISIS</div>
+          <div class="txt">이번 달 마삼 2회<br>해제까지 <b style="color:var(--up)">27일</b> 남음</div>
+        </div>
+        <div class="idx-cell" style="padding-top:5px;">
+          <div class="lbl">나스닥</div>
+          <div style="display:flex;align-items:baseline;gap:5px;font-size:13px;font-weight:800;white-space:nowrap;">
+            <span style="font-weight:500;color:#fff;">최고점 대비</span>
+            <span class="down" style="font-weight:700;">-3.21%</span>
+          </div>
+          <div class="txt" style="margin-top:2px">최근 마삼 발생일: <b>6/10</b></div>
+        </div>
+      </div>
+      <div class="ai-banner" onclick="toast('목표 비중')"><div class="inner">
+        <div class="tag">✦ 목표 비중</div>
+        <div class="msg">주식 30%<span style="margin:0 3px;color:#3a3a4a;">|</span>현금 70%</div>
+        <div class="chev">›</div>
+      </div></div>
+      <!-- 주가 구간 헤더: 드롭다운 -->
+      <div style="position:relative;">
+        <div onclick="toggleRangeDropdown()" style="display:inline-flex;align-items:center;gap:10px;padding:22.1px 17px 3.4px;cursor:pointer;user-select:none;">
+          <span id="range-sec-title" style="font-size:18.7px;font-weight:700;letter-spacing:-0.5px;">1등주 주가 구간</span>
+          <span id="range-chevron" style="display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);color:var(--txt-3);transition:transform .2s;flex:none;"><span class="iconify" data-icon="heroicons:chevron-down" data-width="10" data-height="10"></span></span>
+        </div>
+        <div id="range-dropdown" style="display:none;position:absolute;top:100%;left:17px;background:var(--surface-2);border-radius:12px;overflow:hidden;z-index:20;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,.4);">
+          <div id="range-opt-nvda" onclick="selectRange('nvda')" style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:13.5px;font-weight:600;color:#fff;cursor:pointer;border-bottom:1px solid var(--line);">
+            1등주 (NVDA)<span id="range-check-nvda" style="color:var(--blue);font-size:14px;">✓</span>
+          </div>
+          <div id="range-opt-qqq" onclick="selectRange('qqq')" style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:13.5px;font-weight:600;color:var(--txt-3);cursor:pointer;">
+            QQQ<span id="range-check-qqq" style="color:var(--blue);font-size:14px;visibility:hidden;">✓</span>
+          </div>
+        </div>
+      </div>
+      <div id="range-header-info" style="padding:10px 17px 6px;"></div>
+
+      <div class="tabs">
+        <div class="t" onclick="chartTab(this)">최고점</div>
+        <div class="t on" onclick="chartTab(this)">직전고점</div>
+        <div class="t" onclick="chartTab(this)">직접입력</div>
+        <div class="spacer"></div>
+        <div class="pct-tog">
+          <button class="on" onclick="pctToggle(this)">-25%</button>
+          <button onclick="pctToggle(this)">-50%</button>
+        </div>
+      </div>
+      <div id="rankList"></div>
+      <div style="height:10px"></div>
+    </div>
+  </div>
+
+  <!-- ============ 경제지표 ============ -->
+  <div class="view" data-view="피드">
+    <div class="body">
+      <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+      </div>
+      <div class="scr-title">
+        <h2>경제지표</h2>
+      </div>
+
+      <!-- Fear & Greed -->
+      <div style="margin:10px 17px 0;background:var(--surface);border-radius:15.3px;padding:18px 17px;">
+        <div style="font-size:13px;font-weight:700;color:var(--txt-2);margin-bottom:4px;">Fear &amp; Greed Index</div>
+        <div style="display:flex;align-items:baseline;gap:8px;">
+          <span style="font-size:30px;font-weight:800;color:var(--amber);">62</span>
+          <span style="font-size:13px;font-weight:600;color:var(--txt-2);">탐욕 구간</span>
+        </div>
+        <div class="bar">
+          <i class="anim" style="width:62%;background:linear-gradient(90deg,#3182F6,#E84C5A);"></i>
+          <div class="mk anim" style="left:62%;"></div>
+        </div>
+        <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--txt-3);">
+          <span>극도 공포</span><span>중립</span><span>극도 탐욕</span>
+        </div>
+      </div>
+
+      <!-- Row 1: VIX / 시장 심리 -->
+      <div class="idx-row">
+        <div class="idx-cell">
+          <div class="lbl">VIX 변동성</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">안정 구간</span>
+            <span style="font-size:11px;color:var(--txt-3);">19.06</span>
+          </div>
+        </div>
+        <div class="idx-cell">
+          <div class="lbl">시장 심리</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;"><span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">위험선호</span><span style="font-size:11px;color:var(--txt-3);">SPY &gt; MA200</span></div>
+        </div>
+      </div>
+
+      <!-- Row 2: 금리 환경 / 기준금리 -->
+      <div class="idx-row">
+        <div class="idx-cell">
+          <div class="lbl">금리 환경</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">비제로금리</span><span style="font-size:11px;color:var(--txt-3);">DFF &gt; 0.25%</span></div>
+        </div>
+        <div class="idx-cell">
+          <div class="lbl">기준금리 (DFF)</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">4.33%</span>
+            <span style="font-size:11px;color:var(--txt-3);">전월 동결</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- Row 3: 연준 총자산 / 10Y 국채금리 -->
+      <div class="idx-row">
+        <div class="idx-cell">
+          <div class="lbl">연준 총자산</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">$6.72T</span>
+            <span style="font-size:11px;color:var(--txt-3);">QE_OFF · 축소 중</span>
+          </div>
+        </div>
+        <div class="idx-cell">
+          <div class="lbl">미 10Y 국채금리</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">4.51%</span>
+            <span style="font-size:11px;color:var(--txt-3);">+0.04%p ↑</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- PMI -->
+      <div class="idx-row">
+        <div class="idx-cell">
+          <div class="lbl">제조업 PMI</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">48.7</span>
+            <span style="font-size:11px;color:var(--txt-3);">수축 (50 미만)</span>
+          </div>
+        </div>
+        <div class="idx-cell">
+          <div class="lbl">서비스업 PMI</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">53.8</span>
+            <span style="font-size:11px;color:var(--txt-3);">확장 (50 이상)</span>
+          </div>
+        </div>
+      </div>
+      <div class="ai-banner" style="margin-top:8px;" onclick="toast('헤지 배치: TLT')">
+        <div class="inner">
+          <div class="tag">→ 헤지 배치</div>
+          <div class="msg">TLT<span class="n" style="margin-left:6px;">비제로금리 + QE_OFF</span></div>
+          <div class="chev">›</div>
+        </div>
+      </div>
+
+      <!-- 추가 자금 투입 조건 -->
+      <div class="sec-h" style="display:flex;align-items:center;justify-content:space-between;">
+        <span>추가 자금 투입 조건</span>
+        <div id="rsi-tg" style="margin-right:17px;display:flex;background:#1e1e26;border-radius:10px;padding:3px;gap:2px;">
+          <button class="on" onclick="switchRsiTarget('nvda',this)" style="border:none;background:#2e2e3a;color:#f4f5f7;font-family:inherit;font-size:11px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;">1등주</button>
+          <button onclick="switchRsiTarget('qqq',this)" style="border:none;background:none;color:#6b6b7a;font-family:inherit;font-size:11px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;">QQQ</button>
+        </div>
+      </div>
+      <div style="margin:0 17px 2px;padding:3.4px 0 0;font-size:11px;color:var(--txt-3);">RSI14 ≤ 50 AND MFI14 ≤ 50 동시 충족 시 투입</div>
+      <div class="idx-row">
+        <div class="idx-cell">
+          <div class="lbl">RSI 14 · <span id="rsi-ticker">NVDA</span></div>
+          <div class="val" style="align-items:baseline;gap:6px;">
+            <span id="rsi-val" style="font-size:19px;font-weight:800;color:#3182F6;">43.2</span>
+            <span id="rsi-badge" style="font-size:11px;font-weight:700;color:#3182F6;">✓ ≤ 50</span>
+          </div>
+        </div>
+        <div class="idx-cell">
+          <div class="lbl">MFI 14 · <span id="mfi-ticker">NVDA</span></div>
+          <div class="val" style="align-items:baseline;gap:6px;">
+            <span id="mfi-val" style="font-size:19px;font-weight:800;color:var(--up);">62.1</span>
+            <span id="mfi-badge" style="font-size:11px;font-weight:700;color:var(--up);">✗ &gt; 50</span>
+          </div>
+        </div>
+      </div>
+      <div style="margin:4px 17px 0;background:var(--surface);border-radius:13.6px;padding:14px 15px;display:flex;align-items:center;gap:14px;">
+        <div id="rsi-status" style="font-size:12.8px;font-weight:600;color:var(--txt-2);flex:1;">조건 미충족<span style="color:var(--txt-3);font-weight:700;margin-left:6px;">RSI ✓ · MFI ✗</span></div>
+        <span style="color:var(--txt-3);font-size:15.3px;">›</span>
+      </div>
+
+      <!-- 올인 조건 체크리스트 -->
+      <div class="sec-h" style="margin-top:6px;">올인 체크리스트</div>
+      <div style="margin:0 17px 2px;padding:3.4px 0 0;font-size:11px;color:var(--txt-3);">6종 중 1개 충족 시 리밸런싱/말뚝박기 → 전량 올인 전환</div>
+      <div style="margin:8px 17px 0;background:var(--surface);border-radius:13.6px;overflow:hidden;">
+        <!-- 조건 ① -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+          <div>
+            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">한달 +1일 마삼 미발생</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">익월 같은 날 +1일까지 마삼 無 <span style="color:#F7A93B;font-weight:600;">· 공황 기간 시 2달+1일</span></div>
+          </div>
+          <div style="text-align:right;flex:none;margin-left:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">D-12</div>
+          </div>
+        </div>
+        <!-- 조건 ② -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+          <div>
+            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">8거래일 연속 상승</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">나스닥 8일 연속 양봉 마감</div>
+          </div>
+          <div style="text-align:right;flex:none;margin-left:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">현재 3일</div>
+          </div>
+        </div>
+        <!-- 조건 ③ -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+          <div>
+            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">1등주 전고점 돌파</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">NVDA 사상 최고치 상향 돌파</div>
+          </div>
+          <div style="text-align:right;flex:none;margin-left:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">-8.3% 하회</div>
+          </div>
+        </div>
+        <!-- 조건 ④ -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+          <div>
+            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">나스닥 전고 돌파</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">^IXIC 직전 고점 상향 돌파</div>
+          </div>
+          <div style="text-align:right;flex:none;margin-left:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">-12.1% 하회</div>
+          </div>
+        </div>
+        <!-- V자 올인 -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+          <div>
+            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">2구간 V자 반등</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">비제로금리 기준 +10% 회복 · 제로금리 기준 +5% 회복</div>
+          </div>
+          <div style="text-align:right;flex:none;margin-left:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">현재 +3.2%</div>
+          </div>
+        </div>
+        <!-- 긴급 올인 -->
+        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;">
+          <div>
+            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">긴급 올인</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">1등주 고점 대비 -30% 하락</div>
+          </div>
+          <div style="text-align:right;flex:none;margin-left:12px;">
+            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">현재 -18.4%</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="height:20px;"></div>
+    </div>
+  </div>
+
+  <!-- ============ 설정 ============ -->
+  <!-- 관심종목 뷰 (모멘텀 모드) -->
+  <div class="view" data-view="관심종목">
+    <div class="body">
+      <div class="topbar"><div class="left"><div class="strat-tog"><button class="st" onclick="stratToggle(this)">마삼룰</button><button class="st on" onclick="stratToggle(this)">모멘텀</button></div></div>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+      </div>
+      <div class="scr-title" style="margin-top:6px"><h2>관심종목</h2>
+        <div class="idx-roll-wrap" id="fav-roll">
+          <div class="idx-roll-item active">
+            <span class="idx-lbl">달러 환율</span>
+            <span class="v down">1,522.20</span>
+            <span class="down">-0.3%</span>
+          </div>
+          <div class="idx-roll-item">
+            <span class="idx-lbl">VIX</span>
+            <span class="v down">19.06</span>
+            <span class="down">-1.9%</span>
+          </div>
+          <div class="idx-roll-item">
+            <span class="idx-lbl">공포탐욕</span>
+            <span class="v up">62</span>
+            <span class="up">탐욕</span>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI 시그널 배너 -->
+      <div style="margin:14px 0 0;padding:12px 17px 0;background:linear-gradient(180deg,rgba(95,95,230,0) 0%,rgba(95,95,230,.13) 100%);">
+        <div style="display:flex;align-items:center;gap:5px;margin-bottom:7px;">
+          <span style="font-size:13px;font-weight:700;background:linear-gradient(90deg,#7c6dff,#4593FC);-webkit-background-clip:text;background-clip:text;color:transparent;">✦ 모멘텀 시그널</span>
+          <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4593FC" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
+        </div>
+        <div style="font-size:13px;font-weight:500;color:var(--txt);line-height:1.4;padding-bottom:12px;">SPY &lt; MA200 매수 보수화 · 청산 강화 · <span style="color:var(--down);font-weight:600;">RISK OFF</span></div>
+        <div style="height:1px;margin:0 -17px;background:linear-gradient(90deg,rgba(100,115,255,0) 0%,rgba(100,115,255,.55) 50%,rgba(100,115,255,0) 100%);"></div>
+      </div>
+
+      <!-- 관심종목 그룹 필 탭 -->
+      <div style="display:flex;align-items:center;gap:8px;padding:28px 17px 0;">
+        <button onclick="favTab(this)" style="background:var(--surface-2);color:var(--txt);border:none;border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;padding:6px 13px;cursor:pointer;" class="fav-tab-btn on">내 종목</button>
+        <button onclick="favTab(this)" style="background:none;color:var(--txt-3);border:none;border-radius:8px;font-family:inherit;font-size:12px;font-weight:500;padding:6px 8px;cursor:pointer;" class="fav-tab-btn">매도 신호</button>
+      </div>
+
+      <div id="fav-list-momt" style="margin-top:10px;"></div>
+    </div>
+  </div>
+
+  <!-- 모멘텀 뷰 (홈화면) -->
+  <div class="view" data-view="모멘텀">
+    <div class="body">
+      <div class="topbar"><div class="left"><div class="strat-tog"><button class="st" onclick="stratToggle(this)">마삼룰</button><button class="st on" onclick="stratToggle(this)">모멘텀</button></div></div>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+      </div>
+      <div class="scr-title">
+        <h2>종목 선정</h2>
+        <div class="idx-roll-wrap" id="main-roll-momt">
+          <div class="idx-roll-item active" data-idx="0">
+            <span class="idx-lbl">나스닥</span>
+            <span class="v up">25,824.30</span>
+            <span class="up">+0.05%</span>
+          </div>
+          <div class="idx-roll-item" data-idx="1">
+            <span class="idx-lbl">S&amp;P 500</span>
+            <span class="v up">7,412.42</span>
+            <span class="up">+0.2%</span>
+          </div>
+          <div class="idx-roll-item" data-idx="2">
+            <span class="idx-lbl">다우존스</span>
+            <span class="v down">43,870.15</span>
+            <span class="down">-0.1%</span>
+          </div>
+        </div>
+      </div>
+      <div class="cat-row" id="momt-cat-row">
+        <div class="cat momt-cat active-cat" data-filter="전체" onclick="filterMomt(this)">
+          <div class="circ" style="font-size:18px">🌐</div>
+          <span>전체</span>
+        </div>
+        <div class="cat momt-cat" data-filter="강돌파" onclick="filterMomt(this)">
+          <div class="circ" style="font-size:18px">🔥</div>
+          <span>강돌파</span>
+        </div>
+        <div class="cat momt-cat" data-filter="초기추세" onclick="filterMomt(this)">
+          <div class="circ" style="font-size:18px">🔭</div>
+          <span>초기추세</span>
+        </div>
+        <div class="cat momt-cat" data-filter="지지반등" onclick="filterMomt(this)">
+          <div class="circ" style="font-size:18px">🛡️</div>
+          <span>지지반등</span>
+        </div>
+        <div class="cat momt-cat" data-filter="추세탈락" onclick="filterMomt(this)">
+          <div class="circ" style="font-size:18px">⚠️</div>
+          <span>추세탈락</span>
+        </div>
+      </div>
+      <div id="mcap-list-momt" style="margin-top:10px;"></div>
+      <script>
+      const MCAP2 = [
+        { rank:1,  ticker:'NVDA',  name:'엔비디아',      domain:'nvidia.com',   si:'nvidia/76b900', flag:'🇺🇸', rs:94, vol:'2.4x', score:91, signal:'강돌파',  weight:30, gap50:+5.2 },
+        { rank:2,  ticker:'TSLA',  name:'테슬라',        domain:'tesla.com',    si:'tesla/cc0000',  flag:'🇺🇸', rs:91, vol:'3.1x', score:89, signal:'강돌파',  weight:25, gap50:+3.8 },
+        { rank:3,  ticker:'TSM',   name:'TSMC',          domain:'tsmc.com',     si:null,            flag:'🇹🇼', rs:86, vol:'2.1x', score:88, signal:'초기추세', weight:20, gap50:+1.4 },
+        { rank:4,  ticker:'META',  name:'메타',           domain:'meta.com',     si:'meta/1877f2',   flag:'🇺🇸', rs:88, vol:'1.3x', score:85, signal:'강돌파',  weight:20, gap50:+4.6 },
+        { rank:5,  ticker:'AMZN',  name:'아마존',         domain:'amazon.com',   si:'amazon/ff9900', flag:'🇺🇸', rs:83, vol:'1.7x', score:81, signal:'초기추세', weight:15, gap50:+2.1 },
+        { rank:6,  ticker:'AVGO',  name:'브로드컴',       domain:'broadcom.com', si:null,            flag:'🇺🇸', rs:79, vol:'1.2x', score:74, signal:'지지반등', weight:15, gap50:+0.8 },
+        { rank:7,  ticker:'MSFT',  name:'마이크로소프트', domain:'microsoft.com',si:'microsoft',     flag:'🇺🇸', rs:78, vol:'0.8x', score:72, signal:'지지반등', weight:10, gap50:+1.1 },
+        { rank:8,  ticker:'LLY',   name:'일라이 릴리',    domain:'lilly.com',    si:null,            flag:'🇺🇸', rs:74, vol:'1.5x', score:71, signal:'초기추세', weight:10, gap50:+1.9 },
+        { rank:9,  ticker:'AAPL',  name:'애플',           domain:'apple.com',    si:'apple/ffffff',  flag:'🇺🇸', rs:71, vol:'1.1x', score:68, signal:'지지반등', weight:10, gap50:+0.5 },
+        { rank:10, ticker:'V',     name:'비자',           domain:'visa.com',     si:'visa/ffffff',   flag:'🇺🇸', rs:67, vol:'1.0x', score:63, signal:'초기추세', weight:10, gap50:+2.7 },
+        { rank:11, ticker:'GOOGL', name:'알파벳',         domain:'google.com',   si:'google',        flag:'🇺🇸', rs:65, vol:'0.9x', score:60, signal:'추세탈락', weight:0,  gap50:-1.8 },
+        { rank:12, ticker:'UNH',   name:'유나이티드헬스', domain:'unitedhealthgroup.com', si:null,   flag:'🇺🇸', rs:60, vol:'1.1x', score:55, signal:'추세탈락', weight:0,  gap50:-3.2 },
+      ];
+      const momtFavSet = new Set(['NVDA','TSM','AVGO','GOOGL']);
+
+      function momtHeartFill(ticker){ return momtFavSet.has(ticker) ? '#E84C5A' : '#3a3a42'; }
+
+      const SIGNAL_TO_ACTION = {
+        '강돌파':  { label:'적극매수', bg:'rgba(240,68,82,.15)',  color:'var(--up)' },
+        '초기추세': { label:'매수',    bg:'rgba(234,179,8,.15)',  color:'#EAB308' },
+        '지지반등': { label:'보유',    bg:'rgba(61,200,169,.15)', color:'#3fc8a9' },
+        '추세탈락': { label:'매도',    bg:'rgba(69,147,252,.15)', color:'var(--down)' },
+      };
+
+      function momtRankCard(d, idx, watchlist) {
+        const fav = momtFavSet.has(d.ticker);
+        const heartColor = fav ? '#E84C5A' : '#3a3a42';
+        const no = (idx !== undefined) ? idx + 1 : d.rank;
+        const badge = watchlist && SIGNAL_TO_ACTION[d.signal]
+          ? SIGNAL_TO_ACTION[d.signal]
+          : { label: d.signal,
+              bg: d.signal==='강돌파'?'rgba(240,68,82,.15)':d.signal==='초기추세'?'rgba(234,179,8,.15)':d.signal==='추세탈락'?'rgba(69,147,252,.15)':'rgba(61,200,169,.15)',
+              color: d.signal==='강돌파'?'var(--up)':d.signal==='초기추세'?'#EAB308':d.signal==='추세탈락'?'var(--down)':'#3fc8a9' };
+        return `
+        <div class="rank">
+          <div class="no">${no}</div>
+          <div class="ava" style="background:transparent;width:36px;height:36px;flex:0 0 36px;overflow:visible;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#1e1f24;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+              <img src="${d.si ? `https://cdn.simpleicons.org/${d.si}` : `https://logo.clearbit.com/${d.domain}`}" style="width:22px;height:22px;object-fit:contain;"
+                onerror="logoFallback(this,'${d.domain}','${d.ticker[0]}')">
+            </div>
+          </div>
+          <div class="info">
+            <div class="nm">${d.name} <span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker}</span></div>
+            <div class="pr"><span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:${badge.bg};color:${badge.color};">${badge.label}</span><span style="color:#f4f5f7;">RS ${d.rs}</span><span style="color:var(--txt-3);">${watchlist ? `MA50 ${d.gap50>=0?'+':''}${d.gap50}%` : `거래량 ${d.vol}`}</span></div>
+          </div>
+          <div style="text-align:right;flex:none;">
+            <div style="display:flex;align-items:center;gap:12px;">
+              <div style="text-align:right;">
+                ${watchlist
+                  ? `<div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">추천 비중</div>
+                     <div style="font-size:16.5px;font-weight:700;color:#f4f5f7;display:flex;align-items:baseline;"><span class="fav-weight-num" data-weight="${d.weight}">${d.weight}</span><span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:3px;">%</span></div>`
+                  : `<div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">MA50</div>
+                     <div style="font-size:14px;font-weight:700;color:#f4f5f7;">${d.gap50>=0?'+':''}${d.gap50}<span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:3px;">%</span></div>`
+                }
+              </div>
+              <button data-ticker="${d.ticker}" onclick="toggleMomtHeart(this,event)" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;">
+                <svg viewBox="0 0 24 24" width="18" height="18" fill="${heartColor}" stroke="${heartColor}" stroke-width="1.5"><path d="M12 21C12 21 3 14.5 3 8.5C3 5.42 5.42 3 8.5 3C10.24 3 11.91 3.81 13 5.08C14.09 3.81 15.76 3 17.5 3C20.58 3 23 5.42 23 8.5C23 14.5 12 21 12 21Z" stroke-linejoin="round"/></svg>
+              </button>
+            </div>
+          </div>
+        </div>`;
+      }
+
+      function renderMomtList(filter) {
+        const el2 = document.getElementById('mcap-list-momt');
+        const more2 = `<div style="border-top:1px solid var(--line);"></div><div class="detail-more" style="font-weight:400;" onclick="toast('전체 목록')">더 보기 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>`;
+        const list = filter === '전체' ? MCAP2 : MCAP2.filter(d => d.signal === filter);
+        el2.innerHTML = list.map((d, i) => momtRankCard(d, i, false)).join('') + more2;
+        twemoji && twemoji.parse(el2, {folder:'svg',ext:'.svg'});
+        if (window.Iconify) Iconify.scan(el2);
+      }
+
+      function renderFavList(mode) {
+        const el = document.getElementById('fav-list-momt');
+        if (!el) return;
+        const favMode = mode || window._favTabMode || '내 종목';
+        const all = MCAP2.filter(d => momtFavSet.has(d.ticker));
+        const list = favMode === '매도 신호'
+          ? all.filter(d => d.signal === '추세탈락')
+          : all.filter(d => d.signal !== '추세탈락');
+        if (list.length === 0) {
+          const isSell = favMode === '매도 신호';
+          el.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px 40px;text-align:center;">
+            <div style="font-size:64px;margin-bottom:24px;">${isSell ? '✅' : '🔍'}</div>
+            <div style="font-size:16px;font-weight:600;line-height:1.3;margin-bottom:6px;">${isSell ? '매도 신호 종목이 없어요' : '관심 종목을 추가해보세요'}</div>
+            <div style="font-size:13px;color:var(--txt-3);margin-bottom:24px;">${isSell ? '추세탈락 종목이 없습니다.' : '아직 추가한 종목이 없어요.'}</div>
+            ${isSell ? '' : `<button onclick="go('모멘텀')" style="background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;padding:10px 24px;cursor:pointer;">찾아보기</button>`}
+          </div>`;
+          return;
+        }
+        const totalWeight = list.reduce((s, d) => s + (d.weight || 0), 0);
+        const cashWeight = Math.max(0, 100 - totalWeight);
+        const cashCard = `
+        <div class="rank" style="background:var(--surface);border-radius:15.3px;margin:6px 17px;padding-left:27px;">
+          <div class="ava" style="background:#2c2c3a;border:1.5px solid #3a3a4a;width:34px;height:34px;flex:0 0 34px;">
+            <span class="iconify" data-icon="bxs:dollar-circle" data-width="23" data-height="23" style="color:#a0c878;"></span>
+          </div>
+          <div class="info">
+            <div class="nm">현금<span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:4px;">CASH</span></div>
+            <div class="pr"><span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(155,155,155,.15);color:var(--txt-2);">안전자산</span></div>
+          </div>
+          <div style="text-align:left;flex:none;">
+            <div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">추천 비중</div>
+            <div style="font-size:16.5px;font-weight:700;color:#f4f5f7;display:flex;align-items:baseline;"><span class="fav-weight-num" data-weight="${cashWeight}">${cashWeight}</span><span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:3px;">%</span></div>
+          </div>
+          <div style="flex:0 0 7px;"></div>
+        </div>`;
+        el.innerHTML = list.map((d, i) => momtRankCard(d, i, true)).join('') + (favMode === '내 종목' ? cashCard : '');
+        twemoji && twemoji.parse(el, {folder:'svg',ext:'.svg'});
+        if (window.Iconify) Iconify.scan(el);
+        el.querySelectorAll('.fav-weight-num').forEach((span, i) => {
+          const target = parseInt(span.dataset.weight) || 0;
+          span.textContent = '0';
+          setTimeout(() => {
+            const duration = 750;
+            const start = performance.now();
+            function step(now) {
+              const t = Math.min((now - start) / duration, 1);
+              const ease = 1 - Math.pow(1 - t, 4);
+              span.textContent = Math.round(ease * target);
+              if (t < 1) requestAnimationFrame(step);
+            }
+            requestAnimationFrame(step);
+          }, i * 120);
+        });
+      }
+
+      window.toggleMomtHeart = function(btn, e) {
+        e.stopPropagation();
+        const ticker = btn.dataset.ticker;
+        if (momtFavSet.has(ticker)) {
+          momtFavSet.delete(ticker);
+          toast('관심 해제');
+        } else {
+          momtFavSet.add(ticker);
+          toast('관심 종목 추가');
+        }
+        // 모든 하트 버튼 상태 동기화
+        document.querySelectorAll(`button[data-ticker="${ticker}"]`).forEach(b => {
+          const svg = b.querySelector('svg');
+          const c = momtFavSet.has(ticker) ? '#E84C5A' : '#3a3a42';
+          svg.setAttribute('fill', c);
+          svg.setAttribute('stroke', c);
+        });
+        renderFavList();
+      };
+
+      window.favTab = function(el) {
+        document.querySelectorAll('.fav-tab-btn').forEach(b => {
+          b.style.background = 'none';
+          b.style.padding = '6px 8px';
+          b.style.color = 'var(--txt-3)';
+          b.style.fontWeight = '500';
+          b.classList.remove('on');
+        });
+        el.style.background = 'var(--surface-2)';
+        el.style.padding = '6px 13px';
+        el.style.color = 'var(--txt)';
+        el.style.fontWeight = '600';
+        el.classList.add('on');
+        window._favTabMode = el.textContent.trim();
+        renderFavList(window._favTabMode);
+      };
+
+      window.filterMomt = function(el) {
+        document.querySelectorAll('.momt-cat').forEach(c => c.classList.remove('active-cat'));
+        el.classList.add('active-cat');
+        renderMomtList(el.dataset.filter);
+      };
+
+      renderMomtList('전체');
+      renderFavList();
+      </script>
+    </div>
+  </div>
+
+  <div class="view" data-view="설정">
+    <div class="body">
+      <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+      </div>
+      <div class="scr-title" style="margin-top:6px"><h2>설정</h2></div>
+
+      <div class="sec-h" style="font-size:15px;padding-top:16px">레짐 모드</div>
+      <div style="padding:0 17px">
+        <div class="srow">
+          <div class="sk">RISK_OFF 대응<s>하락장 시 공격형 매수 전략 비활성화</s></div>
+          <div class="tg"><button class="on" onclick="tog(this)">진입 차단</button><button onclick="tog(this)">조건 강화</button></div>
+        </div>
+      </div>
+
+      <div class="sec-h" style="font-size:15px;padding-top:16px">매수 파라미터</div>
+      <div style="padding:0 17px">
+        <div class="srow"><div class="sk">MA50 초과 이격 상한<s>overshoot_max</s></div><div class="sv">7%</div></div>
+        <div class="srow"><div class="sk">거래량 배수<s>vol_mult</s></div><div class="sv">1.5x</div></div>
+        <div class="srow"><div class="sk">초기추세 최소 RS<s>rs_early_th</s></div><div class="sv">80</div></div>
+        <div class="srow"><div class="sk">신고가 기준 기간<s>breakout_high_lookback</s></div><div class="sv">20일</div></div>
+      </div>
+
+      <div class="sec-h" style="font-size:15px;padding-top:16px">매도 파라미터</div>
+      <div style="padding:0 17px">
+        <div class="srow"><div class="sk">MA50 이탈 → 매도 판정 기간<s>consec_below_sell</s></div><div class="sv">2일</div></div>
+        <div class="srow"><div class="sk">HOLD-WATCH 최대 유지 기간<s>max_hold_watch_days</s></div><div class="sv">5일</div></div>
+        <div class="srow"><div class="sk">종목당 리스크 비율<s>risk_per_trade</s></div><div class="sv">10%</div></div>
+      </div>
+
+      <div style="height:20px;"></div>
+    </div>
+  </div>
+
+  <div class="toast" id="toast"></div>
+
+
+  <div class="tabbar">
+    <div class="navset">
+      <div class="navi on" id="nav-home" data-nav="발견" onclick="go(this.dataset.nav)">
+        <span class="iconify" id="nav-home-icon" data-icon="bxs:pie-chart-alt-2" data-width="24" data-height="24"></span><span id="nav-home-label">보유 비중</span></div>
+      <div class="navi" id="nav-2nd" data-nav="관심" onclick="go(this.dataset.nav)">
+        <span class="iconify" id="nav-2nd-icon" data-icon="bxs:bar-chart-square" data-width="24" data-height="24"></span><span id="nav-2nd-label">시가총액</span></div>
+      <div class="navi" data-nav="피드" onclick="go('피드')">
+        <span class="iconify" data-icon="bxs:bank" data-width="24" data-height="24"></span>경제지표</div>
+      <div class="navi" data-nav="설정" onclick="go('설정')">
+        <span class="iconify" data-icon="bxs:cog" data-width="24" data-height="24"></span>설정</div>
+    </div>
+  </div>
+</div>
+
+<script>
+
+  const heartFilled='#E84C5A', heartEmpty='#3a3a42';
+  const heartPath='<path d="M12 21s-7-4.5-9.3-8.8C1 8.6 3 5 6.5 5 8.8 5 10.5 6.6 12 8.2 13.5 6.6 15.2 5 17.5 5 21 5 23 8.6 21.3 12.2 19 16.5 12 21 12 21z"/>';
+
+  const DATA={
+    '거래대금':[
+      {n:1,sym:'SOXL',badge:'3x',bg:'#F0A92B',c:'#1a1a1a',pr:'352,355원',chg:'+3.0%',up:1,fav:0,hot:1},
+      {n:2,sym:'MUU',badge:'2x',bg:'#5A6172',c:'#cfd3da',pr:'1,308,639원',chg:'+0.03%',up:1,fav:0},
+      {n:3,sym:'루비코',badge:'◈',bg:'#F2EFE6',c:'#caa84a',pr:'1,470원',chg:'+55.2%',up:1,fav:0},
+      {n:4,sym:'SNXX',badge:'2x',bg:'#E8412E',c:'#fff',pr:'54,681원',chg:'+11.0%',up:1,fav:0},
+      {n:5,sym:'SOXS',badge:'인버스3x',bg:'#F0A92B',c:'#1a1a1a',pr:'7,314원',chg:'-3.6%',up:0,fav:0},
+    ],
+    '거래량':[
+      {n:1,sym:'루비코',badge:'◈',bg:'#F2EFE6',c:'#caa84a',pr:'1,470원',chg:'+55.2%',up:1,fav:0},
+      {n:2,sym:'SOXL',badge:'3x',bg:'#F0A92B',c:'#1a1a1a',pr:'352,355원',chg:'+3.0%',up:1,fav:0},
+      {n:3,sym:'SNXX',badge:'2x',bg:'#E8412E',c:'#fff',pr:'54,681원',chg:'+11.0%',up:1,fav:0},
+      {n:4,sym:'SOXS',badge:'인버스3x',bg:'#F0A92B',c:'#1a1a1a',pr:'7,314원',chg:'-3.6%',up:0,fav:0},
+      {n:5,sym:'MUU',badge:'2x',bg:'#5A6172',c:'#cfd3da',pr:'1,308,639원',chg:'+0.03%',up:1,fav:0},
+    ],
+    '급상승':[
+      {n:1,sym:'루비코',badge:'◈',bg:'#F2EFE6',c:'#caa84a',pr:'1,470원',chg:'+55.2%',up:1,fav:0},
+      {n:2,sym:'SNXX',badge:'2x',bg:'#E8412E',c:'#fff',pr:'54,681원',chg:'+11.0%',up:1,fav:0},
+      {n:3,sym:'SOXL',badge:'3x',bg:'#F0A92B',c:'#1a1a1a',pr:'352,355원',chg:'+3.0%',up:1,fav:0},
+      {n:4,sym:'엔비디아',badge:'',bg:'#76B900',c:'#fff',pr:'298,400원',chg:'+2.1%',up:1,fav:0},
+      {n:5,sym:'MUU',badge:'2x',bg:'#5A6172',c:'#cfd3da',pr:'1,308,639원',chg:'+0.03%',up:1,fav:0},
+    ],
+    '급하락':[
+      {n:1,sym:'SOXS',badge:'인버스3x',bg:'#F0A92B',c:'#1a1a1a',pr:'7,314원',chg:'-3.6%',up:0,fav:0},
+      {n:2,sym:'SQQQ',badge:'인버스3x',bg:'#3A3F4A',c:'#cfd3da',pr:'18,920원',chg:'-2.4%',up:0,fav:0},
+      {n:3,sym:'마이크로소프트',badge:'',bg:'#00A4EF',c:'#fff',pr:'612,300원',chg:'-3.0%',up:0,fav:0},
+      {n:4,sym:'팔란티어',badge:'',bg:'#101113',c:'#fff',pr:'241,800원',chg:'-1.8%',up:0,fav:0},
+      {n:5,sym:'MUU',badge:'2x',bg:'#5A6172',c:'#cfd3da',pr:'1,308,639원',chg:'-0.5%',up:0,fav:0},
+    ],
+    '인기':[
+      {n:1,sym:'테슬라',badge:'',bg:'#E31937',c:'#fff',pr:'604,000원',chg:'+1.4%',up:1,fav:1},
+      {n:2,sym:'SOXL',badge:'3x',bg:'#F0A92B',c:'#1a1a1a',pr:'352,355원',chg:'+3.0%',up:1,fav:0,hot:1},
+      {n:3,sym:'엔비디아',badge:'',bg:'#76B900',c:'#fff',pr:'298,400원',chg:'+2.1%',up:1,fav:0},
+      {n:4,sym:'애플',badge:'',bg:'#A3AAAE',c:'#fff',pr:'331,200원',chg:'+0.6%',up:1,fav:0},
+      {n:5,sym:'루비코',badge:'◈',bg:'#F2EFE6',c:'#caa84a',pr:'1,470원',chg:'+55.2%',up:1,fav:0},
+    ],
+  };
+
+  function renderRanks(tab, insertAfter){
+    const wrap=document.getElementById('rankList'); wrap.innerHTML='';
+    DATA[tab].forEach((it, idx)=>{
+      const badge=it.badge.includes('인버스')
+        ?'<span style="font-size:10px;line-height:1.05;text-align:center">인버스<br>3x</span>':it.badge;
+      const row=document.createElement('div'); row.className='rank';
+      row.onclick=(e)=>{ if(!e.target.closest('.heart')) toast(it.sym+' 상세'); };
+      row.innerHTML=`<div class="no">${it.n}</div>
+        <div class="ava" style="background:${it.bg};color:${it.c}">${badge}<div class="mf">🇺🇸</div></div>
+        <div class="info"><div class="nm">${it.sym}</div>
+          <div class="pr"><b>${it.pr}</b><span class="${it.up?'up':'down'}">${it.chg}</span></div></div>
+        <div class="heart" onclick="toggleHeart(this,event)">
+          <svg viewBox="0 0 24 24" fill="${it.fav?heartFilled:heartEmpty}">${heartPath}</svg></div>`;
+      wrap.appendChild(row);
+      if(insertAfter !== undefined && idx === insertAfter - 1){
+        const ins=document.createElement('div'); ins.className='insert'; ins.onclick=()=>go('피드');
+        ins.innerHTML=`<div class="fire">🔥</div>
+          <div class="it"><div class="a">사람들이 많이 얘기하고 있어요</div><div class="b">커뮤니티 새 글 급상승</div></div>
+          <div class="chev">›</div>`;
+        wrap.appendChild(ins);
+      }
+    });
+  }
+  function chartTab(el){
+    el.parentNode.querySelectorAll('.t').forEach(t=>t.classList.remove('on'));
+    el.classList.add('on');
+    rangeBase = el.textContent.trim();
+    renderRangeTable();
+  }
+  function toggleHeart(el,e){
+    e.stopPropagation();
+    const svg=el.querySelector('svg');
+    const filled=svg.getAttribute('fill')===heartFilled;
+    svg.setAttribute('fill',filled?heartEmpty:heartFilled);
+    toast(filled?'관심 해제':'관심 종목 추가');
+  }
+  let hist=['발견'];
+  function go(name){ if(hist[hist.length-1]!==name) hist.push(name); show(name); }
+  function goBack(){ if(hist.length>1){ hist.pop(); show(hist[hist.length-1]); } else toast('이전 화면이 없어요'); }
+  function show(name){
+    document.querySelectorAll('.view').forEach(v=>v.classList.toggle('active',v.dataset.view===name));
+    document.querySelectorAll('.navi').forEach(n=>n.classList.toggle('on',n.dataset.nav===name));
+    if(name==='관심종목' && typeof renderFavList==='function') renderFavList();
+    setTimeout(()=>{
+      document.querySelectorAll('.view.active .strat-tog').forEach(tog=>{
+        const thumb = tog.querySelector('.thumb');
+        const btns = tog.querySelectorAll('.st');
+        const idx = currentMode === '모멘텀' ? 1 : 0;
+        btns.forEach(b=>b.classList.remove('on'));
+        btns[idx]?.classList.add('on');
+        // 전환된 뷰에서는 애니메이션 없이 즉시 위치 설정
+        if(thumb) thumb.style.transition = 'none';
+        moveThumb(tog);
+        if(thumb) requestAnimationFrame(()=>{ thumb.style.transition = ''; });
+      });
+    }, 0);
+  }
+  function pill(el){
+    el.parentNode.querySelectorAll('.pt').forEach(p=>{p.classList.remove('on');p.classList.remove('pill');});
+    el.classList.add('on');
+    if(el.textContent.trim()==='최근 본') el.classList.add('pill');
+    toast(el.textContent.trim());
+  }
+  function seg(el){ el.parentNode.querySelectorAll('span').forEach(s=>s.classList.remove('on')); el.classList.add('on'); }
+  function closePromo(e){ e.stopPropagation(); document.getElementById('promo').classList.add('hide'); }
+  let toastTimer;
+  function toast(msg){
+    const t=document.getElementById('toast'); t.textContent=msg; t.classList.add('show');
+    clearTimeout(toastTimer); toastTimer=setTimeout(()=>t.classList.remove('show'),1400);
+  }
+  // 주가 구간 테이블
+  let rangeBase = '직전고점';
+  let rangePctMode = 25;
+  let customBasePrice = 160.00;
+  let rangeTarget = 'nvda';
+
+  const RANGE_DATA = {
+    nvda: {
+      name: '엔비디아', domain: 'nvidia.com', initial: 'N',
+      demos: { '최고점': 479.86, '직전고점': 155.00 },
+      cur: '131.38', curFrom: '131.21',
+      high: '479.86', highFrom: '479.50',
+      low: '321.44', lowFrom: '321.70',
+    },
+    qqq: {
+      name: 'QQQ', domain: 'invesco.com', initial: 'Q',
+      demos: { '최고점': 538.29, '직전고점': 510.00 },
+      cur: '484.22', curFrom: '483.10',
+      high: '538.29', highFrom: '537.80',
+      low: '479.50', lowFrom: '480.20',
+    }
+  };
+
+  let rangeDropdownOpen = false;
+  function toggleRangeDropdown() {
+    rangeDropdownOpen = !rangeDropdownOpen;
+    document.getElementById('range-dropdown').style.display = rangeDropdownOpen ? 'block' : 'none';
+    document.getElementById('range-chevron').style.transform = rangeDropdownOpen ? 'rotate(180deg)' : '';
+  }
+  function selectRange(target) {
+    rangeTarget = target;
+    rangeDropdownOpen = false;
+    document.getElementById('range-dropdown').style.display = 'none';
+    document.getElementById('range-chevron').style.transform = '';
+    document.getElementById('range-sec-title').textContent = target === 'nvda' ? '1등주 주가 구간' : 'QQQ 주가 구간';
+    document.getElementById('range-check-nvda').style.visibility = target === 'nvda' ? 'visible' : 'hidden';
+    document.getElementById('range-check-qqq').style.visibility = target === 'qqq' ? 'visible' : 'hidden';
+    document.getElementById('range-opt-nvda').style.color = target === 'nvda' ? '#fff' : 'var(--txt-3)';
+    document.getElementById('range-opt-qqq').style.color = target === 'qqq' ? '#fff' : 'var(--txt-3)';
+    if (rangeBase === '직접입력') customBasePrice = target === 'nvda' ? 160.00 : 500.00;
+    renderRangeHeader();
+    renderRangeTable();
+  }
+
+  function renderRangeHeader() {
+    const d = RANGE_DATA[rangeTarget];
+    document.getElementById('range-header-info').innerHTML = `
+      <div style="display:flex;align-items:center;justify-content:space-between;">
+        <div style="display:flex;align-items:center;gap:9px;">
+          <div style="width:34px;height:34px;border-radius:50%;background:#1a1a2e;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none;">
+            ${rangeTarget === 'nvda'
+              ? `<img src="https://cdn.simpleicons.org/nvidia/76b900" style="width:20px;height:20px;object-fit:contain;" onerror="logoFallback(this,'nvidia.com','N')">`
+              : `<span style="font-size:11px;font-weight:800;color:#5ebaff;letter-spacing:-.02em;">QQQ</span>`
+            }
+          </div>
+          <div>
+            <div style="font-size:11px;font-weight:500;color:var(--txt-3);margin-bottom:5px;">${d.name} 현재가</div>
+            <div id="price-current" style="display:flex;align-items:baseline;font-size:13px;font-weight:600;color:#fff;"></div>
+          </div>
+        </div>
+        <div style="display:flex;align-items:center;">
+          <div style="text-align:right;padding-right:13px;">
+            <div style="font-size:11px;font-weight:500;color:var(--txt-3);margin-bottom:5px;">최고점</div>
+            <div id="price-high" style="display:flex;align-items:baseline;font-size:13px;font-weight:600;color:#fff;"></div>
+          </div>
+          <div style="border-left:1px solid var(--line);padding-left:13px;text-align:right;">
+            <div style="font-size:11px;font-weight:500;color:var(--txt-3);margin-bottom:5px;">장중 저가</div>
+            <div id="price-low" style="display:flex;align-items:baseline;font-size:13px;font-weight:600;color:#fff;"></div>
+          </div>
+        </div>
+      </div>`;
+    initPriceRoll('price-current', d.curFrom, d.cur);
+    initPriceRoll('price-high',    d.highFrom, d.high);
+    initPriceRoll('price-low',     d.lowFrom,  d.low);
+  }
+
+  function renderRangeTable() {
+    const d = RANGE_DATA[rangeTarget];
+    const RANGE_CUR = parseFloat(d.cur);
+    const isCustom = rangeBase === '직접입력';
+    const base = isCustom ? customBasePrice : (d.demos[rangeBase] || d.demos['최고점']);
+    const step = rangePctMode === 25 ? 0.025 : 0.05;
+
+    let curZone = 0;
+    for (let i = 1; i <= 10; i++) {
+      if (RANGE_CUR <= base * (1 - step * i)) curZone = i;
+    }
+
+    const col = (txt, cls) => `<span class="${cls}">${txt}</span>`;
+
+    const basePriceCell = isCustom
+      ? `<span class="rt-col-price" style="display:flex;align-items:center;gap:6px;">
+          <span style="font-size:13px;font-weight:500;color:var(--txt-3)">$</span>
+          <input type="text" inputmode="decimal" value="${customBasePrice.toFixed(2)}"
+            style="background:transparent;border:none;border-bottom:1.5px solid var(--line);padding:1px 2px;font-size:13px;font-weight:500;color:#fff;outline:none;font-family:inherit;width:62px;"
+            oninput="customBasePrice=parseFloat(this.value)||160;"
+            onkeydown="if(event.key==='Enter'){customBasePrice=parseFloat(this.value)||160;renderRangeTable();}">
+          <button onclick="customBasePrice=parseFloat(this.previousElementSibling.value)||160;renderRangeTable();"
+            style="background:var(--blue);border:none;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;flex:none;">저장</button>
+        </span>`
+      : `<span class="rt-col-price" style="font-size:13px;font-weight:500;color:var(--txt)">$${base.toFixed(2)}</span>`;
+
+    let html = `<div class="rt-head">
+      <span class="rt-col-zone" style="font-size:11px;font-weight:500;color:var(--txt-3)">구간</span>
+      <span class="rt-col-price" style="font-size:11px;font-weight:500;color:var(--txt-3)">주가</span>
+      <span class="rt-col-stock" style="font-size:11px;font-weight:500;color:var(--txt-3)">주식</span>
+      <span class="rt-col-cash" style="font-size:11px;font-weight:500;color:var(--txt-3)">현금</span>
+      <span class="rt-col-status"></span>
+    </div>`;
+
+    // 기준 행
+    html += `<div class="rt-row">
+      <span class="rt-col-zone" style="color:var(--txt);font-size:11px">기준</span>
+      ${basePriceCell}
+      <span class="rt-col-stock" style="color:var(--txt-3)">0%</span>
+      <span class="rt-col-cash" style="color:var(--txt-3)">100%</span>
+      <span class="rt-col-status"><span class="rt-done"><span class="iconify" data-icon="heroicons:check" data-width="13" data-height="13"></span></span>
+    </div>`;
+
+    for (let i = 1; i <= 10; i++) {
+      const threshold = base * (1 - step * i);
+      const pct = (step * i * 100).toFixed(1);
+      const stock = i * 10;
+      const done = i < curZone, cur = i === curZone;
+      const zCol = cur ? 'var(--blue)' : done ? 'var(--txt)' : 'var(--txt-3)';
+      const sText = cur
+        ? '<span class="rt-ping"><span class="dot"></span></span>'
+        : done ? '<span class="rt-done"><span class="iconify" data-icon="heroicons:check" data-width="13" data-height="13"></span></span>'
+        : '<span class="rt-none"></span>';
+      const sCol = cur ? 'var(--blue)' : done ? 'var(--green)' : 'var(--txt-3)';
+      const priceCol = (done || cur) ? 'var(--txt)' : 'var(--txt-3)';
+      const pctCol = cur ? 'var(--blue)' : done ? 'var(--txt)' : 'var(--txt-3)';
+
+      html += `<div class="rt-row${cur?' rt-cur':''}">
+        <span class="rt-col-zone" style="color:${zCol}">${i}</span>
+        <span class="rt-col-price">
+          <div style="font-size:13px;font-weight:500;color:${priceCol}">$${threshold.toFixed(2)}</div>
+          <div style="font-size:11px;color:var(--txt-3);margin-top:2px">-${pct}%</div>
+        </span>
+        <span class="rt-col-stock" style="color:${pctCol}">${stock}%</span>
+        <span class="rt-col-cash" style="color:${pctCol}">${100 - stock}%</span>
+        <span class="rt-col-status" style="color:${sCol}">${sText}</span>
+      </div>`;
+    }
+
+    const el = document.getElementById('rankList');
+    el.innerHTML = html;
+    if (window.Iconify) Iconify.scan(el);
+  }
+
+  renderRangeHeader();
+  renderRangeTable();
+  twemoji.parse(document.body, { folder:'svg', ext:'.svg' });
+
+  // 자릿수별 슬롯 롤링
+  function buildDigitRoll(el, fromVal, toVal) {
+    const from = fromVal.split('');
+    const to   = toVal.split('');
+    el.innerHTML = '';
+    // 자릿수 개수 맞추기
+    while (from.length < to.length) from.unshift('0');
+    to.forEach((ch, i) => {
+      if (ch === ',' || ch === '.') {
+        const sep = document.createElement('span');
+        sep.textContent = ch;
+        sep.style.cssText = 'line-height:1.25em;';
+        el.appendChild(sep);
+        return;
+      }
+      const fCh = from[i] || '0';
+      const slot = document.createElement('span');
+      slot.className = 'digit-slot';
+      const track = document.createElement('span');
+      track.className = 'digit-track';
+      // 이전 숫자 → 현재 숫자 나열
+      const prev = document.createElement('span'); prev.textContent = fCh;
+      const curr = document.createElement('span'); curr.textContent = ch;
+      track.appendChild(prev);
+      track.appendChild(curr);
+      slot.appendChild(track);
+      el.appendChild(slot);
+      // 자릿수마다 다른 속도 (앞자리일수록 느리게)
+      const duration = 0.4 + (to.length - i) * 0.18;
+      const delay    = i * 0.06;
+      track.style.transform = 'translateY(-50%)';
+      track.style.transition = `transform ${duration.toFixed(2)}s cubic-bezier(.22,.61,.36,1) ${delay.toFixed(2)}s`;
+      requestAnimationFrame(() => requestAnimationFrame(() => {
+        track.style.transform = 'translateY(0%)';
+      }));
+    });
+  }
+  function startRoll(wrap, interval) {
+    const items = wrap.querySelectorAll('.idx-roll-item');
+    if(!items.length) return;
+    let cur = 0;
+    setInterval(()=>{
+      const next = (cur + 1) % items.length;
+      items[cur].classList.remove('active');
+      items[cur].classList.add('exit');
+      setTimeout(()=>{ items[cur].classList.remove('exit'); cur = next; items[cur].classList.add('active'); }, 350);
+    }, interval);
+  }
+  ['main-roll','mcap-roll','main-roll-momt','mcap-roll-momt','fav-roll'].forEach((id, i) => {
+    const el = document.getElementById(id);
+    if(el) setTimeout(() => startRoll(el, 4200), i * 1400);
+  });
+
+  // 주가 다이얼 롤링
+  function buildPriceRoll(el, fromVal, toVal) {
+    const prefix = document.createElement('span');
+    prefix.textContent = '$';
+    prefix.style.cssText = 'margin-right:1px;';
+    el.innerHTML = '';
+    el.appendChild(prefix);
+    const numEl = document.createElement('span');
+    numEl.style.display = 'inline-flex';
+    el.appendChild(numEl);
+    buildDigitRoll(numEl, fromVal, toVal);
+  }
+  function initPriceRoll(id, from, to) {
+    const el = document.getElementById(id);
+    if (!el) return;
+    buildPriceRoll(el, from, to);
+  }
+  function moveThumb(tog){
+    const active = tog.querySelector('.st.on');
+    const thumb  = tog.querySelector('.thumb');
+    if(!active || !thumb) return;
+    thumb.style.width = active.offsetWidth + 'px';
+    thumb.style.transform = `translateX(${active.offsetLeft - 3}px)`;
+  }
+  const rsiData = {
+    nvda: { rsi: '43.2', mfi: '62.1', rsiOk: true, mfiOk: false },
+    qqq:  { rsi: '51.8', mfi: '47.3', rsiOk: false, mfiOk: true }
+  };
+  function switchRsiTarget(key, btn){
+    btn.parentNode.querySelectorAll('button').forEach(b=>{
+      b.style.background='none'; b.style.color='#6b6b7a';
+    });
+    btn.style.background='#2e2e3a'; btn.style.color='#f4f5f7';
+    const d = rsiData[key];
+    const label = key === 'nvda' ? 'NVDA' : 'QQQ';
+    document.getElementById('rsi-ticker').textContent = label;
+    document.getElementById('mfi-ticker').textContent = label;
+    const rsiVal = document.getElementById('rsi-val');
+    const rsiBadge = document.getElementById('rsi-badge');
+    rsiVal.textContent = d.rsi;
+    rsiVal.style.color = d.rsiOk ? '#3182F6' : 'var(--up)';
+    rsiBadge.textContent = d.rsiOk ? '✓ ≤ 50' : '✗ > 50';
+    rsiBadge.style.color = d.rsiOk ? '#3182F6' : 'var(--up)';
+    const mfiVal = document.getElementById('mfi-val');
+    const mfiBadge = document.getElementById('mfi-badge');
+    mfiVal.textContent = d.mfi;
+    mfiVal.style.color = d.mfiOk ? '#3182F6' : 'var(--up)';
+    mfiBadge.textContent = d.mfiOk ? '✓ ≤ 50' : '✗ > 50';
+    mfiBadge.style.color = d.mfiOk ? '#3182F6' : 'var(--up)';
+    const bothOk = d.rsiOk && d.mfiOk;
+    const statusEl = document.getElementById('rsi-status');
+    const rTag = d.rsiOk ? '✓' : '✗'; const mTag = d.mfiOk ? '✓' : '✗';
+    statusEl.innerHTML = (bothOk ? '조건 충족' : '조건 미충족') +
+      `<span style="color:var(--txt-3);font-weight:700;margin-left:6px;">RSI ${rTag} · MFI ${mTag}</span>`;
+    statusEl.style.color = bothOk ? 'var(--green)' : 'var(--txt-2)';
+  }
+  function tog(btn){
+    btn.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+    btn.classList.add('on');
+  }
+  function pctToggle(el){
+    el.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
+    el.classList.add('on');
+    rangePctMode = el.textContent.includes('25') ? 25 : 50;
+    renderRangeTable();
+  }
+  // 마삼룰 탭 목록 (모멘텀 전환 시 복귀할 탭)
+  const masamViews = ['발견','증권','관심','피드','설정'];
+  let lastMasamView = '발견';
+  let currentMode = '마삼룰'; // '마삼룰' | '모멘텀'
+  function updateNav2nd(isMomentum){
+    const navHome = document.getElementById('nav-home');
+    const navHomeIcon = document.getElementById('nav-home-icon');
+    const navHomeLabel = document.getElementById('nav-home-label');
+    const nav = document.getElementById('nav-2nd');
+    const icon = document.getElementById('nav-2nd-icon');
+    const label = document.getElementById('nav-2nd-label');
+    if(isMomentum){
+      navHome.dataset.nav = '모멘텀';
+      navHomeIcon.dataset.icon = 'bxs:rocket';
+      navHomeLabel.textContent = '탑픽 리스트';
+      nav.dataset.nav = '관심종목';
+      icon.dataset.icon = 'bxs:heart';
+      label.textContent = '관심종목';
+    } else {
+      navHome.dataset.nav = '발견';
+      navHomeIcon.dataset.icon = 'bxs:pie-chart-alt-2';
+      navHomeLabel.textContent = '보유 비중';
+      nav.dataset.nav = '관심';
+      icon.dataset.icon = 'bxs:bar-chart-square';
+      label.textContent = '시가총액';
+    }
+    if(window.Iconify) Iconify.scan(navHome);
+    if(window.Iconify) Iconify.scan(nav);
+  }
+  function stratToggle(el){
+    el.parentNode.querySelectorAll('.st').forEach(s=>s.classList.remove('on'));
+    el.classList.add('on');
+    moveThumb(el.parentNode);
+    const idx = [...el.parentNode.querySelectorAll('.st')].indexOf(el);
+    const isMomentum = el.textContent.trim() === '모멘텀';
+    // 모드 전환 시 현재 탭 → 대응 탭 매핑
+    const toMomentum = { '발견':'모멘텀', '관심':'관심종목', '피드':'피드', '설정':'설정', '증권':'모멘텀' };
+    const toMasam    = { '모멘텀':'발견', '관심종목':'관심', '피드':'피드', '설정':'설정' };
+    const curView = document.querySelector('.view.active')?.dataset.view || '발견';
+    const sharedViews = ['피드','설정'];
+    const isShared = sharedViews.includes(curView);
+    if(isMomentum){
+      currentMode = '모멘텀';
+      updateNav2nd(true);
+      const target = toMomentum[curView] || '모멘텀';
+      if(isShared) go(target); else setTimeout(()=>go(target), 250);
+    } else {
+      currentMode = '마삼룰';
+      updateNav2nd(false);
+      const target = toMasam[curView] || lastMasamView;
+      if(isShared) go(target); else setTimeout(()=>go(target), 250);
+    }
+    // 뷰 전환 후 모든 strat-tog 동기화 (hidden 상태에서 offsetWidth=0 방지)
+    setTimeout(()=>{
+      document.querySelectorAll('.strat-tog').forEach(tog=>{
+        tog.querySelectorAll('.st').forEach(s=>s.classList.remove('on'));
+        tog.querySelectorAll('.st')[idx]?.classList.add('on');
+        moveThumb(tog);
+      });
+    }, 0);
+  }
+  document.addEventListener('click', e => {
+    if (rangeDropdownOpen && !e.target.closest('#range-dropdown') && !e.target.closest('[onclick="toggleRangeDropdown()"]')) {
+      rangeDropdownOpen = false;
+      document.getElementById('range-dropdown').style.display = 'none';
+      document.getElementById('range-chevron').style.transform = '';
+    }
+  });
+  document.querySelectorAll('.strat-tog').forEach(tog=>{
+    const thumb = document.createElement('span');
+    thumb.className = 'thumb';
+    tog.insertBefore(thumb, tog.firstChild);
+  });
+  setTimeout(()=>{
+    document.querySelectorAll('.strat-tog').forEach(tog=> moveThumb(tog));
+  }, 0);
+</script>
+</body>
+</html>
