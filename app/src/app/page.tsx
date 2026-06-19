@@ -1,101 +1,46 @@
-import Image from "next/image";
+'use client'
+import { useAppContext } from '@/shared/context/AppContext'
+import { StrategyToggle } from '@/shared/components/StrategyToggle'
+import { BottomTabBar } from '@/shared/components/BottomTabBar'
+import { DisclaimerFooter } from '@/shared/components/DisclaimerFooter'
+import { NotificationBell } from '@/shared/components/NotificationBell'
 
-export default function Home() {
+// 마삼룰 탭
+import { DiscoveryTab } from '@/features/masam/components/DiscoveryTab'
+import { WatchlistTab as MasamWatchlist } from '@/features/masam/components/WatchlistTab'
+import { MarketTab as MasamMarket } from '@/features/masam/components/MarketTab'
+import { SettingsTab as MasamSettings } from '@/features/masam/components/SettingsTab'
+
+// 모멘텀 탭
+import { ToppickTab } from '@/features/momentum/components/ToppickTab'
+import { PortfolioTab } from '@/features/momentum/components/PortfolioTab'
+import { MarketTab as MomentumMarket } from '@/features/momentum/components/MarketTab'
+import { SettingsTab as MomentumSettings } from '@/features/momentum/components/SettingsTab'
+
+const MASAM_TABS = [DiscoveryTab, MasamWatchlist, MasamMarket, MasamSettings]
+const MOMENTUM_TABS = [ToppickTab, PortfolioTab, MomentumMarket, MomentumSettings]
+
+export default function Page() {
+  const { strategy, tab } = useAppContext()
+  const tabs = strategy === 'masam' ? MASAM_TABS : MOMENTUM_TABS
+  const ActiveTab = tabs[tab]
+
   return (
-    <div className="grid grid-rows-[20px_1fr_20px] items-center justify-items-center min-h-screen p-8 pb-20 gap-16 sm:p-20 font-[family-name:var(--font-geist-sans)]">
-      <main className="flex flex-col gap-8 row-start-2 items-center sm:items-start">
-        <Image
-          className="dark:invert"
-          src="https://nextjs.org/icons/next.svg"
-          alt="Next.js logo"
-          width={180}
-          height={38}
-          priority
-        />
-        <ol className="list-inside list-decimal text-sm text-center sm:text-left font-[family-name:var(--font-geist-mono)]">
-          <li className="mb-2">
-            Get started by editing{" "}
-            <code className="bg-black/[.05] dark:bg-white/[.06] px-1 py-0.5 rounded font-semibold">
-              src/app/page.tsx
-            </code>
-            .
-          </li>
-          <li>Save and see your changes instantly.</li>
-        </ol>
+    <>
+      {/* 상단 바 */}
+      <header className="flex items-center justify-between px-[17px] pt-[env(safe-area-inset-top,0px)] pt-3 pb-1 flex-shrink-0">
+        <StrategyToggle />
+        <NotificationBell />
+      </header>
 
-        <div className="flex gap-4 items-center flex-col sm:flex-row">
-          <a
-            className="rounded-full border border-solid border-transparent transition-colors flex items-center justify-center bg-foreground text-background gap-2 hover:bg-[#383838] dark:hover:bg-[#ccc] text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5"
-            href="https://vercel.com/new?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            <Image
-              className="dark:invert"
-              src="https://nextjs.org/icons/vercel.svg"
-              alt="Vercel logomark"
-              width={20}
-              height={20}
-            />
-            Deploy now
-          </a>
-          <a
-            className="rounded-full border border-solid border-black/[.08] dark:border-white/[.145] transition-colors flex items-center justify-center hover:bg-[#f2f2f2] dark:hover:bg-[#1a1a1a] hover:border-transparent text-sm sm:text-base h-10 sm:h-12 px-4 sm:px-5 sm:min-w-44"
-            href="https://nextjs.org/docs?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-            target="_blank"
-            rel="noopener noreferrer"
-          >
-            Read our docs
-          </a>
-        </div>
+      {/* 탭 콘텐츠 */}
+      <main className="flex-1 overflow-y-auto overflow-x-hidden scrollbar-hide min-h-0">
+        <ActiveTab />
       </main>
-      <footer className="row-start-3 flex gap-6 flex-wrap items-center justify-center">
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org/learn?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/file.svg"
-            alt="File icon"
-            width={16}
-            height={16}
-          />
-          Learn
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://vercel.com/templates?framework=next.js&utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/window.svg"
-            alt="Window icon"
-            width={16}
-            height={16}
-          />
-          Examples
-        </a>
-        <a
-          className="flex items-center gap-2 hover:underline hover:underline-offset-4"
-          href="https://nextjs.org?utm_source=create-next-app&utm_medium=appdir-template-tw&utm_campaign=create-next-app"
-          target="_blank"
-          rel="noopener noreferrer"
-        >
-          <Image
-            aria-hidden
-            src="https://nextjs.org/icons/globe.svg"
-            alt="Globe icon"
-            width={16}
-            height={16}
-          />
-          Go to nextjs.org →
-        </a>
-      </footer>
-    </div>
-  );
+
+      {/* 하단 고정 */}
+      <DisclaimerFooter />
+      <BottomTabBar />
+    </>
+  )
 }
