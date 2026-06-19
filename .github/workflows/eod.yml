@@ -40,5 +40,13 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add app/public/data/
+          git restore --staged app/public/data/push_subscriptions.json 2>/dev/null || true
           git diff --staged --quiet || git commit -m "data: EOD 배치 $(date -u '+%Y-%m-%d')"
           git push
+
+      - name: Web Push 알림 발송
+        env:
+          VAPID_PRIVATE_KEY: ${{ secrets.VAPID_PRIVATE_KEY }}
+          VAPID_PUBLIC_KEY: ${{ secrets.VAPID_PUBLIC_KEY }}
+          GITHUB_PAT: ${{ secrets.GH_PAT }}
+        run: python scripts/send_push.py
