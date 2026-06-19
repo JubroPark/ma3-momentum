@@ -1974,7 +1974,8 @@ function initMaxPctUI(rateEnv) {
     const GRAD_BG = 'linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6) border-box';
     const catRow = document.querySelector('.view[data-view="발견"] .cat-row');
     const isCrisisMode = masam.mode === 'CRISIS' || masam.mode === 'PANIC';
-    const anyAllinMet  = (masam.all_in_conditions || []).some(c => c.met);
+    // 조건 5(2구간 V자)는 EOD 계산값 오류 가능성 → live 데이터로 재계산 (아래 RANGE_DATA 갱신 후)
+    const anyAllinMet  = (masam.all_in_conditions || []).some(c => c.id !== 5 && c.met);
     const todayStr     = new Date().toISOString().slice(0, 10);
     const isReleased   = masam.mode === 'NORMAL' && masam.released_date === todayStr;
     // 우선순위: 마삼해제 > 올인 조건 충족 > V자반등(RANGE_DATA 갱신 후 재평가) > 말뚝박기 > 리밸런싱
@@ -2099,8 +2100,8 @@ function initMaxPctUI(rateEnv) {
         RANGE_DATA.qqq.lowFrom         = RANGE_DATA.qqq.low;
         RANGE_DATA.qqq.demos['최고점'] = qqq.ath || 746.16;
       }
-      // V자반등 카드 동적 전환: 올인 조건 미충족 상태에서 현재가가 재매수 구간 이상이면 활성화
-      if (catRow && (masamMode === 'CRISIS' || masamMode === 'PANIC') && !anyAllinMet) {
+      // 조건 5 (2구간 V자반등): live 데이터 기반으로 계산 — intra_low 기준 2구간 위 도달 시 올인
+      if (catRow && (masamMode === 'CRISIS' || masamMode === 'PANIC')) {
         const d    = RANGE_DATA[rangeTarget] || RANGE_DATA.nvda;
         const base = d.demos['최고점'] || parseFloat(d.high);
         const step = rangePctMode === 25 ? 0.025 : 0.05;
@@ -2111,12 +2112,14 @@ function initMaxPctUI(rateEnv) {
           for (let i = 1; i <= 10; i++) {
             if (low <= base * (1 - step * i)) lowZone = i;
           }
-          const vZoneCard = lowZone >= 3 ? lowZone - 2 : -1;
-          const vThreshold = vZoneCard > 0 ? base * (1 - step * (vZoneCard - 1)) : Infinity;
-          if (vZoneCard > 0 && cur >= vThreshold) {
+          const vZoneCard   = lowZone >= 3 ? lowZone - 2 : -1;
+          const vThreshold  = vZoneCard > 0 ? base * (1 - step * vZoneCard) : Infinity;
+          const vLiveMet    = vZoneCard > 0 && cur >= vThreshold;
+          if (vLiveMet && !anyAllinMet) {
+            // 조건 5만 충족 → 올인 카드 (V자반등 = allIn 트리거 #5)
             catRow.querySelectorAll('.cat').forEach(function(cat, i) {
-              cat.style.background = i === 2 ? GRAD_BG : '';
-              cat.style.border     = i === 2 ? '1.4px solid transparent' : '';
+              cat.style.background = i === 3 ? GRAD_BG : '';
+              cat.style.border     = i === 3 ? '1.4px solid transparent' : '';
             });
           }
         }
