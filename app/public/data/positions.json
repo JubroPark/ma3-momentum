@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-18",
+  "as_of": "2026-06-19",
   "regime": "GREEN",
   "items": [
     {
@@ -7,30 +7,57 @@
       "name": "NVIDIA",
       "status": "ENTRY_2",
       "toppick_score": 91,
-      "avg_price": 118.40,
-      "weight": 0.70,
-      "deployed_tranches": [1, 2],
-      "recent_high": 153.13,
-      "trailing_stop_line": 122.50,
-      "horizontal_support": 110.00,
+      "avg_price": 118.4,
+      "weight": 0.7,
+      "deployed_tranches": [
+        1,
+        2
+      ],
+      "recent_high": 235.47,
+      "trailing_stop_line": 188.01,
+      "horizontal_support": 110.0,
       "cooldown_until": null,
       "next_action": "HOLD",
-      "reason": "50MA 위 안착, 트레일링 스탑 원거리"
+      "reason": "2차 보유 중",
+      "metrics": {
+        "price": 210.69,
+        "ma50": 209.12,
+        "ma200": 189.68,
+        "atr14": 8.49,
+        "atr_pct": 0.0403,
+        "gap50_pct": 0.8,
+        "dist_to_stop_pct": 10.8,
+        "vol20ma": 175663975,
+        "vol_ratio": 1.37
+      }
     },
     {
       "symbol": "META",
       "name": "Meta Platforms",
       "status": "ENTRY_1",
       "toppick_score": 84,
-      "avg_price": 612.30,
-      "weight": 0.20,
-      "deployed_tranches": [1],
-      "recent_high": 741.80,
-      "trailing_stop_line": 593.44,
-      "horizontal_support": 580.00,
+      "avg_price": 612.3,
+      "weight": 0.2,
+      "deployed_tranches": [
+        1
+      ],
+      "recent_high": 787.42,
+      "trailing_stop_line": 629.94,
+      "horizontal_support": 580.0,
       "cooldown_until": null,
-      "next_action": "HOLD",
-      "reason": "1차 진입 후 보유 중"
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (577.22 ≤ 629.94)",
+      "metrics": {
+        "price": 577.22,
+        "ma50": 621.37,
+        "ma200": 653.7,
+        "atr14": 23.01,
+        "atr_pct": 0.0399,
+        "gap50_pct": -7.1,
+        "dist_to_stop_pct": -9.1,
+        "vol20ma": 19143445,
+        "vol_ratio": 1.5
+      }
     },
     {
       "symbol": "AAPL",
@@ -40,12 +67,23 @@
       "avg_price": null,
       "weight": 0,
       "deployed_tranches": [],
-      "recent_high": null,
-      "trailing_stop_line": null,
-      "horizontal_support": 195.00,
+      "recent_high": 315.2,
+      "trailing_stop_line": 252.16,
+      "horizontal_support": 195.0,
       "cooldown_until": null,
-      "next_action": "HOLD",
-      "reason": "50MA 하회 — 1차 진입 대기"
+      "next_action": "BUY_1",
+      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.63)",
+      "metrics": {
+        "price": 298.01,
+        "ma50": 288.63,
+        "ma200": 267.79,
+        "atr14": 8.16,
+        "atr_pct": 0.0274,
+        "gap50_pct": 3.2,
+        "dist_to_stop_pct": 15.4,
+        "vol20ma": 52707685,
+        "vol_ratio": 1.63
+      }
     }
   ]
 }

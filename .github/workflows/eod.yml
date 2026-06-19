@@ -32,6 +32,9 @@ jobs:
       - name: EOD 시장 데이터 수집
         run: python scripts/fetch_eod.py
 
+      - name: 모멘텀 종목 지표 수집
+        run: python scripts/fetch_momentum.py
+
       - name: JSON 커밋 & 푸시
         run: |
           git config user.name "github-actions[bot]"
