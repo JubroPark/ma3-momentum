@@ -1,13 +1,13 @@
 {
   "as_of": "2026-06-19",
-  "mode": "NORMAL",
+  "mode": "CRISIS",
   "rate_env": "NON_ZERO",
   "qe_active": false,
   "treasury_10y_trend": "UP",
   "masam": {
-    "month_count": 0,
-    "last_masam_date": "2026-05-21",
-    "crisis_end_dday": null,
+    "month_count": 1,
+    "last_masam_date": "2026-06-05",
+    "crisis_end_dday": "2026-07-06",
     "panic_end_dday": null
   },
   "leader_status": {
@@ -18,15 +18,15 @@
     "gap_within_10pct": false
   },
   "target_allocation": {
-    "stock_pct": 100,
-    "hedge_pct": 0,
+    "stock_pct": 50,
+    "hedge_pct": 50,
     "cash_pct": 0,
-    "label": "1등주 집중"
+    "label": "말뚝 50% + 헤지 50%"
   },
   "hedge_allocation": {
-    "type": "NONE",
-    "rationale": "평상시 — 헤지 불필요",
-    "exit_trigger": ""
+    "type": "TLT",
+    "rationale": "비제로 + 10Y 추세 불명확",
+    "exit_trigger": "QE 시작"
   },
   "rebalancing": {
     "cash_raised_pct": 0,
@@ -45,7 +45,7 @@
       "label": "한달+1일 무마삼",
       "met": false,
       "grade": "약",
-      "detail": "D-3"
+      "detail": "D-17"
     },
     {
       "id": 2,
@@ -101,6 +101,7 @@
       30
     ]
   },
-  "recommended_action": "리밸런싱 유지 — 1등주(NVDA) 집중",
-  "alerts": []
+  "recommended_action": "말뚝박기 유지 — 하락 시 분할 매수",
+  "alerts": [],
+  "last_allin_price": null
 }

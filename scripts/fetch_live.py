@@ -40,18 +40,22 @@ def fetch_quote(ticker: str) -> Optional[dict]:
         return None
 
 
-def fetch_ohlc_ath(ticker: str) -> dict:
-    """당일 고가/저가 + 52주 최고점"""
+def fetch_ohlc_ath(ticker: str, since_date: Optional[str] = None) -> dict:
+    """사상최고점(종가) + 마삼 이후 장중 저가"""
     try:
         t = yf.Ticker(ticker)
-        hist_1d = t.history(period="1d", interval="1d", auto_adjust=True)
         hist_1y = t.history(period="1y", auto_adjust=True)
-        day_high = float(hist_1d["High"].iloc[-1]) if not hist_1d.empty else 0
-        day_low  = float(hist_1d["Low"].iloc[-1])  if not hist_1d.empty else 0
-        ath      = float(hist_1y["Close"].max())    if not hist_1y.empty else 0
-        prev_high = float(hist_1y["Close"].iloc[:-1].max()) if len(hist_1y) > 1 else ath
+        ath       = float(hist_1y["Close"].max())             if not hist_1y.empty else 0
+        prev_high = float(hist_1y["Close"].iloc[:-1].max())   if len(hist_1y) > 1 else ath
+        # 마삼 이후 장중 저가
+        if since_date:
+            hist_since = t.history(start=since_date, auto_adjust=True)
+            intra_low = float(hist_since["Low"].min()) if not hist_since.empty else 0
+        else:
+            hist_1d = t.history(period="1d", interval="1d", auto_adjust=True)
+            intra_low = float(hist_1d["Low"].iloc[-1]) if not hist_1d.empty else 0
         return {"ath": round(ath, 2), "prev_high": round(prev_high, 2),
-                "day_high": round(day_high, 2), "day_low": round(day_low, 2)}
+                "intra_low": round(intra_low, 2)}
     except Exception:
         return {}
 
@@ -68,8 +72,10 @@ def masam_distance(ixic_price: float, existing_live: dict) -> float:
 
 
 def main():
+    from datetime import timedelta
     now_utc = datetime.now(timezone.utc)
-    update_kst = now_utc.strftime("%H:%M") + " KST"  # 표시용 (실제 KST = UTC+9 아님, 근사)
+    now_kst = now_utc + timedelta(hours=9)
+    update_kst = now_kst.strftime("%H:%M") + " KST"
 
     print(f"[Live 배치] {now_utc.strftime('%Y-%m-%dT%H:%M:%SZ')}")
 
@@ -83,16 +89,20 @@ def main():
     ixic_q  = fetch_quote("^IXIC")
     gspc_q  = fetch_quote("^GSPC")
     dji_q   = fetch_quote("^DJI")
+    last_masam_date = masam_json.get("masam", {}).get("last_masam_date")
     rank1_q = fetch_quote(rank1_ticker)
-    rank1_extra = fetch_ohlc_ath(rank1_ticker)
+    qqq_q   = fetch_quote("QQQ")
+    rank1_extra = fetch_ohlc_ath(rank1_ticker, since_date=last_masam_date)
+    qqq_extra   = fetch_ohlc_ath("QQQ", since_date=last_masam_date)
+    ixic_extra  = fetch_ohlc_ath("^IXIC")
 
     # 마삼까지 거리
     ixic_price = ixic_q["price"] if ixic_q else 0
     dist_masam = masam_distance(ixic_price, existing_live) if ixic_q else 0
 
-    # ATH 대비 %
-    rank1_ath = rank1_extra.get("ath", 0)
-    from_ath_pct = round((ixic_price - rank1_ath) / rank1_ath * 100, 1) if rank1_ath > 0 else 0
+    # ATH 대비 % (IXIC 52주 고점 기준)
+    ixic_ath = ixic_extra.get("ath", 0)
+    from_ath_pct = round((ixic_price - ixic_ath) / ixic_ath * 100, 1) if ixic_ath > 0 else 0
 
     # 헤지
     hedge_prices = {}
@@ -110,9 +120,7 @@ def main():
         "price": rank1_q["price"] if rank1_q else prev_rank1.get("price"),
         "change_pct": rank1_q["change_pct"] if rank1_q else prev_rank1.get("change_pct"),
         "ath": rank1_extra.get("ath", prev_rank1.get("ath")),
-        "prev_high": rank1_extra.get("prev_high", prev_rank1.get("prev_high")),
-        "day_high": rank1_extra.get("day_high"),
-        "day_low": rank1_extra.get("day_low"),
+        "intra_low": rank1_extra.get("intra_low", prev_rank1.get("intra_low")),
     }
 
     live_out = {
@@ -134,6 +142,12 @@ def main():
             "change_pct": dji_q["change_pct"] if dji_q else None,
         },
         "rank1": rank1_info,
+        "qqq": {
+            "price": qqq_q["price"] if qqq_q else existing_live.get("qqq", {}).get("price"),
+            "change_pct": qqq_q["change_pct"] if qqq_q else existing_live.get("qqq", {}).get("change_pct"),
+            "ath": qqq_extra.get("ath", existing_live.get("qqq", {}).get("ath")),
+            "intra_low": qqq_extra.get("intra_low", existing_live.get("qqq", {}).get("intra_low")),
+        },
         "hedges": hedge_prices,
     }
 

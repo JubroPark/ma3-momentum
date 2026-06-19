@@ -1,12 +1,12 @@
 {
-  "as_of": "2026-06-19T13:23:53Z",
-  "update_time": "13:23 KST",
+  "as_of": "2026-06-19T14:56:00Z",
+  "update_time": "23:56 KST",
   "nasdaq": {
     "price": 26517.93,
     "change_pct": 1.91,
-    "dist_to_masam_pct": 37.78,
-    "from_ath_pct": 11161.7,
-    "last_masam_date": "2026-05-21"
+    "dist_to_masam_pct": 3.09,
+    "from_ath_pct": -2.1,
+    "last_masam_date": "2026-06-05"
   },
   "sp500": {
     "price": 7500.58,
@@ -24,9 +24,13 @@
     "price": 210.69,
     "change_pct": 2.13,
     "ath": 235.47,
-    "prev_high": 235.47,
-    "day_high": 211.39,
-    "day_low": 206.5
+    "intra_low": 199.34
+  },
+  "qqq": {
+    "price": 740.62,
+    "change_pct": 1.46,
+    "ath": 746.16,
+    "intra_low": 686.37
   },
   "hedges": {
     "TLT": 86.75,

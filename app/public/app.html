@@ -537,10 +537,10 @@
 
       <div class="tabs">
         <div class="t on" onclick="chartTab(this)">최고점</div>
-        <div class="t" onclick="chartTab(this)">직전고점</div>
-        <div class="t" onclick="chartTab(this)">직접입력</div>
+        <div class="t" onclick="chartTab(this)">직전 고점</div>
+        <div class="t" onclick="chartTab(this)">올인 지점</div>
         <div class="spacer"></div>
-        <div class="pct-tog">
+        <div class="pct-tog pct-toggle">
           <button class="on" onclick="pctToggle(this)">-25%</button>
           <button onclick="pctToggle(this)">-50%</button>
         </div>
@@ -1194,8 +1194,18 @@
         <div class="sec-h" style="font-size:15px;padding-top:16px">리밸런싱</div>
         <div style="padding:0 17px">
           <div class="srow">
-            <div class="sk">현금화 최대 한도<s>전고점 대비 하락 시 1구간마다 10% 매도</s></div>
-            <div class="tg"><button class="on" onclick="tog(this)">25%</button><button onclick="tog(this)">50%</button></div>
+            <div class="sk">현금화 최대 한도 (1등주)<s>전고점 대비 하락 시 1구간마다 10% 매도</s></div>
+            <div class="tg" id="max-pct-nvda">
+              <button onclick="setMaxPct('nvda',25,this)">25%</button>
+              <button onclick="setMaxPct('nvda',50,this)">50%</button>
+            </div>
+          </div>
+          <div class="srow">
+            <div class="sk">현금화 최대 한도 (QQQ)<s>전고점 대비 하락 시 1구간마다 10% 매도</s></div>
+            <div class="tg" id="max-pct-qqq">
+              <button onclick="setMaxPct('qqq',25,this)">25%</button>
+              <button onclick="setMaxPct('qqq',50,this)">50%</button>
+            </div>
           </div>
         </div>
 
@@ -1452,27 +1462,41 @@
   // 주가 구간 테이블
   let rangeBase = '최고점';
   let rangePctMode = 25;
-  let customBasePrice = 160.00;
   let rangeTarget = 'nvda';
+  let masamMode = 'NORMAL';
+
+  function _loadMP(k, def) { return parseFloat(localStorage.getItem(k)) || def || 0; }
+  let manualPrices = {
+    nvda:  { prev: _loadMP('range_prev_nvda', 212.45), allin: _loadMP('range_allin_nvda', 235.47) },
+    qqq:   { prev: _loadMP('range_prev_qqq', 744.00),  allin: _loadMP('range_allin_qqq', 746.16) },
+    rank2: { prev: _loadMP('range_prev_rank2'),         allin: _loadMP('range_allin_rank2') },
+  };
+  function saveManualPrice(val) {
+    const key = rangeBase === '직전 고점' ? 'prev' : 'allin';
+    const price = parseFloat(val) || 0;
+    manualPrices[rangeTarget][key] = price;
+    localStorage.setItem(`range_${key}_${rangeTarget}`, price);
+    renderRangeTable();
+  }
 
   const RANGE_DATA = {
     nvda: {
       name: '엔비디아', domain: 'nvidia.com', initial: 'N',
-      demos: { '최고점': 479.86, '직전고점': 155.00 },
+      demos: { '최고점': 479.86 },
       cur: '131.38', curFrom: '131.21',
       high: '479.86', highFrom: '479.50',
       low: '321.44', lowFrom: '321.70',
     },
     qqq: {
       name: 'QQQ', domain: 'invesco.com', initial: 'Q',
-      demos: { '최고점': 538.29, '직전고점': 510.00 },
+      demos: { '최고점': 538.29 },
       cur: '484.22', curFrom: '483.10',
       high: '538.29', highFrom: '537.80',
       low: '479.50', lowFrom: '480.20',
     },
     rank2: {
       name: 'MSFT', domain: 'microsoft.com', initial: 'M',
-      demos: { '최고점': 0, '직전고점': 0 },
+      demos: { '최고점': 0 },
       cur: '--', curFrom: '--',
       high: '--', highFrom: '--',
       low: '--', lowFrom: '--',
@@ -1498,7 +1522,12 @@
       if (chk) chk.style.visibility = target === k ? 'visible' : 'hidden';
       if (opt) opt.style.color = target === k ? '#fff' : 'var(--txt-3)';
     });
-    if (rangeBase === '직접입력') customBasePrice = target === 'qqq' ? 500.00 : 160.00;
+    // 타겟별 현금화 한도 설정 로드
+    const settingTarget = target === 'qqq' ? 'qqq' : 'nvda';
+    rangePctMode = getMaxPct(settingTarget);
+    document.querySelectorAll('.view[data-view="발견"] .pct-toggle button').forEach(b => {
+      b.classList.toggle('on', b.textContent.includes(String(rangePctMode)));
+    });
     renderRangeHeader();
     renderRangeTable();
   }
@@ -1540,25 +1569,39 @@
   function renderRangeTable() {
     const d = RANGE_DATA[rangeTarget];
     const RANGE_CUR = parseFloat(d.cur);
-    const isCustom = rangeBase === '직접입력';
-    const base = isCustom ? customBasePrice : (d.demos[rangeBase] || d.demos['최고점']);
+    const isManual = rangeBase === '직전 고점' || rangeBase === '올인 지점';
+    const manualKey = rangeBase === '직전 고점' ? 'prev' : 'allin';
+    const manualVal = isManual ? (manualPrices[rangeTarget][manualKey] || 0) : 0;
+    const base = isManual ? manualVal : (d.demos[rangeBase] || d.demos['최고점']);
     const step = rangePctMode === 25 ? 0.025 : 0.05;
 
+    const isCrisis = masamMode === 'CRISIS' || masamMode === 'PANIC';
+    const zoneRef = isCrisis ? parseFloat(d.low) || RANGE_CUR : RANGE_CUR;
     let curZone = 0;
     for (let i = 1; i <= 10; i++) {
-      if (RANGE_CUR <= base * (1 - step * i)) curZone = i;
+      if (zoneRef <= base * (1 - step * i)) curZone = i;
     }
+
+    // 목표 비중 배너: 파란 구간 기준 주식/현금 비중
+    const bannerMsg = document.querySelector('.view[data-view="발견"] .ai-banner .msg');
+    if (bannerMsg && curZone > 0) {
+      const s = curZone * 10;
+      bannerMsg.innerHTML = '주식 ' + s + '%<span style="margin:0 3px;color:#3a3a4a;">|</span>현금 ' + (100 - s) + '%';
+    }
+
+    // 재매수 구간 (위기/공황 시: 파란 구간에서 2구간 위)
+    const vZone = (isCrisis && curZone >= 3) ? curZone - 2 : -1;
 
     const col = (txt, cls) => `<span class="${cls}">${txt}</span>`;
 
-    const basePriceCell = isCustom
+    const basePriceCell = isManual
       ? `<span class="rt-col-price" style="display:flex;align-items:center;gap:6px;">
           <span style="font-size:13px;font-weight:500;color:var(--txt-3)">$</span>
-          <input type="text" inputmode="decimal" value="${customBasePrice.toFixed(2)}"
-            style="background:transparent;border:none;border-bottom:1.5px solid var(--line);padding:1px 2px;font-size:13px;font-weight:500;color:#fff;outline:none;font-family:inherit;width:62px;"
-            oninput="customBasePrice=parseFloat(this.value)||160;"
-            onkeydown="if(event.key==='Enter'){customBasePrice=parseFloat(this.value)||160;renderRangeTable();}">
-          <button onclick="customBasePrice=parseFloat(this.previousElementSibling.value)||160;renderRangeTable();"
+          <input type="text" inputmode="decimal" value="${manualVal > 0 ? manualVal.toFixed(2) : ''}"
+            placeholder="직접 입력"
+            style="background:transparent;border:none;border-bottom:1.5px solid var(--line);padding:1px 2px;font-size:13px;font-weight:500;color:#fff;outline:none;font-family:inherit;width:72px;"
+            onkeydown="if(event.key==='Enter'){saveManualPrice(this.value);}">
+          <button onclick="saveManualPrice(this.previousElementSibling.value)"
             style="background:var(--blue);border:none;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;flex:none;">저장</button>
         </span>`
       : `<span class="rt-col-price" style="font-size:13px;font-weight:500;color:var(--txt)">$${base.toFixed(2)}</span>`;
@@ -1584,10 +1627,11 @@
       const threshold = base * (1 - step * i);
       const pct = (step * i * 100).toFixed(1);
       const stock = i * 10;
-      const done = i < curZone, cur = i === curZone;
+      const done = i < curZone, cur = i === curZone, isV = i === vZone;
       const zCol = cur ? 'var(--blue)' : done ? 'var(--txt)' : 'var(--txt-3)';
       const sText = cur
         ? '<span class="rt-ping"><span class="dot"></span></span>'
+        : isV ? '<span style="font-size:11px;font-weight:700;color:var(--up)">재매수</span>'
         : done ? '<span class="rt-done"><span class="iconify" data-icon="heroicons:check" data-width="13" data-height="13"></span></span>'
         : '<span class="rt-none"></span>';
       const sCol = cur ? 'var(--blue)' : done ? 'var(--green)' : 'var(--txt-3)';
@@ -1728,10 +1772,39 @@
     btn.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
     btn.classList.add('on');
   }
+  // 현금화 최대 한도: localStorage 키 → max_pct_nvda / max_pct_qqq (기본 50)
+  function _maxPctKey(t){ return 'max_pct_' + (t || rangeTarget); }
+  function getMaxPct(t){ return parseInt(localStorage.getItem(_maxPctKey(t))) || 50; }
+
+  function setMaxPct(target, pct, btn) {
+    localStorage.setItem(_maxPctKey(target), pct);
+    const tg = document.getElementById('max-pct-' + target);
+    if (tg) tg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
+    // 현재 보고 있는 타겟이면 range 토글도 동기화
+    if (target === rangeTarget || (target === 'nvda' && rangeTarget !== 'qqq')) {
+      _syncRangePct(target);
+    }
+  }
+
+  function _syncRangePct(target) {
+    const pct = getMaxPct(target === 'qqq' ? 'qqq' : 'nvda');
+    rangePctMode = pct;
+    document.querySelectorAll('.view[data-view="발견"] .pct-toggle button').forEach(b => {
+      b.classList.toggle('on', b.textContent.includes(String(pct)));
+    });
+    renderRangeTable();
+  }
+
   function pctToggle(el){
     el.parentNode.querySelectorAll('button').forEach(b=>b.classList.remove('on'));
     el.classList.add('on');
-    rangePctMode = el.textContent.includes('25') ? 25 : 50;
+    const pct = el.textContent.includes('25') ? 25 : 50;
+    rangePctMode = pct;
+    // 설정 탭 토글도 동기화
+    const settingTarget = rangeTarget === 'qqq' ? 'qqq' : 'nvda';
+    localStorage.setItem(_maxPctKey(settingTarget), pct);
+    const tg = document.getElementById('max-pct-' + settingTarget);
+    if (tg) tg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.textContent.includes(String(pct))));
     renderRangeTable();
   }
   // 마삼룰 탭 목록 (모멘텀 전환 시 복귀할 탭)
@@ -1825,6 +1898,25 @@
   }, 0);
 </script>
 <script>
+// 설정 탭 현금화 한도 버튼 초기값 적용 (rate_env 기반 기본값 적용 후 호출)
+function initMaxPctUI(rateEnv) {
+  // localStorage 미설정 시 금리환경 기반 기본값 (제로=25%, 비제로=50%)
+  const defaultPct = (rateEnv === 'ZERO') ? 25 : 50;
+  ['nvda', 'qqq'].forEach(t => {
+    if (!localStorage.getItem(_maxPctKey(t))) {
+      localStorage.setItem(_maxPctKey(t), defaultPct);
+    }
+    const pct = getMaxPct(t);
+    const tg = document.getElementById('max-pct-' + t);
+    if (tg) tg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.textContent.includes(String(pct))));
+  });
+  const settingTarget = rangeTarget === 'qqq' ? 'qqq' : 'nvda';
+  rangePctMode = getMaxPct(settingTarget);
+  document.querySelectorAll('.pct-toggle button').forEach(b => {
+    b.classList.toggle('on', b.textContent.includes(String(rangePctMode)));
+  });
+}
+
 (async function initFromData() {
   try {
     const [masam, live, mkt, momtMkt, positions] = await Promise.all([
@@ -1835,6 +1927,8 @@
       fetch('/data/positions.json').then(r => r.json()),
     ]);
     window.positionsData = positions;
+    masamMode = masam.mode || 'NORMAL';
+    initMaxPctUI(masam.rate_env || 'NON_ZERO');
 
     // 1. 기준일 업데이트 (모든 topbar)
     const dateStr = (live.as_of || '').slice(0, 10).replace(/-/g, '.');
@@ -1877,10 +1971,16 @@
     });
 
     // 3. 발견 탭: 모드 버튼 활성화
-    const modeIndex = { NORMAL: 0, CRISIS: 1, VJUMP: 2, ALL_IN: 3, PANIC: 3, RELEASED: 4 };
     const GRAD_BG = 'linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6) border-box';
-    const activeIdx = modeIndex[masam.mode] ?? 0;
     const catRow = document.querySelector('.view[data-view="발견"] .cat-row');
+    const isCrisisMode = masam.mode === 'CRISIS' || masam.mode === 'PANIC';
+    const anyAllinMet  = (masam.all_in_conditions || []).some(c => c.met);
+    const todayStr     = new Date().toISOString().slice(0, 10);
+    const isReleased   = masam.mode === 'NORMAL' && masam.released_date === todayStr;
+    // 우선순위: 마삼해제 > 올인 조건 충족 > V자반등(RANGE_DATA 갱신 후 재평가) > 말뚝박기 > 리밸런싱
+    let activeIdx = masam.mode === 'NORMAL' ? 0 : 1;
+    if (isCrisisMode && anyAllinMet) activeIdx = 3;
+    if (isReleased) activeIdx = 4;
     if (catRow) {
       catRow.querySelectorAll('.cat').forEach(function(cat, i) {
         cat.style.background = i === activeIdx ? GRAD_BG : '';
@@ -1901,9 +2001,17 @@
       const txt = discoCells[0].querySelector('.txt');
       if (txt) {
         const cnt  = masam.masam?.month_count ?? 0;
-        const dday = masam.masam?.crisis_end_dday;
-        txt.innerHTML = '이번 달 마삼 ' + cnt + '회' +
-          (dday != null ? '<br>해제까지 <b style="color:var(--up)">' + dday + '일</b> 남음' : '');
+        const endStr = masam.masam?.crisis_end_dday;
+        let ddayTxt = '';
+        if (endStr) {
+          const today = new Date(); today.setHours(0,0,0,0);
+          const end   = new Date(endStr); end.setHours(0,0,0,0);
+          const diff  = Math.ceil((end - today) / 86400000);
+          ddayTxt = diff > 0
+            ? '<br>해제까지 <b style="color:var(--up)">' + diff + '일</b> 남음'
+            : '<br><b style="color:var(--teal)">위기 해제</b>';
+        }
+        txt.innerHTML = '이번 달 마삼 ' + cnt + '회' + ddayTxt;
       }
     }
     if (discoCells[1]) {
@@ -1969,17 +2077,51 @@
       }
     }
 
-    // 6. RANGE_DATA 업데이트 (NVDA 현재가/최고점/직전고점/저가)
-    const r1 = live.rank1;
-    if (typeof RANGE_DATA !== 'undefined' && r1) {
-      RANGE_DATA.nvda.cur              = r1.price.toFixed(2);
-      RANGE_DATA.nvda.curFrom          = (r1.price - 0.1).toFixed(2);
-      RANGE_DATA.nvda.high             = (r1.ath || 153.13).toFixed(2);
-      RANGE_DATA.nvda.highFrom         = RANGE_DATA.nvda.high;
-      RANGE_DATA.nvda.low              = (r1.day_low || r1.price).toFixed(2);
-      RANGE_DATA.nvda.lowFrom          = RANGE_DATA.nvda.low;
-      RANGE_DATA.nvda.demos['최고점']  = r1.ath || 153.13;
-      RANGE_DATA.nvda.demos['직전고점']= r1.prev_high || 149.73;
+    // 6. RANGE_DATA 업데이트
+    const r1  = live.rank1;
+    const qqq = live.qqq;
+    if (typeof RANGE_DATA !== 'undefined') {
+      if (r1) {
+        RANGE_DATA.nvda.cur             = r1.price.toFixed(2);
+        RANGE_DATA.nvda.curFrom         = (r1.price - 0.1).toFixed(2);
+        RANGE_DATA.nvda.high            = (r1.ath || 235.47).toFixed(2);
+        RANGE_DATA.nvda.highFrom        = RANGE_DATA.nvda.high;
+        RANGE_DATA.nvda.low             = (r1.intra_low || r1.price).toFixed(2);
+        RANGE_DATA.nvda.lowFrom         = RANGE_DATA.nvda.low;
+        RANGE_DATA.nvda.demos['최고점'] = r1.ath || 235.47;
+      }
+      if (qqq) {
+        RANGE_DATA.qqq.cur             = (qqq.price || 740.62).toFixed(2);
+        RANGE_DATA.qqq.curFrom         = ((qqq.price || 740.62) - 0.1).toFixed(2);
+        RANGE_DATA.qqq.high            = (qqq.ath || 746.16).toFixed(2);
+        RANGE_DATA.qqq.highFrom        = RANGE_DATA.qqq.high;
+        RANGE_DATA.qqq.low             = (qqq.intra_low || qqq.price || 686.37).toFixed(2);
+        RANGE_DATA.qqq.lowFrom         = RANGE_DATA.qqq.low;
+        RANGE_DATA.qqq.demos['최고점'] = qqq.ath || 746.16;
+      }
+      // V자반등 카드 동적 전환: 올인 조건 미충족 상태에서 현재가가 재매수 구간 이상이면 활성화
+      if (catRow && (masamMode === 'CRISIS' || masamMode === 'PANIC') && !anyAllinMet) {
+        const d    = RANGE_DATA[rangeTarget] || RANGE_DATA.nvda;
+        const base = d.demos['최고점'] || parseFloat(d.high);
+        const step = rangePctMode === 25 ? 0.025 : 0.05;
+        const low  = parseFloat(d.low);
+        const cur  = parseFloat(d.cur);
+        if (base > 0 && low > 0 && cur > 0) {
+          let lowZone = 0;
+          for (let i = 1; i <= 10; i++) {
+            if (low <= base * (1 - step * i)) lowZone = i;
+          }
+          const vZoneCard = lowZone >= 3 ? lowZone - 2 : -1;
+          const vThreshold = vZoneCard > 0 ? base * (1 - step * (vZoneCard - 1)) : Infinity;
+          if (vZoneCard > 0 && cur >= vThreshold) {
+            catRow.querySelectorAll('.cat').forEach(function(cat, i) {
+              cat.style.background = i === 2 ? GRAD_BG : '';
+              cat.style.border     = i === 2 ? '1.4px solid transparent' : '';
+            });
+          }
+        }
+      }
+
       if (typeof renderRangeHeader === 'function') renderRangeHeader();
       if (typeof renderRangeTable  === 'function') renderRangeTable();
     }

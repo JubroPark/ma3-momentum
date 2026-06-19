@@ -107,6 +107,13 @@ def update_masam_state(existing: dict, today: date, ixic_chg: float) -> dict:
     crisis_end_str = m.get("crisis_end_dday")
     panic_end_str = m.get("panic_end_dday")
 
+    # 모드가 NORMAL이지만 최근 마삼이 위기 기간 내라면 모드 복구
+    if mode == "NORMAL" and last_masam:
+        implied_crisis_end = add_months(last_masam, 1) + timedelta(days=1)
+        if today < implied_crisis_end:
+            mode = "CRISIS"
+            crisis_end_str = implied_crisis_end.isoformat()
+
     if mode == "PANIC" and panic_end_str:
         if today >= date.fromisoformat(panic_end_str):
             mode = "NORMAL"
@@ -310,8 +317,14 @@ def main():
     t10_trend = existing_masam.get("treasury_10y_trend", "UNKNOWN")
 
     # 3. 마삼 상태 업데이트
+    prev_mode = existing_masam.get("mode", "NORMAL")
     new_masam_state, new_mode = update_masam_state(existing_masam, today, ixic_chg)
-    print(f"  모드: {existing_masam.get('mode')} → {new_mode}  (이번 달 마삼 {new_masam_state['month_count']}회)")
+    print(f"  모드: {prev_mode} → {new_mode}  (이번 달 마삼 {new_masam_state['month_count']}회)")
+
+    # 위기/공황 → 평상시 전환 당일 기록
+    released_date = existing_masam.get("released_date")
+    if prev_mode in ("CRISIS", "PANIC") and new_mode == "NORMAL":
+        released_date = today.isoformat()
 
     # 4. mcap 순위
     print("▶ 시가총액 순위 조회 중...")
@@ -361,6 +374,7 @@ def main():
         rate_env=rate_env,
     )
 
+
     # ── 파일 저장 ──────────────────────────────────────────────────────────────
 
     # masam.json
@@ -379,6 +393,7 @@ def main():
         "target_allocation": target_alloc,
         "hedge_allocation": hedge_alloc,
         "all_in_conditions": all_in,
+        "released_date": released_date,
         "recommended_action": _recommended_action(new_mode, rank1_ticker),
     }
     save_json(DATA / "masam.json", masam_out)
