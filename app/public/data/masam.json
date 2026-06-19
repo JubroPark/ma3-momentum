@@ -52,35 +52,35 @@
       "label": "8거래일 연속 상승",
       "met": false,
       "grade": "중",
-      "detail": "1일 연속"
+      "detail": "0일 연속"
     },
     {
       "id": 3,
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-10.5%"
+      "detail": "+nan%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-2.1%"
+      "detail": "+nan%"
     },
     {
       "id": 5,
       "label": "2구간 V자(+10%)",
-      "met": true,
+      "met": false,
       "grade": "중",
-      "detail": "충족"
+      "detail": "+nan% (필요: +10%)"
     },
     {
       "id": 6,
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-2.1% (기준: -30%)"
+      "detail": "nan% (기준: -30%)"
     }
   ],
   "additional_buy": {
