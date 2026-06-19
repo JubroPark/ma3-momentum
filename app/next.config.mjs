@@ -13,6 +13,13 @@ const withPWA = withPWAInit({
 })
 
 /** @type {import('next').NextConfig} */
-const nextConfig = { reactStrictMode: true }
+const nextConfig = {
+  reactStrictMode: true,
+  async redirects() {
+    return [
+      { source: '/', destination: '/app.html', permanent: false },
+    ]
+  },
+}
 
 export default withPWA(nextConfig)
