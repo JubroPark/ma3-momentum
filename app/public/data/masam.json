@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-18",
+  "as_of": "2026-06-19",
   "mode": "NORMAL",
   "rate_env": "NON_ZERO",
   "qe_active": false,
@@ -12,8 +12,8 @@
   },
   "leader_status": {
     "rank1_ticker": "NVDA",
-    "rank2_ticker": "MSFT",
-    "gap_pct": 18.4,
+    "rank2_ticker": "GOOGL",
+    "gap_pct": 12.0,
     "overtake_detected": false,
     "gap_within_10pct": false
   },
@@ -43,23 +43,23 @@
     {
       "id": 1,
       "label": "한달+1일 무마삼",
-      "met": true,
+      "met": false,
       "grade": "약",
-      "detail": "충족"
+      "detail": "D-3"
     },
     {
       "id": 2,
       "label": "8거래일 연속 상승",
       "met": false,
       "grade": "중",
-      "detail": "3일 연속"
+      "detail": "1일 연속"
     },
     {
       "id": 3,
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-4.2%"
+      "detail": "-10.5%"
     },
     {
       "id": 4,
@@ -70,17 +70,17 @@
     },
     {
       "id": 5,
-      "label": "2구간 V자(+10%/+5%)",
-      "met": false,
+      "label": "2구간 V자(+10%)",
+      "met": true,
       "grade": "중",
-      "detail": "해당없음"
+      "detail": "충족"
     },
     {
       "id": 6,
-      "label": "긴급 올인(-30%/-15%)",
+      "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "해당없음"
+      "detail": "-2.1% (기준: -30%)"
     }
   ],
   "additional_buy": {
@@ -95,7 +95,11 @@
   },
   "panic_reentry": {
     "stage": 0,
-    "tranches": [35, 35, 30]
+    "tranches": [
+      35,
+      35,
+      30
+    ]
   },
   "recommended_action": "리밸런싱 유지 — 1등주(NVDA) 집중",
   "alerts": []

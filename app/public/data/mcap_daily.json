@@ -1,46 +1,86 @@
 {
-  "as_of": "2026-06-18",
+  "as_of": "2026-06-19",
   "rank1_ticker": "NVDA",
   "items": [
     {
-      "rank": 1,
       "ticker": "NVDA",
       "name": "NVIDIA",
-      "mcap_usd": 3420000000000,
-      "gap_pct_from_rank1": 0,
-      "is_leader": true
+      "mcap_usd": 5103122549133,
+      "rank": 1,
+      "is_leader": true,
+      "gap_pct_from_rank1": 0.0
     },
     {
-      "rank": 2,
-      "ticker": "MSFT",
-      "name": "Microsoft",
-      "mcap_usd": 2890000000000,
-      "gap_pct_from_rank1": 15.5,
-      "is_leader": false
-    },
-    {
-      "rank": 3,
-      "ticker": "AAPL",
-      "name": "Apple",
-      "mcap_usd": 2760000000000,
-      "gap_pct_from_rank1": 19.3,
-      "is_leader": false
-    },
-    {
-      "rank": 4,
-      "ticker": "AMZN",
-      "name": "Amazon",
-      "mcap_usd": 2340000000000,
-      "gap_pct_from_rank1": 31.6,
-      "is_leader": false
-    },
-    {
-      "rank": 5,
       "ticker": "GOOGL",
       "name": "Alphabet",
-      "mcap_usd": 2180000000000,
-      "gap_pct_from_rank1": 36.3,
-      "is_leader": false
+      "mcap_usd": 4490912973770,
+      "rank": 2,
+      "is_leader": false,
+      "gap_pct_from_rank1": 12.0
+    },
+    {
+      "ticker": "AAPL",
+      "name": "Apple",
+      "mcap_usd": 4376979104991,
+      "rank": 3,
+      "is_leader": false,
+      "gap_pct_from_rank1": 14.2
+    },
+    {
+      "ticker": "MSFT",
+      "name": "Microsoft",
+      "mcap_usd": 2818348081358,
+      "rank": 4,
+      "is_leader": false,
+      "gap_pct_from_rank1": 44.8
+    },
+    {
+      "ticker": "AMZN",
+      "name": "Amazon",
+      "mcap_usd": 2628929968498,
+      "rank": 5,
+      "is_leader": false,
+      "gap_pct_from_rank1": 48.5
+    },
+    {
+      "ticker": "TSM",
+      "name": "TSMC",
+      "mcap_usd": 2396773345562,
+      "rank": 6,
+      "is_leader": false,
+      "gap_pct_from_rank1": 53.0
+    },
+    {
+      "ticker": "AVGO",
+      "name": "Broadcom",
+      "mcap_usd": 1957030643485,
+      "rank": 7,
+      "is_leader": false,
+      "gap_pct_from_rank1": 61.7
+    },
+    {
+      "ticker": "TSLA",
+      "name": "Tesla",
+      "mcap_usd": 1504129816419,
+      "rank": 8,
+      "is_leader": false,
+      "gap_pct_from_rank1": 70.5
+    },
+    {
+      "ticker": "META",
+      "name": "Meta",
+      "mcap_usd": 1465228625167,
+      "rank": 9,
+      "is_leader": false,
+      "gap_pct_from_rank1": 71.3
+    },
+    {
+      "ticker": "BRK-B",
+      "name": "Berkshire",
+      "mcap_usd": 1055693641049,
+      "rank": 10,
+      "is_leader": false,
+      "gap_pct_from_rank1": 79.3
     }
   ]
 }

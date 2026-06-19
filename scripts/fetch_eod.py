@@ -1,0 +1,428 @@
+"""
+EOD 배치 스크립트 — 미 장마감 후 1일 1회 실행
+출력: masam.json, mcap_daily.json, momentum_market.json, masam_market.json(VIX)
+"""
+import json
+import sys
+import calendar
+from datetime import date, timedelta
+from pathlib import Path
+import yfinance as yf
+
+DATA = Path(__file__).parent.parent / "app/public/data"
+
+# 큐레이트 리스트 (투자 가능 글로벌 시총 상위 — 분기 수동 갱신)
+CURATED = [
+    ("NVDA",  "NVIDIA"),
+    ("AAPL",  "Apple"),
+    ("MSFT",  "Microsoft"),
+    ("AMZN",  "Amazon"),
+    ("GOOGL", "Alphabet"),
+    ("META",  "Meta"),
+    ("TSM",   "TSMC"),
+    ("AVGO",  "Broadcom"),
+    ("TSLA",  "Tesla"),
+    ("BRK-B", "Berkshire"),
+]
+
+HEDGE_TICKERS = ["TLT", "IAU", "GLD", "TIP"]
+
+
+# ── 유틸 ──────────────────────────────────────────────────────────────────────
+
+def load_json(path: Path) -> dict:
+    try:
+        return json.loads(path.read_text(encoding="utf-8"))
+    except Exception:
+        return {}
+
+
+def save_json(path: Path, data: dict) -> None:
+    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    print(f"  저장: {path.name}")
+
+
+def add_months(d: date, months: int) -> date:
+    month = d.month - 1 + months
+    year = d.year + month // 12
+    month = month % 12 + 1
+    max_day = calendar.monthrange(year, month)[1]
+    return date(year, month, min(d.day, max_day))
+
+
+# ── 가격 데이터 ───────────────────────────────────────────────────────────────
+
+def fetch_history(ticker: str, period: str = "1y"):
+    t = yf.Ticker(ticker)
+    hist = t.history(period=period, auto_adjust=True)
+    if hist.empty:
+        sys.exit(f"[오류] {ticker} 가격 조회 실패")
+    return hist
+
+
+def latest_close(hist) -> float:
+    return float(hist["Close"].iloc[-1])
+
+
+def ma(hist, n: int) -> float:
+    closes = hist["Close"]
+    if len(closes) < n:
+        return float(closes.mean())
+    return float(closes.iloc[-n:].mean())
+
+
+def daily_change_pct(hist) -> float:
+    closes = hist["Close"]
+    if len(closes) < 2:
+        return 0.0
+    return float((closes.iloc[-1] - closes.iloc[-2]) / closes.iloc[-2] * 100)
+
+
+def consecutive_up_days(hist) -> int:
+    closes = list(hist["Close"])
+    count = 0
+    for i in range(len(closes) - 1, 0, -1):
+        if closes[i] > closes[i - 1]:
+            count += 1
+        else:
+            break
+    return count
+
+
+# ── 마삼 상태 머신 ─────────────────────────────────────────────────────────────
+
+def update_masam_state(existing: dict, today: date, ixic_chg: float) -> dict:
+    m = existing.get("masam", {})
+    mode = existing.get("mode", "NORMAL")
+
+    last_str = m.get("last_masam_date")
+    last_masam = date.fromisoformat(last_str) if last_str else None
+    month_count = m.get("month_count", 0)
+
+    # 달력 월 바뀌면 카운트 리셋
+    if last_masam is None or (last_masam.year, last_masam.month) != (today.year, today.month):
+        month_count = 0
+
+    # 종료 조건 체크 (새 마삼 발생 전에 먼저)
+    crisis_end_str = m.get("crisis_end_dday")
+    panic_end_str = m.get("panic_end_dday")
+
+    if mode == "PANIC" and panic_end_str:
+        if today >= date.fromisoformat(panic_end_str):
+            mode = "NORMAL"
+    elif mode == "CRISIS" and crisis_end_str:
+        if today >= date.fromisoformat(crisis_end_str):
+            mode = "NORMAL"
+
+    # 오늘 마삼 여부
+    is_masam = ixic_chg <= -3.0
+    if is_masam:
+        if last_masam and (last_masam.year, last_masam.month) == (today.year, today.month):
+            month_count += 1
+        else:
+            month_count = 1
+        last_masam = today
+        if month_count >= 4:
+            mode = "PANIC"
+        elif mode == "NORMAL":
+            mode = "CRISIS"
+
+    # 종료 예정일 계산
+    crisis_end = (add_months(last_masam, 1) + timedelta(days=1)).isoformat() if last_masam else None
+    panic_end = (add_months(last_masam, 2) + timedelta(days=1)).isoformat() if (mode == "PANIC" and last_masam) else None
+
+    return {
+        "month_count": month_count,
+        "last_masam_date": last_masam.isoformat() if last_masam else None,
+        "crisis_end_dday": crisis_end if mode in ("CRISIS", "PANIC") else None,
+        "panic_end_dday": panic_end,
+    }, mode
+
+
+# ── 목표 비중 계산 ─────────────────────────────────────────────────────────────
+
+def calc_target_allocation(mode: str, rate_env: str) -> dict:
+    if mode == "NORMAL":
+        return {"stock_pct": 100, "hedge_pct": 0, "cash_pct": 0, "label": "1등주 집중"}
+    elif mode == "CRISIS":
+        if rate_env == "NON_ZERO":
+            return {"stock_pct": 50, "hedge_pct": 50, "cash_pct": 0, "label": "말뚝 50% + 헤지 50%"}
+        else:
+            return {"stock_pct": 25, "hedge_pct": 25, "cash_pct": 50, "label": "말뚝 25% + IAU 25%"}
+    else:  # PANIC
+        return {"stock_pct": 0, "hedge_pct": 0, "cash_pct": 100, "label": "현금 100% 대기"}
+
+
+def calc_hedge_type(rate_env: str, qe_active: bool, t10_trend: str) -> dict:
+    if rate_env == "NON_ZERO" and not qe_active and t10_trend == "DOWN":
+        return {"type": "TLT", "rationale": "비제로 + QE_OFF + 10Y 하락추세", "exit_trigger": "QE 시작 또는 10Y 상승 전환"}
+    elif rate_env == "ZERO" or qe_active:
+        return {"type": "IAU_GLD_TIP", "rationale": "제로금리 또는 QE 시작", "exit_trigger": "금리 인상 또는 QE 종료"}
+    else:
+        return {"type": "TLT", "rationale": "비제로 + 10Y 추세 불명확", "exit_trigger": "QE 시작"}
+
+
+# ── 올인 체크리스트 ────────────────────────────────────────────────────────────
+
+def calc_all_in_conditions(
+    mode: str, last_masam, today: date,
+    consec_up: int, ixic_close: float, ixic_ath: float,
+    rank1_close: float, rank1_ath: float,
+    ixic_crisis_low: float, rate_env: str,
+) -> list:
+    trigger_pct = -30.0 if rate_env == "NON_ZERO" else -15.0
+    v_pct = 10.0 if rate_env == "NON_ZERO" else 5.0
+    from_ath_pct = (ixic_close - ixic_ath) / ixic_ath * 100
+
+    cond1_met, cond1_detail = False, ""
+    if last_masam:
+        end = add_months(last_masam, 2 if mode == "PANIC" else 1) + timedelta(days=1)
+        days_left = (end - today).days
+        if today >= end:
+            cond1_met = True
+            cond1_detail = "충족"
+        else:
+            cond1_detail = f"D-{days_left}"
+
+    cond2_met = consec_up >= 8
+
+    cond3_met = rank1_close >= rank1_ath
+    cond3_detail = f"{(rank1_close - rank1_ath) / rank1_ath * 100:+.1f}%"
+
+    cond4_met = ixic_close >= ixic_ath
+    cond4_detail = f"{from_ath_pct:+.1f}%"
+
+    low_pct = (ixic_close - ixic_crisis_low) / ixic_crisis_low * 100 if ixic_crisis_low > 0 else 0
+    cond5_met = low_pct >= v_pct
+    cond5_detail = f"+{low_pct:.1f}% (필요: +{v_pct:.0f}%)" if not cond5_met else "충족"
+
+    cond6_met = from_ath_pct <= trigger_pct
+    cond6_detail = f"{from_ath_pct:.1f}% (기준: {trigger_pct:.0f}%)" if not cond6_met else "충족"
+
+    return [
+        {"id": 1, "label": "한달+1일 무마삼", "met": cond1_met, "grade": "약", "detail": cond1_detail},
+        {"id": 2, "label": "8거래일 연속 상승", "met": cond2_met, "grade": "중", "detail": f"{consec_up}일 연속"},
+        {"id": 3, "label": "1등주 전고 돌파", "met": cond3_met, "grade": "강", "detail": cond3_detail},
+        {"id": 4, "label": "나스닥 전고 돌파", "met": cond4_met, "grade": "강", "detail": cond4_detail},
+        {"id": 5, "label": f"2구간 V자(+{v_pct:.0f}%)", "met": cond5_met, "grade": "중", "detail": cond5_detail},
+        {"id": 6, "label": f"긴급 올인({trigger_pct:.0f}%)", "met": cond6_met, "grade": "강", "detail": cond6_detail},
+    ]
+
+
+# ── 모멘텀 국면 ────────────────────────────────────────────────────────────────
+
+def calc_regime(spx_hist, ndx_hist) -> dict:
+    spx_close = latest_close(spx_hist)
+    spx_ma50 = ma(spx_hist, 50)
+    spx_ma200 = ma(spx_hist, 200)
+
+    ndx_close = latest_close(ndx_hist)
+    ndx_ma50 = ma(ndx_hist, 50)
+    ndx_ma200 = ma(ndx_hist, 200)
+
+    spx_above = spx_close > spx_ma200 and spx_ma50 > spx_ma200
+    ndx_above = ndx_close > ndx_ma200 and ndx_ma50 > ndx_ma200
+    spx_break = spx_close < spx_ma200
+    ndx_break = ndx_close < ndx_ma200
+
+    if spx_above and ndx_above:
+        regime = "GREEN"
+    elif spx_break or ndx_break:
+        regime = "RED"
+    else:
+        regime = "YELLOW"
+
+    return {
+        "regime": regime,
+        "spx": {"close": round(spx_close, 2), "ma50": round(spx_ma50, 2), "ma200": round(spx_ma200, 2)},
+        "ndx": {"close": round(ndx_close, 2), "ma50": round(ndx_ma50, 2), "ma200": round(ndx_ma200, 2)},
+        "buy_gate": "OPEN" if regime != "RED" else "BLOCKED",
+    }
+
+
+# ── mcap 순위 ─────────────────────────────────────────────────────────────────
+
+def fetch_mcap_rankings() -> list:
+    results = []
+    tickers = [t for t, _ in CURATED]
+    _ = tickers  # mcap은 fast_info로 개별 조회
+
+    for ticker, name in CURATED:
+        try:
+            info = yf.Ticker(ticker).fast_info
+            mcap = getattr(info, "market_cap", None) or 0
+        except Exception:
+            mcap = 0
+        results.append({"ticker": ticker, "name": name, "mcap_usd": int(mcap)})
+
+    results.sort(key=lambda x: x["mcap_usd"], reverse=True)
+    rank1_mcap = results[0]["mcap_usd"] if results else 1
+
+    for i, item in enumerate(results):
+        item["rank"] = i + 1
+        item["is_leader"] = i == 0
+        gap = (rank1_mcap - item["mcap_usd"]) / rank1_mcap * 100 if rank1_mcap > 0 else 0
+        item["gap_pct_from_rank1"] = round(gap, 1)
+
+    return results
+
+
+# ── 헤지 가격 ─────────────────────────────────────────────────────────────────
+
+def fetch_hedge_prices() -> dict:
+    prices = {}
+    for ticker in HEDGE_TICKERS:
+        try:
+            hist = yf.Ticker(ticker).history(period="5d", auto_adjust=True)
+            prices[ticker] = round(float(hist["Close"].iloc[-1]), 2)
+        except Exception:
+            prices[ticker] = None
+    return prices
+
+
+# ── main ──────────────────────────────────────────────────────────────────────
+
+def main():
+    today = date.today()
+    print(f"\n[EOD 배치] {today}")
+
+    # 1. 시장 가격 조회
+    print("▶ 시장 가격 조회 중...")
+    ixic = fetch_history("^IXIC")
+    gspc = fetch_history("^GSPC")
+    ndx  = fetch_history("^NDX")
+    vix  = fetch_history("^VIX", period="5d")
+
+    ixic_close = latest_close(ixic)
+    ixic_chg   = daily_change_pct(ixic)
+    ixic_ath   = float(ixic["Close"].max())
+    ixic_ma200 = ma(ixic, 200)
+    consec_up  = consecutive_up_days(ixic)
+    vix_val    = round(latest_close(vix), 2)
+
+    print(f"  IXIC: {ixic_close:.2f} ({ixic_chg:+.2f}%)")
+    print(f"  VIX:  {vix_val}")
+
+    # 2. 기존 masam.json 로드
+    existing_masam = load_json(DATA / "masam.json")
+    rate_env  = existing_masam.get("rate_env", "NON_ZERO")
+    qe_active = existing_masam.get("qe_active", False)
+    t10_trend = existing_masam.get("treasury_10y_trend", "UNKNOWN")
+
+    # 3. 마삼 상태 업데이트
+    new_masam_state, new_mode = update_masam_state(existing_masam, today, ixic_chg)
+    print(f"  모드: {existing_masam.get('mode')} → {new_mode}  (이번 달 마삼 {new_masam_state['month_count']}회)")
+
+    # 4. mcap 순위
+    print("▶ 시가총액 순위 조회 중...")
+    rankings = fetch_mcap_rankings()
+    rank1 = rankings[0] if rankings else {}
+    rank2 = rankings[1] if len(rankings) > 1 else {}
+    rank1_ticker = rank1.get("ticker", "NVDA")
+    rank2_ticker = rank2.get("ticker", "MSFT")
+    gap_pct = rank2.get("gap_pct_from_rank1", 0.0)
+    print(f"  1등: {rank1_ticker}  2등: {rank2_ticker}  격차: {gap_pct:.1f}%")
+
+    # 5. 1등주 가격
+    rank1_hist = fetch_history(rank1_ticker)
+    rank1_close = latest_close(rank1_hist)
+    rank1_ath   = float(rank1_hist["Close"].max())
+
+    # 위기 저점(1년 최저): 간단히 1y 저점 사용
+    ixic_crisis_low = float(ixic["Close"].min())
+
+    # 6. 헤지
+    print("▶ 헤지 가격 조회 중...")
+    hedge_prices = fetch_hedge_prices()
+    print(f"  {hedge_prices}")
+
+    # 7. 모멘텀 국면
+    print("▶ 모멘텀 국면 계산 중...")
+    regime_data = calc_regime(gspc, ndx)
+    print(f"  국면: {regime_data['regime']}")
+
+    # 8. 비중 / 헤지 타입
+    target_alloc = calc_target_allocation(new_mode, rate_env)
+    hedge_alloc  = calc_hedge_type(rate_env, qe_active, t10_trend)
+    if new_mode == "NORMAL":
+        hedge_alloc = {"type": "NONE", "rationale": "평상시 — 헤지 불필요", "exit_trigger": ""}
+
+    # 9. 올인 체크리스트
+    all_in = calc_all_in_conditions(
+        mode=new_mode,
+        last_masam=date.fromisoformat(new_masam_state["last_masam_date"]) if new_masam_state.get("last_masam_date") else None,
+        today=today,
+        consec_up=consec_up,
+        ixic_close=ixic_close,
+        ixic_ath=ixic_ath,
+        rank1_close=rank1_close,
+        rank1_ath=rank1_ath,
+        ixic_crisis_low=ixic_crisis_low,
+        rate_env=rate_env,
+    )
+
+    # ── 파일 저장 ──────────────────────────────────────────────────────────────
+
+    # masam.json
+    masam_out = {
+        **existing_masam,
+        "as_of": today.isoformat(),
+        "mode": new_mode,
+        "masam": new_masam_state,
+        "leader_status": {
+            "rank1_ticker": rank1_ticker,
+            "rank2_ticker": rank2_ticker,
+            "gap_pct": gap_pct,
+            "overtake_detected": existing_masam.get("leader_status", {}).get("rank1_ticker") != rank1_ticker,
+            "gap_within_10pct": gap_pct <= 10.0,
+        },
+        "target_allocation": target_alloc,
+        "hedge_allocation": hedge_alloc,
+        "all_in_conditions": all_in,
+        "recommended_action": _recommended_action(new_mode, rank1_ticker),
+    }
+    save_json(DATA / "masam.json", masam_out)
+
+    # mcap_daily.json
+    save_json(DATA / "mcap_daily.json", {
+        "as_of": today.isoformat(),
+        "rank1_ticker": rank1_ticker,
+        "items": rankings,
+    })
+
+    # momentum_market.json (VIX 추가, FRED 필드 유지)
+    existing_mm = load_json(DATA / "momentum_market.json")
+    save_json(DATA / "momentum_market.json", {
+        **existing_mm,
+        "as_of": today.isoformat(),
+        **regime_data,
+        "vix": vix_val,
+    })
+
+    # masam_market.json — FRED 필드는 fetch_fred.py가 담당, VIX만 갱신
+    existing_fm = load_json(DATA / "masam_market.json")
+    save_json(DATA / "masam_market.json", {
+        **existing_fm,
+        "vix": vix_val,
+    })
+
+    # hedge_prices.json
+    save_json(DATA / "hedge_prices.json", {
+        "as_of": today.isoformat(),
+        **hedge_prices,
+    })
+
+    print(f"\n✓ EOD 배치 완료 ({today})")
+
+
+def _recommended_action(mode: str, rank1: str) -> str:
+    if mode == "NORMAL":
+        return f"리밸런싱 유지 — 1등주({rank1}) 집중"
+    elif mode == "CRISIS":
+        return f"말뚝박기 유지 — 하락 시 분할 매수"
+    else:
+        return "현금 100% 대기 — 올인 트리거 모니터링"
+
+
+if __name__ == "__main__":
+    main()

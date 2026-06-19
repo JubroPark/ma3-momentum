@@ -1,36 +1,37 @@
 {
-  "as_of": "2026-06-18T15:32:00Z",
-  "update_time": "07:00 KST",
+  "as_of": "2026-06-19T13:23:53Z",
+  "update_time": "13:23 KST",
   "nasdaq": {
-    "price": 19842.30,
-    "change_pct": 0.84,
-    "dist_to_masam_pct": 2.18,
-    "from_ath_pct": -2.1,
-    "last_masam_date": "5/21"
+    "price": 26517.93,
+    "change_pct": 1.91,
+    "dist_to_masam_pct": 37.78,
+    "from_ath_pct": 11161.7,
+    "last_masam_date": "2026-05-21"
   },
   "sp500": {
-    "price": 5521.40,
-    "change_pct": 0.61
+    "price": 7500.58,
+    "change_pct": 1.08
   },
   "dow": {
-    "price": 44421.50,
-    "change_pct": 0.43
+    "price": 51564.7,
+    "change_pct": 0.14
   },
   "rank1": {
     "ticker": "NVDA",
     "name": "엔비디아",
     "domain": "nvidia.com",
     "si": "nvidia/76b900",
-    "price": 136.80,
-    "change_pct": 1.24,
-    "ath": 153.13,
-    "prev_high": 149.73,
-    "day_low": 134.22
+    "price": 210.69,
+    "change_pct": 2.13,
+    "ath": 235.47,
+    "prev_high": 235.47,
+    "day_high": 211.39,
+    "day_low": 206.5
   },
   "hedges": {
-    "TLT": 88.42,
-    "IAU": 54.17,
-    "GLD": 301.85,
-    "TIP": 107.23
+    "TLT": 86.75,
+    "IAU": 79.33,
+    "GLD": 387.12,
+    "TIP": 109.39
   }
 }
