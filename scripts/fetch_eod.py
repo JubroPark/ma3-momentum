@@ -328,7 +328,7 @@ def main():
 
     ixic_close = latest_close(ixic)
     ixic_chg   = daily_change_pct(ixic)
-    ixic_ath   = float(ixic["Close"].max())
+    ixic_ath   = float(yf.Ticker("^IXIC").history(period="max", auto_adjust=True)["Close"].max())
     ixic_ma200 = ma(ixic, 200)
     consec_up  = consecutive_up_days(ixic)
     vix_val    = round(latest_close(vix), 2)
@@ -365,7 +365,7 @@ def main():
     # 5. 1등주 가격
     rank1_hist = fetch_history(rank1_ticker)
     rank1_close = latest_close(rank1_hist)
-    rank1_ath   = float(rank1_hist["Close"].max())
+    rank1_ath   = float(yf.Ticker(rank1_ticker).history(period="max", auto_adjust=True)["Close"].max())
 
     # 위기 저점(1년 최저): 간단히 1y 저점 사용
     ixic_crisis_low = float(ixic["Close"].min())
