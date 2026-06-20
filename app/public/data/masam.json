@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-06-20",
+  "as_of": "2026-06-21",
   "mode": "CRISIS",
   "rate_env": "NON_ZERO",
-  "qe_active": false,
-  "treasury_10y_trend": "UP",
+  "qe_active": true,
+  "treasury_10y_trend": "DOWN",
   "masam": {
     "month_count": 1,
     "last_masam_date": "2026-06-05",
@@ -24,9 +24,9 @@
     "label": "말뚝 50% + 헤지 50%"
   },
   "hedge_allocation": {
-    "type": "TLT",
-    "rationale": "비제로 + 10Y 추세 불명확",
-    "exit_trigger": "QE 시작"
+    "type": "IAU_GLD_TIP",
+    "rationale": "제로금리 또는 QE 시작",
+    "exit_trigger": "금리 인상 또는 QE 종료"
   },
   "rebalancing": {
     "cash_raised_pct": 0,
@@ -45,7 +45,7 @@
       "label": "한달+1일 무마삼",
       "met": false,
       "grade": "약",
-      "detail": "D-16"
+      "detail": "D-15"
     },
     {
       "id": 2,

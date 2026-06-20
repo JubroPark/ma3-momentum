@@ -46,16 +46,16 @@
   .topbar .menu .dot{position:absolute;top:-1px;right:-1px;width:6px;height:6px;border-radius:50%;background:var(--up);}
   .strat-tog{position:relative;display:flex;background:#1e1e26;border-radius:10px;padding:3px;gap:2px;}
   .strat-tog .thumb{position:absolute;top:3px;bottom:3px;left:3px;background:#2e2e3a;border-radius:8px;transition:transform .25s cubic-bezier(.4,0,.2,1),width .25s cubic-bezier(.4,0,.2,1);pointer-events:none;}
-  .strat-tog .st{position:relative;border:none;background:none;color:#6b6b7a;font-family:inherit;font-size:12px;font-weight:500;padding:4.5px 12px;border-radius:8px;cursor:pointer;letter-spacing:-.02em;transition:color .2s;white-space:nowrap;}
+  .strat-tog .st{position:relative;border:none;background:none;color:#6b6b7a;font-family:inherit;font-size:13px;font-weight:500;padding:4.5px 12px;border-radius:8px;cursor:pointer;letter-spacing:-.02em;transition:color .2s;white-space:nowrap;}
   .strat-tog .st.on{color:#f4f5f7;}
   .up{color:var(--up);}.down{color:var(--down);}
 
   .scr-title{display:flex;align-items:flex-end;gap:10.2px;padding:5.1px 17px 2px;margin-top:6px;}
-  .scr-title h2{font-size:18.7px;font-weight:700;letter-spacing:-0.5px;}
-  .scr-title .idx{font-size:11.9px;color:var(--txt-2);font-weight:500;display:flex;gap:6px;align-items:baseline;}
+  .scr-title h2{font-size:19.7px;font-weight:700;letter-spacing:-0.5px;}
+  .scr-title .idx{font-size:12.9px;color:var(--txt-2);font-weight:500;display:flex;gap:6px;align-items:baseline;}
   .scr-title .idx .v{font-weight:700;}
   .idx-roll-wrap{display:grid;overflow:hidden;}
-  .idx-roll-item{grid-area:1/1;display:flex;gap:5px;align-items:baseline;font-size:11.9px;font-weight:500;color:var(--txt-2);opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;white-space:nowrap;}
+  .idx-roll-item{grid-area:1/1;display:flex;gap:5px;align-items:baseline;font-size:12.9px;font-weight:500;color:var(--txt-2);opacity:0;transform:translateY(6px);transition:opacity .35s,transform .35s;white-space:nowrap;}
   .idx-roll-item.active{opacity:1;transform:translateY(0);}
   .idx-roll-item.exit{opacity:0;transform:translateY(-6px);}
   .idx-roll-item .idx-lbl{color:#fff;}
@@ -72,155 +72,155 @@
   @keyframes slideUp{from{opacity:1;max-height:200px}to{opacity:0;max-height:0}}
   .pos-detail-open{animation:slideDown .28s cubic-bezier(.4,0,.2,1) forwards;overflow:hidden;}
   .pos-detail-close{animation:slideUp .22s cubic-bezier(.4,0,.2,1) forwards;overflow:hidden;}
-  .disclaimer p{font-size:10.5px;color:#4a4a52;line-height:1.6;margin:0;text-align:center;}
+  .disclaimer p{font-size:11.5px;color:#4a4a52;line-height:1.6;margin:0;text-align:center;}
   .momt-cat{background:var(--surface);}
   .momt-cat.active-cat{background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6) border-box;border:1.4px solid transparent;}
   .cat .circ{width:26px;height:26px;display:flex;align-items:center;justify-content:center;}
   .cat .circ img.emoji{width:26px;height:26px;}
-  .cat span{font-size:11.9px;font-weight:600;color:#e9e9ef;}
+  .cat span{font-size:12.9px;font-weight:600;color:#e9e9ef;}
   .cat.econ{height:91.8px;}
-  .cat.econ .circ{width:39.1px;height:39.1px;border-radius:50%;background:var(--surface-2);font-size:11px;font-weight:800;}
+  .cat.econ .circ{width:39.1px;height:39.1px;border-radius:50%;background:var(--surface-2);font-size:12px;font-weight:800;}
   .bar{height:7px;border-radius:99px;background:var(--surface-2);margin:14px 0 6px;position:relative;overflow:visible;}
   .bar i{position:absolute;inset:0 auto 0 0;border-radius:99px;}
   .bar .mk{position:absolute;top:-4px;width:3px;height:15px;background:#fff;border-radius:2px;transform:translateX(-50%);}
   @keyframes barFill{from{width:0;opacity:0}to{opacity:1}}
   .bar i.anim{animation:barFill .9s cubic-bezier(.4,0,.2,1) forwards;}
   .bar .mk.anim{animation:barFill .9s cubic-bezier(.4,0,.2,1) forwards;}
-  .flag{width:39.1px;height:39.1px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:22.1px;}
+  .flag{width:39.1px;height:39.1px;border-radius:50%;background:#fff;display:flex;align-items:center;justify-content:center;font-size:23.1px;}
 
   .idx-row{display:flex;padding:15.3px 17px 8.5px;}
   .idx-cell{flex:1;padding-right:11.9px;}
   .idx-cell + .idx-cell{border-left:1px solid var(--line);padding-left:15.3px;}
-  .idx-cell .lbl{font-size:11px;color:var(--txt-3);margin-bottom:8px;}
-  .idx-cell .val{font-size:12.8px;font-weight:600;display:flex;gap:6.8px;align-items:baseline;flex-wrap:wrap;}
-  .idx-cell .val small{font-size:11px;font-weight:600;}
-  .idx-cell .txt{font-size:11.9px;color:#d4d4db;font-weight:500;line-height:1.35;}
+  .idx-cell .lbl{font-size:12px;color:var(--txt-3);margin-bottom:8px;}
+  .idx-cell .val{font-size:13.8px;font-weight:600;display:flex;gap:6.8px;align-items:baseline;flex-wrap:wrap;}
+  .idx-cell .val small{font-size:12px;font-weight:600;}
+  .idx-cell .txt{font-size:12.9px;color:#d4d4db;font-weight:500;line-height:1.35;}
 
   .ai-banner{margin:6.8px 17px 3.4px;border-radius:13.6px;padding:1.4px;
     background:linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6);cursor:pointer;}
   .price-roll-wrap{display:grid;overflow:hidden;}
-  .price-roll-item{grid-area:1/1;opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s;font-size:13px;font-weight:600;color:#fff;}
+  .price-roll-item{grid-area:1/1;opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s;font-size:14px;font-weight:600;color:#fff;}
   .price-roll-item.active{opacity:1;transform:translateY(0);}
   .price-roll-item.exit{opacity:0;transform:translateY(-5px);}
   .ai-banner .inner{background:var(--bg);border-radius:12.8px;padding:14.4px 15.3px;display:flex;align-items:center;gap:14px;}
-  .ai-banner .tag{font-size:12.8px;font-weight:700;background:linear-gradient(90deg,#7c6dff,#4593FC);
+  .ai-banner .tag{font-size:13.8px;font-weight:700;background:linear-gradient(90deg,#7c6dff,#4593FC);
     -webkit-background-clip:text;background-clip:text;color:transparent;display:flex;align-items:center;gap:4.2px;white-space:nowrap;}
-  .ai-banner .msg{font-size:12.8px;font-weight:600;color:#eee;display:flex;align-items:center;gap:6px;
+  .ai-banner .msg{font-size:13.8px;font-weight:600;color:#eee;display:flex;align-items:center;gap:6px;
     overflow:hidden;text-overflow:ellipsis;white-space:nowrap;flex:1;}
   .ai-banner .msg .n{color:var(--txt-2);font-weight:700;}
-  .ai-banner .chev{color:var(--txt-3);font-size:15.3px;}
+  .ai-banner .chev{color:var(--txt-3);font-size:16.3px;}
 
-  .sec-h{font-size:18.7px;font-weight:700;letter-spacing:-0.5px;padding:22.1px 17px 3.4px;}
+  .sec-h{font-size:19.7px;font-weight:700;letter-spacing:-0.5px;padding:22.1px 17px 3.4px;}
   .tabs{display:flex;align-items:center;gap:18.7px;padding:11.9px 17px 0;border-bottom:1px solid var(--line);}
   .tabs .spacer{flex:1;}
   .tabs .pct-tog{display:flex;background:#1e1e26;border-radius:10px;padding:3px;gap:2px;margin-bottom:8px;}
-  .tabs .pct-tog button{border:none;background:none;color:#6b6b7a;font-family:inherit;font-size:11px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
+  .tabs .pct-tog button{border:none;background:none;color:#6b6b7a;font-family:inherit;font-size:12px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;transition:background .15s,color .15s;white-space:nowrap;}
   .tabs .pct-tog button.on{background:#2e2e3a;color:#f4f5f7;}
-  .tabs .t{font-size:13.5px;font-weight:600;color:var(--txt-3);padding-bottom:11.9px;position:relative;cursor:pointer;transition:color .15s;}
+  .tabs .t{font-size:14.5px;font-weight:600;color:var(--txt-3);padding-bottom:11.9px;position:relative;cursor:pointer;transition:color .15s;}
   .tabs .t.on{color:var(--txt);}
   .tabs .t.on::after{content:"";position:absolute;left:0;right:0;bottom:-1px;height:2.1px;background:#fff;border-radius:2px;}
 
   .rank{display:flex;align-items:center;gap:13.6px;padding:13.6px 17px;cursor:pointer;transition:background .12s;}
   .rank:active{background:var(--surface);}
-  .rank .no{width:11.9px;text-align:center;font-size:13px;font-weight:500;color:#d4d4db;}
+  .rank .no{width:11.9px;text-align:center;font-size:14px;font-weight:500;color:#d4d4db;}
   .rank .ava{width:44.2px;height:44.2px;border-radius:50%;position:relative;flex:0 0 44.2px;display:flex;
-    align-items:center;justify-content:center;font-size:11.9px;font-weight:800;color:#1a1a1a;}
+    align-items:center;justify-content:center;font-size:12.9px;font-weight:800;color:#1a1a1a;}
   .rank .ava .mf{position:absolute;right:-2px;bottom:-2px;width:17px;height:17px;border-radius:50%;
-    border:2px solid var(--bg);background:#fff;display:flex;align-items:center;justify-content:center;font-size:13px;overflow:hidden;}
+    border:2px solid var(--bg);background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;overflow:hidden;}
   .rank .info{flex:1;min-width:0;}
-  .rank .info .nm{font-size:13.5px;font-weight:600;letter-spacing:-0.3px;}
-  .rank .info .pr{font-size:12px;color:var(--txt-2);margin-top:3.4px;display:flex;gap:7.6px;align-items:baseline;}
+  .rank .info .nm{font-size:14.5px;font-weight:600;letter-spacing:-0.3px;}
+  .rank .info .pr{font-size:13px;color:var(--txt-2);margin-top:3.4px;display:flex;gap:7.6px;align-items:baseline;}
   .rank .heart{width:23.8px;height:23.8px;flex:0 0 23.8px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .rank .heart svg{width:22.1px;height:22.1px;transition:transform .18s;}
   .rank .heart:active svg{transform:scale(1.3);}
 
   .insert{margin:2px 17px 6.8px 68px;background:var(--surface);border-radius:11.9px;padding:12.8px 13.6px;
     display:flex;align-items:center;gap:11px;cursor:pointer;}
-  .insert .fire{font-size:20.4px;}
+  .insert .fire{font-size:21.4px;}
   .insert .it{flex:1;}
-  .insert .it .a{font-size:12.8px;font-weight:600;color:#e8e8ee;}
-  .insert .it .b{font-size:11px;color:var(--txt-3);margin-top:2.5px;}
-  .insert .chev{color:var(--txt-3);font-size:14.4px;}
+  .insert .it .a{font-size:13.8px;font-weight:600;color:#e8e8ee;}
+  .insert .it .b{font-size:12px;color:var(--txt-3);margin-top:2.5px;}
+  .insert .chev{color:var(--txt-3);font-size:15.4px;}
 
   .ai-sig{padding:15.3px 17px 0;}
-  .ai-sig .h{font-size:12.8px;font-weight:700;color:#a99bff;display:flex;align-items:center;gap:4.2px;cursor:pointer;}
-  .ai-sig .m{font-size:14.4px;font-weight:500;color:#d6d6dd;margin-top:11px;line-height:1.35;}
+  .ai-sig .h{font-size:13.8px;font-weight:700;color:#a99bff;display:flex;align-items:center;gap:4.2px;cursor:pointer;}
+  .ai-sig .m{font-size:15.4px;font-weight:500;color:#d6d6dd;margin-top:11px;line-height:1.35;}
   .ai-sig .m b{font-weight:800;color:#fff;}
   .ai-sig .dv{height:1px;background:var(--line);margin-top:15.3px;}
   .pill-tabs{display:flex;gap:11.9px;padding:18.7px 17px 0;align-items:center;}
-  .pill-tabs .pt{font-size:14.4px;font-weight:700;color:var(--txt-3);cursor:pointer;padding:7.6px 3.4px;transition:color .15s;}
+  .pill-tabs .pt{font-size:15.4px;font-weight:700;color:var(--txt-3);cursor:pointer;padding:7.6px 3.4px;transition:color .15s;}
   .pill-tabs .pt.on{color:var(--blue);}
   .pill-tabs .pt.pill.on{color:#fff;background:var(--surface-2);padding:7.6px 15.3px;border-radius:17px;}
   .empty{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:51px 34px;}
-  .empty .emo{font-size:54.4px;margin-bottom:20.4px;}
-  .empty h3{font-size:19.6px;font-weight:800;line-height:1.4;letter-spacing:-0.4px;}
-  .empty p{font-size:12.8px;color:var(--txt-3);margin-top:11.9px;}
-  .empty .btn{margin-top:22.1px;background:var(--blue);color:#fff;font-size:14.4px;font-weight:700;
+  .empty .emo{font-size:55.4px;margin-bottom:20.4px;}
+  .empty h3{font-size:20.6px;font-weight:800;line-height:1.4;letter-spacing:-0.4px;}
+  .empty p{font-size:13.8px;color:var(--txt-3);margin-top:11.9px;}
+  .empty .btn{margin-top:22.1px;background:var(--blue);color:#fff;font-size:15.4px;font-weight:700;
     padding:12.8px 34px;border-radius:11.9px;border:none;cursor:pointer;transition:transform .12s,background .12s;}
   .empty .btn:active{transform:scale(.96);background:#2671e0;}
   .feedback{display:flex;align-items:center;gap:11.9px;padding:18.7px 17px;border-top:1px solid var(--line);cursor:pointer;}
-  .feedback .env{font-size:20.4px;}
+  .feedback .env{font-size:21.4px;}
   .feedback .ft{flex:1;}
-  .feedback .ft .a{font-size:14.4px;font-weight:700;}
-  .feedback .ft .b{font-size:11.9px;color:var(--txt-3);margin-top:2.5px;}
-  .feedback .chev{color:var(--txt-3);font-size:15.3px;}
+  .feedback .ft .a{font-size:15.4px;font-weight:700;}
+  .feedback .ft .b{font-size:12.9px;color:var(--txt-3);margin-top:2.5px;}
+  .feedback .chev{color:var(--txt-3);font-size:16.3px;}
 
   .promo{margin:11.9px 17px 0;background:var(--surface);border-radius:13.6px;padding:15.3px;display:flex;align-items:center;gap:11.9px;
     overflow:hidden;transition:opacity .25s,max-height .3s,margin .3s,padding .3s;max-height:102px;}
   .promo.hide{opacity:0;max-height:0;padding-top:0;padding-bottom:0;margin-top:0;}
-  .promo .pf{width:34px;height:34px;border-radius:7.6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:18.7px;}
+  .promo .pf{width:34px;height:34px;border-radius:7.6px;background:#fff;display:flex;align-items:center;justify-content:center;font-size:19.7px;}
   .promo .pt{flex:1;}
-  .promo .pt .a{font-size:14.4px;font-weight:700;}
-  .promo .pt .b{font-size:12.8px;color:var(--blue);font-weight:600;margin-top:3.4px;}
-  .promo .x{color:var(--txt-3);font-size:17px;cursor:pointer;padding:3.4px;}
+  .promo .pt .a{font-size:15.4px;font-weight:700;}
+  .promo .pt .b{font-size:13.8px;color:var(--blue);font-weight:600;margin-top:3.4px;}
+  .promo .x{color:var(--txt-3);font-size:18px;cursor:pointer;padding:3.4px;}
   .acct{display:flex;align-items:center;padding:20.4px 17px 0;}
   .acct .ad{width:22.1px;height:22.1px;border-radius:50%;background:var(--blue);margin-right:7.6px;}
-  .acct .an{font-size:16.1px;font-weight:700;}
-  .acct .av{margin-left:auto;font-size:12.8px;color:var(--txt-2);cursor:pointer;}
+  .acct .an{font-size:17.1px;font-weight:700;}
+  .acct .av{margin-left:auto;font-size:13.8px;color:var(--txt-2);cursor:pointer;}
   .bal-row{display:flex;gap:10.2px;padding:15.3px 17px 0;}
   .bal{flex:1;background:var(--surface);border-radius:12.8px;padding:15.3px;}
-  .bal .l{font-size:11.9px;color:var(--txt-3);}
-  .bal .v{font-size:17.8px;font-weight:700;margin-top:6.8px;}
+  .bal .l{font-size:12.9px;color:var(--txt-3);}
+  .bal .v{font-size:18.8px;font-weight:700;margin-top:6.8px;}
   .myinv{padding:25.5px 17px 0;}
-  .myinv .l{font-size:15.3px;font-weight:700;color:#d4d4db;}
-  .myinv .big{font-size:28.9px;font-weight:800;letter-spacing:-1px;margin-top:11.9px;display:flex;align-items:center;gap:5.1px;}
-  .myinv .big .chev{color:var(--txt-3);font-size:20.4px;font-weight:400;}
-  .myinv .sub{font-size:14.4px;font-weight:700;color:var(--up);margin-top:8.5px;}
+  .myinv .l{font-size:16.3px;font-weight:700;color:#d4d4db;}
+  .myinv .big{font-size:29.9px;font-weight:800;letter-spacing:-1px;margin-top:11.9px;display:flex;align-items:center;gap:5.1px;}
+  .myinv .big .chev{color:var(--txt-3);font-size:21.4px;font-weight:400;}
+  .myinv .sub{font-size:15.4px;font-weight:700;color:var(--up);margin-top:8.5px;}
   .ctrl{display:flex;align-items:center;padding:20.4px 17px 0;}
-  .ctrl .sort{background:var(--surface-2);font-size:11.9px;color:#c4c4cc;padding:7.6px 11.9px;border-radius:9.3px;font-weight:600;cursor:pointer;}
+  .ctrl .sort{background:var(--surface-2);font-size:12.9px;color:#c4c4cc;padding:7.6px 11.9px;border-radius:9.3px;font-weight:600;cursor:pointer;}
   .ctrl .rgt{margin-left:auto;display:flex;gap:8.5px;}
-  .ctrl .seg{background:var(--surface-2);border-radius:9.3px;display:flex;font-size:11.9px;font-weight:600;overflow:hidden;}
+  .ctrl .seg{background:var(--surface-2);border-radius:9.3px;display:flex;font-size:12.9px;font-weight:600;overflow:hidden;}
   .ctrl .seg span{padding:7.6px 11px;color:var(--txt-3);cursor:pointer;transition:.12s;}
   .ctrl .seg span.on{background:var(--surface-3);color:#fff;}
   .hold-h{display:flex;padding:25.5px 17px 0;}
-  .hold-h .l{font-size:12.8px;color:var(--txt-3);}
-  .hold-h .r{margin-left:auto;font-size:12.8px;color:var(--txt-3);cursor:pointer;}
+  .hold-h .l{font-size:13.8px;color:var(--txt-3);}
+  .hold-h .r{margin-left:auto;font-size:13.8px;color:var(--txt-3);cursor:pointer;}
   .hold{display:flex;align-items:center;gap:12.8px;padding:17px;cursor:pointer;transition:background .12s;}
   .hold:active{background:var(--surface);}
-  .hold .lg{width:45.9px;height:45.9px;border-radius:50%;background:#E31937;display:flex;align-items:center;justify-content:center;font-size:25.5px;color:#fff;font-weight:700;}
-  .hold .nm{font-size:17px;font-weight:700;}
-  .hold .sh{font-size:11.9px;color:var(--txt-3);margin-top:3.4px;}
+  .hold .lg{width:45.9px;height:45.9px;border-radius:50%;background:#E31937;display:flex;align-items:center;justify-content:center;font-size:26.5px;color:#fff;font-weight:700;}
+  .hold .nm{font-size:18px;font-weight:700;}
+  .hold .sh{font-size:12.9px;color:var(--txt-3);margin-top:3.4px;}
   .hold .rv{margin-left:auto;text-align:right;}
-  .hold .rv .a{font-size:17px;font-weight:700;}
-  .hold .rv .b{font-size:12.3px;font-weight:600;margin-top:3.4px;}
+  .hold .rv .a{font-size:18px;font-weight:700;}
+  .hold .rv .b{font-size:13.3px;font-weight:600;margin-top:3.4px;}
   .teal-band{margin-top:5.1px;background:rgba(43,196,182,.09);text-align:center;padding:22.1px 17px;
-    font-size:13.6px;font-weight:700;color:var(--teal);line-height:1.5;}
-  .detail-more{text-align:center;font-size:14.4px;font-weight:700;color:#bcbcc4;padding:25.5px 17px;display:flex;align-items:center;justify-content:center;gap:6.8px;cursor:pointer;}
+    font-size:14.6px;font-weight:700;color:var(--teal);line-height:1.5;}
+  .detail-more{text-align:center;font-size:15.4px;font-weight:700;color:#bcbcc4;padding:25.5px 17px;display:flex;align-items:center;justify-content:center;gap:6.8px;cursor:pointer;}
   .detail-more svg{width:15.3px;height:15.3px;stroke:#9a9aa3;}
 
   .feed-card{margin:13.6px 17px 0;background:var(--surface);border-radius:15.3px;padding:17px;}
   .feed-card .fh{display:flex;align-items:center;gap:9.3px;margin-bottom:11px;}
-  .feed-card .av2{width:32.3px;height:32.3px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:15.3px;}
-  .feed-card .nm{font-size:12.8px;font-weight:700;}
-  .feed-card .tm{font-size:11px;color:var(--txt-3);}
-  .feed-card .ct{font-size:13.6px;line-height:1.5;color:#e2e2e8;}
-  .feed-card .tk{display:inline-block;margin-top:11.9px;font-size:11.9px;font-weight:700;color:var(--blue);
+  .feed-card .av2{width:32.3px;height:32.3px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:16.3px;}
+  .feed-card .nm{font-size:13.8px;font-weight:700;}
+  .feed-card .tm{font-size:12px;color:var(--txt-3);}
+  .feed-card .ct{font-size:14.6px;line-height:1.5;color:#e2e2e8;}
+  .feed-card .tk{display:inline-block;margin-top:11.9px;font-size:12.9px;font-weight:700;color:var(--blue);
     background:rgba(49,130,246,.12);padding:6px 11px;border-radius:8.5px;}
-  .feed-card .react{display:flex;gap:17px;margin-top:13.6px;font-size:11.9px;color:var(--txt-2);}
+  .feed-card .react{display:flex;gap:17px;margin-top:13.6px;font-size:12.9px;color:var(--txt-2);}
   .feed-card .react span{cursor:pointer;}
 
   .toast{position:absolute;left:50%;bottom:81.6px;transform:translateX(-50%) translateY(17px);
-    background:rgba(40,40,48,.96);color:#fff;font-size:11.9px;font-weight:600;padding:11px 17px;border-radius:11px;
+    background:rgba(40,40,48,.96);color:#fff;font-size:12.9px;font-weight:600;padding:11px 17px;border-radius:11px;
     opacity:0;pointer-events:none;transition:.3s;white-space:nowrap;z-index:40;box-shadow:0 6.8px 20.4px rgba(0,0,0,.4);}
   .toast.show{opacity:1;transform:translateX(-50%) translateY(0);}
 
@@ -237,7 +237,7 @@
   .tabbar .back:active{background:rgba(255,255,255,.15);}
   .tabbar .back svg,.tabbar .back .iconify{width:18px;height:18px;color:#cfcfd6;}
   .tabbar .navset{flex:1;display:flex;justify-content:space-around;}
-  .navi{display:flex;flex-direction:column;align-items:center;gap:4.2px;font-size:9.3px;color:var(--txt-3);cursor:pointer;transition:color .15s;flex:1;}
+  .navi{display:flex;flex-direction:column;align-items:center;gap:4.2px;font-size:10.3px;color:var(--txt-3);cursor:pointer;transition:color .15s;flex:1;}
   .navi.on{color:#fff;}
   .navi svg,.navi .iconify{width:20px;height:20px;}
   .navi:active{transform:scale(.92);}
@@ -245,10 +245,10 @@
   .rt-head{display:flex;align-items:center;padding:8px 17px;border-bottom:1px solid var(--line);}
   .rt-row{display:flex;align-items:center;padding:11px 17px;border-bottom:1px solid var(--line);transition:background .12s;}
   .rt-row.rt-cur{background:rgba(49,130,246,.08);}
-  .rt-col-zone{width:46px;flex:0 0 46px;font-size:13px;font-weight:700;text-align:center;}
+  .rt-col-zone{width:46px;flex:0 0 46px;font-size:14px;font-weight:700;text-align:center;}
   .rt-col-price{flex:1;padding-left:8px;}
-  .rt-col-stock{width:44px;flex:0 0 44px;text-align:center;font-size:13px;font-weight:600;}
-  .rt-col-cash{width:44px;flex:0 0 44px;text-align:center;font-size:13px;font-weight:600;}
+  .rt-col-stock{width:44px;flex:0 0 44px;text-align:center;font-size:14px;font-weight:600;}
+  .rt-col-cash{width:44px;flex:0 0 44px;text-align:center;font-size:14px;font-weight:600;}
   .rt-col-status{width:32px;flex:0 0 32px;display:flex;justify-content:flex-end;align-items:center;}
   @keyframes rt-ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.4);opacity:0}}
   @keyframes trophy-shine{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15) drop-shadow(0 0 3px #F7C94866)}}
@@ -260,35 +260,35 @@
   .rt-none{width:16px;height:16px;display:inline-flex;align-items:center;justify-content:center;}
   .rt-none::after{content:'';display:block;width:9px;height:9px;border-radius:50%;border:1.5px solid var(--txt-3);opacity:.4;}
   .rt-custom{display:flex;align-items:center;gap:8px;padding:12px 17px 4px;}
-  .rt-custom span{font-size:11px;font-weight:500;color:var(--txt-3);white-space:nowrap;}
+  .rt-custom span{font-size:12px;font-weight:500;color:var(--txt-3);white-space:nowrap;}
   .rt-custom input{flex:1;background:var(--surface);border:1px solid var(--line);border-radius:8px;
-    padding:6px 10px;font-size:13px;font-weight:600;color:#fff;outline:none;font-family:inherit;}
+    padding:6px 10px;font-size:14px;font-weight:600;color:#fff;outline:none;font-family:inherit;}
   /* F&G 스펙트럼 바 */
   .fg-bar{position:relative;height:5px;border-radius:3px;background:linear-gradient(90deg,#E84C5A 0%,#E84C5A 25%,#F7A13A 25%,#F7A13A 45%,#9A9AA3 45%,#9A9AA3 55%,#2BC4B6 55%,#2BC4B6 75%,#3182F6 75%,#3182F6 100%);}
   .fg-needle{position:absolute;top:-4px;width:3px;height:13px;background:#fff;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 4px rgba(255,255,255,.5);}
   /* 경제지표 공통 */
   .esec{display:flex;align-items:center;justify-content:space-between;padding:20px 17px 8px;}
-  .esec .etit{font-size:18.7px;font-weight:800;letter-spacing:-.5px;color:var(--txt);}
-  .esec .ebadge{font-size:10px;font-weight:700;padding:3px 9px;border-radius:6px;}
+  .esec .etit{font-size:19.7px;font-weight:800;letter-spacing:-.5px;color:var(--txt);}
+  .esec .ebadge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;}
   /* duo 카드 */
   .duo{display:flex;gap:10px;padding:0 17px;}
   .duo .c{flex:1;background:var(--surface);border-radius:13.6px;padding:15px 16px;}
-  .duo .c .l{font-size:11px;color:var(--txt-3);font-weight:500;margin-bottom:6px;}
-  .duo .c .v{font-size:20px;font-weight:800;letter-spacing:-.03em;}
-  .duo .c .d{font-size:11.5px;font-weight:600;margin-top:4px;}
+  .duo .c .l{font-size:12px;color:var(--txt-3);font-weight:500;margin-bottom:6px;}
+  .duo .c .v{font-size:21px;font-weight:800;letter-spacing:-.03em;}
+  .duo .c .d{font-size:12.5px;font-weight:600;margin-top:4px;}
   /* 인셋 노티스 */
   .inset{display:flex;align-items:center;gap:10px;background:var(--surface);border-radius:12px;padding:13px 15px;margin:8px 17px 0;}
-  .inset .tx{flex:1;font-size:12.5px;font-weight:600;line-height:1.45;}
-  .inset .tx s{display:block;font-size:11px;color:var(--txt-2);text-decoration:none;font-weight:500;margin-top:2px;}
+  .inset .tx{flex:1;font-size:13.5px;font-weight:600;line-height:1.45;}
+  .inset .tx s{display:block;font-size:12px;color:var(--txt-2);text-decoration:none;font-weight:500;margin-top:2px;}
   /* 칩 */
-  .chip{font-size:10.5px;font-weight:800;padding:3px 7px;border-radius:6px;flex:none;}
+  .chip{font-size:11.5px;font-weight:800;padding:3px 7px;border-radius:6px;flex:none;}
   .srow{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line);}
   .srow:last-child{border-bottom:none;}
-  .srow .sk{font-size:13px;font-weight:500;}
-  .srow .sk s{display:block;font-size:11.5px;color:var(--txt-3);font-weight:500;text-decoration:none;margin-top:3px;}
-  .srow .sv{font-size:14px;font-weight:700;color:#3182F6;}
+  .srow .sk{font-size:14px;font-weight:500;}
+  .srow .sk s{display:block;font-size:12.5px;color:var(--txt-3);font-weight:500;text-decoration:none;margin-top:3px;}
+  .srow .sv{font-size:15px;font-weight:700;color:#3182F6;}
   .tg{display:inline-flex;background:var(--surface-2);border-radius:999px;padding:3px;}
-  .tg button{border:none;background:none;color:var(--txt-2);font-family:inherit;font-size:11px;font-weight:600;padding:5px 14px;border-radius:999px;cursor:pointer;}
+  .tg button{border:none;background:none;color:var(--txt-2);font-family:inherit;font-size:12px;font-weight:600;padding:5px 14px;border-radius:999px;cursor:pointer;}
   .tg button.on{background:#3182F6;color:#fff;}
   .chip.up-chip{background:rgba(240,68,82,.14);color:var(--up);}
   .chip.teal-chip{background:rgba(43,196,182,.14);color:var(--teal);}
@@ -305,7 +305,7 @@
   <div class="view" data-view="증권">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title"><h2>토스증권</h2><div class="idx">VIX <span class="v down">19.06</span><span class="down">-1.9%</span></div></div>
       <div class="promo" id="promo">
@@ -345,7 +345,7 @@
   <div class="view" data-view="관심">
     <div class="body" style="display:flex;flex-direction:column">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title"><h2>시가총액 순위</h2>
         <div class="idx-roll-wrap" id="mcap-roll">
@@ -390,7 +390,7 @@
         } else {
           img.style.display = 'none';
           const s = document.createElement('span');
-          s.style.cssText = 'font-size:15px;font-weight:700;color:#fff;';
+          s.style.cssText = 'font-size:16px;font-weight:700;color:#fff;';
           s.textContent = initial;
           img.parentElement.appendChild(s);
         }
@@ -428,8 +428,8 @@
           const gap = rank === 1
             ? `<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3c6.svg" style="width:20px;height:20px;animation:trophy-shine 3s ease-in-out infinite;">`
             : (top > 0 && d.mcap_usd > 0
-                ? `<div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;text-align:right;">1등주 대비</div>
-                   <div style="font-size:13.5px;font-weight:500;color:#fff">-${((top - d.mcap_usd) / top * 100).toFixed(2)}%</div>`
+                ? `<div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;text-align:right;">1등주 대비</div>
+                   <div style="font-size:14.5px;font-weight:500;color:#fff">-${((top - d.mcap_usd) / top * 100).toFixed(2)}%</div>`
                 : '');
           const rankStyle = rank === 1 ? `background:var(--surface);border-radius:15.3px;margin:6px 17px;` : '';
           const logoSrc = `https://companiesmarketcap.com/img/company-logos/64/${d.slug}.png`;
@@ -443,7 +443,7 @@
               </div>
             </div>
             <div class="info">
-              <div class="nm">${d.name_ko} <span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker_display}</span></div>
+              <div class="nm">${d.name_ko} <span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker_display}</span></div>
               <div class="pr"><span>${mcapStr}</span>${chgHtml}</div>
             </div>
             <div style="text-align:right;flex:none;">${gap}</div>
@@ -471,7 +471,7 @@
   <div class="view active" data-view="발견">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title">
         <h2>현재 상태</h2>
@@ -495,34 +495,34 @@
       </div>
       <div class="cat-row">
         <div class="cat" onclick="toast('리밸런싱')">
-          <div class="circ" style="font-size:18px">⚖️</div>
+          <div class="circ" style="font-size:19px">⚖️</div>
           <span>리밸런싱</span>
         </div>
         <div class="cat" onclick="toast('말뚝박기')" style="background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6) border-box;border:1.4px solid transparent;">
-          <div class="circ" style="font-size:18px">⚓</div>
+          <div class="circ" style="font-size:19px">⚓</div>
           <span>말뚝박기</span>
         </div>
         <div class="cat" onclick="toast('V자반등')">
-          <div class="circ" style="font-size:18px">🚀</div>
+          <div class="circ" style="font-size:19px">🚀</div>
           <span>V자반등</span>
         </div>
         <div class="cat" onclick="toast('올인')">
-          <div class="circ" style="font-size:18px">🔥</div>
+          <div class="circ" style="font-size:19px">🔥</div>
           <span>올인</span>
         </div>
         <div class="cat" onclick="toast('마삼해제')">
-          <div class="circ" style="font-size:18px">🔓</div>
+          <div class="circ" style="font-size:19px">🔓</div>
           <span>마삼해제</span>
         </div>
       </div>
       <div class="idx-row">
         <div class="idx-cell">
-          <div style="display:inline-block;background:rgba(240,68,82,.15);color:var(--up);font-size:11px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.04em;margin-bottom:8px;">CRISIS</div>
+          <div style="display:inline-block;background:rgba(240,68,82,.15);color:var(--up);font-size:12px;font-weight:800;padding:3px 8px;border-radius:6px;letter-spacing:.04em;margin-bottom:8px;">CRISIS</div>
           <div class="txt">이번 달 마삼 2회<br>해제까지 <b style="color:var(--up)">27일</b> 남음</div>
         </div>
         <div class="idx-cell" style="padding-top:5px;">
           <div class="lbl">나스닥</div>
-          <div style="display:flex;align-items:baseline;gap:5px;font-size:13px;font-weight:800;white-space:nowrap;">
+          <div style="display:flex;align-items:baseline;gap:5px;font-size:14px;font-weight:800;white-space:nowrap;">
             <span style="font-weight:500;color:#fff;">최고점 대비</span>
             <span class="down" style="font-weight:700;">-3.21%</span>
           </div>
@@ -531,10 +531,10 @@
       </div>
       <div id="panic-hold-banner" style="display:none;margin:6.8px 17px 0;background:rgba(69,147,252,.1);border:1px solid rgba(69,147,252,.35);border-radius:13px;padding:11px 14px;">
         <div style="display:flex;align-items:center;gap:8px;">
-          <span class="iconify" data-icon="heroicons:lock-closed" style="font-size:16px;width:16px;height:16px;color:var(--down);flex-shrink:0;"></span>
+          <span class="iconify" data-icon="heroicons:lock-closed" style="font-size:17px;width:16px;height:16px;color:var(--down);flex-shrink:0;"></span>
           <div>
-            <div style="font-size:12.5px;font-weight:700;color:var(--down);line-height:1.3;">공황 올인 — 완전 홀드</div>
-            <div style="font-size:11px;font-weight:500;color:#eee;margin-top:2px;">최고점 경신까지 리밸런싱·말뚝 중단</div>
+            <div style="font-size:13.5px;font-weight:700;color:var(--down);line-height:1.3;">공황 올인 — 완전 홀드</div>
+            <div style="font-size:12px;font-weight:500;color:#eee;margin-top:2px;">최고점 경신까지 리밸런싱·말뚝 중단</div>
           </div>
         </div>
       </div>
@@ -546,18 +546,18 @@
       <!-- 주가 구간 헤더: 드롭다운 -->
       <div style="position:relative;">
         <div onclick="toggleRangeDropdown()" style="display:inline-flex;align-items:center;gap:10px;padding:22.1px 17px 3.4px;cursor:pointer;user-select:none;">
-          <span id="range-sec-title" style="font-size:18.7px;font-weight:700;letter-spacing:-0.5px;">1등주 주가 구간</span>
+          <span id="range-sec-title" style="font-size:19.7px;font-weight:700;letter-spacing:-0.5px;">1등주 주가 구간</span>
           <span id="range-chevron" style="display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);color:var(--txt-3);transition:transform .2s;flex:none;"><span class="iconify" data-icon="heroicons:chevron-down" data-width="10" data-height="10"></span></span>
         </div>
         <div id="range-dropdown" style="display:none;position:absolute;top:100%;left:17px;background:var(--surface-2);border-radius:12px;overflow:hidden;z-index:20;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,.4);">
-          <div id="range-opt-nvda" onclick="selectRange('nvda')" style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:13.5px;font-weight:600;color:#fff;cursor:pointer;border-bottom:1px solid var(--line);">
-            1등주 (<span id="range-label-rank1">NVDA</span>)<span id="range-check-nvda" style="color:var(--blue);font-size:14px;">✓</span>
+          <div id="range-opt-nvda" onclick="selectRange('nvda')" style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:14.5px;font-weight:600;color:#fff;cursor:pointer;border-bottom:1px solid var(--line);">
+            1등주 (<span id="range-label-rank1">NVDA</span>)<span id="range-check-nvda" style="color:var(--blue);font-size:15px;">✓</span>
           </div>
-          <div id="range-opt-rank2" onclick="selectRange('rank2')" style="display:none;align-items:center;justify-content:space-between;padding:13px 16px;font-size:13.5px;font-weight:600;color:var(--txt-3);cursor:pointer;border-bottom:1px solid var(--line);">
-            2등주 (<span id="range-label-rank2">MSFT</span>)<span id="range-check-rank2" style="color:var(--blue);font-size:14px;visibility:hidden;">✓</span>
+          <div id="range-opt-rank2" onclick="selectRange('rank2')" style="display:none;align-items:center;justify-content:space-between;padding:13px 16px;font-size:14.5px;font-weight:600;color:var(--txt-3);cursor:pointer;border-bottom:1px solid var(--line);">
+            2등주 (<span id="range-label-rank2">MSFT</span>)<span id="range-check-rank2" style="color:var(--blue);font-size:15px;visibility:hidden;">✓</span>
           </div>
-          <div id="range-opt-qqq" onclick="selectRange('qqq')" style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:13.5px;font-weight:600;color:var(--txt-3);cursor:pointer;">
-            QQQ<span id="range-check-qqq" style="color:var(--blue);font-size:14px;visibility:hidden;">✓</span>
+          <div id="range-opt-qqq" onclick="selectRange('qqq')" style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:14.5px;font-weight:600;color:var(--txt-3);cursor:pointer;">
+            QQQ<span id="range-check-qqq" style="color:var(--blue);font-size:15px;visibility:hidden;">✓</span>
           </div>
         </div>
       </div>
@@ -582,7 +582,7 @@
   <div class="view" data-view="피드">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title">
         <h2>경제지표</h2>
@@ -590,16 +590,16 @@
 
       <!-- Fear & Greed -->
       <div style="margin:10px 17px 0;background:var(--surface);border-radius:15.3px;padding:18px 17px;">
-        <div style="font-size:13px;font-weight:700;color:var(--txt-2);margin-bottom:4px;">Fear &amp; Greed Index</div>
+        <div style="font-size:14px;font-weight:700;color:var(--txt-2);margin-bottom:4px;">Fear &amp; Greed Index</div>
         <div style="display:flex;align-items:baseline;gap:8px;">
-          <span style="font-size:30px;font-weight:800;color:var(--amber);">62</span>
-          <span style="font-size:13px;font-weight:600;color:var(--txt-2);">탐욕 구간</span>
+          <span style="font-size:31px;font-weight:800;color:var(--amber);">62</span>
+          <span style="font-size:14px;font-weight:600;color:var(--txt-2);">탐욕 구간</span>
         </div>
         <div class="bar">
           <i class="anim" style="width:62%;background:linear-gradient(90deg,#F04452 0%,#FF8C00 25%,#F5C842 50%,#7CB342 75%,#2BC4B6 100%);background-size:161% 100%;"></i>
           <div class="mk anim" style="left:62%;"></div>
         </div>
-        <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--txt-3);">
+        <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--txt-3);">
           <span>극도 공포</span><span>중립</span><span>극도 탐욕</span>
         </div>
       </div>
@@ -607,21 +607,21 @@
       <!-- 모멘텀 국면 섹션 (모멘텀 모드) -->
       <div id="feed-momt" style="display:none;">
         <div style="margin:10px 17px 0;background:var(--surface);border-radius:15.3px;padding:18px 17px;">
-          <div style="font-size:13px;font-weight:700;color:var(--txt-2);margin-bottom:12px;">모멘텀 시장 국면</div>
+          <div style="font-size:14px;font-weight:700;color:var(--txt-2);margin-bottom:12px;">모멘텀 시장 국면</div>
           <div style="display:flex;align-items:center;gap:12px;margin-bottom:14px;">
-            <div id="regime-badge" style="display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:20px;background:rgba(43,196,182,.15);font-size:15px;font-weight:800;color:#2BC4B6;">● <span id="regime-label">추세 강세</span></div>
-            <div id="regime-desc" style="font-size:11.5px;color:var(--txt-3);line-height:1.5;">SPX·NDX 모두<br>MA200 상위 + 정배열</div>
+            <div id="regime-badge" style="display:inline-flex;align-items:center;gap:7px;padding:7px 16px;border-radius:20px;background:rgba(43,196,182,.15);font-size:16px;font-weight:800;color:#2BC4B6;">● <span id="regime-label">추세 강세</span></div>
+            <div id="regime-desc" style="font-size:12.5px;color:var(--txt-3);line-height:1.5;">SPX·NDX 모두<br>MA200 상위 + 정배열</div>
           </div>
           <div style="display:flex;gap:10px;">
             <div style="flex:1;background:var(--surface-2);border-radius:10px;padding:10px 12px;">
-              <div style="font-size:11px;color:var(--txt-3);font-weight:600;margin-bottom:4px;">S&amp;P 500</div>
-              <div id="spx-ma200-txt" style="font-size:12.5px;font-weight:700;color:#2BC4B6;">MA200 +11.5%</div>
-              <div id="spx-ma50-txt" style="font-size:11px;color:var(--txt-3);margin-top:2px;">MA50 정배열 ↑</div>
+              <div style="font-size:12px;color:var(--txt-3);font-weight:600;margin-bottom:4px;">S&amp;P 500</div>
+              <div id="spx-ma200-txt" style="font-size:13.5px;font-weight:700;color:#2BC4B6;">MA200 +11.5%</div>
+              <div id="spx-ma50-txt" style="font-size:12px;color:var(--txt-3);margin-top:2px;">MA50 정배열 ↑</div>
             </div>
             <div style="flex:1;background:var(--surface-2);border-radius:10px;padding:10px 12px;">
-              <div style="font-size:11px;color:var(--txt-3);font-weight:600;margin-bottom:4px;">NASDAQ 100</div>
-              <div id="ndx-ma200-txt" style="font-size:12.5px;font-weight:700;color:#2BC4B6;">MA200 +11.8%</div>
-              <div id="ndx-ma50-txt" style="font-size:11px;color:var(--txt-3);margin-top:2px;">MA50 정배열 ↑</div>
+              <div style="font-size:12px;color:var(--txt-3);font-weight:600;margin-bottom:4px;">NASDAQ 100</div>
+              <div id="ndx-ma200-txt" style="font-size:13.5px;font-weight:700;color:#2BC4B6;">MA200 +11.8%</div>
+              <div id="ndx-ma50-txt" style="font-size:12px;color:var(--txt-3);margin-top:2px;">MA50 정배열 ↑</div>
             </div>
           </div>
         </div>
@@ -639,13 +639,13 @@
         <div class="idx-cell">
           <div class="lbl">VIX 변동성</div>
           <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">안정 구간</span>
-            <span style="font-size:11px;color:var(--txt-3);">19.06</span>
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">안정 구간</span>
+            <span style="font-size:12px;color:var(--txt-3);">19.06</span>
           </div>
         </div>
         <div class="idx-cell">
           <div class="lbl">시장 심리</div>
-          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;"><span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">위험선호</span><span style="font-size:11px;color:var(--txt-3);">SPY &gt; MA200</span></div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;"><span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">위험선호</span><span style="font-size:12px;color:var(--txt-3);">SPY &gt; MA200</span></div>
         </div>
       </div>
 
@@ -653,13 +653,13 @@
       <div class="idx-row">
         <div class="idx-cell">
           <div class="lbl">금리 환경</div>
-          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">비제로금리</span><span style="font-size:11px;color:var(--txt-3);">DFF &gt; 0.25%</span></div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">비제로금리</span><span style="font-size:12px;color:var(--txt-3);">DFF &gt; 0.25%</span></div>
         </div>
         <div class="idx-cell">
           <div class="lbl">기준금리 (DFF)</div>
           <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">4.33%</span>
-            <span style="font-size:11px;color:var(--txt-3);">전월 동결</span>
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">4.33%</span>
+            <span style="font-size:12px;color:var(--txt-3);">전월 동결</span>
           </div>
         </div>
       </div>
@@ -669,15 +669,15 @@
         <div class="idx-cell">
           <div class="lbl">연준 총자산</div>
           <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">$6.72T</span>
-            <span style="font-size:11px;color:var(--txt-3);">QE_OFF · 축소 중</span>
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">$6.72T</span>
+            <span style="font-size:12px;color:var(--txt-3);">QE_OFF · 축소 중</span>
           </div>
         </div>
         <div class="idx-cell">
           <div class="lbl">미 10Y 국채금리</div>
           <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">4.51%</span>
-            <span style="font-size:11px;color:var(--txt-3);">+0.04%p ↑</span>
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">4.51%</span>
+            <span style="font-size:12px;color:var(--txt-3);">+0.04%p ↑</span>
           </div>
         </div>
       </div>
@@ -687,15 +687,15 @@
         <div class="idx-cell">
           <div class="lbl">제조업 PMI</div>
           <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">48.7</span>
-            <span style="font-size:11px;color:var(--txt-3);">수축 (50 미만)</span>
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">48.7</span>
+            <span style="font-size:12px;color:var(--txt-3);">수축 (50 미만)</span>
           </div>
         </div>
         <div class="idx-cell">
           <div class="lbl">서비스업 PMI</div>
           <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:12px;">53.8</span>
-            <span style="font-size:11px;color:var(--txt-3);">확장 (50 이상)</span>
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">53.8</span>
+            <span style="font-size:12px;color:var(--txt-3);">확장 (50 이상)</span>
           </div>
         </div>
       </div>
@@ -713,100 +713,100 @@
       <div class="sec-h" style="display:flex;align-items:center;justify-content:space-between;">
         <span>추가 자금 투입 조건</span>
         <div id="rsi-tg" style="margin-right:17px;display:flex;background:#1e1e26;border-radius:10px;padding:3px;gap:2px;">
-          <button class="on" onclick="switchRsiTarget('nvda',this)" style="border:none;background:#2e2e3a;color:#f4f5f7;font-family:inherit;font-size:11px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;">1등주</button>
-          <button onclick="switchRsiTarget('qqq',this)" style="border:none;background:none;color:#6b6b7a;font-family:inherit;font-size:11px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;">QQQ</button>
+          <button class="on" onclick="switchRsiTarget('nvda',this)" style="border:none;background:#2e2e3a;color:#f4f5f7;font-family:inherit;font-size:12px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;">1등주</button>
+          <button onclick="switchRsiTarget('qqq',this)" style="border:none;background:none;color:#6b6b7a;font-family:inherit;font-size:12px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;">QQQ</button>
         </div>
       </div>
-      <div style="margin:0 17px 2px;padding:3.4px 0 0;font-size:11px;color:var(--txt-3);">RSI14 ≤ 50 AND MFI14 ≤ 50 동시 충족 시 투입</div>
+      <div style="margin:0 17px 2px;padding:3.4px 0 0;font-size:12px;color:var(--txt-3);">RSI14 ≤ 50 AND MFI14 ≤ 50 동시 충족 시 투입</div>
       <div class="idx-row">
         <div class="idx-cell">
           <div class="lbl">RSI 14 · <span id="rsi-ticker">NVDA</span></div>
           <div class="val" style="align-items:baseline;gap:6px;">
-            <span id="rsi-val" style="font-size:19px;font-weight:800;color:#3182F6;">43.2</span>
-            <span id="rsi-badge" style="font-size:11px;font-weight:700;color:#3182F6;">✓ ≤ 50</span>
+            <span id="rsi-val" style="font-size:20px;font-weight:800;color:#3182F6;">43.2</span>
+            <span id="rsi-badge" style="font-size:12px;font-weight:700;color:#3182F6;">✓ ≤ 50</span>
           </div>
         </div>
         <div class="idx-cell">
           <div class="lbl">MFI 14 · <span id="mfi-ticker">NVDA</span></div>
           <div class="val" style="align-items:baseline;gap:6px;">
-            <span id="mfi-val" style="font-size:19px;font-weight:800;color:var(--up);">62.1</span>
-            <span id="mfi-badge" style="font-size:11px;font-weight:700;color:var(--up);">✗ &gt; 50</span>
+            <span id="mfi-val" style="font-size:20px;font-weight:800;color:var(--up);">62.1</span>
+            <span id="mfi-badge" style="font-size:12px;font-weight:700;color:var(--up);">✗ &gt; 50</span>
           </div>
         </div>
       </div>
       <div style="margin:4px 17px 0;background:var(--surface);border-radius:13.6px;padding:14px 15px;display:flex;align-items:center;gap:14px;">
-        <div id="rsi-status" style="font-size:12.8px;font-weight:600;color:var(--txt-2);flex:1;">조건 미충족<span style="color:var(--txt-3);font-weight:700;margin-left:6px;">RSI ✓ · MFI ✗</span></div>
-        <span style="color:var(--txt-3);font-size:15.3px;">›</span>
+        <div id="rsi-status" style="font-size:13.8px;font-weight:600;color:var(--txt-2);flex:1;">조건 미충족<span style="color:var(--txt-3);font-weight:700;margin-left:6px;">RSI ✓ · MFI ✗</span></div>
+        <span style="color:var(--txt-3);font-size:16.3px;">›</span>
       </div>
 
       <!-- 올인 조건 체크리스트 -->
       <div class="sec-h" style="margin-top:6px;">올인 체크리스트</div>
-      <div style="margin:0 17px 2px;padding:3.4px 0 0;font-size:11px;color:var(--txt-3);">6종 중 1개 충족 시 리밸런싱/말뚝박기 → 전량 올인 전환</div>
+      <div style="margin:0 17px 2px;padding:3.4px 0 0;font-size:12px;color:var(--txt-3);">6종 중 1개 충족 시 리밸런싱/말뚝박기 → 전량 올인 전환</div>
       <div style="margin:8px 17px 0;background:var(--surface);border-radius:13.6px;overflow:hidden;">
         <!-- 조건 ① -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
-            <div id="allin-cond1-title" style="font-size:12.8px;font-weight:700;color:var(--txt-1);">한달 +1일 마삼 미발생</div>
-            <div id="allin-cond1-sub" style="font-size:11px;color:var(--txt-3);margin-top:3px;">익월 같은 날 +1일까지 마삼 無 <span style="color:#F7A93B;font-weight:600;">· 공황 기간 시 2달+1일</span></div>
+            <div id="allin-cond1-title" style="font-size:13.8px;font-weight:700;color:var(--txt-1);">한달 +1일 마삼 미발생</div>
+            <div id="allin-cond1-sub" style="font-size:12px;color:var(--txt-3);margin-top:3px;">익월 같은 날 +1일까지 마삼 無 <span style="color:#F7A93B;font-weight:600;">· 공황 기간 시 2달+1일</span></div>
           </div>
           <div style="text-align:right;flex:none;margin-left:12px;">
-            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
-            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">D-12</div>
+            <div style="font-size:12px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:2px;">D-12</div>
           </div>
         </div>
         <!-- 조건 ② -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
-            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">8거래일 연속 상승</div>
-            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">나스닥 8일 연속 양봉 마감</div>
+            <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">8거래일 연속 상승</div>
+            <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">나스닥 8일 연속 양봉 마감</div>
           </div>
           <div style="text-align:right;flex:none;margin-left:12px;">
-            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
-            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">현재 3일</div>
+            <div style="font-size:12px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:2px;">현재 3일</div>
           </div>
         </div>
         <!-- 조건 ③ -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
-            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">1등주 전고점 돌파</div>
-            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">NVDA 사상 최고치 상향 돌파</div>
+            <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">1등주 전고점 돌파</div>
+            <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">NVDA 사상 최고치 상향 돌파</div>
           </div>
           <div style="text-align:right;flex:none;margin-left:12px;">
-            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
-            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">-8.3% 하회</div>
+            <div style="font-size:12px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:2px;">-8.3% 하회</div>
           </div>
         </div>
         <!-- 조건 ④ -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
-            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">나스닥 전고 돌파</div>
-            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">^IXIC 직전 고점 상향 돌파</div>
+            <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">나스닥 전고 돌파</div>
+            <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">^IXIC 직전 고점 상향 돌파</div>
           </div>
           <div style="text-align:right;flex:none;margin-left:12px;">
-            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
-            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">-12.1% 하회</div>
+            <div style="font-size:12px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:2px;">-12.1% 하회</div>
           </div>
         </div>
         <!-- V자 올인 -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
-            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">2구간 V자 반등</div>
-            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">비제로금리 기준 +10% 회복 · 제로금리 기준 +5% 회복</div>
+            <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">2구간 V자 반등</div>
+            <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">비제로금리 기준 +10% 회복 · 제로금리 기준 +5% 회복</div>
           </div>
           <div style="text-align:right;flex:none;margin-left:12px;">
-            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
-            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">현재 +3.2%</div>
+            <div style="font-size:12px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:2px;">현재 +3.2%</div>
           </div>
         </div>
         <!-- 긴급 올인 -->
         <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;">
           <div>
-            <div style="font-size:12.8px;font-weight:700;color:var(--txt-1);">긴급 올인</div>
-            <div style="font-size:11px;color:var(--txt-3);margin-top:3px;">1등주 고점 대비 -30% 하락</div>
+            <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">긴급 올인</div>
+            <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">1등주 고점 대비 -30% 하락</div>
           </div>
           <div style="text-align:right;flex:none;margin-left:12px;">
-            <div style="font-size:11px;font-weight:700;color:var(--up);">미충족</div>
-            <div style="font-size:10px;color:var(--txt-3);margin-top:2px;">현재 -18.4%</div>
+            <div style="font-size:12px;font-weight:700;color:var(--up);">미충족</div>
+            <div style="font-size:11px;color:var(--txt-3);margin-top:2px;">현재 -18.4%</div>
           </div>
         </div>
       </div>
@@ -821,7 +821,7 @@
   <div class="view" data-view="관심종목">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st" onclick="stratToggle(this)">마삼룰</button><button class="st on" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title" style="margin-top:6px"><h2>종목 관리</h2>
         <div class="idx-roll-wrap" id="fav-roll">
@@ -846,17 +846,17 @@
       <!-- AI 시그널 배너 -->
       <div style="margin:14px 0 0;padding:12px 17px 0;background:linear-gradient(180deg,rgba(95,95,230,0) 0%,rgba(95,95,230,.13) 100%);">
         <div style="display:flex;align-items:center;gap:5px;margin-bottom:7px;">
-          <span style="font-size:13px;font-weight:700;background:linear-gradient(90deg,#7c6dff,#4593FC);-webkit-background-clip:text;background-clip:text;color:transparent;">✦ 모멘텀 시그널</span>
+          <span style="font-size:14px;font-weight:700;background:linear-gradient(90deg,#7c6dff,#4593FC);-webkit-background-clip:text;background-clip:text;color:transparent;">✦ 모멘텀 시그널</span>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4593FC" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </div>
-        <div style="font-size:13px;font-weight:500;color:var(--txt);line-height:1.4;padding-bottom:12px;">SPY &lt; MA200 매수 보수화 · 청산 강화 · <span style="color:var(--down);font-weight:600;">위험 회피</span></div>
+        <div style="font-size:14px;font-weight:500;color:var(--txt);line-height:1.4;padding-bottom:12px;">SPY &lt; MA200 매수 보수화 · 청산 강화 · <span style="color:var(--down);font-weight:600;">위험 회피</span></div>
         <div style="height:1px;margin:0 -17px;background:linear-gradient(90deg,rgba(100,115,255,0) 0%,rgba(100,115,255,.55) 50%,rgba(100,115,255,0) 100%);"></div>
       </div>
 
       <!-- 관심종목 그룹 필 탭 -->
       <div style="display:flex;align-items:center;gap:8px;padding:28px 17px 0;">
-        <button onclick="favTab(this)" style="background:var(--surface-2);color:var(--txt);border:none;border-radius:8px;font-family:inherit;font-size:12px;font-weight:600;padding:6px 13px;cursor:pointer;" class="fav-tab-btn on">보유 현황</button>
-        <button onclick="favTab(this)" style="background:none;color:var(--txt-3);border:none;border-radius:8px;font-family:inherit;font-size:12px;font-weight:500;padding:6px 8px;cursor:pointer;" class="fav-tab-btn">매도 신호</button>
+        <button onclick="favTab(this)" style="background:var(--surface-2);color:var(--txt);border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;padding:6px 13px;cursor:pointer;" class="fav-tab-btn on">보유 현황</button>
+        <button onclick="favTab(this)" style="background:none;color:var(--txt-3);border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;padding:6px 8px;cursor:pointer;" class="fav-tab-btn">매도 신호</button>
       </div>
 
       <div id="fav-list-momt" style="margin-top:10px;"></div>
@@ -868,7 +868,7 @@
   <div class="view" data-view="모멘텀">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st" onclick="stratToggle(this)">마삼룰</button><button class="st on" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title">
         <h2>종목 선정</h2>
@@ -892,35 +892,35 @@
       </div>
       <div class="cat-row" id="momt-cat-row">
         <div class="cat momt-cat active-cat" data-filter="전체" onclick="filterMomt(this)">
-          <div class="circ" style="font-size:18px">🌐</div>
+          <div class="circ" style="font-size:19px">🌐</div>
           <span>전체</span>
         </div>
         <div class="cat momt-cat" data-filter="조건 대기" onclick="filterMomt(this)">
-          <div class="circ" style="font-size:18px">🔭</div>
+          <div class="circ" style="font-size:19px">🔭</div>
           <span>조건 대기</span>
         </div>
         <div class="cat momt-cat" data-filter="추세 돌파" onclick="filterMomt(this)">
-          <div class="circ" style="font-size:18px">🔥</div>
+          <div class="circ" style="font-size:19px">🔥</div>
           <span>추세 돌파</span>
         </div>
         <div class="cat momt-cat" data-filter="눌림 매수" onclick="filterMomt(this)">
-          <div class="circ" style="font-size:18px">📈</div>
+          <div class="circ" style="font-size:19px">📈</div>
           <span>눌림 매수</span>
         </div>
-        <div class="cat momt-cat" data-filter="지지선 방어" onclick="filterMomt(this)">
-          <div class="circ" style="font-size:18px">🛡️</div>
-          <span>지지선 방어</span>
+        <div class="cat momt-cat" data-filter="지지 방어" onclick="filterMomt(this)">
+          <div class="circ" style="font-size:19px">🛡️</div>
+          <span>지지 방어</span>
         </div>
         <div class="cat momt-cat" data-filter="비중 축소" onclick="filterMomt(this)">
-          <div class="circ" style="font-size:18px">📉</div>
+          <div class="circ" style="font-size:19px">📉</div>
           <span>비중 축소</span>
         </div>
         <div class="cat momt-cat" data-filter="전량 매도" onclick="filterMomt(this)">
-          <div class="circ" style="font-size:18px">🚨</div>
+          <div class="circ" style="font-size:19px">🚨</div>
           <span>전량 매도</span>
         </div>
         <div class="cat momt-cat" data-filter="추세 탈락" onclick="filterMomt(this)">
-          <div class="circ" style="font-size:18px">💀</div>
+          <div class="circ" style="font-size:19px">💀</div>
           <span>추세 탈락</span>
         </div>
       </div>
@@ -932,10 +932,10 @@
         { rank:3,  ticker:'TSM',   name:'TSMC',          domain:'tsmc.com',     si:null,            flag:'🇹🇼', rs:86, vol:'2.1x', score:88, signal:'조건 대기',   weight:20, gap50:+1.4 },
         { rank:4,  ticker:'META',  name:'메타',           domain:'meta.com',     si:'meta/1877f2',   flag:'🇺🇸', rs:88, vol:'1.3x', score:85, signal:'추세 돌파',   weight:20, gap50:+4.6 },
         { rank:5,  ticker:'AMZN',  name:'아마존',         domain:'amazon.com',   si:'amazon/ff9900', flag:'🇺🇸', rs:83, vol:'1.7x', score:81, signal:'눌림 매수',   weight:15, gap50:+2.1 },
-        { rank:6,  ticker:'AVGO',  name:'브로드컴',       domain:'broadcom.com', si:null,            flag:'🇺🇸', rs:79, vol:'1.2x', score:74, signal:'지지선 방어', weight:15, gap50:+0.8 },
+        { rank:6,  ticker:'AVGO',  name:'브로드컴',       domain:'broadcom.com', si:null,            flag:'🇺🇸', rs:79, vol:'1.2x', score:74, signal:'지지 방어', weight:15, gap50:+0.8 },
         { rank:7,  ticker:'MSFT',  name:'마이크로소프트', domain:'microsoft.com',si:'microsoft',     flag:'🇺🇸', rs:78, vol:'0.8x', score:72, signal:'비중 축소',   weight:10, gap50:+1.1 },
         { rank:8,  ticker:'LLY',   name:'일라이 릴리',    domain:'lilly.com',    si:null,            flag:'🇺🇸', rs:74, vol:'1.5x', score:71, signal:'조건 대기',   weight:10, gap50:+1.9 },
-        { rank:9,  ticker:'AAPL',  name:'애플',           domain:'apple.com',    si:'apple/ffffff',  flag:'🇺🇸', rs:71, vol:'1.1x', score:68, signal:'지지선 방어', weight:10, gap50:+0.5 },
+        { rank:9,  ticker:'AAPL',  name:'애플',           domain:'apple.com',    si:'apple/ffffff',  flag:'🇺🇸', rs:71, vol:'1.1x', score:68, signal:'지지 방어', weight:10, gap50:+0.5 },
         { rank:10, ticker:'V',     name:'비자',           domain:'visa.com',     si:'visa/ffffff',   flag:'🇺🇸', rs:67, vol:'1.0x', score:63, signal:'조건 대기',   weight:10, gap50:+2.7 },
         { rank:11, ticker:'GOOGL', name:'알파벳',         domain:'google.com',   si:'google',        flag:'🇺🇸', rs:65, vol:'0.9x', score:60, signal:'전량 매도',   weight:0,  gap50:-1.8 },
         { rank:12, ticker:'UNH',   name:'유나이티드헬스', domain:'unitedhealthgroup.com', si:null,   flag:'🇺🇸', rs:60, vol:'1.1x', score:55, signal:'추세 탈락',   weight:0,  gap50:-3.2 },
@@ -948,7 +948,7 @@
         '조건 대기':   { label:'조건 대기',   bg:'rgba(162,201,58,.15)',  color:'#A2C93A' },
         '추세 돌파':   { label:'추세 돌파',   bg:'rgba(240,68,82,.18)',   color:'var(--up)' },
         '눌림 매수':   { label:'눌림 매수',   bg:'rgba(240,68,82,.11)',   color:'var(--up)' },
-        '지지선 방어': { label:'지지선 방어', bg:'rgba(240,68,82,.07)',   color:'var(--up)' },
+        '지지 방어': { label:'지지 방어', bg:'rgba(240,68,82,.07)',   color:'var(--up)' },
         '비중 축소':   { label:'비중 축소',   bg:'rgba(69,147,252,.11)',  color:'var(--down)' },
         '전량 매도':   { label:'전량 매도',   bg:'rgba(69,147,252,.18)',  color:'var(--down)' },
         '추세 탈락':   { label:'추세 탈락',   bg:'rgba(80,80,100,.15)',   color:'#5a5a6a' },
@@ -970,7 +970,7 @@
             const fmtP = v => v != null ? '$' + v.toFixed(2) : '-';
             const trancheHtml = ['①','②','③'].map((c, i) => {
               const on = (pos.deployed_tranches || []).includes(i + 1);
-              return `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;${on?'background:rgba(240,68,82,.2);color:var(--up);font-weight:700;':'background:var(--surface-3);color:var(--txt-3);font-weight:500;'}font-size:12px;">${c}</span>`;
+              return `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;${on?'background:rgba(240,68,82,.2);color:var(--up);font-weight:700;':'background:var(--surface-3);color:var(--txt-3);font-weight:500;'}font-size:13px;">${c}</span>`;
             }).join(' ');
             const coolTxt = pos.cooldown_until || '없음';
             const coolColor = pos.cooldown_until ? '#F7A93B' : 'var(--txt-3)';
@@ -978,15 +978,15 @@
             <div id="pos-detail-${d.ticker}" style="display:none;width:100%;">
               <div style="height:1px;background:var(--line);margin:0 15px;"></div>
               <div style="display:flex;align-items:center;gap:8px;padding:10px 15px 8px;">
-                <span style="font-size:10.5px;color:var(--txt-3);flex:none;">분할 진입</span>
+                <span style="font-size:11.5px;color:var(--txt-3);flex:none;">분할 진입</span>
                 <div style="display:flex;gap:5px;">${trancheHtml}</div>
-                <span style="font-size:10.5px;color:var(--txt-3);margin-left:auto;">평단 ${fmtP(pos.avg_price)}</span>
+                <span style="font-size:11.5px;color:var(--txt-3);margin-left:auto;">평단 ${fmtP(pos.avg_price)}</span>
               </div>
               <div style="display:grid;grid-template-columns:1fr 1fr;padding:0 15px 14px;gap:8px 0;">
-                <div><div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">최고점</div><div style="font-size:12.5px;font-weight:700;color:#f4f5f7;">${fmtP(pos.recent_high)}</div></div>
-                <div><div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">매도 기준선</div><div style="font-size:12.5px;font-weight:700;color:var(--down);">${fmtP(pos.trailing_stop_line)}</div></div>
-                <div><div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">지지선</div><div style="font-size:12.5px;font-weight:700;color:#F7A93B;">${fmtP(pos.horizontal_support)}</div></div>
-                <div><div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">재진입 금지 기간</div><div style="font-size:12.5px;font-weight:700;color:${coolColor};">${coolTxt}</div></div>
+                <div><div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">최고점</div><div style="font-size:13.5px;font-weight:700;color:#f4f5f7;">${fmtP(pos.recent_high)}</div></div>
+                <div><div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">매도 기준선</div><div style="font-size:13.5px;font-weight:700;color:var(--down);">${fmtP(pos.trailing_stop_line)}</div></div>
+                <div><div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">지지선</div><div style="font-size:13.5px;font-weight:700;color:#F7A93B;">${fmtP(pos.horizontal_support)}</div></div>
+                <div><div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">재진입 금지 기간</div><div style="font-size:13.5px;font-weight:700;color:${coolColor};">${coolTxt}</div></div>
               </div>
             </div>`;
           }
@@ -1003,17 +1003,17 @@
             </div>
           </div>
           <div class="info">
-            <div class="nm">${d.name} <span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker}</span></div>
-            <div class="pr"><span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:${badge.bg};color:${badge.color};">${badge.label}</span><span style="color:#f4f5f7;">RS ${d.rs}</span><span style="color:var(--txt-3);">${watchlist ? `MA50 ${d.gap50>=0?'+':''}${d.gap50}%` : `거래량 ${d.vol}`}</span></div>
+            <div class="nm">${d.name} <span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker}</span></div>
+            <div class="pr"><span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:${badge.bg};color:${badge.color};">${badge.label}</span><span style="color:#f4f5f7;">RS ${d.rs}</span><span style="color:var(--txt-3);">${watchlist ? `MA50 ${d.gap50>=0?'+':''}${d.gap50}%` : `거래량 ${d.vol}`}</span></div>
           </div>
           <div style="text-align:right;flex:none;">
             <div style="display:flex;align-items:center;gap:12px;">
               <div style="text-align:right;">
                 ${watchlist
-                  ? `<div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">추천 비중</div>
-                     <div style="display:flex;align-items:baseline;gap:2px;"><span class="fav-weight-num" style="font-size:16.5px;font-weight:700;color:#f4f5f7;" data-weight="${d.weight}">${d.weight}</span><span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:1px;">%</span></div>`
-                  : `<div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">MA50</div>
-                     <div style="font-size:14px;font-weight:700;color:#f4f5f7;">${d.gap50>=0?'+':''}${d.gap50}<span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:3px;">%</span></div>`
+                  ? `<div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">추천 비중</div>
+                     <div style="display:flex;align-items:baseline;gap:2px;"><span class="fav-weight-num" style="font-size:17.5px;font-weight:700;color:#f4f5f7;" data-weight="${d.weight}">${d.weight}</span><span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:1px;">%</span></div>`
+                  : `<div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">MA50</div>
+                     <div style="font-size:15px;font-weight:700;color:#f4f5f7;">${d.gap50>=0?'+':''}${d.gap50}<span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:3px;">%</span></div>`
                 }
               </div>
               <button data-ticker="${d.ticker}" onclick="toggleMomtHeart(this,event)" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;">
@@ -1036,7 +1036,7 @@
 
       const STATUS_TO_SIGNAL = {
         WATCH:'조건 대기', ENTRY_1:'추세 돌파', ENTRY_2:'눌림 매수',
-        ENTRY_3:'지지선 방어', TRIM:'비중 축소', EXIT:'전량 매도', REMOVED:'추세 탈락',
+        ENTRY_3:'지지 방어', TRIM:'비중 축소', EXIT:'전량 매도', REMOVED:'추세 탈락',
       };
 
       function togglePosDetail(sym) {
@@ -1068,22 +1068,22 @@
         const weightPct = Math.round((p.weight || 0) * 100);
         const trancheHtml = ['①','②','③'].map((c, i) => {
           const on = (p.deployed_tranches || []).includes(i + 1);
-          return `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;${on ? 'background:rgba(240,68,82,.2);color:var(--up);font-weight:700;' : 'background:var(--surface-3);color:var(--txt-3);font-weight:500;'}font-size:12px;">${c}</span>`;
+          return `<span style="display:inline-flex;align-items:center;justify-content:center;width:22px;height:22px;border-radius:50%;${on ? 'background:rgba(240,68,82,.2);color:var(--up);font-weight:700;' : 'background:var(--surface-3);color:var(--txt-3);font-weight:500;'}font-size:13px;">${c}</span>`;
         }).join(' ');
         const fmtPrice = v => v != null ? '$' + v.toFixed(2) : '-';
         const coolTxt = p.cooldown_until || '없음';
         const coolColor = p.cooldown_until ? '#F7A93B' : 'var(--txt-3)';
         const detailHtml = hasPos ? `
           <div style="display:flex;align-items:center;gap:8px;padding:0 15px 10px;">
-            <span style="font-size:10.5px;color:var(--txt-3);flex:none;">분할 진입</span>
+            <span style="font-size:11.5px;color:var(--txt-3);flex:none;">분할 진입</span>
             <div style="display:flex;gap:5px;">${trancheHtml}</div>
           </div>
           <div style="height:1px;background:var(--line);"></div>
           <div style="display:grid;grid-template-columns:1fr 1fr;padding:10px 15px 14px;gap:8px 0;">
-            <div><div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">최고점</div><div style="font-size:12.5px;font-weight:700;color:#f4f5f7;">${fmtPrice(p.recent_high)}</div></div>
-            <div><div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">매도 기준선</div><div style="font-size:12.5px;font-weight:700;color:var(--down);">${fmtPrice(p.trailing_stop_line)}</div></div>
-            <div><div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">지지선</div><div style="font-size:12.5px;font-weight:700;color:#F7A93B;">${fmtPrice(p.horizontal_support)}</div></div>
-            <div><div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">재진입 금지 기간</div><div style="font-size:12.5px;font-weight:700;color:${coolColor};">${coolTxt}</div></div>
+            <div><div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">최고점</div><div style="font-size:13.5px;font-weight:700;color:#f4f5f7;">${fmtPrice(p.recent_high)}</div></div>
+            <div><div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">매도 기준선</div><div style="font-size:13.5px;font-weight:700;color:var(--down);">${fmtPrice(p.trailing_stop_line)}</div></div>
+            <div><div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">지지선</div><div style="font-size:13.5px;font-weight:700;color:#F7A93B;">${fmtPrice(p.horizontal_support)}</div></div>
+            <div><div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">재진입 금지 기간</div><div style="font-size:13.5px;font-weight:700;color:${coolColor};">${coolTxt}</div></div>
           </div>` : '';
         return `
         <div style="margin:6px 17px;background:var(--surface);border-radius:15.3px;overflow:hidden;">
@@ -1092,12 +1092,12 @@
               <img src="${imgSrc}" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'${domain}','${p.symbol[0]}')">
             </div>
             <div style="flex:1;min-width:0;">
-              <div style="font-size:13.5px;font-weight:700;color:#f4f5f7;">${p.name} <span style="font-size:11.5px;font-weight:500;color:var(--txt-3);">${p.symbol}</span></div>
-              <div style="font-size:11px;color:var(--txt-3);margin-top:1px;">${hasPos ? `비중 ${weightPct}% · 평단 ${fmtPrice(p.avg_price)}` : '보유 없음 · 관찰 중'}</div>
+              <div style="font-size:14.5px;font-weight:700;color:#f4f5f7;">${p.name} <span style="font-size:12.5px;font-weight:500;color:var(--txt-3);">${p.symbol}</span></div>
+              <div style="font-size:12px;color:var(--txt-3);margin-top:1px;">${hasPos ? `비중 ${weightPct}% · 평단 ${fmtPrice(p.avg_price)}` : '보유 없음 · 관찰 중'}</div>
             </div>
             <div style="display:flex;align-items:center;gap:8px;flex:none;">
-              <span style="padding:4px 10px;border-radius:6px;background:${badge.bg};color:${badge.color};font-size:10.5px;font-weight:700;white-space:nowrap;">${badge.label}</span>
-              ${hasPos ? `<span id="pos-chev-${p.symbol}" style="color:var(--txt-3);font-size:13px;transition:transform .2s;display:inline-block;">⌄</span>` : ''}
+              <span style="padding:4px 10px;border-radius:6px;background:${badge.bg};color:${badge.color};font-size:11.5px;font-weight:700;white-space:nowrap;">${badge.label}</span>
+              ${hasPos ? `<span id="pos-chev-${p.symbol}" style="color:var(--txt-3);font-size:14px;transition:transform .2s;display:inline-block;">⌄</span>` : ''}
             </div>
           </div>
           ${hasPos ? `<div id="pos-detail-${p.symbol}" style="display:none;">${detailHtml}</div>` : ''}
@@ -1110,12 +1110,12 @@
             <span class="iconify" data-icon="bxs:dollar-circle" data-width="23" data-height="23" style="color:#a0c878;"></span>
           </div>
           <div class="info">
-            <div class="nm">현금<span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:4px;">CASH</span></div>
-            <div class="pr"><span style="font-size:10px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(155,155,155,.15);color:var(--txt-2);">안전자산</span></div>
+            <div class="nm">현금<span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:4px;">CASH</span></div>
+            <div class="pr"><span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:rgba(155,155,155,.15);color:var(--txt-2);">안전자산</span></div>
           </div>
           <div style="text-align:left;flex:none;">
-            <div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;">추천 비중</div>
-            <div style="font-size:16.5px;font-weight:700;color:#f4f5f7;display:flex;align-items:baseline;"><span class="fav-weight-num" data-weight="${cashWeight}">${cashWeight}</span><span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:3px;">%</span></div>
+            <div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">추천 비중</div>
+            <div style="font-size:17.5px;font-weight:700;color:#f4f5f7;display:flex;align-items:baseline;"><span class="fav-weight-num" data-weight="${cashWeight}">${cashWeight}</span><span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:3px;">%</span></div>
           </div>
           <div style="flex:0 0 7px;"></div>
         </div>`;
@@ -1132,10 +1132,10 @@
         if (list.length === 0) {
           const isSell = favMode === '매도 신호';
           el.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px 40px;text-align:center;">
-            <div style="font-size:64px;margin-bottom:24px;">${isSell ? '✅' : '🔍'}</div>
-            <div style="font-size:16px;font-weight:600;line-height:1.3;margin-bottom:6px;">${isSell ? '매도 신호 종목이 없어요' : '관심 종목을 추가해보세요'}</div>
-            <div style="font-size:13px;color:var(--txt-3);margin-bottom:24px;">${isSell ? '매도 신호 종목이 없습니다.' : '아직 추가한 종목이 없어요.'}</div>
-            ${isSell ? '' : `<button onclick="go('모멘텀')" style="background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:13px;font-weight:600;padding:10px 24px;cursor:pointer;">찾아보기</button>`}
+            <div style="font-size:65px;margin-bottom:24px;">${isSell ? '✅' : '🔍'}</div>
+            <div style="font-size:17px;font-weight:600;line-height:1.3;margin-bottom:6px;">${isSell ? '매도 신호 종목이 없어요' : '관심 종목을 추가해보세요'}</div>
+            <div style="font-size:14px;color:var(--txt-3);margin-bottom:24px;">${isSell ? '매도 신호 종목이 없습니다.' : '아직 추가한 종목이 없어요.'}</div>
+            ${isSell ? '' : `<button onclick="go('모멘텀')" style="background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;padding:10px 24px;cursor:pointer;">찾아보기</button>`}
           </div>`;
           return;
         }
@@ -1213,13 +1213,13 @@
   <div class="view" data-view="설정">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:11px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:13px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title" style="margin-top:6px"><h2>설정</h2></div>
 
       <!-- ===== 마삼룰 설정 ===== -->
       <div id="settings-masam">
-        <div class="sec-h" style="font-size:15px;padding-top:16px">보유 비중 설정</div>
+        <div class="sec-h" style="font-size:16px;padding-top:16px">보유 비중 설정</div>
         <div style="padding:0 17px">
           <div class="srow">
             <div class="sk">1등주 : QQQ 비중<s>평상시 주식 자산 내 배분 비율</s></div>
@@ -1231,7 +1231,7 @@
           </div>
         </div>
 
-        <div class="sec-h" style="font-size:15px;padding-top:16px">리밸런싱</div>
+        <div class="sec-h" style="font-size:16px;padding-top:16px">리밸런싱</div>
         <div style="padding:0 17px">
           <div class="srow">
             <div class="sk">현금화 최대 한도 (1등주)<s>전고점 대비 하락 시 1구간마다 10% 매도</s></div>
@@ -1249,28 +1249,28 @@
           </div>
         </div>
 
-        <div class="sec-h" style="font-size:15px;padding-top:16px">보완 옵션 <span style="font-size:11px;font-weight:500;color:var(--txt-3);">기본 OFF · 백테스트 검증 후 적용</span></div>
+        <div class="sec-h" style="font-size:16px;padding-top:16px">보완 옵션 <span style="font-size:12px;font-weight:500;color:var(--txt-3);">기본 OFF · 백테스트 검증 후 적용</span></div>
         <div style="margin:12px 17px 0;background:rgba(240,68,82,.08);border:1px solid rgba(240,68,82,.2);border-radius:12px;padding:12px 14px;">
-          <div style="font-size:11.5px;font-weight:700;color:var(--up);margin-bottom:6px;display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:exclamation-triangle" style="font-size:14px;width:14px;height:14px;flex-shrink:0;"></span>원본 룰 충돌 옵션 — ON 시 경고</div>
-          <div style="font-size:11px;color:var(--txt-3);margin-bottom:10px;">아래 항목은 원본 마삼룰을 변경합니다. 반드시 백테스트 후 적용하세요.</div>
+          <div style="font-size:12.5px;font-weight:700;color:var(--up);margin-bottom:6px;display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:exclamation-triangle" style="font-size:15px;width:14px;height:14px;flex-shrink:0;"></span>원본 룰 충돌 옵션 — ON 시 경고</div>
+          <div style="font-size:12px;color:var(--txt-3);margin-bottom:10px;">아래 항목은 원본 마삼룰을 변경합니다. 반드시 백테스트 후 적용하세요.</div>
           <div class="srow" style="border-color:rgba(240,68,82,.15)">
-            <div class="sk" style="font-size:12px;">마삼 동적 기준(VIX·ATR)<s>-3% 고정값을 변동성 연동으로</s></div>
+            <div class="sk" style="font-size:13px;">마삼 동적 기준(VIX·ATR)<s>-3% 고정값을 변동성 연동으로</s></div>
             <div class="tg"><button onclick="tog(this)">ON</button><button class="on" onclick="tog(this)">OFF</button></div>
           </div>
           <div class="srow" style="border-color:rgba(240,68,82,.15)">
-            <div class="sk" style="font-size:12px;">긴급 올인 분할 진입<s>-30%/-15% 도달 시 3회 분할 매수</s></div>
+            <div class="sk" style="font-size:13px;">긴급 올인 분할 진입<s>-30%/-15% 도달 시 3회 분할 매수</s></div>
             <div class="tg"><button onclick="tog(this)">ON</button><button class="on" onclick="tog(this)">OFF</button></div>
           </div>
           <div class="srow" style="border-color:rgba(240,68,82,.15)">
-            <div class="sk" style="font-size:12px;">V자 반등 강화<s>1구간 반등에도 절반 올인</s></div>
+            <div class="sk" style="font-size:13px;">V자 반등 강화<s>1구간 반등에도 절반 올인</s></div>
             <div class="tg"><button onclick="tog(this)">ON</button><button class="on" onclick="tog(this)">OFF</button></div>
           </div>
           <div class="srow" style="border-color:rgba(240,68,82,.15)">
-            <div class="sk" style="font-size:12px;">손절 옵션<s>말뚝 뽑기 후 손절 처리</s></div>
+            <div class="sk" style="font-size:13px;">손절 옵션<s>말뚝 뽑기 후 손절 처리</s></div>
             <div class="tg"><button onclick="tog(this)">ON</button><button class="on" onclick="tog(this)">OFF</button></div>
           </div>
           <div class="srow" style="border-bottom:none">
-            <div class="sk" style="font-size:12px;">공황 단계 청산<s>공황 시 보유 물량 단계적 매도</s></div>
+            <div class="sk" style="font-size:13px;">공황 단계 청산<s>공황 시 보유 물량 단계적 매도</s></div>
             <div class="tg"><button onclick="tog(this)">ON</button><button class="on" onclick="tog(this)">OFF</button></div>
           </div>
         </div>
@@ -1280,7 +1280,7 @@
 
       <!-- ===== 모멘텀 설정 ===== -->
       <div id="settings-momt" style="display:none;">
-        <div class="sec-h" style="font-size:15px;padding-top:16px">줍줍(분할 매수)</div>
+        <div class="sec-h" style="font-size:16px;padding-top:16px">줍줍(분할 매수)</div>
         <div style="padding:0 17px">
           <div class="srow">
             <div class="sk">분할 비중 방식<s>1차·2차·3차·예비 순서</s></div>
@@ -1292,7 +1292,7 @@
           </div>
         </div>
 
-        <div class="sec-h" style="font-size:15px;padding-top:16px">매도 (트레일링 스탑)</div>
+        <div class="sec-h" style="font-size:16px;padding-top:16px">매도 (트레일링 스탑)</div>
         <div style="padding:0 17px">
           <div class="srow">
             <div class="sk">하락 허용 방식<s>스탑선 계산 기준</s></div>
@@ -1312,7 +1312,7 @@
           </div>
         </div>
 
-        <div class="sec-h" style="font-size:15px;padding-top:16px">탑픽 선정</div>
+        <div class="sec-h" style="font-size:16px;padding-top:16px">탑픽 선정</div>
         <div style="padding:0 17px">
           <div class="srow">
             <div class="sk">편입 최소 점수<s>0~100점, 이상만 유니버스 편입</s></div>
@@ -1328,7 +1328,7 @@
           </div>
         </div>
 
-        <div class="sec-h" style="font-size:15px;padding-top:16px">시장 국면 판정</div>
+        <div class="sec-h" style="font-size:16px;padding-top:16px">시장 국면 판정</div>
         <div style="padding:0 17px">
           <div class="srow">
             <div class="sk">판정 기준 지수</div>
@@ -1340,7 +1340,7 @@
           </div>
         </div>
 
-        <div class="sec-h" style="font-size:15px;padding-top:16px">실적 대응</div>
+        <div class="sec-h" style="font-size:16px;padding-top:16px">실적 대응</div>
         <div style="padding:0 17px">
           <div class="srow">
             <div class="sk">실적 발표 대응<s>보유 현황 어닝 임박 시</s></div>
@@ -1352,7 +1352,7 @@
           </div>
         </div>
 
-        <div class="sec-h" style="font-size:15px;padding-top:16px">실행 모드</div>
+        <div class="sec-h" style="font-size:16px;padding-top:16px">실행 모드</div>
         <div style="padding:0 17px">
           <div class="srow">
             <div class="sk">실행 모드<s>알림만: 트리거 감지 후 알림 발송만</s></div>
@@ -1360,7 +1360,7 @@
           </div>
           <div class="srow" style="border-bottom:none">
             <div class="sk">푸시 알림<s>마삼·올인 트리거 감지 시 알림</s></div>
-            <div class="tg"><button id="push-toggle-btn" onclick="togglePush()" style="border:none;background:var(--surface-3);color:var(--txt-2);font-family:inherit;font-size:12px;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;">알림 OFF</button></div>
+            <div class="tg"><button id="push-toggle-btn" onclick="togglePush()" style="border:none;background:var(--surface-3);color:var(--txt-2);font-family:inherit;font-size:13px;font-weight:600;padding:6px 14px;border-radius:20px;cursor:pointer;">알림 OFF</button></div>
           </div>
         </div>
 
@@ -1433,7 +1433,7 @@
     const wrap=document.getElementById('rankList'); wrap.innerHTML='';
     DATA[tab].forEach((it, idx)=>{
       const badge=it.badge.includes('인버스')
-        ?'<span style="font-size:10px;line-height:1.05;text-align:center">인버스<br>3x</span>':it.badge;
+        ?'<span style="font-size:11px;line-height:1.05;text-align:center">인버스<br>3x</span>':it.badge;
       const row=document.createElement('div'); row.className='rank';
       row.onclick=(e)=>{ if(!e.target.closest('.heart')) toast(it.sym+' 상세'); };
       row.innerHTML=`<div class="no">${it.n}</div>
@@ -1582,22 +1582,22 @@
               ? `<img src="https://cdn.simpleicons.org/nvidia/76b900" style="width:20px;height:20px;object-fit:contain;" onerror="logoFallback(this,'nvidia.com','N')">`
               : rangeTarget === 'rank2'
                 ? `<img src="https://logo.clearbit.com/${RANGE_DATA.rank2.domain}" style="width:20px;height:20px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.rank2.domain}','${RANGE_DATA.rank2.initial}')">`
-                : `<span style="font-size:11px;font-weight:800;color:#5ebaff;letter-spacing:-.02em;">QQQ</span>`
+                : `<span style="font-size:12px;font-weight:800;color:#5ebaff;letter-spacing:-.02em;">QQQ</span>`
             }
           </div>
           <div>
-            <div style="font-size:11px;font-weight:500;color:var(--txt-3);margin-bottom:5px;">${d.name} 현재가</div>
-            <div id="price-current" style="display:flex;align-items:baseline;font-size:13px;font-weight:600;color:#fff;"></div>
+            <div style="font-size:12px;font-weight:500;color:var(--txt-3);margin-bottom:5px;">${d.name} 현재가</div>
+            <div id="price-current" style="display:flex;align-items:baseline;font-size:14px;font-weight:600;color:#fff;"></div>
           </div>
         </div>
         <div style="display:flex;align-items:center;">
           <div style="text-align:right;padding-right:13px;">
-            <div style="font-size:11px;font-weight:500;color:var(--txt-3);margin-bottom:5px;">최고점</div>
-            <div id="price-high" style="display:flex;align-items:baseline;font-size:13px;font-weight:600;color:#fff;"></div>
+            <div style="font-size:12px;font-weight:500;color:var(--txt-3);margin-bottom:5px;">최고점</div>
+            <div id="price-high" style="display:flex;align-items:baseline;font-size:14px;font-weight:600;color:#fff;"></div>
           </div>
           <div style="border-left:1px solid var(--line);padding-left:13px;text-align:right;">
-            <div style="font-size:11px;font-weight:500;color:var(--txt-3);margin-bottom:5px;">장중 저가</div>
-            <div id="price-low" style="display:flex;align-items:baseline;font-size:13px;font-weight:600;color:#fff;"></div>
+            <div style="font-size:12px;font-weight:500;color:var(--txt-3);margin-bottom:5px;">장중 저가</div>
+            <div id="price-low" style="display:flex;align-items:baseline;font-size:14px;font-weight:600;color:#fff;"></div>
           </div>
         </div>
       </div>`;
@@ -1630,7 +1630,7 @@
       const ratio = getPortfolioRatio();
       const rParts = ratio.split(':').map(Number);
       const rTotal = rParts[0] + rParts[1];
-      const sep = '<span style="margin:0 4px;color:#3a3a4a;">/</span>';
+      const sep = '<span style="margin:0 2px;color:#3a3a4a;">/</span>';
       let html;
       if (rParts[1] === 0) {
         html = '1등주 ' + s + '%' + sep + '현금 ' + cash + '%';
@@ -1649,27 +1649,27 @@
 
     const basePriceCell = isManual
       ? `<span class="rt-col-price" style="display:flex;align-items:center;gap:6px;">
-          <span style="font-size:13px;font-weight:500;color:var(--txt-3)">$</span>
+          <span style="font-size:14px;font-weight:500;color:var(--txt-3)">$</span>
           <input type="text" inputmode="decimal" value="${manualVal > 0 ? manualVal.toFixed(2) : ''}"
             placeholder="직접 입력"
-            style="background:transparent;border:none;border-bottom:1.5px solid var(--line);padding:1px 2px;font-size:13px;font-weight:500;color:#fff;outline:none;font-family:inherit;width:72px;"
+            style="background:transparent;border:none;border-bottom:1.5px solid var(--line);padding:1px 2px;font-size:14px;font-weight:500;color:#fff;outline:none;font-family:inherit;width:72px;"
             onkeydown="if(event.key==='Enter'){saveManualPrice(this.value);}">
           <button onclick="saveManualPrice(this.previousElementSibling.value)"
-            style="background:var(--blue);border:none;border-radius:6px;padding:3px 8px;font-size:11px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;flex:none;">저장</button>
+            style="background:var(--blue);border:none;border-radius:6px;padding:3px 8px;font-size:12px;font-weight:600;color:#fff;cursor:pointer;font-family:inherit;flex:none;">저장</button>
         </span>`
-      : `<span class="rt-col-price" style="font-size:13px;font-weight:500;color:var(--txt)">$${base.toFixed(2)}</span>`;
+      : `<span class="rt-col-price" style="font-size:14px;font-weight:500;color:var(--txt)">$${base.toFixed(2)}</span>`;
 
     let html = `<div class="rt-head">
-      <span class="rt-col-zone" style="font-size:11px;font-weight:500;color:var(--txt-3)">구간</span>
-      <span class="rt-col-price" style="font-size:11px;font-weight:500;color:var(--txt-3)">주가</span>
-      <span class="rt-col-stock" style="font-size:11px;font-weight:500;color:var(--txt-3)">주식</span>
-      <span class="rt-col-cash" style="font-size:11px;font-weight:500;color:var(--txt-3)">현금</span>
+      <span class="rt-col-zone" style="font-size:12px;font-weight:500;color:var(--txt-3)">구간</span>
+      <span class="rt-col-price" style="font-size:12px;font-weight:500;color:var(--txt-3)">주가</span>
+      <span class="rt-col-stock" style="font-size:12px;font-weight:500;color:var(--txt-3)">주식</span>
+      <span class="rt-col-cash" style="font-size:12px;font-weight:500;color:var(--txt-3)">현금</span>
       <span class="rt-col-status"></span>
     </div>`;
 
     // 기준 행
     html += `<div class="rt-row">
-      <span class="rt-col-zone" style="color:var(--txt);font-size:11px">기준</span>
+      <span class="rt-col-zone" style="color:var(--txt);font-size:12px">기준</span>
       ${basePriceCell}
       <span class="rt-col-stock" style="color:var(--txt-3)">0%</span>
       <span class="rt-col-cash" style="color:var(--txt-3)">100%</span>
@@ -1684,7 +1684,7 @@
       const zCol = cur ? 'var(--blue)' : done ? 'var(--txt)' : 'var(--txt-3)';
       const sText = cur
         ? '<span class="rt-ping"><span class="dot"></span></span>'
-        : isV ? '<span style="font-size:11px;font-weight:700;color:var(--up)">재매수</span>'
+        : isV ? '<span style="font-size:12px;font-weight:700;color:var(--up)">재매수</span>'
         : done ? '<span class="rt-done"><span class="iconify" data-icon="heroicons:check" data-width="13" data-height="13"></span></span>'
         : '<span class="rt-none"></span>';
       const sCol = cur ? 'var(--blue)' : done ? 'var(--green)' : 'var(--txt-3)';
@@ -1694,8 +1694,8 @@
       html += `<div class="rt-row${cur?' rt-cur':''}">
         <span class="rt-col-zone" style="color:${zCol}">${i}</span>
         <span class="rt-col-price">
-          <div style="font-size:13px;font-weight:500;color:${priceCol}">$${threshold.toFixed(2)}</div>
-          <div style="font-size:11px;color:var(--txt-3);margin-top:2px">-${pct}%</div>
+          <div style="font-size:14px;font-weight:500;color:${priceCol}">$${threshold.toFixed(2)}</div>
+          <div style="font-size:12px;color:var(--txt-3);margin-top:2px">-${pct}%</div>
         </span>
         <span class="rt-col-stock" style="color:${pctCol}">${stock}%</span>
         <span class="rt-col-cash" style="color:${pctCol}">${100 - stock}%</span>
@@ -1861,11 +1861,11 @@
       const parts = ratio.split(':').map(Number);
       const total = parts[0] + parts[1];
       if (parts[1] === 0) {
-        allocTxt = ` <span style="font-size:10px;color:var(--txt-3)">(1등주 ${s}%)</span>`;
+        allocTxt = ` <span style="font-size:11px;color:var(--txt-3)">(1등주 ${s}%)</span>`;
       } else {
         const r1pct = Math.round(s * parts[0] / total);
         const qpct  = s - r1pct;
-        allocTxt = ` <span style="font-size:10px;color:var(--txt-3)">(1등주 ${r1pct}% · QQQ ${qpct}%)</span>`;
+        allocTxt = ` <span style="font-size:11px;color:var(--txt-3)">(1등주 ${r1pct}% · QQQ ${qpct}%)</span>`;
       }
     }
     bannerMsg.innerHTML = '주식 ' + s + '%' + allocTxt + '<span style="margin:0 3px;color:#3a3a4a;">|</span>현금 ' + c + '%';
@@ -2119,7 +2119,7 @@ function initMaxPctUI(rateEnv) {
       }
       const lastDate = live.nasdaq?.last_masam_date;
       const dateTxt = discoCells[1].querySelector('.txt');
-      if (dateTxt && lastDate) dateTxt.innerHTML = '최근 마삼 발생일: <span style="font-weight:600">' + lastDate + '</span>';
+      if (dateTxt && lastDate) dateTxt.innerHTML = '최근 마삼 발생일: <span style="font-weight:600">' + lastDate.slice(2) + '</span>';
     }
 
     // 5a-1. 1·2등주 드롭다운 동적화
@@ -2219,8 +2219,8 @@ function initMaxPctUI(rateEnv) {
     if (feedEl) {
       const fgSection = feedEl.querySelector('[style*="border-radius:15.3px"]');
       if (fgSection) {
-        const valEl   = fgSection.querySelector('[style*="font-size:30px"]');
-        const lblEl   = fgSection.querySelector('[style*="font-size:13px;font-weight:600"]');
+        const valEl   = fgSection.querySelector('[style*="font-size:31px"]');
+        const lblEl   = fgSection.querySelector('[style*="font-size:14px;font-weight:600"]');
         if (valEl) valEl.textContent = fg != null ? fg : '--';
         if (lblEl) {
           const lbl = fg != null

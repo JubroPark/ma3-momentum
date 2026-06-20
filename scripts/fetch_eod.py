@@ -158,12 +158,18 @@ def calc_target_allocation(mode: str, rate_env: str) -> dict:
 
 
 def calc_hedge_type(rate_env: str, qe_active: bool, t10_trend: str) -> dict:
-    if rate_env == "NON_ZERO" and not qe_active and t10_trend == "DOWN":
+    if rate_env == "ZERO":
+        return {"type": "IAU_GLD_TIP", "rationale": "제로금리", "exit_trigger": "금리 인상"}
+    if qe_active:
+        if t10_trend == "DOWN":
+            # QE로 채권금리가 실제 하락 중 → TLT 직접 수혜
+            return {"type": "TLT", "rationale": "비제로 + QE + 10Y 하락추세", "exit_trigger": "10Y 상승 전환 또는 QE 종료"}
+        else:
+            # QE인데 금리가 안 내려감 → 인플레이션 리스크 헤지
+            return {"type": "IAU_GLD_TIP", "rationale": "비제로 + QE + 10Y 상승 또는 불명확", "exit_trigger": "QE 종료 또는 금리 인상"}
+    if t10_trend == "DOWN":
         return {"type": "TLT", "rationale": "비제로 + QE_OFF + 10Y 하락추세", "exit_trigger": "QE 시작 또는 10Y 상승 전환"}
-    elif rate_env == "ZERO" or qe_active:
-        return {"type": "IAU_GLD_TIP", "rationale": "제로금리 또는 QE 시작", "exit_trigger": "금리 인상 또는 QE 종료"}
-    else:
-        return {"type": "TLT", "rationale": "비제로 + 10Y 추세 불명확", "exit_trigger": "QE 시작"}
+    return {"type": "DOLLAR", "rationale": "비제로 + QE_OFF + 10Y 상승 또는 불명확", "exit_trigger": "10Y 하락 전환 또는 QE 시작"}
 
 
 # ── 올인 체크리스트 ────────────────────────────────────────────────────────────
@@ -336,11 +342,12 @@ def main():
     print(f"  IXIC: {ixic_close:.2f} ({ixic_chg:+.2f}%)")
     print(f"  VIX:  {vix_val}")
 
-    # 2. 기존 masam.json 로드
+    # 2. 기존 masam.json 로드 + FRED 값은 masam_market.json에서 읽음 (fetch_fred.py가 먼저 실행)
     existing_masam = load_json(DATA / "masam.json")
-    rate_env  = existing_masam.get("rate_env", "NON_ZERO")
-    qe_active = existing_masam.get("qe_active", False)
-    t10_trend = existing_masam.get("treasury_10y_trend", "UNKNOWN")
+    fred = load_json(DATA / "masam_market.json")
+    rate_env  = fred.get("rate_env",           existing_masam.get("rate_env", "NON_ZERO"))
+    qe_active = fred.get("qe_active",          existing_masam.get("qe_active", False))
+    t10_trend = fred.get("treasury_10y_trend", existing_masam.get("treasury_10y_trend", "UNKNOWN"))
 
     # 3. 마삼 상태 업데이트
     prev_mode = existing_masam.get("mode", "NORMAL")
@@ -408,6 +415,9 @@ def main():
         **existing_masam,
         "as_of": today.isoformat(),
         "mode": new_mode,
+        "rate_env": rate_env,
+        "qe_active": qe_active,
+        "treasury_10y_trend": t10_trend,
         "masam": new_masam_state,
         "leader_status": {
             "rank1_ticker": rank1_ticker,

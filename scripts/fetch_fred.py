@@ -44,8 +44,9 @@ def latest_value(obs: list) -> Optional[float]:
     return None
 
 
-def slope_sign(obs: list, n: int = 20) -> str:
-    """obs는 내림차순(최신 먼저). n개 유효값의 최신 vs 최오래된 비교."""
+def slope_sign(obs: list, n: int = 20, threshold_bp: float = 20.0) -> str:
+    """obs는 내림차순(최신 먼저). n개 유효값의 최신 vs 최오래된 비교.
+    차이가 threshold_bp(기본 20bp) 미만이면 UNKNOWN(→ 달러 보유) 반환."""
     vals = []
     for o in obs:
         try:
@@ -56,8 +57,12 @@ def slope_sign(obs: list, n: int = 20) -> str:
             break
     if len(vals) < 2:
         return "UNKNOWN"
-    # vals[0] = 최신, vals[-1] = 가장 오래된
-    return "DOWN" if vals[0] < vals[-1] else "UP"
+    diff_bp = (vals[0] - vals[-1]) * 100  # %p → bp 변환
+    if diff_bp < -threshold_bp:
+        return "DOWN"
+    elif diff_bp > threshold_bp:
+        return "UP"
+    return "UNKNOWN"
 
 
 def main():
