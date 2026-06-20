@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-19",
+  "as_of": "2026-06-20",
   "mode": "CRISIS",
   "rate_env": "NON_ZERO",
   "qe_active": false,
@@ -13,7 +13,7 @@
   "leader_status": {
     "rank1_ticker": "NVDA",
     "rank2_ticker": "GOOGL",
-    "gap_pct": 12.0,
+    "gap_pct": 12.1,
     "overtake_detected": false,
     "gap_within_10pct": false
   },
@@ -45,7 +45,7 @@
       "label": "한달+1일 무마삼",
       "met": false,
       "grade": "약",
-      "detail": "D-17"
+      "detail": "D-16"
     },
     {
       "id": 2,
