@@ -4,28 +4,25 @@ EOD 배치 스크립트 — 미 장마감 후 1일 1회 실행
 """
 import json
 import sys
+import re
 import calendar
+import urllib.request
 from datetime import date, timedelta
 from pathlib import Path
 import yfinance as yf
 
 DATA = Path(__file__).parent.parent / "app/public/data"
 
-# 큐레이트 리스트 (투자 가능 글로벌 시총 상위 — 분기 수동 갱신)
-CURATED = [
-    ("NVDA",  "NVIDIA"),
-    ("AAPL",  "Apple"),
-    ("MSFT",  "Microsoft"),
-    ("AMZN",  "Amazon"),
-    ("GOOGL", "Alphabet"),
-    ("META",  "Meta"),
-    ("TSM",   "TSMC"),
-    ("AVGO",  "Broadcom"),
-    ("TSLA",  "Tesla"),
-    ("BRK-B", "Berkshire"),
-]
-
 HEDGE_TICKERS = ["TLT", "IAU", "GLD", "TIP"]
+
+# companiesmarketcap.com ticker → yfinance ticker (다른 경우만 명시)
+YFINANCE_OVERRIDE = {
+    "GOOG": "GOOGL",
+}
+
+# 투자 가능 여부: ticker에 점(.)이 없으면 미국 상장으로 간주
+def _is_investable(ticker: str) -> bool:
+    return "." not in ticker
 
 
 # ── 유틸 ──────────────────────────────────────────────────────────────────────
@@ -247,31 +244,60 @@ def calc_regime(spx_hist, ndx_hist) -> dict:
     }
 
 
-# ── mcap 순위 ─────────────────────────────────────────────────────────────────
+# ── mcap 순위 (companiesmarketcap.com 스크래핑) ───────────────────────────────
 
-def fetch_mcap_rankings() -> list:
+def scrape_top_companies(n: int = 30) -> list:
+    """companiesmarketcap.com 메인 페이지에서 상위 n개 기업 스크래핑."""
+    url = "https://companiesmarketcap.com/"
+    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
+    with urllib.request.urlopen(req, timeout=15) as r:
+        html = r.read().decode("utf-8", errors="replace")
+    pattern = (
+        r'company-logo[^>]+src="/img/company-logos/64/([^"]+?)\.png"'
+        r'.*?company-name">([^<]+)</div>'
+        r'<div class="company-code"><span[^>]+></span>([^<]+)</div>'
+        r'.*?data-sort="(\d+)"'
+    )
+    matches = re.findall(pattern, html, re.DOTALL)
+    result = []
+    for slug, name, ticker_display, mcap_str in matches[:n]:
+        ticker_display = ticker_display.strip()
+        yf_ticker = YFINANCE_OVERRIDE.get(ticker_display, ticker_display)
+        result.append({
+            "slug": slug.strip(),
+            "name": name.strip(),
+            "ticker": yf_ticker,
+            "ticker_display": ticker_display,
+            "mcap_usd": int(mcap_str),
+        })
+    return result
+
+
+def fetch_mcap_rankings() -> tuple:
+    """(전체 순위 리스트, 투자가능 1등주 yf_ticker) 반환"""
+    scraped = scrape_top_companies(30)
+    if not scraped:
+        raise RuntimeError("companiesmarketcap.com 스크래핑 실패")
+
+    rank1_mcap = scraped[0]["mcap_usd"] if scraped else 1
+    investable = [r for r in scraped if _is_investable(r["ticker"])]
+    rank1_investable = investable[0]["ticker"] if investable else scraped[0]["ticker"]
+
     results = []
-    tickers = [t for t, _ in CURATED]
-    _ = tickers  # mcap은 fast_info로 개별 조회
-
-    for ticker, name in CURATED:
-        try:
-            info = yf.Ticker(ticker).fast_info
-            mcap = getattr(info, "market_cap", None) or 0
-        except Exception:
-            mcap = 0
-        results.append({"ticker": ticker, "name": name, "mcap_usd": int(mcap)})
-
-    results.sort(key=lambda x: x["mcap_usd"], reverse=True)
-    rank1_mcap = results[0]["mcap_usd"] if results else 1
-
-    for i, item in enumerate(results):
-        item["rank"] = i + 1
-        item["is_leader"] = i == 0
+    for i, item in enumerate(scraped):
         gap = (rank1_mcap - item["mcap_usd"]) / rank1_mcap * 100 if rank1_mcap > 0 else 0
-        item["gap_pct_from_rank1"] = round(gap, 1)
+        results.append({
+            "rank": i + 1,
+            "ticker": item["ticker"],
+            "ticker_display": item["ticker_display"],
+            "slug": item["slug"],
+            "name": item["name"],
+            "mcap_usd": item["mcap_usd"],
+            "is_leader": item["ticker"] == rank1_investable,
+            "gap_pct_from_rank1": round(gap, 1),
+        })
 
-    return results
+    return results, rank1_investable
 
 
 # ── 헤지 가격 ─────────────────────────────────────────────────────────────────
@@ -326,14 +352,14 @@ def main():
     if prev_mode in ("CRISIS", "PANIC") and new_mode == "NORMAL":
         released_date = today.isoformat()
 
-    # 4. mcap 순위
+    # 4. mcap 순위 (투자가능 + 비USD 표시용)
     print("▶ 시가총액 순위 조회 중...")
-    rankings = fetch_mcap_rankings()
-    rank1 = rankings[0] if rankings else {}
-    rank2 = rankings[1] if len(rankings) > 1 else {}
-    rank1_ticker = rank1.get("ticker", "NVDA")
-    rank2_ticker = rank2.get("ticker", "MSFT")
-    gap_pct = rank2.get("gap_pct_from_rank1", 0.0)
+    rankings, rank1_investable = fetch_mcap_rankings()
+    # 전략 기준 1·2등주: 투자 가능 종목 중에서
+    investable_ranked = [r for r in rankings if _is_investable(r["ticker"])]
+    rank1_ticker = investable_ranked[0]["ticker"] if investable_ranked else "NVDA"
+    rank2_ticker = investable_ranked[1]["ticker"] if len(investable_ranked) > 1 else "MSFT"
+    gap_pct = investable_ranked[1].get("gap_pct_from_rank1", 0.0) if len(investable_ranked) > 1 else 0.0
     print(f"  1등: {rank1_ticker}  2등: {rank2_ticker}  격차: {gap_pct:.1f}%")
 
     # 5. 1등주 가격
@@ -398,11 +424,11 @@ def main():
     }
     save_json(DATA / "masam.json", masam_out)
 
-    # mcap_daily.json
+    # mcap_daily.json — 상위 25개 저장 (표시는 20개, 버퍼 5개)
     save_json(DATA / "mcap_daily.json", {
         "as_of": today.isoformat(),
         "rank1_ticker": rank1_ticker,
-        "items": rankings,
+        "items": rankings[:25],
     })
 
     # momentum_market.json (VIX 추가, FRED 필드 유지)

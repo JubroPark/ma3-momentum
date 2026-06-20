@@ -1,8 +1,10 @@
 """
 장중 준실시간 배치 — 5~15분 주기 실행
 출력: live.json (현재가·등락률·거리 — 표시 전용, 신호 변경 없음)
+      masam_market.json (VIX·공포탐욕·달러환율 실시간 갱신)
 """
 import json
+import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
 from typing import Optional
@@ -13,6 +15,7 @@ DATA = Path(__file__).parent.parent / "app/public/data"
 LIVE = DATA / "live.json"
 
 HEDGE_TICKERS = ["TLT", "IAU", "GLD", "TIP"]
+
 
 
 def load_json(path: Path) -> dict:
@@ -38,6 +41,40 @@ def fetch_quote(ticker: str) -> Optional[dict]:
         return {"price": round(price, 2), "change_pct": round(chg, 2)}
     except Exception:
         return None
+
+
+def fetch_fear_greed() -> Optional[int]:
+    try:
+        url = "https://production.dataviz.cnn.io/index/fearandgreed/graphdata"
+        req = urllib.request.Request(url, headers={
+            "User-Agent": "Mozilla/5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/125.0.0.0 Safari/537.36",
+            "Origin": "https://www.cnn.com",
+            "Referer": "https://www.cnn.com/markets/fear-and-greed",
+            "Accept": "application/json",
+        })
+        with urllib.request.urlopen(req, timeout=8) as r:
+            data = json.loads(r.read())
+        score = data.get("fear_and_greed", {}).get("score")
+        return int(round(score)) if score is not None else None
+    except Exception:
+        return None
+
+
+def fetch_mcap_live() -> dict:
+    """mcap_daily.json의 ticker 목록에서 change_pct만 수집. mcap_usd는 daily 기준."""
+    mcap_daily = load_json(DATA / "mcap_daily.json")
+    result = {}
+    for item in mcap_daily.get("items", []):
+        ticker = item["ticker"]
+        try:
+            fi = yf.Ticker(ticker).fast_info
+            price = getattr(fi, "last_price", None)
+            prev  = getattr(fi, "previous_close", None)
+            change_pct = round((price - prev) / prev * 100, 2) if price and prev else None
+            result[ticker] = {"change_pct": change_pct}
+        except Exception:
+            result[ticker] = {"change_pct": None}
+    return result
 
 
 def fetch_ohlc_ath(ticker: str, since_date: Optional[str] = None) -> dict:
@@ -110,6 +147,13 @@ def main():
         q = fetch_quote(tk)
         hedge_prices[tk] = q["price"] if q else existing_live.get("hedges", {}).get(tk)
 
+    # VIX, 달러 환율, 공포탐욕, 시가총액 등락률
+    vix_q     = fetch_quote("^VIX")
+    usdkrw_q  = fetch_quote("USDKRW=X")
+    fear_greed = fetch_fear_greed()
+    mcap_live  = fetch_mcap_live()
+    print(f"  VIX: {vix_q}  USD/KRW: {usdkrw_q}  F&G: {fear_greed}")
+
     # 1등주 메타 (기존 값 유지)
     prev_rank1 = existing_live.get("rank1", {})
     rank1_info = {
@@ -149,6 +193,14 @@ def main():
             "intra_low": qqq_extra.get("intra_low", existing_live.get("qqq", {}).get("intra_low")),
         },
         "hedges": hedge_prices,
+        "mcap_live": mcap_live,
+        "live_market": {
+            "vix":         vix_q["price"] if vix_q else None,
+            "vix_chg":     vix_q["change_pct"] if vix_q else None,
+            "usd_krw":     round(usdkrw_q["price"], 1) if usdkrw_q else None,
+            "usd_krw_chg": round(usdkrw_q["change_pct"], 2) if usdkrw_q else None,
+            "fear_greed":  fear_greed,
+        },
     }
 
     save_json(LIVE, live_out)

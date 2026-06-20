@@ -368,10 +368,25 @@
       </div>
       <div id="mcap-list" style="margin-top:10px;"></div>
       <script>
+      function toggleMcapMore() {
+        var rows = document.getElementById('mcap-more-rows');
+        var btn = document.getElementById('mcap-more-btn');
+        if (!rows || !btn) return;
+        var expanded = rows.style.display !== 'none';
+        rows.style.display = expanded ? 'none' : '';
+        btn.innerHTML = expanded
+          ? '순위 더 보기 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg>'
+          : '순위 접기 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M15 18l-6-6 6-6"/></svg>';
+        if (!expanded) {
+          if (window.twemoji) twemoji.parse(rows, {folder:'svg', ext:'.svg'});
+          if (window.Iconify) Iconify.scan(rows);
+        }
+      }
+
       function logoFallback(img, domain, initial) {
-        if (!img.dataset.tried) {
+        if (!img.dataset.tried && domain) {
           img.dataset.tried = '1';
-          img.src = 'https://www.google.com/s2/favicons?sz=64&domain=' + domain;
+          img.src = 'https://logo.clearbit.com/' + domain;
         } else {
           img.style.display = 'none';
           const s = document.createElement('span');
@@ -380,60 +395,73 @@
           img.parentElement.appendChild(s);
         }
       }
-      (function(){
-        const MCAP = [
-          { rank:1,  ticker:'NVDA',   name:'엔비디아',       domain:'nvidia.com',            si:'nvidia/76b900',  flag:'🇺🇸', mcap:'$3.35T', chg:'+2.1%', up:true  },
-          { rank:2,  ticker:'MSFT',   name:'마이크로소프트',  domain:'microsoft.com',         si:'microsoft',      flag:'🇺🇸', mcap:'$3.12T', chg:'-0.4%', up:false },
-          { rank:3,  ticker:'AAPL',   name:'애플',           domain:'apple.com',             si:'apple/ffffff',   flag:'🇺🇸', mcap:'$3.01T', chg:'+0.6%', up:true  },
-          { rank:4,  ticker:'AMZN',   name:'아마존',          domain:'amazon.com',            si:'amazon/ff9900',  flag:'🇺🇸', mcap:'$2.18T', chg:'+1.3%', up:true  },
-          { rank:5,  ticker:'GOOGL',  name:'알파벳',          domain:'google.com',            si:'google',         flag:'🇺🇸', mcap:'$2.03T', chg:'-0.2%', up:false },
-          { rank:6,  ticker:'META',   name:'메타',            domain:'meta.com',              si:'meta/1877f2',    flag:'🇺🇸', mcap:'$1.82T', chg:'+0.9%', up:true  },
-          { rank:7,  ticker:'2222',   name:'사우디 아람코',   domain:'aramco.com',            si:null,             flag:'🇸🇦', mcap:'$1.61T', chg:'-1.1%', up:false },
-          { rank:8,  ticker:'TSM',    name:'TSMC',           domain:'tsmc.com',              si:null,             flag:'🇹🇼', mcap:'$1.09T', chg:'+1.7%', up:true  },
-          { rank:9,  ticker:'AVGO',   name:'브로드컴',        domain:'broadcom.com',          si:null,             flag:'🇺🇸', mcap:'$1.02T', chg:'+0.5%', up:true  },
-          { rank:10, ticker:'TSLA',   name:'테슬라',          domain:'tesla.com',             si:'tesla/cc0000',   flag:'🇺🇸', mcap:'$0.91T', chg:'+3.2%', up:true  },
-          { rank:11, ticker:'WMT',    name:'월마트',          domain:'walmart.com',           si:'walmart/0071ce', flag:'🇺🇸', mcap:'$0.82T', chg:'+0.3%', up:true  },
-          { rank:12, ticker:'JPM',    name:'JP모건',          domain:'jpmorganchase.com',     si:null,             flag:'🇺🇸', mcap:'$0.78T', chg:'-0.5%', up:false },
-          { rank:13, ticker:'LLY',    name:'일라이 릴리',     domain:'lilly.com',             si:null,             flag:'🇺🇸', mcap:'$0.74T', chg:'+1.2%', up:true  },
-          { rank:14, ticker:'BRK.B',  name:'버크셔 해서웨이', domain:'berkshirehathaway.com', si:null,             flag:'🇺🇸', mcap:'$0.71T', chg:'+0.1%', up:true  },
-          { rank:15, ticker:'V',      name:'비자',            domain:'visa.com',              si:'visa/ffffff',    flag:'🇺🇸', mcap:'$0.64T', chg:'+0.4%', up:true  },
-          { rank:16, ticker:'MC.PA',  name:'LVMH',           domain:'lvmh.com',              si:null,             flag:'🇫🇷', mcap:'$0.60T', chg:'-0.8%', up:false },
-          { rank:17, ticker:'XOM',    name:'엑슨모빌',        domain:'exxonmobil.com',        si:null,             flag:'🇺🇸', mcap:'$0.57T', chg:'-1.3%', up:false },
-          { rank:18, ticker:'UNH',    name:'유나이티드헬스',  domain:'unitedhealthgroup.com', si:null,             flag:'🇺🇸', mcap:'$0.54T', chg:'+0.7%', up:true  },
-          { rank:19, ticker:'NVO',    name:'노보 노디스크',   domain:'novonordisk.com',       si:null,             flag:'🇩🇰', mcap:'$0.51T', chg:'-0.3%', up:false },
-          { rank:20, ticker:'005930', name:'삼성전자',         domain:'samsung.com',           si:'samsung/ffffff', flag:'🇰🇷', mcap:'$0.38T', chg:'+1.9%', up:true  },
-        ];
-        const top = parseFloat(MCAP[0].mcap.replace('$','').replace('T',''));
+      function renderMcapList(mcapDaily, companies, mcapLive) {
+        const items = (mcapDaily && mcapDaily.items) || [];
+        const liveMap = mcapLive || {};
+        const merged = items.map(function(item) {
+          const ticker = item.ticker;
+          const co = companies[ticker] || {};
+          const ld = liveMap[ticker] || {};
+          return {
+            ticker: ticker,
+            slug: item.slug || ticker,
+            name_ko: co.name_ko || item.name || ticker,
+            domain: co.domain || '',
+            si: co.si || null,
+            flag: co.flag || '',
+            ticker_display: item.ticker_display || co.ticker_display || ticker,
+            mcap_usd: item.mcap_usd || 0,
+            change_pct: ld.change_pct != null ? ld.change_pct : null,
+          };
+        });
+        merged.sort(function(a, b) { return b.mcap_usd - a.mcap_usd; });
+        const top = merged.length > 0 ? merged[0].mcap_usd : 0;
         const el = document.getElementById('mcap-list');
-        const more = `<div style="border-top:1px solid var(--line);"></div><div class="detail-more" style="font-weight:400;" onclick="toast('전체 시가총액 순위')">순위 더 보기 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>`;
-        el.innerHTML = MCAP.map(d => {
-          const val = parseFloat(d.mcap.replace('$','').replace('T',''));
-          const gap = d.rank === 1
+        if (!el) return;
+        function makeRow(d, rank, top) {
+          const mcapStr = d.mcap_usd > 0
+            ? (d.mcap_usd >= 1e12 ? '$' + (d.mcap_usd / 1e12).toFixed(2) + 'T' : '$' + (d.mcap_usd / 1e9).toFixed(0) + 'B')
+            : '--';
+          const chgHtml = d.change_pct != null
+            ? `<span class="${d.change_pct >= 0 ? 'up' : 'down'}">${(d.change_pct >= 0 ? '+' : '') + d.change_pct.toFixed(1)}%</span>`
+            : `<span style="color:var(--txt-3)">--</span>`;
+          const gap = rank === 1
             ? `<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3c6.svg" style="width:20px;height:20px;animation:trophy-shine 3s ease-in-out infinite;">`
-            : `<div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;text-align:right;">1등주 대비</div>
-               <div style="font-size:13.5px;font-weight:500;color:#fff">-${((top-val)/top*100).toFixed(2)}%</div>`;
-          const rankStyle = d.rank === 1
-            ? `background:var(--surface);border-radius:15.3px;margin:6px 17px;`
-            : '';
+            : (top > 0 && d.mcap_usd > 0
+                ? `<div style="font-size:10px;color:var(--txt-3);margin-bottom:2px;text-align:right;">1등주 대비</div>
+                   <div style="font-size:13.5px;font-weight:500;color:#fff">-${((top - d.mcap_usd) / top * 100).toFixed(2)}%</div>`
+                : '');
+          const rankStyle = rank === 1 ? `background:var(--surface);border-radius:15.3px;margin:6px 17px;` : '';
+          const logoSrc = `https://companiesmarketcap.com/img/company-logos/64/${d.slug}.png`;
           return `
           <div class="rank" style="${rankStyle}">
-            <div class="no">${d.rank}</div>
+            <div class="no">${rank}</div>
             <div class="ava" style="background:transparent;width:36px;height:36px;flex:0 0 36px;overflow:visible;">
-              <div style="width:36px;height:36px;border-radius:50%;background:#1e1f24;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-                <img src="${d.si ? `https://cdn.simpleicons.org/${d.si}` : `https://logo.clearbit.com/${d.domain}`}" style="width:22px;height:22px;object-fit:contain;"
-                  onerror="logoFallback(this,'${d.domain}','${d.ticker[0]}')">
+              <div style="width:36px;height:36px;border-radius:50%;background:#26272c;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+                <img src="${logoSrc}" style="width:22px;height:22px;object-fit:contain;"
+                  onerror="logoFallback(this,'${d.domain}','${d.name_ko[0]}')">
               </div>
             </div>
             <div class="info">
-              <div class="nm">${d.name} <span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker}</span></div>
-              <div class="pr"><span>${d.mcap}</span><span class="${d.up?'up':'down'}">${d.chg}</span></div>
+              <div class="nm">${d.name_ko} <span style="font-size:12px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker_display}</span></div>
+              <div class="pr"><span>${mcapStr}</span>${chgHtml}</div>
             </div>
             <div style="text-align:right;flex:none;">${gap}</div>
           </div>`;
-        }).join('') + more;
+        }
+        const top10 = merged.slice(0, 10).map(function(d, i) { return makeRow(d, i + 1, top); }).join('');
+        const rest = merged.slice(10, 20);
+        const restHtml = rest.length > 0
+          ? `<div id="mcap-more-rows" style="display:none;">${rest.map(function(d, i) { return makeRow(d, i + 11, top); }).join('')}</div>`
+          : '';
+        const moreBtn = rest.length > 0
+          ? `<div style="border-top:1px solid var(--line);"></div>
+             <div class="detail-more" id="mcap-more-btn" style="font-weight:400;" onclick="toggleMcapMore()">순위 더 보기 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>`
+          : '';
+        el.innerHTML = top10 + restHtml + moreBtn;
         twemoji && twemoji.parse(el, {folder:'svg',ext:'.svg'});
         if (window.Iconify) Iconify.scan(el);
-      })();
+      }
       </script>
       <div class="disclaimer"><p>서비스를 통해 제공되는 정보는 단순 참고용이며 투자 권유가 아닙니다.<br>모든 투자 판단은 개인의 책임이며 실거래 전 백테스트 검증이 필수입니다.</p></div>
     </div>
@@ -498,7 +526,7 @@
             <span style="font-weight:500;color:#fff;">최고점 대비</span>
             <span class="down" style="font-weight:700;">-3.21%</span>
           </div>
-          <div class="txt" style="margin-top:2px">최근 마삼 발생일: <b>6/10</b></div>
+          <div class="txt" style="margin-top:2px">최근 마삼 발생일: <span style="font-weight:600">6/10</span></div>
         </div>
       </div>
       <div id="panic-hold-banner" style="display:none;margin:6.8px 17px 0;background:rgba(69,147,252,.1);border:1px solid rgba(69,147,252,.35);border-radius:13px;padding:11px 14px;">
@@ -510,8 +538,8 @@
           </div>
         </div>
       </div>
-      <div class="ai-banner" onclick="toast('목표 비중')"><div class="inner">
-        <div class="tag">✦ 목표 비중</div>
+      <div class="ai-banner" onclick="toast('권장 비중')"><div class="inner">
+        <div class="tag">✦ 권장 비중</div>
         <div class="msg">주식 30%<span style="margin:0 3px;color:#3a3a4a;">|</span>현금 70%</div>
         <div class="chev">›</div>
       </div></div>
@@ -568,7 +596,7 @@
           <span style="font-size:13px;font-weight:600;color:var(--txt-2);">탐욕 구간</span>
         </div>
         <div class="bar">
-          <i class="anim" style="width:62%;background:linear-gradient(90deg,#3182F6,#E84C5A);"></i>
+          <i class="anim" style="width:62%;background:linear-gradient(90deg,#F04452 0%,#FF8C00 25%,#F5C842 50%,#7CB342 75%,#2BC4B6 100%);background-size:161% 100%;"></i>
           <div class="mk anim" style="left:62%;"></div>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:10.5px;color:var(--txt-3);">
@@ -969,7 +997,7 @@
         <div class="rank" ${hasDetail ? `onclick="togglePosDetail('${d.ticker}')" style="cursor:pointer;flex-wrap:wrap;padding-bottom:0;"` : ''}>
           <div class="no">${no}</div>
           <div class="ava" style="background:transparent;width:36px;height:36px;flex:0 0 36px;overflow:visible;">
-            <div style="width:36px;height:36px;border-radius:50%;background:#1e1f24;overflow:hidden;display:flex;align-items:center;justify-content:center;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#26272c;overflow:hidden;display:flex;align-items:center;justify-content:center;">
               <img src="${d.si ? `https://cdn.simpleicons.org/${d.si}` : `https://logo.clearbit.com/${d.domain}`}" style="width:22px;height:22px;object-fit:contain;"
                 onerror="logoFallback(this,'${d.domain}','${d.ticker[0]}')">
             </div>
@@ -1060,7 +1088,7 @@
         return `
         <div style="margin:6px 17px;background:var(--surface);border-radius:15.3px;overflow:hidden;">
           <div onclick="${hasPos ? `togglePosDetail('${p.symbol}')` : ''}" style="display:flex;align-items:center;gap:12px;padding:14px 15px;${hasPos ? 'cursor:pointer;' : ''}">
-            <div style="width:36px;height:36px;border-radius:50%;background:#1e1f24;overflow:hidden;flex:0 0 36px;display:flex;align-items:center;justify-content:center;">
+            <div style="width:36px;height:36px;border-radius:50%;background:#26272c;overflow:hidden;flex:0 0 36px;display:flex;align-items:center;justify-content:center;">
               <img src="${imgSrc}" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'${domain}','${p.symbol[0]}')">
             </div>
             <div style="flex:1;min-width:0;">
@@ -1191,6 +1219,18 @@
 
       <!-- ===== 마삼룰 설정 ===== -->
       <div id="settings-masam">
+        <div class="sec-h" style="font-size:15px;padding-top:16px">보유 비중 설정</div>
+        <div style="padding:0 17px">
+          <div class="srow">
+            <div class="sk">1등주 : QQQ 비중<s>평상시 주식 자산 내 배분 비율</s></div>
+            <div class="tg" id="portfolio-ratio-tg">
+              <button onclick="setPortfolioRatio('1:0',this)">1 : 0</button>
+              <button onclick="setPortfolioRatio('1:1',this)">1 : 1</button>
+              <button onclick="setPortfolioRatio('2:1',this)">2 : 1</button>
+            </div>
+          </div>
+        </div>
+
         <div class="sec-h" style="font-size:15px;padding-top:16px">리밸런싱</div>
         <div style="padding:0 17px">
           <div class="srow">
@@ -1582,11 +1622,24 @@
       if (zoneRef <= base * (1 - step * i)) curZone = i;
     }
 
-    // 목표 비중 배너: 파란 구간 기준 주식/현금 비중
+    // 권장 비중 배너: 파란 구간 기준 1등주/QQQ/현금 비중
     const bannerMsg = document.querySelector('.view[data-view="발견"] .ai-banner .msg');
     if (bannerMsg && curZone > 0) {
       const s = curZone * 10;
-      bannerMsg.innerHTML = '주식 ' + s + '%<span style="margin:0 3px;color:#3a3a4a;">|</span>현금 ' + (100 - s) + '%';
+      const cash = 100 - s;
+      const ratio = getPortfolioRatio();
+      const rParts = ratio.split(':').map(Number);
+      const rTotal = rParts[0] + rParts[1];
+      const sep = '<span style="margin:0 4px;color:#3a3a4a;">/</span>';
+      let html;
+      if (rParts[1] === 0) {
+        html = '1등주 ' + s + '%' + sep + '현금 ' + cash + '%';
+      } else {
+        const r1 = Math.round(s * rParts[0] / rTotal);
+        const q  = s - r1;
+        html = '1등주 ' + r1 + '%' + sep + 'QQQ ' + q + '%' + sep + '현금 ' + cash + '%';
+      }
+      bannerMsg.innerHTML = html;
     }
 
     // 재매수 구간 (위기/공황 시: 파란 구간에서 2구간 위)
@@ -1786,6 +1839,38 @@
     }
   }
 
+  function getPortfolioRatio() { return localStorage.getItem('portfolio_ratio') || '1:0'; }
+
+  function setPortfolioRatio(ratio, btn) {
+    localStorage.setItem('portfolio_ratio', ratio);
+    const tg = document.getElementById('portfolio-ratio-tg');
+    if (tg) tg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
+    renderRangeTable();
+  }
+
+  function _renderAllocBanner() {
+    const bannerMsg = document.querySelector('.view[data-view="발견"] .ai-banner .msg');
+    if (!bannerMsg) return;
+    const masam = window._cachedMasam;
+    if (!masam || !masam.target_allocation) return;
+    const s = masam.target_allocation.stock_pct;
+    const c = masam.target_allocation.cash_pct;
+    const ratio = getPortfolioRatio();
+    let allocTxt = '';
+    if (s > 0) {
+      const parts = ratio.split(':').map(Number);
+      const total = parts[0] + parts[1];
+      if (parts[1] === 0) {
+        allocTxt = ` <span style="font-size:10px;color:var(--txt-3)">(1등주 ${s}%)</span>`;
+      } else {
+        const r1pct = Math.round(s * parts[0] / total);
+        const qpct  = s - r1pct;
+        allocTxt = ` <span style="font-size:10px;color:var(--txt-3)">(1등주 ${r1pct}% · QQQ ${qpct}%)</span>`;
+      }
+    }
+    bannerMsg.innerHTML = '주식 ' + s + '%' + allocTxt + '<span style="margin:0 3px;color:#3a3a4a;">|</span>현금 ' + c + '%';
+  }
+
   function _syncRangePct(target) {
     const pct = getMaxPct(target === 'qqq' ? 'qqq' : 'nvda');
     rangePctMode = pct;
@@ -1915,18 +2000,25 @@ function initMaxPctUI(rateEnv) {
   document.querySelectorAll('.pct-toggle button').forEach(b => {
     b.classList.toggle('on', b.textContent.includes(String(rangePctMode)));
   });
+  // 보유 비중 설정 버튼 복원
+  const ratio = getPortfolioRatio();
+  const ratioTg = document.getElementById('portfolio-ratio-tg');
+  if (ratioTg) ratioTg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.textContent.replace(/\s/g,'') === ratio.replace(/\s/g,'')));
 }
 
 (async function initFromData() {
   try {
-    const [masam, live, mkt, momtMkt, positions] = await Promise.all([
+    const [masam, live, mkt, momtMkt, positions, mcapDaily, companies] = await Promise.all([
       fetch('/data/masam.json').then(r => r.json()),
       fetch('/data/live.json').then(r => r.json()),
       fetch('/data/masam_market.json').then(r => r.json()),
       fetch('/data/momentum_market.json').then(r => r.json()),
       fetch('/data/positions.json').then(r => r.json()),
+      fetch('/data/mcap_daily.json').then(r => r.json()).catch(() => ({})),
+      fetch('/data/companies.json').then(r => r.json()).catch(() => ({})),
     ]);
     window.positionsData = positions;
+    window._cachedMasam = masam;
     masamMode = masam.mode || 'NORMAL';
     initMaxPctUI(masam.rate_env || 'NON_ZERO');
 
@@ -2027,15 +2119,7 @@ function initMaxPctUI(rateEnv) {
       }
       const lastDate = live.nasdaq?.last_masam_date;
       const dateTxt = discoCells[1].querySelector('.txt');
-      if (dateTxt && lastDate) dateTxt.innerHTML = '최근 마삼 발생일: <b>' + lastDate + '</b>';
-    }
-
-    // 5. 발견 탭: 목표 비중 배너
-    const bannerMsg = document.querySelector('.view[data-view="발견"] .ai-banner .msg');
-    if (bannerMsg && masam.target_allocation) {
-      const s = masam.target_allocation.stock_pct;
-      const c = masam.target_allocation.cash_pct;
-      bannerMsg.innerHTML = '주식 ' + s + '%<span style="margin:0 3px;color:#3a3a4a;">|</span>현금 ' + c + '%';
+      if (dateTxt && lastDate) dateTxt.innerHTML = '최근 마삼 발생일: <span style="font-weight:600">' + lastDate + '</span>';
     }
 
     // 5a-1. 1·2등주 드롭다운 동적화
@@ -2129,39 +2213,45 @@ function initMaxPctUI(rateEnv) {
       if (typeof renderRangeTable  === 'function') renderRangeTable();
     }
 
-    // 7. 경제지표 탭: Fear & Greed
-    const fg = mkt.fear_greed;
-    if (fg != null) {
-      const feedEl = document.querySelector('.view[data-view="피드"]');
-      if (feedEl) {
-        const fgSection = feedEl.querySelector('[style*="border-radius:15.3px"]');
-        if (fgSection) {
-          const valEl   = fgSection.querySelector('[style*="font-size:30px"]');
-          const lblEl   = fgSection.querySelector('[style*="font-size:13px;font-weight:600"]');
-          if (valEl) valEl.textContent = fg;
-          if (lblEl) {
-            const lbl = fg < 25 ? '극도 공포' : fg < 45 ? '공포 구간' : fg < 55 ? '중립' : fg < 75 ? '탐욕 구간' : '극도 탐욕';
-            lblEl.textContent = lbl;
-          }
-          const barI  = fgSection.querySelector('.bar i');
-          const barMk = fgSection.querySelector('.bar .mk');
-          if (barI)  barI.style.width = fg + '%';
-          if (barMk) barMk.style.left = fg + '%';
+    // 7. 경제지표 탭: Fear & Greed (live_market 우선, null=실패→--)
+    const fg = live.live_market?.fear_greed ?? null;
+    const feedEl = document.querySelector('.view[data-view="피드"]');
+    if (feedEl) {
+      const fgSection = feedEl.querySelector('[style*="border-radius:15.3px"]');
+      if (fgSection) {
+        const valEl   = fgSection.querySelector('[style*="font-size:30px"]');
+        const lblEl   = fgSection.querySelector('[style*="font-size:13px;font-weight:600"]');
+        if (valEl) valEl.textContent = fg != null ? fg : '--';
+        if (lblEl) {
+          const lbl = fg != null
+            ? (fg < 25 ? '극도 공포' : fg < 45 ? '공포 구간' : fg < 55 ? '중립' : fg < 75 ? '탐욕 구간' : '극도 탐욕')
+            : '수집 실패';
+          lblEl.textContent = lbl;
         }
+        const barI  = fgSection.querySelector('.bar i');
+        const barMk = fgSection.querySelector('.bar .mk');
+        if (barI) {
+          const score = fg ?? 0;
+          barI.style.width = score + '%';
+          barI.style.background = 'linear-gradient(90deg,#F04452 0%,#FF8C00 25%,#F5C842 50%,#7CB342 75%,#2BC4B6 100%)';
+          barI.style.backgroundSize = (score > 0 ? (10000 / score) : 100) + '% 100%';
+        }
+        if (barMk) barMk.style.left = (fg ?? 0) + '%';
       }
     }
 
     // 8. 경제지표 탭: VIX / 금리환경 / DFF / DGS10
+    const liveVix = live.live_market?.vix ?? null;
     const feedView = document.querySelector('.view[data-view="피드"]');
     if (feedView) {
       const idxRows = feedView.querySelectorAll('.idx-row');
-      // Row 0: VIX
-      if (idxRows[0] && mkt.vix != null) {
+      // Row 0: VIX (live_market 우선, null=실패→--)
+      if (idxRows[0]) {
         const cells = idxRows[0].querySelectorAll('.idx-cell');
         const chip  = cells[0]?.querySelector('.chip');
         const numEl = cells[0]?.querySelector('span:not(.chip)');
-        if (chip)  chip.textContent  = mkt.vix < 20 ? '안정 구간' : mkt.vix < 30 ? '경계 구간' : '공포 구간';
-        if (numEl) numEl.textContent = mkt.vix.toFixed(2);
+        if (chip)  chip.textContent  = liveVix != null ? (liveVix < 20 ? '안정 구간' : liveVix < 30 ? '경계 구간' : '공포 구간') : '--';
+        if (numEl) numEl.textContent = liveVix != null ? liveVix.toFixed(2) : '--';
       }
       // Row 1: 금리환경 / DFF
       if (idxRows[1] && mkt.dff != null) {
@@ -2280,28 +2370,69 @@ function initMaxPctUI(rateEnv) {
     }
 
     // 13. 관심(시가총액) 탭 + 관심종목(모멘텀) 탭 롤링 업데이트
+    // live_market 우선 사용 — null이면 수집 실패로 '--' 표시 (stale fallback 없음)
+    const lm = live.live_market || {};
+    var _fgColor = (function() {
+      var fg = lm.fear_greed;
+      if (fg == null) return null;
+      if (fg < 25) return '#F04452';
+      if (fg < 45) return '#FF8C00';
+      if (fg < 55) return '#F5C842';
+      if (fg < 75) return '#7CB342';
+      return '#2BC4B6';
+    })();
     const mcapRollData = [
-      { lbl: '달러 환율', val: mkt.usd_krw?.toLocaleString('ko-KR', { minimumFractionDigits: 1 }), chgTxt: '', isUp: false },
-      { lbl: 'VIX',      val: mkt.vix?.toFixed(2),      chgTxt: mkt.vix < 20 ? '안정' : mkt.vix < 30 ? '경계' : '공포', isUp: false },
-      { lbl: '공포탐욕', val: String(mkt.fear_greed ?? 62), chgTxt: (mkt.fear_greed ?? 62) >= 55 ? '탐욕 구간' : (mkt.fear_greed ?? 62) <= 45 ? '공포 구간' : '중립', isUp: (mkt.fear_greed ?? 62) > 50 },
+      {
+        lbl: '달러 환율',
+        val: lm.usd_krw != null ? lm.usd_krw.toLocaleString('ko-KR', { minimumFractionDigits: 1 }) : '--',
+        chgTxt: '',
+        isUp: lm.usd_krw_chg != null ? lm.usd_krw_chg > 0 : null,
+      },
+      {
+        lbl: 'VIX',
+        val: lm.vix != null ? lm.vix.toFixed(2) : '--',
+        chgTxt: lm.vix != null ? (lm.vix < 20 ? '안정' : lm.vix < 30 ? '경계' : '공포') : '',
+        isUp: lm.vix_chg != null ? lm.vix_chg > 0 : null,
+      },
+      {
+        lbl: '공포탐욕',
+        val: lm.fear_greed != null ? String(lm.fear_greed) : '--',
+        chgTxt: lm.fear_greed != null ? (lm.fear_greed < 25 ? '극도 공포' : lm.fear_greed < 45 ? '공포 구간' : lm.fear_greed < 55 ? '중립' : lm.fear_greed < 75 ? '탐욕 구간' : '극도 탐욕') : '',
+        color: _fgColor,
+      },
     ];
     ['mcap-roll', 'fav-roll'].forEach(function(id) {
       const wrap = document.getElementById(id);
       if (!wrap) return;
       wrap.querySelectorAll('.idx-roll-item').forEach(function(item, i) {
         if (!mcapRollData[i]) return;
-        const { val, chgTxt, isUp } = mcapRollData[i];
+        const { val, chgTxt, isUp, color } = mcapRollData[i];
         const spans = item.querySelectorAll('span');
         if (spans[1] && val != null) {
-          spans[1].className = 'v ' + (isUp ? 'up' : 'down');
+          if (color) {
+            spans[1].className = 'v';
+            spans[1].style.color = color;
+          } else {
+            spans[1].className = 'v ' + (isUp ? 'up' : isUp === false ? 'down' : '');
+            spans[1].style.color = '';
+          }
           spans[1].textContent = val;
         }
         if (spans[2]) {
-          spans[2].className = isUp ? 'up' : 'down';
+          if (color) {
+            spans[2].className = '';
+            spans[2].style.color = color;
+          } else {
+            spans[2].className = isUp ? 'up' : isUp === false ? 'down' : '';
+            spans[2].style.color = '';
+          }
           spans[2].textContent = chgTxt;
         }
       });
     });
+
+    // 14. 시가총액 순위 — mcap_daily + companies + live 데이터로 동적 렌더링
+    renderMcapList(mcapDaily, companies, live.mcap_live);
 
     if (window.Iconify) Iconify.scan(document.body);
   } catch (e) {
