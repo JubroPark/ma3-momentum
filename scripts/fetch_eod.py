@@ -157,16 +157,16 @@ def calc_target_allocation(mode: str, rate_env: str) -> dict:
         return {"stock_pct": 0, "hedge_pct": 0, "cash_pct": 100, "label": "현금 100% 대기"}
 
 
-def calc_hedge_type(rate_env: str, qe_active: bool, t10_trend: str) -> dict:
+def calc_hedge_type(rate_env: str, qe_active: bool, t10_trend: str, dff_trend: str = "UNKNOWN") -> dict:
     if rate_env == "ZERO":
         return {"type": "IAU_GLD_TIP", "rationale": "제로금리", "exit_trigger": "금리 인상"}
     if qe_active:
-        if t10_trend == "DOWN":
-            # QE로 채권금리가 실제 하락 중 → TLT 직접 수혜
-            return {"type": "TLT", "rationale": "비제로 + QE + 10Y 하락추세", "exit_trigger": "10Y 상승 전환 또는 QE 종료"}
+        if dff_trend == "DOWN":
+            # QE + 금리 인하 경로 → 전통적 QE 환경
+            return {"type": "IAU_GLD_TIP", "rationale": "비제로 + QE + DFF 하락(인하 경로)", "exit_trigger": "QE 종료 또는 금리 인상"}
         else:
-            # QE인데 금리가 안 내려감 → 인플레이션 리스크 헤지
-            return {"type": "IAU_GLD_TIP", "rationale": "비제로 + QE + 10Y 상승 또는 불명확", "exit_trigger": "QE 종료 또는 금리 인상"}
+            # QE + 금리 인상/불명확 → 보수적으로 달러 보유
+            return {"type": "DOLLAR", "rationale": "비제로 + QE + DFF 상승 또는 불명확 (인상 리스크)", "exit_trigger": "DFF 하락 전환 또는 QE 종료"}
     if t10_trend == "DOWN":
         return {"type": "TLT", "rationale": "비제로 + QE_OFF + 10Y 하락추세", "exit_trigger": "QE 시작 또는 10Y 상승 전환"}
     return {"type": "DOLLAR", "rationale": "비제로 + QE_OFF + 10Y 상승 또는 불명확", "exit_trigger": "10Y 하락 전환 또는 QE 시작"}
@@ -348,6 +348,7 @@ def main():
     rate_env  = fred.get("rate_env",           existing_masam.get("rate_env", "NON_ZERO"))
     qe_active = fred.get("qe_active",          existing_masam.get("qe_active", False))
     t10_trend = fred.get("treasury_10y_trend", existing_masam.get("treasury_10y_trend", "UNKNOWN"))
+    dff_trend = fred.get("dff_trend",          "UNKNOWN")
 
     # 3. 마삼 상태 업데이트
     prev_mode = existing_masam.get("mode", "NORMAL")
@@ -374,8 +375,13 @@ def main():
     rank1_close = latest_close(rank1_hist)
     rank1_ath   = float(yf.Ticker(rank1_ticker).history(period="max", auto_adjust=True)["Close"].max())
 
-    # 위기 저점(1년 최저): 간단히 1y 저점 사용
-    ixic_crisis_low = float(ixic["Close"].min())
+    # 위기 저점: 마지막 마삼일 이후 최저 종가 (V자 반등 기준점)
+    last_masam_str = new_masam_state.get("last_masam_date")
+    if last_masam_str:
+        ixic_since = ixic.loc[last_masam_str:, "Close"]
+        ixic_crisis_low = float(ixic_since.min()) if not ixic_since.empty else ixic_close
+    else:
+        ixic_crisis_low = ixic_close
 
     # 6. 헤지
     print("▶ 헤지 가격 조회 중...")
@@ -387,9 +393,16 @@ def main():
     regime_data = calc_regime(gspc, ndx)
     print(f"  국면: {regime_data['regime']}")
 
+    # 7b. 시장 심리 (NDX vs MA200)
+    ndx_close  = regime_data["ndx"]["close"]
+    ndx_ma200  = regime_data["ndx"]["ma200"]
+    ndx_pct    = round((ndx_close - ndx_ma200) / ndx_ma200 * 100, 1) if ndx_ma200 else 0
+    market_sentiment = "위험선호" if ndx_pct > 2 else ("위험회피" if ndx_pct < -2 else "중립")
+    spy_ma200_label  = f"MA200 ({ndx_pct:+.1f}%)"
+
     # 8. 비중 / 헤지 타입
     target_alloc = calc_target_allocation(new_mode, rate_env)
-    hedge_alloc  = calc_hedge_type(rate_env, qe_active, t10_trend)
+    hedge_alloc  = calc_hedge_type(rate_env, qe_active, t10_trend, dff_trend)
     if new_mode == "NORMAL":
         hedge_alloc = {"type": "NONE", "rationale": "평상시 — 헤지 불필요", "exit_trigger": ""}
 
@@ -450,11 +463,13 @@ def main():
         "vix": vix_val,
     })
 
-    # masam_market.json — FRED 필드는 fetch_fred.py가 담당, VIX만 갱신
+    # masam_market.json — FRED 필드는 fetch_fred.py가 담당, VIX·시장심리만 갱신
     existing_fm = load_json(DATA / "masam_market.json")
     save_json(DATA / "masam_market.json", {
         **existing_fm,
         "vix": vix_val,
+        "market_sentiment": market_sentiment,
+        "spy_ma200_label": spy_ma200_label,
     })
 
     # hedge_prices.json

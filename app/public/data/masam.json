@@ -3,7 +3,7 @@
   "mode": "CRISIS",
   "rate_env": "NON_ZERO",
   "qe_active": true,
-  "treasury_10y_trend": "DOWN",
+  "treasury_10y_trend": "UNKNOWN",
   "masam": {
     "month_count": 1,
     "last_masam_date": "2026-06-05",
@@ -24,9 +24,9 @@
     "label": "말뚝 50% + 헤지 50%"
   },
   "hedge_allocation": {
-    "type": "IAU_GLD_TIP",
-    "rationale": "제로금리 또는 QE 시작",
-    "exit_trigger": "금리 인상 또는 QE 종료"
+    "type": "DOLLAR",
+    "rationale": "비제로 + QE + DFF 상승 또는 불명확 (인상 리스크)",
+    "exit_trigger": "DFF 하락 전환 또는 QE 종료"
   },
   "rebalancing": {
     "cash_raised_pct": 0,
@@ -71,9 +71,9 @@
     {
       "id": 5,
       "label": "2구간 V자(+10%)",
-      "met": true,
+      "met": false,
       "grade": "중",
-      "detail": "충족"
+      "detail": "+5.4% (필요: +10%)"
     },
     {
       "id": 6,

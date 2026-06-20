@@ -253,6 +253,7 @@
   @keyframes rt-ping{0%{transform:scale(1);opacity:.7}100%{transform:scale(2.4);opacity:0}}
   @keyframes trophy-shine{0%,100%{filter:brightness(1)}50%{filter:brightness(1.15) drop-shadow(0 0 3px #F7C94866)}}
   @keyframes trophy-float{0%,100%{transform:translateY(0)}50%{transform:translateY(-4px)}}
+  @keyframes hedge-slide{0%{transform:translateX(0)}100%{transform:translateX(var(--hedge-slide-dist,0px))}}
   .rt-ping{position:relative;display:inline-flex;align-items:center;justify-content:center;width:16px;height:16px;}
   .rt-ping::before{content:'';position:absolute;width:8px;height:8px;border-radius:50%;background:var(--blue);opacity:.4;animation:rt-ping 1.4s ease-out infinite;}
   .rt-ping .dot{width:8px;height:8px;border-radius:50%;background:var(--blue);position:relative;z-index:1;}
@@ -644,7 +645,7 @@
           </div>
         </div>
         <div class="idx-cell">
-          <div class="lbl">시장 심리</div>
+          <div class="lbl">나스닥 시장심리</div>
           <div style="margin-top:6px;display:flex;align-items:center;gap:6px;"><span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">위험선호</span><span style="font-size:12px;color:var(--txt-3);">SPY &gt; MA200</span></div>
         </div>
       </div>
@@ -682,29 +683,19 @@
         </div>
       </div>
 
-      <!-- PMI -->
-      <div class="idx-row">
-        <div class="idx-cell">
-          <div class="lbl">제조업 PMI</div>
-          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">48.7</span>
-            <span style="font-size:12px;color:var(--txt-3);">수축 (50 미만)</span>
-          </div>
-        </div>
-        <div class="idx-cell">
-          <div class="lbl">서비스업 PMI</div>
-          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">53.8</span>
-            <span style="font-size:12px;color:var(--txt-3);">확장 (50 이상)</span>
-          </div>
-        </div>
-      </div>
       <!-- 마삼룰 전용: 헤지·추가자금·올인체크 -->
       <div id="feed-masam">
       <div id="hedge-banner" class="ai-banner" style="margin-top:8px;" onclick="toast(document.getElementById('hedge-type-txt').textContent)">
         <div class="inner">
-          <div class="tag">→ 헤지 배치</div>
-          <div class="msg"><span id="hedge-type-txt">TLT</span><span id="hedge-rationale-txt" class="n" style="margin-left:6px;">비제로금리 + QE_OFF</span></div>
+          <div class="tag">✦ 헤지 권장</div>
+          <div style="display:flex;align-items:center;flex:1;min-width:0;gap:6px;">
+            <span id="hedge-type-txt" style="flex:none;font-weight:700;">TLT</span>
+            <div style="overflow:hidden;flex:1;min-width:0;">
+              <div id="hedge-scroll-inner" style="display:inline-flex;align-items:center;white-space:nowrap;">
+                <span id="hedge-rationale-txt" class="n" style="font-weight:400;flex:none;font-size:12.8px;">비제로금리 + QE_OFF</span>
+              </div>
+            </div>
+          </div>
           <div class="chev">›</div>
         </div>
       </div>
@@ -2159,6 +2150,24 @@ function initMaxPctUI(rateEnv) {
         const rationaleTxt = document.getElementById('hedge-rationale-txt');
         if (typeTxt) typeTxt.textContent = hedge.type;
         if (rationaleTxt) rationaleTxt.textContent = hedge.rationale || '';
+        // rationale만 스크롤 (type은 고정)
+        const scrollInner = document.getElementById('hedge-scroll-inner');
+        if (scrollInner) {
+          scrollInner.style.animation = 'none';
+          scrollInner.querySelectorAll('.hedge-dup').forEach(el => el.remove());
+          const spacer = document.createElement('span');
+          spacer.className = 'hedge-dup';
+          spacer.style.cssText = 'display:inline-block;width:48px;flex:none;';
+          const clone = document.createElement('span');
+          clone.className = 'hedge-dup n hedge-dup';
+          clone.style.cssText = 'font-weight:400;flex:none;font-size:12.8px;';
+          clone.textContent = hedge.rationale || '';
+          scrollInner.appendChild(spacer);
+          scrollInner.appendChild(clone);
+          scrollInner.style.setProperty('--hedge-slide-dist', '-50%');
+          void scrollInner.offsetWidth;
+          scrollInner.style.animation = 'hedge-slide 12s linear infinite';
+        }
       }
     }
 
@@ -2240,34 +2249,45 @@ function initMaxPctUI(rateEnv) {
       }
     }
 
-    // 8. 경제지표 탭: VIX / 금리환경 / DFF / DGS10
+    // 8. 경제지표 탭: VIX / 금리환경 / DFF / DGS10 / PMI
     const liveVix = live.live_market?.vix ?? null;
     const feedView = document.querySelector('.view[data-view="피드"]');
     if (feedView) {
       const idxRows = feedView.querySelectorAll('.idx-row');
-      // Row 0: VIX (live_market 우선, null=실패→--)
+      // Row 0: VIX | 시장 심리
       if (idxRows[0]) {
         const cells = idxRows[0].querySelectorAll('.idx-cell');
         const chip  = cells[0]?.querySelector('.chip');
         const numEl = cells[0]?.querySelector('span:not(.chip)');
         if (chip)  chip.textContent  = liveVix != null ? (liveVix < 20 ? '안정 구간' : liveVix < 30 ? '경계 구간' : '공포 구간') : '--';
         if (numEl) numEl.textContent = liveVix != null ? liveVix.toFixed(2) : '--';
+        // 시장 심리 (SPX vs MA200)
+        if (mkt.market_sentiment) {
+          const sentChip = cells[1]?.querySelector('.chip');
+          const sentSub  = cells[1]?.querySelector('span:not(.chip)');
+          if (sentChip) sentChip.textContent = mkt.market_sentiment;
+          if (sentSub && mkt.spy_ma200_label) sentSub.textContent = mkt.spy_ma200_label;
+        }
       }
-      // Row 1: 금리환경 / DFF
+      // Row 1: 금리환경 | DFF
       if (idxRows[1] && mkt.dff != null) {
-        const cells = idxRows[1].querySelectorAll('.idx-cell');
+        const cells    = idxRows[1].querySelectorAll('.idx-cell');
         const rateChip = cells[0]?.querySelector('.chip');
         const dffChip  = cells[1]?.querySelector('.chip');
+        const dffSub   = cells[1]?.querySelector('span:not(.chip)');
         if (rateChip) rateChip.textContent = mkt.dff > 0.25 ? '비제로금리' : '제로금리';
         if (dffChip)  dffChip.textContent  = mkt.dff.toFixed(2) + '%';
+        if (dffSub && mkt.dff_change_text)  dffSub.textContent = '전월 ' + mkt.dff_change_text;
       }
-      // Row 2: 연준총자산 / DGS10
+      // Row 2: 연준 총자산 | DGS10
       if (idxRows[2] && mkt.treasury_10y != null) {
-        const cells    = idxRows[2].querySelectorAll('.idx-cell');
-        const subEl    = cells[0]?.querySelector('span:not(.chip)');
-        const dgsChip  = cells[1]?.querySelector('.chip');
-        if (subEl)   subEl.textContent  = mkt.qe_active ? 'QE_ON · 확장 중' : 'QE_OFF · 축소 중';
-        if (dgsChip) dgsChip.textContent = mkt.treasury_10y.toFixed(2) + '%';
+        const cells   = idxRows[2].querySelectorAll('.idx-cell');
+        const walclChip = cells[0]?.querySelector('.chip');
+        const subEl   = cells[0]?.querySelector('span:not(.chip)');
+        const dgsChip = cells[1]?.querySelector('.chip');
+        if (walclChip && mkt.walcl_trillion != null) walclChip.textContent = '$' + mkt.walcl_trillion.toFixed(2) + 'T';
+        if (subEl)    subEl.textContent  = mkt.qe_active ? 'QE_ON · 확장 중' : 'QE_OFF · 축소 중';
+        if (dgsChip)  dgsChip.textContent = mkt.treasury_10y.toFixed(2) + '%';
       }
     }
 

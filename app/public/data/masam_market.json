@@ -1,12 +1,17 @@
 {
-  "as_of": "2026-06-19",
+  "as_of": "2026-06-20",
   "rate_env": "NON_ZERO",
   "dff": 3.63,
+  "dff_change_text": "동결",
   "qe_active": true,
   "walcl_trend": "UP",
+  "walcl_trillion": 6.74,
   "treasury_10y": 4.49,
-  "treasury_10y_trend": "DOWN",
+  "treasury_10y_trend": "UNKNOWN",
+  "dff_trend": "UNKNOWN",
   "vix": 16.4,
   "fear_greed": 62,
-  "usd_krw": 1315.5
+  "usd_krw": 1315.5,
+  "market_sentiment": "위험선호",
+  "spy_ma200_label": "MA200 (+17.7%)"
 }

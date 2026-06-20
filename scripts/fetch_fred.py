@@ -35,6 +35,20 @@ def fetch(series: str, limit: int = 60) -> list:
     return data["observations"]
 
 
+def try_fetch(series: str, limit: int = 3) -> list:
+    """실패 시 sys.exit 없이 빈 리스트 반환."""
+    url = (
+        f"{BASE}?series_id={series}&api_key={API_KEY}"
+        f"&file_type=json&sort_order=desc&limit={limit}"
+    )
+    try:
+        with urllib.request.urlopen(url, timeout=10) as r:
+            data = json.loads(r.read())
+        return data.get("observations", [])
+    except Exception:
+        return []
+
+
 def latest_value(obs: list) -> Optional[float]:
     for o in obs:
         try:
@@ -42,6 +56,26 @@ def latest_value(obs: list) -> Optional[float]:
         except (ValueError, KeyError):
             continue
     return None
+
+
+def dff_monthly_change(obs: list, n: int = 22) -> str:
+    """DFF obs(내림차순). 최신 vs ~22거래일 전 비교 → 인상/인하/동결."""
+    vals = []
+    for o in obs:
+        try:
+            vals.append(float(o["value"]))
+        except (ValueError, KeyError):
+            continue
+    if len(vals) < 2:
+        return "동결"
+    recent = vals[0]
+    old = vals[min(n, len(vals) - 1)]
+    diff = recent - old
+    if diff < -0.04:
+        return "인하"
+    elif diff > 0.04:
+        return "인상"
+    return "동결"
 
 
 def slope_sign(obs: list, n: int = 20, threshold_bp: float = 20.0) -> str:
@@ -68,9 +102,9 @@ def slope_sign(obs: list, n: int = 20, threshold_bp: float = 20.0) -> str:
 def main():
     print("FRED 데이터 수집 중...")
 
-    dff_obs = fetch("DFF", 10)
-    dgs_obs = fetch("DGS10", 30)
-    walcl_obs = fetch("WALCL", 8)
+    dff_obs   = fetch("DFF",   30)
+    dgs_obs   = fetch("DGS10", 30)
+    walcl_obs = fetch("WALCL",  8)
 
     dff = latest_value(dff_obs)
     if dff is None:
@@ -100,8 +134,14 @@ def main():
         qe_active = False
         walcl_trend = "UNKNOWN"
 
-    rate_env = "ZERO" if dff <= 0.25 else "NON_ZERO"
-    t10_trend = slope_sign(dgs_obs, 20)
+    # WALCL 최신값 (단위: 백만 달러 → 조 달러)
+    walcl_trillion = round(walcl_vals[0] / 1_000_000, 2) if walcl_vals else None
+
+    rate_env      = "ZERO" if dff <= 0.25 else "NON_ZERO"
+    t10_trend     = slope_sign(dgs_obs, 20)
+    dff_trend     = slope_sign(dff_obs, 20)
+    dff_chg_text  = dff_monthly_change(dff_obs)
+
 
     # 기존 파일에서 표시용 필드(vix, fear_greed, usd_krw) 유지
     existing = {}
@@ -115,13 +155,19 @@ def main():
         "as_of": datetime.utcnow().strftime("%Y-%m-%d"),
         "rate_env": rate_env,
         "dff": round(dff, 4),
+        "dff_change_text": dff_chg_text,
         "qe_active": qe_active,
         "walcl_trend": walcl_trend,
+        "walcl_trillion": walcl_trillion,
         "treasury_10y": round(dgs10, 4),
         "treasury_10y_trend": t10_trend,
+        "dff_trend": dff_trend,
+
         "vix": existing.get("vix"),
         "fear_greed": existing.get("fear_greed"),
         "usd_krw": existing.get("usd_krw"),
+        "market_sentiment": existing.get("market_sentiment"),
+        "spy_ma200_label": existing.get("spy_ma200_label"),
     }
 
     OUT.write_text(json.dumps(result, ensure_ascii=False, indent=2))
