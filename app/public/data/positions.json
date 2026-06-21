@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-21",
+  "as_of": "2026-06-22",
   "regime": "GREEN",
   "items": [
     {
@@ -17,8 +17,8 @@
       "trailing_stop_line": 188.01,
       "horizontal_support": 110.0,
       "cooldown_until": null,
-      "next_action": "HOLD",
-      "reason": "2차 보유 중",
+      "next_action": "BUY_1",
+      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.37)",
       "metrics": {
         "price": 210.69,
         "ma50": 209.12,
@@ -42,7 +42,7 @@
       "domain": "meta.com",
       "si": "meta/1877f2",
       "flag": "🇺🇸",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 4,
       "avg_price": null,
       "weight": 0,
@@ -51,8 +51,8 @@
       "trailing_stop_line": 629.94,
       "horizontal_support": 580.0,
       "cooldown_until": null,
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (577.22 ≤ 629.94)",
+      "next_action": "HOLD",
+      "reason": "REMOVED 상태 유지",
       "metrics": {
         "price": 577.22,
         "ma50": 621.37,
