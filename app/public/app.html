@@ -1030,11 +1030,6 @@
         _renderMomtPage();
       }
 
-      const _FAV_ACTION_SIG = {
-        BUY_1:'추세 돌파', BUY_2:'눌림 매수', BUY_3:'지지 방어',
-        TRIM_HALF:'비중 축소', EXIT:'전량 매도',
-      };
-
       function togglePosDetail(sym) {
         const el = document.getElementById('pos-detail-' + sym);
         if (!el) return;
@@ -1058,7 +1053,7 @@
         const domain = mcapInfo.domain || (p.symbol.toLowerCase() + '.com');
         const si = mcapInfo.si || null;
         const imgSrc = si ? `https://cdn.simpleicons.org/${si}` : `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=64`;
-        const signalKey = p.status === 'REMOVED' ? '추세 탈락' : (_FAV_ACTION_SIG[p.next_action] || '조건 대기');
+        const signalKey = mcapInfo.signal || '조건 대기';
         const badge = SIGNAL_TO_ACTION[signalKey] || { label: signalKey, bg:'rgba(120,120,140,.15)', color:'#7a7a8c' };
         const hasPos = p.avg_price != null;
         const weightPct = Math.round((p.weight || 0) * 100);
@@ -2025,8 +2020,25 @@ function initMaxPctUI(rateEnv) {
       BUY_1:'추세 돌파', BUY_2:'눌림 매수', BUY_3:'지지 방어',
       TRIM_HALF:'비중 축소', EXIT:'전량 매도',
     };
+    // momtFavSet 먼저 복원 — itemSignal()에서 하트 여부를 참조하기 위해
+    momtFavSet.clear();
+    try {
+      JSON.parse(localStorage.getItem('momtFavSet') || '[]').forEach(function(s) {
+        momtFavSet.add(s);
+      });
+    } catch(e) {}
+
+    // 하트 = 보유 가정: 하트 종목은 트레일링 스탑 기준으로 매도 신호 표시
     function itemSignal(item) {
       if (item.status === 'REMOVED') return '추세 탈락';
+      if (momtFavSet.has(item.symbol)) {
+        const price = item.metrics && item.metrics.price;
+        const stop  = item.trailing_stop_line;
+        const ma50  = item.metrics && item.metrics.ma50;
+        if (price && stop && price <= stop) {
+          return (ma50 && price < ma50) ? '전량 매도' : '비중 축소';
+        }
+      }
       return _ACTION_SIG[item.next_action] || '조건 대기';
     }
     MCAP2.length = 0;
@@ -2047,13 +2059,6 @@ function initMaxPctUI(rateEnv) {
     });
     // 탑픽 점수 내림차순 정렬
     MCAP2.sort(function(a, b) { return b.score - a.score; });
-    // momtFavSet: localStorage에서 복원 (사용자가 직접 하트로 관리)
-    momtFavSet.clear();
-    try {
-      JSON.parse(localStorage.getItem('momtFavSet') || '[]').forEach(function(s) {
-        momtFavSet.add(s);
-      });
-    } catch(e) {}
     if (typeof renderMomtList === 'function') renderMomtList(window._momtFilter || '전체');
     if (typeof renderFavList  === 'function') renderFavList(window._favTabMode);
     // 기준일 전체 업데이트 → masam.as_of 기준 (EOD 배치 공통)
