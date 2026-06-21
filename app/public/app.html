@@ -2028,10 +2028,15 @@ function initMaxPctUI(rateEnv) {
       });
     } catch(e) {}
 
-    // 하트 = 보유 가정: 하트 종목은 트레일링 스탑 기준으로 매도 신호 표시
+    // 하트 = 보유 가정: 하트 종목만 트레일링 스탑·추세 탈락 신호 표시
     function itemSignal(item) {
-      if (item.status === 'REMOVED') return '추세 탈락';
-      if (momtFavSet.has(item.symbol)) {
+      const isHearted = momtFavSet.has(item.symbol);
+      if (item.status === 'REMOVED') {
+        // 비하트 REMOVED = 단순 진입 조건 미충족 → 조건 대기
+        // 하트 REMOVED = MA50 아래 지속으로 universe 탈락 → 추세 탈락
+        return isHearted ? '추세 탈락' : '조건 대기';
+      }
+      if (isHearted) {
         const price = item.metrics && item.metrics.price;
         const stop  = item.trailing_stop_line;
         const ma50  = item.metrics && item.metrics.ma50;
