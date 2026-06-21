@@ -91,7 +91,7 @@
 | FRED `DFF`·`DGS10`·`WALCL` | FRED API | 금리환경·10Y 추세·QE 판정 | 코어 (헤지 완전자동) |
 | VIX `^VIX` | yfinance | 경제지표 **표시** + 부록 Z 옵션 | 표시용 |
 | Fear & Greed | CNN 비공식 API | 경제지표 **표시** + 부록 Z 옵션 | 표시용·캐시 24h·실패 시 N/A |
-| PMI(제조·서비스) | 무료 소스(S&P Global 등) | 경제지표 **표시** | 표시용·소스 확보 시·없으면 N/A |
+| ~~PMI(제조·서비스)~~ | ~~무료 자동 소스 없음~~ | ~~제거됨~~ | 자동화 불가로 경제지표 탭에서 제거 |
 | 환율(USD/KRW) | 무료 소스 | 표시(시총·관심 화면 롤) | 표시용 |
 
 > **제거(v1 대비)**: 섹터 ETF, S&P500+NDX RS percentile 참조유니버스 — 모멘텀이 RS percentile을 더 이상 쓰지 않음.
@@ -127,7 +127,7 @@
 ```
 [EOD 배치 · 미 장마감 후 1일 1회]
 1. EOD 수집: ^IXIC·^GSPC·^NDX·^VIX + 큐레이트 mcap + 탑픽 OHLCV·펀더 + TLT·IAU·GLD·TIP
-            + FRED(DFF·DGS10·WALCL) + (표시)PMI·F&G·환율
+            + FRED(DFF·DGS10·WALCL) + (표시)F&G·환율
 2. 공통 지표: MA50/MA200 · ATR14 · 수평지지 · 금리환경 · QE · 10Y 추세
 3-A. 마삼 엔진 평가 → masam.json / mcap_daily.json / masam_market.json / hedge_prices.json
 3-B. 모멘텀 엔진 평가 → positions.json / indicators.json / actions.json / transitions.json / momentum_market.json
@@ -163,7 +163,7 @@
 **위기(말뚝박기)**
 - -3% 당일: [수익 중] 말뚝 제외 매도 / [손실 중] 전량 매도 후 말뚝 재진입.
 - 비제로: ~50% 말뚝, -5%마다 주식10%+TLT10% / 제로: ~25% 말뚝, -2.5%마다 주식10%+IAU10%(금선물 제재 시 IAU 대신 현금10%).
-- 헤지(완전자동): QE 이전·비제로 → TLT / 제로·QE 시작 → IAU(GLD):TIP 1:1 / 10Y 하락추세 → TLT / 상승추세·미상 → 달러.
+- 헤지(완전자동): 제로금리 → IAU_GLD_TIP / 비제로+QE+DFF하락(인하경로) → IAU_GLD_TIP / 비제로+QE+DFF상승·불명확(인상리스크) → DOLLAR / 비제로+QE_OFF+10Y하락 → TLT / 비제로+QE_OFF+10Y상승·불명확 → DOLLAR. **임계값 20bp**(±20bp 미만 = UNKNOWN → DOLLAR).
 - 위기 종료 = 마지막 마삼 +1개월+1일(또는 조기 트리거).
 
 **공황 (4회+)**
@@ -175,6 +175,7 @@
 ### 6-3. 올인 트리거 6종 (원본: 단일 신호 충족 = 올인)
 
 ① 한달+1일 무마삼(공황 시 2달+1일) · ② 나스닥 8거래일 연속 상승 · ③ 1등주 전고 돌파 · ④ 나스닥 전고 돌파 · ⑤ 2구간 V자 반등(비제로 +10% / 제로 +5%) · ⑥ 긴급 올인(고점 대비 6구간 = 비제로 -30% / 제로 -15%).
+- **⑤ V자 반등 기준점**: 마지막 마삼 발생일 이후 최저 종가(`ixic_crisis_low`). 1년 최저 사용 금지 — 이전 하락장 저점이 기준이 되면 오판 발생.
 - 구간 그리드: 제로 2.5% / 비제로 5%(상승·하락 동일 자).
 - 추가 자금 투입: RSI14 ≤ 50 AND MFI14 ≤ 50(1등주 기준) 동시 충족 시. 2·9월은 조정의 달.
 
@@ -250,7 +251,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 | `masam.json` | 3-모드 상태·비중·헤지·트리거 거리·올인 체크리스트·알림 | A |
 | `mcap_daily.json` | 큐레이트 리스트 mcap·1등주 판정·격차·역전 | A |
 | `hedge_prices.json` | TLT·IAU·GLD·TIP 일봉 | A |
-| `masam_market.json` | 금리환경·QE·10Y 추세·(표시)VIX·F&G·PMI·환율 | A |
+| `masam_market.json` | 금리환경·QE·10Y 추세·연준총자산(T)·DFF등락·나스닥시장심리·(표시)VIX·F&G·환율 | A |
 | `positions.json` | 모멘텀 포지션(상태·평단·비중·트랜치·스탑·수평지지·쿨다운) | B |
 | `indicators.json` | 종목별 MA50/200·ATR·atrPct·recentHigh·수평지지 | B |
 | `actions.json` | 엔진 출력 액션(HOLD/BUY_1~3/TRIM_HALF/EXIT) | B |
@@ -292,6 +293,32 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
   "alerts": []
 }
 ```
+
+### masam_market.json 핵심 필드
+
+```json
+{
+  "as_of": "YYYY-MM-DD",
+  "rate_env": "ZERO | NON_ZERO",
+  "dff": 3.63,
+  "dff_change_text": "인상 | 인하 | 동결",
+  "dff_trend": "UP | DOWN | UNKNOWN",
+  "qe_active": true,
+  "walcl_trend": "UP | DOWN | UNKNOWN",
+  "walcl_trillion": 6.74,
+  "treasury_10y": 4.49,
+  "treasury_10y_trend": "UP | DOWN | UNKNOWN",
+  "market_sentiment": "위험선호 | 중립 | 위험회피",
+  "spy_ma200_label": "MA200 (+17.7%)",
+  "vix": 16.4,
+  "fear_greed": 62,
+  "usd_krw": 1315.5
+}
+```
+- `dff_change_text`: DFF 22거래일 전 대비 ±4bp 초과 시 인상/인하, 이하 동결 (fetch_fred.py)
+- `walcl_trillion`: WALCL 최신값 ÷ 1,000,000 (단위: 조 달러) (fetch_fred.py)
+- `market_sentiment` / `spy_ma200_label`: NDX vs MA200 기준, ±2% 임계 (fetch_eod.py)
+- `dff_trend` / `treasury_10y_trend`: 20일 기울기, ±20bp 임계 (fetch_fred.py)
 
 ### positions.json 핵심 필드 (모멘텀)
 
@@ -347,7 +374,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 |---|---|
 | 발견(현재 상태) | 지수 롤(나스닥/S&P/다우) · 국면칩(리밸런싱/말뚝박기/V자반등/올인/마삼해제) · 모드 배지(NORMAL/CRISIS/PANIC) + 이번 달 마삼 N회·해제 D-day · 나스닥 최고점 대비 %·최근 마삼일 · 목표 비중 배너 · **1등주 주가 구간**(드롭다운 1등주/QQQ · 탭 최고점/직전고점/직접입력 · -25%/-50% · 말뚝 구간 테이블) |
 | 관심(시가총액 순위) | 큐레이트 글로벌 시총 순위(1등주 트로피·**1등주 대비 격차%**) · 롤(환율/VIX/공포탐욕) |
-| 경제지표(시장환경·표시) | 금리환경·DFF·연준총자산(QE)·**10Y 추세**·헤지 배치 배너 · 추가 자금(RSI14/MFI14, 1등주/QQQ 토글) · **올인 체크리스트 6종** · (표시)Fear&Greed·VIX·PMI |
+| 경제지표(시장환경·표시) | 금리환경·DFF(전월 인상/인하/동결)·연준총자산($xT·QE)·**10Y 추세**·**나스닥 시장심리(NDX vs MA200)**·**✦ 헤지 권장 배너(슬라이드)** · 추가 자금(RSI14/MFI14, 1등주/QQQ 토글) · **올인 체크리스트 6종** · (표시)Fear&Greed·VIX |
 | 설정 | 리밸런싱 한도(25%/50%) · **부록 Z 옵션 토글**(충돌 옵션 경고 배너) |
 
 PANIC 완전 홀드 시 배너: "공황 올인 — 최고점 경신까지 리밸런싱·말뚝 중단".
