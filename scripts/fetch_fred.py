@@ -114,6 +114,21 @@ def main():
     if dgs10 is None:
         sys.exit("DGS10 유효값 없음")
 
+    # 전일 DGS10 (두 번째 유효값)
+    dgs10_prev: Optional[float] = None
+    _found_first = False
+    for o in dgs_obs:
+        try:
+            v = float(o["value"])
+            if not _found_first:
+                _found_first = True
+            else:
+                dgs10_prev = v
+                break
+        except (ValueError, KeyError):
+            continue
+    treasury_10y_change = round(dgs10 - dgs10_prev, 4) if dgs10_prev is not None else None
+
     # QE: WALCL 최근 4주 평균 vs 이전 4주 평균
     walcl_vals = []
     for o in walcl_obs:
@@ -160,6 +175,8 @@ def main():
         "walcl_trend": walcl_trend,
         "walcl_trillion": walcl_trillion,
         "treasury_10y": round(dgs10, 4),
+        "treasury_10y_prev": round(dgs10_prev, 4) if dgs10_prev is not None else None,
+        "treasury_10y_change": treasury_10y_change,
         "treasury_10y_trend": t10_trend,
         "dff_trend": dff_trend,
 

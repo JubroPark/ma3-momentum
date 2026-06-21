@@ -129,7 +129,7 @@
     border:2px solid var(--bg);background:#fff;display:flex;align-items:center;justify-content:center;font-size:14px;overflow:hidden;}
   .rank .info{flex:1;min-width:0;}
   .rank .info .nm{font-size:14.5px;font-weight:600;letter-spacing:-0.3px;}
-  .rank .info .pr{font-size:13px;color:var(--txt-2);margin-top:3.4px;display:flex;gap:7.6px;align-items:baseline;}
+  .rank .info .pr{font-size:12px;color:var(--txt-2);margin-top:3.4px;display:flex;gap:7.6px;align-items:baseline;}
   .rank .heart{width:23.8px;height:23.8px;flex:0 0 23.8px;cursor:pointer;display:flex;align-items:center;justify-content:center;}
   .rank .heart svg{width:22.1px;height:22.1px;transition:transform .18s;}
   .rank .heart:active svg{transform:scale(1.3);}
@@ -306,7 +306,7 @@
   <div class="view" data-view="증권">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 <span class="js-kijunil">2025.06.14</span></span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title"><h2>토스증권</h2><div class="idx">VIX <span class="v down">19.06</span><span class="down">-1.9%</span></div></div>
       <div class="promo" id="promo">
@@ -346,7 +346,7 @@
   <div class="view" data-view="관심">
     <div class="body" style="display:flex;flex-direction:column">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 <span class="js-kijunil">2025.06.14</span></span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title"><h2>시가총액 순위</h2>
         <div class="idx-roll-wrap" id="mcap-roll">
@@ -362,8 +362,8 @@
           </div>
           <div class="idx-roll-item">
             <span class="idx-lbl">공포탐욕</span>
-            <span class="v up">62</span>
-            <span class="up">탐욕 구간</span>
+            <span class="v">--</span>
+            <span>--</span>
           </div>
         </div>
       </div>
@@ -387,7 +387,7 @@
       function logoFallback(img, domain, initial) {
         if (!img.dataset.tried && domain) {
           img.dataset.tried = '1';
-          img.src = 'https://logo.clearbit.com/' + domain;
+          img.src = 'https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://' + domain + '&size=64';
         } else {
           img.style.display = 'none';
           const s = document.createElement('span');
@@ -472,7 +472,7 @@
   <div class="view active" data-view="발견">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 <span class="js-kijunil">2025.06.14</span></span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title">
         <h2>현재 상태</h2>
@@ -583,7 +583,7 @@
   <div class="view" data-view="피드">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 <span class="js-kijunil">2025.06.14</span></span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title">
         <h2>경제지표</h2>
@@ -593,12 +593,12 @@
       <div style="margin:10px 17px 0;background:var(--surface);border-radius:15.3px;padding:18px 17px;">
         <div style="font-size:14px;font-weight:700;color:var(--txt-2);margin-bottom:4px;">Fear &amp; Greed Index</div>
         <div style="display:flex;align-items:baseline;gap:8px;">
-          <span style="font-size:31px;font-weight:800;color:var(--amber);">62</span>
-          <span style="font-size:14px;font-weight:600;color:var(--txt-2);">탐욕 구간</span>
+          <span style="font-size:31px;font-weight:800;color:var(--amber);">--</span>
+          <span style="font-size:14px;font-weight:600;color:var(--txt-2);">--</span>
         </div>
         <div class="bar">
-          <i class="anim" style="width:62%;background:linear-gradient(90deg,#F04452 0%,#FF8C00 25%,#F5C842 50%,#7CB342 75%,#2BC4B6 100%);background-size:161% 100%;"></i>
-          <div class="mk anim" style="left:62%;"></div>
+          <i class="anim" style="width:0%;background:linear-gradient(90deg,#F04452 0%,#FF8C00 25%,#F5C842 50%,#7CB342 75%,#2BC4B6 100%);background-size:100% 100%;"></i>
+          <div class="mk anim" style="left:0%;"></div>
         </div>
         <div style="display:flex;justify-content:space-between;font-size:11.5px;color:var(--txt-3);">
           <span>극도 공포</span><span>중립</span><span>극도 탐욕</span>
@@ -812,7 +812,7 @@
   <div class="view" data-view="관심종목">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st" onclick="stratToggle(this)">마삼룰</button><button class="st on" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 <span class="js-kijunil">2025.06.14</span></span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title" style="margin-top:6px"><h2>종목 관리</h2>
         <div class="idx-roll-wrap" id="fav-roll">
@@ -828,8 +828,8 @@
           </div>
           <div class="idx-roll-item">
             <span class="idx-lbl">공포탐욕</span>
-            <span class="v up">62</span>
-            <span class="up">탐욕</span>
+            <span class="v">--</span>
+            <span>--</span>
           </div>
         </div>
       </div>
@@ -859,7 +859,7 @@
   <div class="view" data-view="모멘텀">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st" onclick="stratToggle(this)">마삼룰</button><button class="st on" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 <span class="js-kijunil">2025.06.14</span></span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title">
         <h2>종목 선정</h2>
@@ -917,21 +917,8 @@
       </div>
       <div id="mcap-list-momt" style="margin-top:10px;"></div>
       <script>
-      const MCAP2 = [
-        { rank:1,  ticker:'NVDA',  name:'엔비디아',      domain:'nvidia.com',   si:'nvidia/76b900', flag:'🇺🇸', rs:94, vol:'2.4x', score:91, signal:'추세 돌파',   weight:30, gap50:+5.2 },
-        { rank:2,  ticker:'TSLA',  name:'테슬라',        domain:'tesla.com',    si:'tesla/cc0000',  flag:'🇺🇸', rs:91, vol:'3.1x', score:89, signal:'추세 돌파',   weight:25, gap50:+3.8 },
-        { rank:3,  ticker:'TSM',   name:'TSMC',          domain:'tsmc.com',     si:null,            flag:'🇹🇼', rs:86, vol:'2.1x', score:88, signal:'조건 대기',   weight:20, gap50:+1.4 },
-        { rank:4,  ticker:'META',  name:'메타',           domain:'meta.com',     si:'meta/1877f2',   flag:'🇺🇸', rs:88, vol:'1.3x', score:85, signal:'추세 돌파',   weight:20, gap50:+4.6 },
-        { rank:5,  ticker:'AMZN',  name:'아마존',         domain:'amazon.com',   si:'amazon/ff9900', flag:'🇺🇸', rs:83, vol:'1.7x', score:81, signal:'눌림 매수',   weight:15, gap50:+2.1 },
-        { rank:6,  ticker:'AVGO',  name:'브로드컴',       domain:'broadcom.com', si:null,            flag:'🇺🇸', rs:79, vol:'1.2x', score:74, signal:'지지 방어', weight:15, gap50:+0.8 },
-        { rank:7,  ticker:'MSFT',  name:'마이크로소프트', domain:'microsoft.com',si:'microsoft',     flag:'🇺🇸', rs:78, vol:'0.8x', score:72, signal:'비중 축소',   weight:10, gap50:+1.1 },
-        { rank:8,  ticker:'LLY',   name:'일라이 릴리',    domain:'lilly.com',    si:null,            flag:'🇺🇸', rs:74, vol:'1.5x', score:71, signal:'조건 대기',   weight:10, gap50:+1.9 },
-        { rank:9,  ticker:'AAPL',  name:'애플',           domain:'apple.com',    si:'apple/ffffff',  flag:'🇺🇸', rs:71, vol:'1.1x', score:68, signal:'지지 방어', weight:10, gap50:+0.5 },
-        { rank:10, ticker:'V',     name:'비자',           domain:'visa.com',     si:'visa/ffffff',   flag:'🇺🇸', rs:67, vol:'1.0x', score:63, signal:'조건 대기',   weight:10, gap50:+2.7 },
-        { rank:11, ticker:'GOOGL', name:'알파벳',         domain:'google.com',   si:'google',        flag:'🇺🇸', rs:65, vol:'0.9x', score:60, signal:'전량 매도',   weight:0,  gap50:-1.8 },
-        { rank:12, ticker:'UNH',   name:'유나이티드헬스', domain:'unitedhealthgroup.com', si:null,   flag:'🇺🇸', rs:60, vol:'1.1x', score:55, signal:'추세 탈락',   weight:0,  gap50:-3.2 },
-      ];
-      const momtFavSet = new Set(['NVDA','TSM','AVGO','GOOGL']);
+      let MCAP2 = [];
+      let momtFavSet = new Set();
 
       function momtHeartFill(ticker){ return momtFavSet.has(ticker) ? '#E84C5A' : '#3a3a42'; }
 
@@ -989,22 +976,21 @@
           <div class="no">${no}</div>
           <div class="ava" style="background:transparent;width:36px;height:36px;flex:0 0 36px;overflow:visible;">
             <div style="width:36px;height:36px;border-radius:50%;background:#26272c;overflow:hidden;display:flex;align-items:center;justify-content:center;">
-              <img src="${d.si ? `https://cdn.simpleicons.org/${d.si}` : `https://logo.clearbit.com/${d.domain}`}" style="width:22px;height:22px;object-fit:contain;"
+              <img src="${d.si ? `https://cdn.simpleicons.org/${d.si}` : `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${d.domain}&size=64`}" style="width:22px;height:22px;object-fit:contain;"
                 onerror="logoFallback(this,'${d.domain}','${d.ticker[0]}')">
             </div>
           </div>
           <div class="info">
             <div class="nm">${d.name} <span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker}</span></div>
-            <div class="pr"><span style="font-size:11px;font-weight:700;padding:2px 7px;border-radius:5px;background:${badge.bg};color:${badge.color};">${badge.label}</span><span style="color:#f4f5f7;">RS ${d.rs}</span><span style="color:var(--txt-3);">${watchlist ? `MA50 ${d.gap50>=0?'+':''}${d.gap50}%` : `거래량 ${d.vol}`}</span></div>
+            <div class="pr"><span style="color:#f4f5f7;">${d.score}점</span><span style="color:var(--txt-3);">MA50 ${d.gap50>=0?'+':''}${d.gap50}%</span>${d.vol != null ? `<span style="color:var(--txt-3);">거래량 ${d.vol}x</span>` : ''}</div>
           </div>
           <div style="text-align:right;flex:none;">
-            <div style="display:flex;align-items:center;gap:12px;">
+            <div style="display:flex;align-items:center;gap:8px;">
               <div style="text-align:right;">
                 ${watchlist
                   ? `<div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">추천 비중</div>
                      <div style="display:flex;align-items:baseline;gap:2px;"><span class="fav-weight-num" style="font-size:17.5px;font-weight:700;color:#f4f5f7;" data-weight="${d.weight}">${d.weight}</span><span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:1px;">%</span></div>`
-                  : `<div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">MA50</div>
-                     <div style="font-size:15px;font-weight:700;color:#f4f5f7;">${d.gap50>=0?'+':''}${d.gap50}<span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:3px;">%</span></div>`
+                  : `<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:${badge.bg};color:${badge.color};white-space:nowrap;">${badge.label}</span>`
                 }
               </div>
               <button data-ticker="${d.ticker}" onclick="toggleMomtHeart(this,event)" style="background:none;border:none;cursor:pointer;padding:4px;display:flex;align-items:center;justify-content:center;">
@@ -1016,18 +1002,37 @@
         </div>`;
       }
 
+      const MOMT_PAGE_SIZE = 15;
+      let _momtShown = MOMT_PAGE_SIZE;
+
       function renderMomtList(filter) {
+        window._momtFilter = filter;
+        _momtShown = MOMT_PAGE_SIZE;
+        _renderMomtPage();
+      }
+
+      function _renderMomtPage() {
         const el2 = document.getElementById('mcap-list-momt');
-        const more2 = `<div style="border-top:1px solid var(--line);"></div><div class="detail-more" style="font-weight:400;" onclick="toast('전체 목록')">더 보기 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>`;
-        const list = filter === '전체' ? MCAP2 : MCAP2.filter(d => d.signal === filter);
-        el2.innerHTML = list.map((d, i) => momtRankCard(d, i, false)).join('') + more2;
+        const list = (window._momtFilter === '전체' || !window._momtFilter)
+          ? MCAP2 : MCAP2.filter(d => d.signal === window._momtFilter);
+        const visible = list.slice(0, _momtShown);
+        const hasMore = list.length > _momtShown;
+        const moreBtn = hasMore
+          ? `<div style="border-top:1px solid var(--line);"></div><div class="detail-more" style="font-weight:400;" onclick="_momtLoadMore()">더 보기 <svg viewBox="0 0 24 24" fill="none" stroke-width="2"><path d="M9 6l6 6-6 6"/></svg></div>`
+          : '';
+        el2.innerHTML = visible.map((d, i) => momtRankCard(d, i, false)).join('') + moreBtn;
         twemoji && twemoji.parse(el2, {folder:'svg',ext:'.svg'});
         if (window.Iconify) Iconify.scan(el2);
       }
 
-      const STATUS_TO_SIGNAL = {
-        WATCH:'조건 대기', ENTRY_1:'추세 돌파', ENTRY_2:'눌림 매수',
-        ENTRY_3:'지지 방어', TRIM:'비중 축소', EXIT:'전량 매도', REMOVED:'추세 탈락',
+      function _momtLoadMore() {
+        _momtShown += MOMT_PAGE_SIZE;
+        _renderMomtPage();
+      }
+
+      const _FAV_ACTION_SIG = {
+        BUY_1:'추세 돌파', BUY_2:'눌림 매수', BUY_3:'지지 방어',
+        TRIM_HALF:'비중 축소', EXIT:'전량 매도',
       };
 
       function togglePosDetail(sym) {
@@ -1052,8 +1057,8 @@
         const mcapInfo = MCAP2.find(d => d.ticker === p.symbol) || {};
         const domain = mcapInfo.domain || (p.symbol.toLowerCase() + '.com');
         const si = mcapInfo.si || null;
-        const imgSrc = si ? `https://cdn.simpleicons.org/${si}` : `https://logo.clearbit.com/${domain}`;
-        const signalKey = STATUS_TO_SIGNAL[p.status] || p.status;
+        const imgSrc = si ? `https://cdn.simpleicons.org/${si}` : `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${domain}&size=64`;
+        const signalKey = p.status === 'REMOVED' ? '추세 탈락' : (_FAV_ACTION_SIG[p.next_action] || '조건 대기');
         const badge = SIGNAL_TO_ACTION[signalKey] || { label: signalKey, bg:'rgba(120,120,140,.15)', color:'#7a7a8c' };
         const hasPos = p.avg_price != null;
         const weightPct = Math.round((p.weight || 0) * 100);
@@ -1168,6 +1173,7 @@
           svg.setAttribute('fill', c);
           svg.setAttribute('stroke', c);
         });
+        localStorage.setItem('momtFavSet', JSON.stringify([...momtFavSet]));
         renderFavList();
       };
 
@@ -1204,7 +1210,7 @@
   <div class="view" data-view="설정">
     <div class="body">
       <div class="topbar"><div class="left"><div class="strat-tog"><button class="st on" onclick="stratToggle(this)">마삼룰</button><button class="st" onclick="stratToggle(this)">모멘텀</button></div></div>
-        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 2025.06.14</span><span>07:00 KST</span></span>
+        <span style="display:flex;flex-direction:column;align-items:flex-end;font-size:12px;font-weight:500;color:#4a4a52;line-height:1.4;"><span style="display:flex;align-items:center;gap:4px;"><span class="iconify" data-icon="heroicons:clock" style="font-size:14px;width:13px;height:13px;"></span>기준일 <span class="js-kijunil">2025.06.14</span></span><span>07:00 KST</span></span>
       </div>
       <div class="scr-title" style="margin-top:6px"><h2>설정</h2></div>
 
@@ -1572,7 +1578,7 @@
             ${rangeTarget === 'nvda'
               ? `<img src="https://cdn.simpleicons.org/nvidia/76b900" style="width:20px;height:20px;object-fit:contain;" onerror="logoFallback(this,'nvidia.com','N')">`
               : rangeTarget === 'rank2'
-                ? `<img src="https://logo.clearbit.com/${RANGE_DATA.rank2.domain}" style="width:20px;height:20px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.rank2.domain}','${RANGE_DATA.rank2.initial}')">`
+                ? `<img src="https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${RANGE_DATA.rank2.domain}&size=64" style="width:20px;height:20px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.rank2.domain}','${RANGE_DATA.rank2.initial}')">`
                 : `<span style="font-size:12px;font-weight:800;color:#5ebaff;letter-spacing:-.02em;">QQQ</span>`
             }
           </div>
@@ -2013,20 +2019,59 @@ function initMaxPctUI(rateEnv) {
     masamMode = masam.mode || 'NORMAL';
     initMaxPctUI(masam.rate_env || 'NON_ZERO');
 
+    // 0. 모멘텀 종목 목록 동적 구성 (positions.json → MCAP2)
+    // 배지는 next_action(배치 자동 계산) 기반 — status는 내부 추적용만 사용
+    const _ACTION_SIG = {
+      BUY_1:'추세 돌파', BUY_2:'눌림 매수', BUY_3:'지지 방어',
+      TRIM_HALF:'비중 축소', EXIT:'전량 매도',
+    };
+    function itemSignal(item) {
+      if (item.status === 'REMOVED') return '추세 탈락';
+      return _ACTION_SIG[item.next_action] || '조건 대기';
+    }
+    MCAP2.length = 0;
+    (positions.items || []).forEach(function(item, i) {
+      MCAP2.push({
+        rank:   i + 1,
+        ticker: item.symbol,
+        name:   item.name_ko || item.name,
+        domain: item.domain || (item.symbol.toLowerCase() + '.com'),
+        si:     item.si || null,
+        flag:   item.flag || '🇺🇸',
+        score:  item.toppick_score || 0,
+        signal: itemSignal(item),
+        weight: Math.round((item.weight || 0) * 100),
+        gap50:  item.metrics && item.metrics.gap50_pct != null ? item.metrics.gap50_pct : 0,
+        vol:    item.metrics && item.metrics.vol_ratio != null ? item.metrics.vol_ratio.toFixed(1) : null,
+      });
+    });
+    // 탑픽 점수 내림차순 정렬
+    MCAP2.sort(function(a, b) { return b.score - a.score; });
+    // momtFavSet: localStorage에서 복원 (사용자가 직접 하트로 관리)
+    momtFavSet.clear();
+    try {
+      JSON.parse(localStorage.getItem('momtFavSet') || '[]').forEach(function(s) {
+        momtFavSet.add(s);
+      });
+    } catch(e) {}
+    if (typeof renderMomtList === 'function') renderMomtList(window._momtFilter || '전체');
+    if (typeof renderFavList  === 'function') renderFavList(window._favTabMode);
+    // 기준일 전체 업데이트 → masam.as_of 기준 (EOD 배치 공통)
+    const _initDateStr = (masam.as_of || positions.as_of || '').slice(0, 10).replace(/-/g, '.');
+    if (_initDateStr) {
+      document.querySelectorAll('.js-kijunil').forEach(function(el) {
+        el.textContent = _initDateStr;
+      });
+    }
+
     // 1. 기준일 업데이트 (모든 topbar)
     const dateStr = (live.as_of || '').slice(0, 10).replace(/-/g, '.');
     const timeStr = live.update_time || '07:00 KST';
+    if (dateStr) {
+      document.querySelectorAll('.js-kijunil').forEach(el => { el.textContent = dateStr; });
+    }
     document.querySelectorAll('.topbar > span').forEach(outer => {
-      if (outer.children.length < 2) return;
-      const dateSpan = outer.children[0];
-      const timeSpan = outer.children[1];
-      for (const node of dateSpan.childNodes) {
-        if (node.nodeType === 3 && node.textContent.includes('기준일')) {
-          node.textContent = '기준일 ' + dateStr;
-          break;
-        }
-      }
-      timeSpan.textContent = timeStr;
+      if (outer.children.length >= 2) outer.children[1].textContent = timeStr;
     });
 
     // 2. 지수 롤링 업데이트 (발견 탭 + 모멘텀 탭)
@@ -2222,8 +2267,8 @@ function initMaxPctUI(rateEnv) {
       if (typeof renderRangeTable  === 'function') renderRangeTable();
     }
 
-    // 7. 경제지표 탭: Fear & Greed (live_market 우선, null=실패→--)
-    const fg = live.live_market?.fear_greed ?? null;
+    // 7. 경제지표 탭: Fear & Greed (live_market 우선, 없으면 masam_market EOD 값 fallback)
+    const fg = live.live_market?.fear_greed ?? mkt.fear_greed ?? null;
     const feedEl = document.querySelector('.view[data-view="피드"]');
     if (feedEl) {
       const fgSection = feedEl.querySelector('[style*="border-radius:15.3px"]');
@@ -2288,6 +2333,13 @@ function initMaxPctUI(rateEnv) {
         if (walclChip && mkt.walcl_trillion != null) walclChip.textContent = '$' + mkt.walcl_trillion.toFixed(2) + 'T';
         if (subEl)    subEl.textContent  = mkt.qe_active ? 'QE_ON · 확장 중' : 'QE_OFF · 축소 중';
         if (dgsChip)  dgsChip.textContent = mkt.treasury_10y.toFixed(2) + '%';
+        const dgsSub = cells[1]?.querySelector('span:not(.chip)');
+        if (dgsSub && mkt.treasury_10y_change != null) {
+          const chg = mkt.treasury_10y_change;
+          const sign = chg >= 0 ? '+' : '';
+          const arrow = chg > 0 ? '↑' : chg < 0 ? '↓' : '→';
+          dgsSub.textContent = sign + chg.toFixed(2) + '%p ' + arrow;
+        }
       }
     }
 
@@ -2390,10 +2442,10 @@ function initMaxPctUI(rateEnv) {
     }
 
     // 13. 관심(시가총액) 탭 + 관심종목(모멘텀) 탭 롤링 업데이트
-    // live_market 우선 사용 — null이면 수집 실패로 '--' 표시 (stale fallback 없음)
+    // live_market 우선, 없으면 masam_market EOD 값 fallback
     const lm = live.live_market || {};
     var _fgColor = (function() {
-      var fg = lm.fear_greed;
+      var fg = lm.fear_greed ?? mkt.fear_greed;
       if (fg == null) return null;
       if (fg < 25) return '#F04452';
       if (fg < 45) return '#FF8C00';
@@ -2416,8 +2468,8 @@ function initMaxPctUI(rateEnv) {
       },
       {
         lbl: '공포탐욕',
-        val: lm.fear_greed != null ? String(lm.fear_greed) : '--',
-        chgTxt: lm.fear_greed != null ? (lm.fear_greed < 25 ? '극도 공포' : lm.fear_greed < 45 ? '공포 구간' : lm.fear_greed < 55 ? '중립' : lm.fear_greed < 75 ? '탐욕 구간' : '극도 탐욕') : '',
+        val: (function() { var v = lm.fear_greed ?? mkt.fear_greed; return v != null ? String(v) : '--'; })(),
+        chgTxt: (function() { var v = lm.fear_greed ?? mkt.fear_greed; return v != null ? (v < 25 ? '극도 공포' : v < 45 ? '공포 구간' : v < 55 ? '중립' : v < 75 ? '탐욕 구간' : '극도 탐욕') : ''; })(),
         color: _fgColor,
       },
     ];

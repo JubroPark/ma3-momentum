@@ -9,18 +9,56 @@
   - trailing_stop_line (hybrid: clamp(max(0.20, ATR×5), 0.15, 0.30))
   - gap50_pct / dist_to_stop_pct
   - next_action (HOLD / BUY_2 / BUY_3 / TRIM_HALF / EXIT)
+  - toppick_score (growth×0.30 + moat×0.30 + earnings×0.20 + health×0.20)
+    - growth_score     : revenueGrowth + earningsGrowth (yfinance)
+    - earnings_score   : EPS방향(forwardEps/trailingEps) + 분기이익성장
+    - health_score     : FCF마진 + 영업이익률 + ROE
+    - moat_score       : 수동 유지 (positions.json의 moat_score 필드)
 
 수동 유지:
-  - toppick_score / avg_price / weight / deployed_tranches / cooldown_until
+  - avg_price / weight / deployed_tranches / cooldown_until
   - horizontal_support (자동 탐색 fallback: 52주 저점)
   - status (매수 판단은 사용자 확정 원칙)
+
+universe.json 연동 (fetch_universe.py 실행 후):
+  - score ≥ 70 신규 종목 → WATCH 자동 편입 (최대 30개)
+  - WATCH 종목이 score < 60으로 하락 → REMOVED
+  - ENTRY_1/2/3, TRIM, EXIT 종목은 절대 건드리지 않음
 """
 import json
+import requests
 from datetime import date
 from pathlib import Path
 from typing import Optional
 
 import yfinance as yf
+
+_NAVER_HEADERS = {"User-Agent": "Mozilla/5.0 (compatible; universe-screener/1.0)"}
+
+
+def website_to_domain(url: str) -> str:
+    if not url:
+        return ""
+    host = url.split("//")[-1].split("/")[0]
+    return host.lstrip("www.")
+
+
+def get_ko_name(symbol: str) -> str:
+    """네이버 금융 내부 API로 한국어 종목명 조회.
+    .O(NASDAQ) → .K(NYSE 일부) → 접미사 없음 순으로 시도."""
+    for naver_sym in (f"{symbol}.O", f"{symbol}.K", symbol):
+        try:
+            r = requests.get(
+                f"https://api.stock.naver.com/stock/{naver_sym}/basic",
+                headers=_NAVER_HEADERS, timeout=5,
+            )
+            if r.status_code == 200:
+                name = r.json().get("stockName") or ""
+                if name:
+                    return name
+        except Exception:
+            pass
+    return ""
 
 DATA = Path(__file__).parent.parent / "app/public/data"
 
@@ -44,6 +82,101 @@ def load_json(path: Path) -> dict:
 def save_json(path: Path, data: dict) -> None:
     path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"  저장: {path.name}")
+
+
+# ── toppick 스코어링 ──────────────────────────────────────────────────────────
+
+def _safe(info: dict, key: str, default=None):
+    v = info.get(key)
+    return default if v is None else v
+
+
+def calc_growth_score(info: dict) -> float:
+    """매출성장률 + 이익성장률 평균 → 0~5"""
+    rev = _safe(info, "revenueGrowth", 0.0)
+    earn = _safe(info, "earningsGrowth", 0.0)
+
+    def score_rev(r):
+        if r > 0.50: return 5.0
+        if r > 0.30: return 4.0
+        if r > 0.15: return 3.0
+        if r > 0.05: return 2.0
+        if r > 0.00: return 1.0
+        return 0.0
+
+    def score_earn(e):
+        if e > 1.00: return 5.0
+        if e > 0.50: return 4.0
+        if e > 0.20: return 3.0
+        if e > 0.05: return 2.0
+        if e > 0.00: return 1.0
+        return 0.0
+
+    return round((score_rev(rev) + score_earn(earn)) / 2, 2)
+
+
+def calc_financial_health(info: dict) -> float:
+    """FCF마진 + 영업이익률 + ROE → 0~5 (미주은 핵심: FCF·가격결정력·ROE 지속성)"""
+    fcf = _safe(info, "freeCashflow", 0)
+    rev = _safe(info, "totalRevenue", 1)
+    opm = _safe(info, "operatingMargins", 0.0)
+    roe = _safe(info, "returnOnEquity", 0.0)
+
+    fcf_margin = fcf / rev if rev > 0 else 0.0
+
+    def score_fcf(m):
+        if m > 0.30: return 2.0
+        if m > 0.15: return 1.5
+        if m > 0.05: return 1.0
+        if m > 0.00: return 0.5
+        return 0.0
+
+    def score_opm(m):
+        if m > 0.40: return 1.5
+        if m > 0.25: return 1.0
+        if m > 0.15: return 0.7
+        if m > 0.00: return 0.3
+        return 0.0
+
+    def score_roe(r):
+        if r > 0.50: return 1.0
+        if r > 0.30: return 0.8
+        if r > 0.15: return 0.5
+        if r > 0.00: return 0.2
+        return 0.0
+
+    return round(min(5.0, score_fcf(fcf_margin) + score_opm(opm) + score_roe(roe)), 2)
+
+
+def calc_earnings_momentum(info: dict) -> float:
+    """EPS 방향(forward vs trailing) + 분기 이익성장 → 0~5"""
+    trailing_eps = _safe(info, "trailingEps", 0.0)
+    forward_eps  = _safe(info, "forwardEps",  0.0)
+    qtr_growth   = _safe(info, "earningsQuarterlyGrowth", 0.0)
+
+    # EPS 상향 방향
+    if trailing_eps and trailing_eps > 0 and forward_eps:
+        eps_ratio = forward_eps / trailing_eps
+        if eps_ratio > 1.30:  eps_score = 2.0
+        elif eps_ratio > 1.10: eps_score = 1.5
+        elif eps_ratio > 1.00: eps_score = 1.0
+        else:                  eps_score = 0.0
+    else:
+        eps_score = 0.0
+
+    # 분기 이익 성장
+    if qtr_growth > 0.50:   qtr_score = 3.0
+    elif qtr_growth > 0.20: qtr_score = 2.0
+    elif qtr_growth > 0.00: qtr_score = 1.0
+    else:                   qtr_score = 0.0
+
+    return round(min(5.0, eps_score + qtr_score), 2)
+
+
+def calc_toppick_score(growth: float, moat: float, earnings: float, health: float) -> int:
+    """미주은 v2 가중치: growth 30% · moat 30% · earnings 20% · health 20%"""
+    raw = (growth * 0.30 + moat * 0.30 + earnings * 0.20 + health * 0.20) / 5.0
+    return min(100, max(0, round(raw * 100)))
 
 
 # ── 지표 계산 ─────────────────────────────────────────────────────────────────
@@ -81,11 +214,9 @@ def detect_support(hist, current_price: float, existing: Optional[float]) -> flo
     if existing and existing > 0:
         return existing
 
-    closes = hist["Close"].values
-    lows   = hist["Low"].values
-    n = min(len(closes), 126)  # 약 6개월
-    recent_closes = closes[-n:]
-    recent_lows   = lows[-n:]
+    lows = hist["Low"].values
+    n = min(len(lows), 126)  # 약 6개월
+    recent_lows = lows[-n:]
 
     # 로컬 미니마 탐색 (window=5)
     swing_lows = []
@@ -168,13 +299,28 @@ def process_symbol(item: dict, regime: str) -> tuple:
 
     print(f"  {symbol} 조회 중...")
     try:
-        hist = yf.Ticker(symbol).history(period="1y", auto_adjust=True)
+        ticker = yf.Ticker(symbol)
+        hist = ticker.history(period="1y", auto_adjust=True)
         if hist.empty:
             print(f"  [경고] {symbol} 데이터 없음 — 스킵")
             return item, None
     except Exception as e:
         print(f"  [경고] {symbol} 조회 실패: {e}")
         return item, None
+
+    # 재무 데이터로 toppick_score 자동 계산
+    try:
+        info = ticker.info or {}
+    except Exception:
+        info = {}
+
+    moat_score    = float(item.get("moat_score", 3.0))
+    growth_score  = calc_growth_score(info)
+    health_score  = calc_financial_health(info)
+    earn_score    = calc_earnings_momentum(info)
+    toppick_score = calc_toppick_score(growth_score, moat_score, earn_score, health_score)
+
+    print(f"    탑픽: {toppick_score}점  (G={growth_score} M={moat_score} E={earn_score} H={health_score})")
 
     price   = float(hist["Close"].iloc[-1])
     closes  = hist["Close"]
@@ -220,11 +366,19 @@ def process_symbol(item: dict, regime: str) -> tuple:
         horizontal_support=horizontal_support,
         vol_ratio=vol_ratio,
         regime=regime,
-        toppick_score=item.get("toppick_score", 0),
+        toppick_score=toppick_score,
     )
+
+    yf_name = info.get("shortName") or info.get("longName") or item.get("name", symbol)
+    name_ko = item.get("name_ko") or get_ko_name(symbol)
+    domain  = item.get("domain") or website_to_domain(info.get("website", ""))
 
     updated_item = {
         **item,
+        "name":    yf_name,
+        "name_ko": name_ko,
+        "domain":  domain,
+        "toppick_score": toppick_score,
         "recent_high": round(recent_high, 2),
         "trailing_stop_line": trailing_stop_line,
         "horizontal_support": round(horizontal_support, 2) if horizontal_support else None,
@@ -240,6 +394,9 @@ def process_symbol(item: dict, regime: str) -> tuple:
             "dist_to_stop_pct": dist_to_stop,
             "vol20ma": int(vol20ma),
             "vol_ratio": vol_ratio,
+            "growth_score": growth_score,
+            "earnings_score": earn_score,
+            "health_score": health_score,
         },
     }
 
@@ -258,9 +415,77 @@ def process_symbol(item: dict, regime: str) -> tuple:
         "vol_ratio": vol_ratio,
         "gap50_pct": gap50_pct,
         "dist_to_stop_pct": dist_to_stop,
+        "toppick_score": toppick_score,
+        "growth_score": growth_score,
+        "earnings_score": earn_score,
+        "health_score": health_score,
+        "moat_score": moat_score,
     }
 
     return updated_item, indicator_row
+
+
+PROTECTED = {"ENTRY_1", "ENTRY_2", "ENTRY_3", "TRIM", "EXIT"}
+SCORE_DROP = 60   # 이 점수 미만으로 떨어진 WATCH → REMOVED
+
+
+def sync_universe(positions: dict, universe: dict) -> dict:
+    """
+    universe.json 상위 종목을 positions.json에 동기화.
+    ENTRY/TRIM/EXIT 상태 종목은 절대 변경하지 않음.
+    """
+    u_items  = universe.get("items", [])
+    top_syms = {u["symbol"] for u in u_items}
+    u_map    = {u["symbol"]: u for u in u_items}
+
+    cur = {item["symbol"]: item for item in positions.get("items", [])}
+    new_items = []
+
+    # 기존 종목 처리
+    for sym, item in cur.items():
+        status = item.get("status", "WATCH")
+        if status in PROTECTED:
+            new_items.append(item)          # 포지션 보유 중 → 보호
+        elif sym in top_syms:
+            if status == "REMOVED":         # MA50 재돌파 → WATCH 복귀
+                item = {**item, "status": "WATCH", "reason": "유니버스 복귀 (MA50 돌파)"}
+            new_items.append(item)
+        else:
+            score = u_map.get(sym, {}).get("toppick_score", 0)
+            if status == "WATCH" and score < SCORE_DROP:
+                item = {**item, "status": "REMOVED",
+                        "reason": f"탑픽 점수 하락 ({score}점)"}
+            new_items.append(item)
+
+    # 신규 편입 (WATCH 상태로)
+    existing = {item["symbol"] for item in new_items}
+
+    for u in u_items:
+        sym = u["symbol"]
+        if sym in existing:
+            continue
+        if u.get("toppick_score", 0) < 70:
+            continue
+        new_items.append({
+            "symbol":           sym,
+            "name":             u["name"],
+            "name_ko":          u.get("name_ko", ""),
+            "domain":           u.get("domain", ""),
+            "status":           "WATCH",
+            "moat_score":       u["moat_score"],
+            "avg_price":        None,
+            "weight":           0,
+            "deployed_tranches": [],
+            "recent_high":      None,
+            "trailing_stop_line": None,
+            "horizontal_support": None,
+            "cooldown_until":   None,
+            "toppick_score":    u["toppick_score"],
+            "metrics":          {},
+        })
+        print(f"  [신규 편입] {sym} ({u['toppick_score']}점) → WATCH")
+
+    return {**positions, "items": new_items}
 
 
 def main():
@@ -270,6 +495,13 @@ def main():
     positions = load_json(DATA / "positions.json")
     mm        = load_json(DATA / "momentum_market.json")
     regime    = mm.get("regime", "GREEN")
+
+    # universe.json이 있으면 먼저 sync
+    universe_path = DATA / "universe.json"
+    if universe_path.exists():
+        universe = load_json(universe_path)
+        positions = sync_universe(positions, universe)
+        print(f"  유니버스 sync 완료 ({len(positions.get('items',[]))}개)")
 
     items     = positions.get("items", [])
     new_items = []
