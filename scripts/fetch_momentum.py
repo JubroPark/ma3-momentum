@@ -148,29 +148,110 @@ def calc_financial_health(info: dict) -> float:
     return round(min(5.0, score_fcf(fcf_margin) + score_opm(opm) + score_roe(roe)), 2)
 
 
-def calc_earnings_momentum(info: dict) -> float:
-    """EPS 방향(forward vs trailing) + 분기 이익성장 → 0~5"""
+def calc_moat_score_auto(info: dict, income_stmt=None) -> float:
+    """
+    해자 자동 프록시 (0~5):
+      Pricing Power  (grossMargins)       → 브랜드·전환비용  0~1.5
+      Scale Efficiency (OPM + ROE)        → 규모의 경제      0~1.5
+      Innovation     (R&D / Revenue)      → 무형자산·IP      0~1.0
+      Market Premium (P/B)                → 시장 인정 해자   0~1.0
+    """
+    score = 0.0
+
+    gm = _safe(info, "grossMargins", 0)
+    if gm >= 0.70:   score += 1.5
+    elif gm >= 0.50: score += 1.2
+    elif gm >= 0.35: score += 0.8
+    elif gm >= 0.20: score += 0.4
+
+    om  = _safe(info, "operatingMargins", 0)
+    roe = _safe(info, "returnOnEquity",   0)
+    scale = 0.0
+    if om  >= 0.30:  scale += 0.75
+    elif om  >= 0.20: scale += 0.50
+    elif om  >= 0.10: scale += 0.25
+    if roe >= 0.30:  scale += 0.75
+    elif roe >= 0.20: scale += 0.50
+    elif roe >= 0.10: scale += 0.25
+    score += min(1.5, scale)
+
+    # R&D는 income_stmt에서 가져옴 (info에 없음)
+    rd_ratio = 0.0
+    if income_stmt is not None and not income_stmt.empty:
+        try:
+            rd  = float(income_stmt.loc["Research And Development"].iloc[0]) if "Research And Development" in income_stmt.index else 0
+            rev_row = "Total Revenue" if "Total Revenue" in income_stmt.index else None
+            rev = float(income_stmt.loc[rev_row].iloc[0]) if rev_row else (_safe(info, "totalRevenue", 1) or 1)
+            rd_ratio = rd / rev if rev > 0 else 0
+        except Exception:
+            pass
+    if rd_ratio >= 0.15:   score += 1.0
+    elif rd_ratio >= 0.08: score += 0.6
+    elif rd_ratio >= 0.03: score += 0.3
+
+    pb = _safe(info, "priceToBook", 0) or 0
+    if pb > 0:  # 음수 PBR(자본잠식) 제외
+        if pb >= 15:    score += 1.0
+        elif pb >= 8:   score += 0.7
+        elif pb >= 3:   score += 0.4
+        elif pb >= 1.5: score += 0.2
+
+    return round(min(5.0, score), 2)
+
+
+def calc_eps_consistency(income_stmt) -> float:
+    """연간 Diluted EPS 꾸준한 상승 여부 → 0~1.0"""
+    if income_stmt is None or income_stmt.empty:
+        return 0.0
+    try:
+        for label in ("Diluted EPS", "Basic EPS"):
+            if label in income_stmt.index:
+                vals = (
+                    income_stmt.loc[label]
+                    .dropna()
+                    .sort_index(ascending=True)
+                    .values.astype(float)
+                )
+                if len(vals) < 2 or vals[-1] <= 0:
+                    return 0.0
+                n = len(vals) - 1
+                increases = sum(1 for i in range(1, len(vals)) if vals[i] > vals[i - 1])
+                ratio = increases / n
+                if ratio >= 1.00:   return 1.0
+                elif ratio >= 0.75: return 0.7
+                elif ratio >= 0.50: return 0.4
+                return 0.0
+    except Exception:
+        pass
+    return 0.0
+
+
+def calc_earnings_momentum(info: dict, eps_consistency: float = 0.0) -> float:
+    """
+    EPS 방향 + 분기 가속도 + EPS 꾸준한 상승 → 0~5
+      EPS 방향 (forward/trailing):   0~1.5
+      분기 성장 가속도:               0~1.5
+      EPS 일관성 (연간 추세):         0~2.0
+    """
     trailing_eps = _safe(info, "trailingEps", 0.0)
     forward_eps  = _safe(info, "forwardEps",  0.0)
     qtr_growth   = _safe(info, "earningsQuarterlyGrowth", 0.0)
 
-    # EPS 상향 방향
     if trailing_eps and trailing_eps > 0 and forward_eps:
-        eps_ratio = forward_eps / trailing_eps
-        if eps_ratio > 1.30:  eps_score = 2.0
-        elif eps_ratio > 1.10: eps_score = 1.5
-        elif eps_ratio > 1.00: eps_score = 1.0
-        else:                  eps_score = 0.0
+        ratio = forward_eps / trailing_eps
+        if ratio > 1.30:   eps_dir = 1.5
+        elif ratio > 1.10: eps_dir = 1.0
+        elif ratio > 1.00: eps_dir = 0.5
+        else:              eps_dir = 0.0
     else:
-        eps_score = 0.0
+        eps_dir = 0.0
 
-    # 분기 이익 성장
-    if qtr_growth > 0.50:   qtr_score = 3.0
-    elif qtr_growth > 0.20: qtr_score = 2.0
-    elif qtr_growth > 0.00: qtr_score = 1.0
-    else:                   qtr_score = 0.0
+    if qtr_growth > 0.50:   qtr = 1.5
+    elif qtr_growth > 0.20: qtr = 1.0
+    elif qtr_growth > 0.00: qtr = 0.5
+    else:                   qtr = 0.0
 
-    return round(min(5.0, eps_score + qtr_score), 2)
+    return round(min(5.0, eps_dir + qtr + eps_consistency * 2.0), 2)
 
 
 def calc_toppick_score(growth: float, moat: float, earnings: float, health: float) -> int:
@@ -314,10 +395,22 @@ def process_symbol(item: dict, regime: str) -> tuple:
     except Exception:
         info = {}
 
-    moat_score    = float(item.get("moat_score", 3.0))
+    try:
+        income_stmt = ticker.income_stmt
+    except Exception:
+        income_stmt = None
+
+    # 수동 설정된 moat_score가 있으면 우선, 없으면 자동 계산
+    manual_moat = item.get("moat_score")
+    if manual_moat is not None and float(manual_moat) != 3.0:
+        moat_score = float(manual_moat)
+    else:
+        moat_score = calc_moat_score_auto(info, income_stmt)
+
+    eps_cons      = calc_eps_consistency(income_stmt)
     growth_score  = calc_growth_score(info)
     health_score  = calc_financial_health(info)
-    earn_score    = calc_earnings_momentum(info)
+    earn_score    = calc_earnings_momentum(info, eps_cons)
     toppick_score = calc_toppick_score(growth_score, moat_score, earn_score, health_score)
 
     print(f"    탑픽: {toppick_score}점  (G={growth_score} M={moat_score} E={earn_score} H={health_score})")
@@ -339,11 +432,13 @@ def process_symbol(item: dict, regime: str) -> tuple:
     vol_today = float(volumes.iloc[-1])
     vol_ratio = round(vol_today / vol20ma, 2) if vol20ma > 0 else 0
 
-    # recent_high: 보유 중이면 비감소 최고가 유지
+    # recent_high: 진입 후 누적 최고가 (전략 원칙 — 진입 전 고점 미포함)
     year_high = float(closes.max())
     if status in ("ENTRY_1", "ENTRY_2", "ENTRY_3", "TRIM"):
-        recent_high = max(existing_recent_high or 0, price, year_high)
+        # 기존 기록 있으면 유지·갱신, 없으면 현재가로 시작
+        recent_high = max(existing_recent_high or price, price)
     else:
+        # 미보유: 52주 고점을 스탑라인 참고용으로 표시
         recent_high = year_high
 
     # 트레일링 스탑
@@ -426,7 +521,7 @@ def process_symbol(item: dict, regime: str) -> tuple:
 
 
 PROTECTED = {"ENTRY_1", "ENTRY_2", "ENTRY_3", "TRIM", "EXIT"}
-SCORE_DROP = 60   # 이 점수 미만으로 떨어진 WATCH → REMOVED
+SCORE_DROP = 40   # 이 점수 미만 WATCH → REMOVED (펀더 완전 붕괴 수준만)
 
 
 def sync_universe(positions: dict, universe: dict) -> dict:

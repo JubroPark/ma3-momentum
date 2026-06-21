@@ -919,6 +919,11 @@
       <script>
       let MCAP2 = [];
       let momtFavSet = new Set();
+      let momtTrimSet = new Set(); // 1차 스탑 터치 기록 (비중 축소 → 전량 매도 진행 추적)
+
+      function _saveMomtTrimSet() {
+        localStorage.setItem('momtTrimSet', JSON.stringify([...momtTrimSet]));
+      }
 
       function momtHeartFill(ticker){ return momtFavSet.has(ticker) ? '#E84C5A' : '#3a3a42'; }
 
@@ -1158,6 +1163,10 @@
           momtFavSet.delete(ticker);
           toast('종목 해제');
         } else {
+          if (momtFavSet.size >= 15) {
+            toast('보유 종목은 최대 15개 권장 (미주은 전략 기준)');
+            return;
+          }
           momtFavSet.add(ticker);
           toast('종목 관리 추가');
         }
@@ -2020,11 +2029,17 @@ function initMaxPctUI(rateEnv) {
       BUY_1:'추세 돌파', BUY_2:'눌림 매수', BUY_3:'지지 방어',
       TRIM_HALF:'비중 축소', EXIT:'전량 매도',
     };
-    // momtFavSet 먼저 복원 — itemSignal()에서 하트 여부를 참조하기 위해
+    // momtFavSet / momtTrimSet 먼저 복원 — itemSignal()에서 참조하기 위해
     momtFavSet.clear();
     try {
       JSON.parse(localStorage.getItem('momtFavSet') || '[]').forEach(function(s) {
         momtFavSet.add(s);
+      });
+    } catch(e) {}
+    momtTrimSet.clear();
+    try {
+      JSON.parse(localStorage.getItem('momtTrimSet') || '[]').forEach(function(s) {
+        momtTrimSet.add(s);
       });
     } catch(e) {}
 
@@ -2039,9 +2054,20 @@ function initMaxPctUI(rateEnv) {
       if (isHearted) {
         const price = item.metrics && item.metrics.price;
         const stop  = item.trailing_stop_line;
-        const ma50  = item.metrics && item.metrics.ma50;
         if (price && stop && price <= stop) {
-          return (ma50 && price < ma50) ? '전량 매도' : '비중 축소';
+          // 1차 터치: momtTrimSet에 기록 → 비중 축소
+          // 2차 터치: 이미 기록됨 → 전량 매도
+          if (momtTrimSet.has(item.symbol)) {
+            return '전량 매도';
+          } else {
+            momtTrimSet.add(item.symbol);
+            _saveMomtTrimSet();
+            return '비중 축소';
+          }
+        } else if (momtTrimSet.has(item.symbol)) {
+          // 스탑선 위로 회복 → 1차 터치 기록 초기화
+          momtTrimSet.delete(item.symbol);
+          _saveMomtTrimSet();
         }
       }
       // TRIM_HALF/EXIT는 하트 종목(보유 가정)에만 의미 있는 신호
