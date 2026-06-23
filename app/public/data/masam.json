@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-06-22",
+  "as_of": "2026-06-23",
   "mode": "CRISIS",
   "rate_env": "NON_ZERO",
   "qe_active": true,
@@ -13,9 +13,9 @@
   "leader_status": {
     "rank1_ticker": "NVDA",
     "rank2_ticker": "AAPL",
-    "gap_pct": 13.7,
+    "gap_pct": 9.8,
     "overtake_detected": false,
-    "gap_within_10pct": false
+    "gap_within_10pct": true
   },
   "target_allocation": {
     "stock_pct": 50,
@@ -45,7 +45,7 @@
       "label": "한달+1일 무마삼",
       "met": false,
       "grade": "약",
-      "detail": "D-14"
+      "detail": "D-13"
     },
     {
       "id": 2,
@@ -59,28 +59,28 @@
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-11.4%"
+      "detail": "-14.7%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-3.4%"
+      "detail": "-5.2%"
     },
     {
       "id": 5,
       "label": "2구간 V자(+10%)",
       "met": false,
       "grade": "중",
-      "detail": "+4.0% (필요: +10%)"
+      "detail": "+2.0% (필요: +10%)"
     },
     {
       "id": 6,
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-3.4% (기준: -30%)"
+      "detail": "-5.2% (기준: -30%)"
     }
   ],
   "additional_buy": {
