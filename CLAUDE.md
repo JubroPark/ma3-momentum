@@ -134,9 +134,13 @@
 4. 전일 스냅샷 대조 → 신규 트리거 추출 → Web Push([마삼]/[모멘텀] 배지)
 5. 저장: repo JSON / Gist / KV
 
-[장중 live 배치 · 5~15분 · 표시용만]
+[장중 live 배치 · 15분 주기 · 표시용만]
 - 현재가·등락률·거리·헤지 시세 → live.json (표시값 전용)
 ```
+
+> **GitHub Actions cron 주의**: scheduled workflow가 active 상태임에도 cron이 조용히 멈추는 버그 발생 이력 있음(2026-06-22 확인). 워크플로우 파일 변경 푸시로 재등록. push 충돌 방지를 위해 커밋 후 `git pull --rebase origin main && git push` 사용.
+>
+> **수동 갱신 버튼**: `POST /api/refresh` → GitHub workflow_dispatch(live.yml + eod.yml 동시 트리거) → 35초 후 앱 자동 새로고침. 모든 탭 topbar 우측 원형 버튼(`mdi-light:refresh`, 23px).
 
 ---
 
@@ -229,7 +233,8 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 
 ### 7-5. 매도 (먼저 평가) · 무한 보유
 
-- 트레일링 스탑: `trailingStopLine = recentHigh·(1-trailPct)`, hybrid = `clamp(max(.20, atr×5·atrPct), .15, .30)`. 1차 터치 → TRIM_HALF, 재터치 → EXIT. (recentHigh 비감소 → 스탑선 하향 금지)
+- 트레일링 스탑: `trailingStopLine = recentHigh·(1-trailPct)`, hybrid = `clamp(max(.20, atr×5·atrPct), .15, .30)`. 1차 터치 → TRIM_HALF(`momtTrimSet`에 기록), 재터치 → EXIT. (recentHigh 비감소 → 스탑선 하향 금지)
+- `recentHigh`는 **진입 후 누적** 최고가. 진입 전 52주 고점 미포함 (WATCH 상태에서는 참고용으로만 표시).
 - 추세 이탈: ENTRY_2/3에서 `price < 수평지지` → 펀더 훼손 동반 시 EXIT(→REMOVED), 아니면 TRIM_HALF.
 - EXIT 후 쿨다운 5거래일. 어닝 hold_through(임박 5일 경고만).
 
@@ -241,6 +246,24 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 ### 7-7. 설정(preset)
 
 줍줍 비중 방식(점증형 30/40/20+예비10 기본)·50MA 지지 범위(±3%)·트레일링(혼합·-20%·×5·1차 절반축소)·추세이탈 매도(펀더 훼손 동반 시 전량)·탑픽 임계(70)·재선정(분기)·동시추적(15)·국면 판정 지수(SPX·NDX, any_break)·어닝(hold_through)·실행 모드(alert_only). 검증된 선택지(preset) 중 선택 기본, 고급만 직접 입력. (합=100% 등 저장 검증)
+
+### 7-8. 구현 확정 사항 (현재 운영 중)
+
+- **universe.json**: S&P500+NASDAQ100 스크리닝, TOP_N=40, score≥60 저장
+- **positions.json 편입**: score≥70인 종목만 WATCH로 자동 편입
+- **REMOVED 임계**: score<40 (펀더 완전 붕괴 수준만) → WATCH→REMOVED
+- **moat_score 자동 계산**: 4요소 프록시 — Pricing Power(매출이익률)·Scale(OPM+ROE)·Innovation(R&D/Revenue, income_stmt에서 추출)·Market Premium(PBR). 수동 설정값(≠3.0) 우선
+- **EPS 일관성**: `ticker.income_stmt`의 Diluted EPS 연간 추세 → 0~1.0 → earnings_momentum에 ×2.0 반영
+- **하트(♥) = 보유 가정**: `momtFavSet`(localStorage). 최대 15개 UX 가이드 (초과 시 토스트)
+- **2단계 트레일링 스탑**: `momtTrimSet`(localStorage) — 1차 터치→비중 축소+기록, 스탑 위 회복→초기화, 2차 터치→전량 매도
+- **뱃지 신호**: `next_action` 기반. REMOVED+하트→추세 탈락, 비하트 REMOVED→조건 대기
+- **탑픽 점수 내림차순 정렬**: MCAP2 빌드 후 `.sort(score desc)`
+- **로고**: Google Favicon API (`t2.gstatic.com/faviconV2`)
+- **한국어 종목명**: 네이버 금융 API — `.O`→`.K`→접미사 없음 순 fallback
+
+### 7-9. 미구현 / 다음 작업 예정
+
+- **마삼 `panic_hold` 연결**: masam.json에 필드 존재하나 fetch_eod.py 미연결. 공황 후 올인 집행 신호 입력(UI) + 전고점 경신 자동 감지 → 홀드 해제 로직 필요
 
 ---
 

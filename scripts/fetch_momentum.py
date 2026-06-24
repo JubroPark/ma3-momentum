@@ -69,6 +69,13 @@ ATR_MULT = 5.0
 ENTRY2_BAND = 0.03   # MA50 ±3% = 2차 줍줍 구간
 SUPPORT_BAND = 0.03  # 지지선 ±3% 근접 판단
 
+# 3분할 줍줍 비중 (전략 문서 기본값)
+TRANCHE_WEIGHTS = {1: 0.30, 2: 0.40, 3: 0.20}
+
+# 과열 판단 기준 (MA50 이격)
+OVERHEAT_WARN  = 50.0   # +50% 이상 → 일부 현금화 검토
+OVERHEAT_STRONG = 80.0  # +80% 이상 → 차익 실현 권장
+
 
 # ── 유틸 ──────────────────────────────────────────────────────────────────────
 
@@ -254,6 +261,60 @@ def calc_earnings_momentum(info: dict, eps_consistency: float = 0.0) -> float:
     return round(min(5.0, eps_dir + qtr + eps_consistency * 2.0), 2)
 
 
+def calc_eps_revision_label(info: dict) -> str:
+    """EPS 전망치 방향 → 'UP_STRONG' | 'UP' | 'NEUTRAL' | 'DOWN'"""
+    trailing = _safe(info, "trailingEps", 0.0)
+    forward  = _safe(info, "forwardEps",  0.0)
+    qtr      = _safe(info, "earningsQuarterlyGrowth", 0.0)
+    if trailing and trailing > 0 and forward:
+        ratio = forward / trailing
+        if ratio > 1.30 or (ratio > 1.10 and qtr > 0.20):
+            return "UP_STRONG"
+        elif ratio > 1.00:
+            return "UP"
+        else:
+            return "DOWN"
+    return "NEUTRAL"
+
+
+def calc_peg(info: dict) -> Optional[float]:
+    """PEG = trailingPE / (earningsGrowth * 100). 계산 불가 시 None."""
+    pe     = _safe(info, "trailingPE", None) or _safe(info, "forwardPE", None)
+    growth = _safe(info, "earningsGrowth", None)
+    if pe and growth and growth > 0:
+        return round(float(pe) / (float(growth) * 100), 2)
+    return None
+
+
+def calc_criteria_count(
+    growth_score: float,
+    moat_score: float,
+    eps_revision: str,
+    gap50_pct: float,
+    vol_ratio: float,
+    peg: Optional[float],
+    revenue_growth: float,
+) -> tuple[int, list[bool]]:
+    """6단계 충족 여부 → (충족 수, [bool×6])
+
+    ① 침투율: 매출 성장률 20%+ (초기 TAM 신호)
+    ② 점유율: 해자 점수 3.5+ (시장 리더십 proxy)
+    ③ 성장률·해자: growth 3.0+ AND moat 3.0+
+    ④ PEG: < 2.0 (데이터 없으면 통과 가정)
+    ⑤ EPS revision: UP 또는 UP_STRONG
+    ⑥ 모멘텀: MA50 위(-5% 이내) AND vol_ratio 0.3+
+    """
+    c = [
+        revenue_growth >= 0.20,
+        moat_score >= 3.5,
+        growth_score >= 3.0 and moat_score >= 3.0,
+        peg is None or (peg > 0 and peg < 2.0),
+        eps_revision in ("UP", "UP_STRONG"),
+        gap50_pct > -5 and vol_ratio >= 0.3,
+    ]
+    return sum(c), c
+
+
 def calc_toppick_score(growth: float, moat: float, earnings: float, health: float) -> int:
     """미주은 v2 가중치: growth 30% · moat 30% · earnings 20% · health 20%"""
     raw = (growth * 0.30 + moat * 0.30 + earnings * 0.20 + health * 0.20) / 5.0
@@ -369,6 +430,54 @@ def calc_next_action(
     return "HOLD", f"{status} 상태 유지"
 
 
+# status → 기본 집행 트랜치 (명시적 deployed_tranches 없을 때 fallback)
+_STATUS_TRANCHES: dict = {
+    "WATCH":   [],
+    "ENTRY_1": [1],
+    "ENTRY_2": [1, 2],
+    "ENTRY_3": [1, 2, 3],
+    "TRIM":    [1, 2, 3],  # 절반 축소 전 기준; calc_weight에서 0.5 적용
+    "EXIT":    [],
+    "REMOVED": [],
+}
+
+
+def calc_weight(
+    status: str,
+    deployed_tranches: list,
+    gap50_pct: float,
+    next_action: str,
+    dist_to_stop: Optional[float],
+) -> tuple:
+    """
+    추천 비중(0~1)과 상태 메모 반환.
+    deployed_tranches가 비어 있으면 status로 fallback.
+    """
+    tranches = deployed_tranches if deployed_tranches else _STATUS_TRANCHES.get(status, [])
+    base = sum(TRANCHE_WEIGHTS.get(t, 0) for t in tranches)
+
+    if status in ("EXIT", "REMOVED", "WATCH"):
+        return 0.0, ""
+
+    if status == "TRIM":
+        base = round(base * 0.5, 3)
+
+    # 매도/축소 신호 우선
+    if next_action == "EXIT":
+        return 0.0, "청산 신호 — 전량 매도"
+    if next_action == "TRIM_HALF":
+        note = f"트레일링 스탑 근접 — 비중 절반 축소 (dist {dist_to_stop:.1f}%)" if dist_to_stop is not None else "트레일링 스탑 근접 — 비중 절반 축소"
+        return round(base * 0.5, 3), note
+
+    # 과열 구간 조정
+    if gap50_pct >= OVERHEAT_STRONG:
+        return round(base * 0.4, 3), f"강한 과열 (MA50 +{gap50_pct:.0f}%) — 차익 실현 권장"
+    if gap50_pct >= OVERHEAT_WARN:
+        return round(base * 0.7, 3), f"과열 구간 (MA50 +{gap50_pct:.0f}%) — 일부 현금화 검토"
+
+    return round(base, 3), ""
+
+
 # ── 메인 처리 ─────────────────────────────────────────────────────────────────
 
 def process_symbol(item: dict, regime: str) -> tuple:
@@ -413,7 +522,11 @@ def process_symbol(item: dict, regime: str) -> tuple:
     earn_score    = calc_earnings_momentum(info, eps_cons)
     toppick_score = calc_toppick_score(growth_score, moat_score, earn_score, health_score)
 
-    print(f"    탑픽: {toppick_score}점  (G={growth_score} M={moat_score} E={earn_score} H={health_score})")
+    eps_revision  = calc_eps_revision_label(info)
+    peg           = calc_peg(info)
+    revenue_growth = _safe(info, "revenueGrowth", 0.0) or 0.0
+
+    print(f"    탑픽: {toppick_score}점  (G={growth_score} M={moat_score} E={earn_score} H={health_score}) EPS={eps_revision} PEG={peg}")
 
     price   = float(hist["Close"].iloc[-1])
     closes  = hist["Close"]
@@ -449,8 +562,14 @@ def process_symbol(item: dict, regime: str) -> tuple:
     horizontal_support = detect_support(hist, price, existing_support)
 
     # 파생 지표
-    gap50_pct       = round((price - ma50) / ma50 * 100, 1)
-    dist_to_stop    = round((price - trailing_stop_line) / price * 100, 1) if trailing_stop_line else None
+    gap50_pct    = round((price - ma50) / ma50 * 100, 1)
+    dist_to_stop = round((price - trailing_stop_line) / price * 100, 1) if trailing_stop_line else None
+
+    # 6단계 충족
+    steps_count, steps_list = calc_criteria_count(
+        growth_score, moat_score, eps_revision,
+        gap50_pct, vol_ratio, peg, revenue_growth,
+    )
 
     # next_action
     next_action, reason = calc_next_action(
@@ -462,6 +581,16 @@ def process_symbol(item: dict, regime: str) -> tuple:
         vol_ratio=vol_ratio,
         regime=regime,
         toppick_score=toppick_score,
+    )
+
+    # 추천 비중 자동 산출
+    deployed_tranches = item.get("deployed_tranches") or []
+    weight, weight_note = calc_weight(
+        status=status,
+        deployed_tranches=deployed_tranches,
+        gap50_pct=gap50_pct,
+        next_action=next_action,
+        dist_to_stop=dist_to_stop,
     )
 
     yf_name = info.get("shortName") or info.get("longName") or item.get("name", symbol)
@@ -479,6 +608,8 @@ def process_symbol(item: dict, regime: str) -> tuple:
         "horizontal_support": round(horizontal_support, 2) if horizontal_support else None,
         "next_action": next_action,
         "reason": reason,
+        "weight": weight,
+        "weight_note": weight_note,
         "metrics": {
             "price": round(price, 2),
             "ma50": round(ma50, 2),
@@ -492,6 +623,10 @@ def process_symbol(item: dict, regime: str) -> tuple:
             "growth_score": growth_score,
             "earnings_score": earn_score,
             "health_score": health_score,
+            "eps_revision": eps_revision,
+            "peg": peg,
+            "steps_count": steps_count,
+            "steps_list": steps_list,
         },
     }
 

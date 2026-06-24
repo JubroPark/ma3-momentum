@@ -17,7 +17,7 @@
   :root{
     --bg:#17171C;--bg-deep:#0E0E12;--surface:#202027;--surface-2:#26262E;--surface-3:#2C2C35;
     --line:#2A2A31;--txt:#F4F5F7;--txt-2:#9A9AA3;--txt-3:#6B6B73;
-    --up:#F04452;--down:#4593FC;--blue:#3182F6;--teal:#2BC4B6;--purple:#8B5CF6;--green:#2BC4B6;
+    --up:#F04452;--down:#4593FC;--blue:#3182F6;--teal:#2BC4B6;--purple:#DB2777;--green:#2BC4B6;
   }
   *{margin:0;padding:0;box-sizing:border-box;
     font-family:"Pretendard Variable",Pretendard,-apple-system,system-ui,"Apple SD Gothic Neo","Malgun Gothic",sans-serif;
@@ -80,7 +80,7 @@
   .pos-detail-close{animation:slideUp .22s cubic-bezier(.4,0,.2,1) forwards;overflow:hidden;}
   .disclaimer p{font-size:11.5px;color:#4a4a52;line-height:1.6;margin:0;text-align:center;}
   .momt-cat{background:var(--surface);}
-  .momt-cat.active-cat{background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6) border-box;border:1.4px solid transparent;}
+  .momt-cat.active-cat{background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#3182F6,#3182F6 55%,#8b5cf6) border-box;border:1.4px solid transparent;}
   .cat .circ{width:26px;height:26px;display:flex;align-items:center;justify-content:center;}
   .cat .circ img.emoji{width:26px;height:26px;}
   .cat span{font-size:12.9px;font-weight:600;color:#e9e9ef;}
@@ -103,7 +103,7 @@
   .idx-cell .txt{font-size:12.9px;color:#d4d4db;font-weight:500;line-height:1.35;}
 
   .ai-banner{margin:6.8px 17px 3.4px;border-radius:13.6px;padding:1.4px;
-    background:linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6);cursor:pointer;}
+    background:linear-gradient(110deg,#3182F6,#3182F6 55%,#8b5cf6);cursor:pointer;}
   .price-roll-wrap{display:grid;overflow:hidden;}
   .price-roll-item{grid-area:1/1;opacity:0;transform:translateY(5px);transition:opacity .3s,transform .3s;font-size:14px;font-weight:600;color:#fff;}
   .price-roll-item.active{opacity:1;transform:translateY(0);}
@@ -508,7 +508,7 @@
           <div class="circ" style="font-size:19px">⚖️</div>
           <span>리밸런싱</span>
         </div>
-        <div class="cat" onclick="toast('말뚝박기')" style="background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6) border-box;border:1.4px solid transparent;">
+        <div class="cat" onclick="toast('말뚝박기')" style="background:linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#3182F6,#3182F6 55%,#8b5cf6) border-box;border:1.4px solid transparent;">
           <div class="circ" style="font-size:19px">⚓</div>
           <span>말뚝박기</span>
         </div>
@@ -855,11 +855,6 @@
         <div style="height:1px;margin:0 -17px;background:linear-gradient(90deg,rgba(100,115,255,0) 0%,rgba(100,115,255,.55) 50%,rgba(100,115,255,0) 100%);"></div>
       </div>
 
-      <!-- 관심종목 그룹 필 탭 -->
-      <div style="display:flex;align-items:center;gap:8px;padding:28px 17px 0;">
-        <button onclick="favTab(this)" style="background:var(--surface-2);color:var(--txt);border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:600;padding:6px 13px;cursor:pointer;" class="fav-tab-btn on">보유 현황</button>
-        <button onclick="favTab(this)" style="background:none;color:var(--txt-3);border:none;border-radius:8px;font-family:inherit;font-size:13px;font-weight:500;padding:6px 8px;cursor:pointer;" class="fav-tab-btn">매도 신호</button>
-      </div>
 
       <div id="fav-list-momt" style="margin-top:10px;"></div>
       <div class="disclaimer"><p>서비스를 통해 제공되는 정보는 단순 참고용이며 투자 권유가 아닙니다.<br>모든 투자 판단은 개인의 책임이며 실거래 전 백테스트 검증이 필수입니다.</p></div>
@@ -933,6 +928,29 @@
       let momtFavSet = new Set();
       let momtTrimSet = new Set(); // 1차 스탑 터치 기록 (비중 축소 → 전량 매도 진행 추적)
 
+      const _EPS_REV_MAP = {
+        UP_STRONG: { label:'↑↑', color:'#2BC4B6' },
+        UP:        { label:'↑',  color:'#F7A93B' },
+        NEUTRAL:   { label:'→',  color:'#6B6B73' },
+        DOWN:      { label:'↓',  color:'#4593FC' },
+      };
+      function _epsRevHtml(rev) {
+        if (!rev || rev === 'NEUTRAL') return '';
+        const m = _EPS_REV_MAP[rev];
+        if (!m) return '';
+        return `<span style="font-size:11.5px;font-weight:700;color:${m.color};letter-spacing:-0.5px;">EPS ${m.label}</span>`;
+      }
+
+      // 6단계 충족 도트 — 데이터 없으면 렌더링 생략
+      const _STEP_LABELS = ['침투율','점유율','성장·해자','PEG','EPS↑','모멘텀'];
+      function _stepsDotsHtml(steps, list) {
+        if (steps == null) return '';
+        const dots = list
+          ? list.map((on, i) => `<span title="${_STEP_LABELS[i]}" style="font-size:9px;color:${on?'#F4F5F7':'#3a3a42'};">●</span>`).join('')
+          : '';
+        return `<div style="display:flex;align-items:center;gap:4px;margin-top:2px;">${dots}</div>`;
+      }
+
       function _saveMomtTrimSet() {
         localStorage.setItem('momtTrimSet', JSON.stringify([...momtTrimSet]));
       }
@@ -988,8 +1006,9 @@
         }
 
         const hasDetail = detailHtml !== '';
+        const cardClick = `onclick="openStepsDrawer('${d.ticker}')"`;
         return `
-        <div class="rank" ${hasDetail ? `onclick="togglePosDetail('${d.ticker}')" style="cursor:pointer;flex-wrap:wrap;padding-bottom:0;"` : ''}>
+        <div class="rank" ${cardClick} style="cursor:pointer;">
           <div class="no">${no}</div>
           <div class="ava" style="background:transparent;width:36px;height:36px;flex:0 0 36px;overflow:visible;">
             <div style="width:36px;height:36px;border-radius:50%;background:#26272c;overflow:hidden;display:flex;align-items:center;justify-content:center;">
@@ -999,7 +1018,8 @@
           </div>
           <div class="info">
             <div class="nm">${d.name} <span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:4px;">${d.ticker}</span></div>
-            <div class="pr"><span style="color:#f4f5f7;">${d.score}점</span><span style="color:var(--txt-3);">MA50 ${d.gap50>=0?'+':''}${d.gap50}%</span>${d.vol != null ? `<span style="color:var(--txt-3);">거래량 ${d.vol}x</span>` : ''}</div>
+            <div class="pr"></div>
+            ${_stepsDotsHtml(d.steps, d.stepsList)}
           </div>
           <div style="text-align:right;flex:none;">
             <div style="display:flex;align-items:center;gap:8px;">
@@ -1129,27 +1149,22 @@
         </div>`;
       }
 
-      function renderFavList(mode) {
+      function renderFavList() {
         const el = document.getElementById('fav-list-momt');
         if (!el) return;
-        const favMode = mode || window._favTabMode || '보유 현황';
-        const all = MCAP2.filter(d => momtFavSet.has(d.ticker));
-        const list = favMode === '매도 신호'
-          ? all.filter(d => ['비중 축소','전량 매도','추세 탈락'].includes(d.signal))
-          : all.filter(d => !['비중 축소','전량 매도','추세 탈락'].includes(d.signal));
+        const list = MCAP2.filter(d => momtFavSet.has(d.ticker));
         if (list.length === 0) {
-          const isSell = favMode === '매도 신호';
           el.innerHTML = `<div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:80px 32px 40px;text-align:center;">
-            <div style="font-size:65px;margin-bottom:24px;">${isSell ? '✅' : '🔍'}</div>
-            <div style="font-size:17px;font-weight:600;line-height:1.3;margin-bottom:6px;">${isSell ? '매도 신호 종목이 없어요' : '관심 종목을 추가해보세요'}</div>
-            <div style="font-size:14px;color:var(--txt-3);margin-bottom:24px;">${isSell ? '매도 신호 종목이 없습니다.' : '아직 추가한 종목이 없어요.'}</div>
-            ${isSell ? '' : `<button onclick="go('모멘텀')" style="background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;padding:10px 24px;cursor:pointer;">찾아보기</button>`}
+            <div style="font-size:65px;margin-bottom:24px;">🔍</div>
+            <div style="font-size:17px;font-weight:600;line-height:1.3;margin-bottom:6px;">관심 종목을 추가해보세요</div>
+            <div style="font-size:14px;color:var(--txt-3);margin-bottom:24px;">아직 추가한 종목이 없어요.</div>
+            <button onclick="go('모멘텀')" style="background:var(--blue);color:#fff;border:none;border-radius:10px;font-family:inherit;font-size:14px;font-weight:600;padding:10px 24px;cursor:pointer;">찾아보기</button>
           </div>`;
           return;
         }
         const totalWeight = list.reduce((s, d) => s + (d.weight || 0), 0);
         const cashWeight = Math.max(0, 100 - totalWeight);
-        el.innerHTML = list.map((d, i) => momtRankCard(d, i, true)).join('') + (favMode === '보유 현황' ? makeCashCard(cashWeight) : '');
+        el.innerHTML = list.map((d, i) => momtRankCard(d, i, true)).join('') + makeCashCard(cashWeight);
         twemoji && twemoji.parse(el, {folder:'svg',ext:'.svg'});
         if (window.Iconify) Iconify.scan(el);
         el.querySelectorAll('.fav-weight-num').forEach((span, i) => {
@@ -1193,22 +1208,6 @@
         renderFavList();
       };
 
-      window.favTab = function(el) {
-        document.querySelectorAll('.fav-tab-btn').forEach(b => {
-          b.style.background = 'none';
-          b.style.padding = '6px 8px';
-          b.style.color = 'var(--txt-3)';
-          b.style.fontWeight = '500';
-          b.classList.remove('on');
-        });
-        el.style.background = 'var(--surface-2)';
-        el.style.padding = '6px 13px';
-        el.style.color = 'var(--txt)';
-        el.style.fontWeight = '600';
-        el.classList.add('on');
-        window._favTabMode = el.textContent.trim();
-        renderFavList(window._favTabMode);
-      };
 
       window.filterMomt = function(el) {
         document.querySelectorAll('.momt-cat').forEach(c => c.classList.remove('active-cat'));
@@ -2113,17 +2112,25 @@ function initMaxPctUI(rateEnv) {
         domain: item.domain || (item.symbol.toLowerCase() + '.com'),
         si:     item.si || null,
         flag:   item.flag || '🇺🇸',
-        score:  item.toppick_score || 0,
-        signal: itemSignal(item),
-        weight: Math.round((item.weight || 0) * 100),
-        gap50:  item.metrics && item.metrics.gap50_pct != null ? item.metrics.gap50_pct : 0,
-        vol:    item.metrics && item.metrics.vol_ratio != null ? item.metrics.vol_ratio.toFixed(1) : null,
+        score:   item.toppick_score || 0,
+        signal:  itemSignal(item),
+        weight:  Math.round((item.weight || 0) * 100),
+        gap50:   item.metrics && item.metrics.gap50_pct != null ? item.metrics.gap50_pct : 0,
+        vol:     item.metrics && item.metrics.vol_ratio != null ? item.metrics.vol_ratio.toFixed(1) : null,
+        epsRev:  item.metrics && item.metrics.eps_revision || null,
+        steps:   item.metrics && item.metrics.steps_count != null ? item.metrics.steps_count : null,
+        stepsList: item.metrics && item.metrics.steps_list || null,
       });
     });
-    // 탑픽 점수 내림차순 정렬
-    MCAP2.sort(function(a, b) { return b.score - a.score; });
+    // 6단계 충족 수 내림차순 → 점수 내림차순 정렬
+    MCAP2.sort(function(a, b) {
+      const sa = a.steps != null ? a.steps : -1;
+      const sb = b.steps != null ? b.steps : -1;
+      if (sb !== sa) return sb - sa;
+      return b.score - a.score;
+    });
     if (typeof renderMomtList === 'function') renderMomtList(window._momtFilter || '전체');
-    if (typeof renderFavList  === 'function') renderFavList(window._favTabMode);
+    if (typeof renderFavList  === 'function') renderFavList();
     // 기준일 전체 업데이트 → masam.as_of 기준 (EOD 배치 공통)
     const _initDateStr = (masam.as_of || positions.as_of || '').slice(0, 10).replace(/-/g, '.');
     if (_initDateStr) {
@@ -2167,7 +2174,7 @@ function initMaxPctUI(rateEnv) {
     });
 
     // 3. 발견 탭: 모드 버튼 활성화
-    const GRAD_BG = 'linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#6d5efc,#3182F6 55%,#8b5cf6) border-box';
+    const GRAD_BG = 'linear-gradient(var(--bg),var(--bg)) padding-box,linear-gradient(110deg,#3182F6,#3182F6 55%,#8b5cf6) border-box';
     const catRow = document.querySelector('.view[data-view="발견"] .cat-row');
     const isCrisisMode = masam.mode === 'CRISIS' || masam.mode === 'PANIC';
     // 조건 5(2구간 V자)는 EOD 계산값 오류 가능성 → live 데이터로 재계산 (아래 RANGE_DATA 갱신 후)
@@ -2659,6 +2666,187 @@ if ('serviceWorker' in navigator) {
     } catch (e) {}
   });
 }
+</script>
+
+<!-- ===== 6단계 세부 드로어 ===== -->
+<div id="steps-overlay" onclick="closeStepsDrawer()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;transition:opacity .28s ease;opacity:0;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);"></div>
+<div id="steps-drawer" style="display:none;position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:#1D1D25;border-radius:24px 24px 0 0;z-index:201;padding:0 0 env(safe-area-inset-bottom,24px);transition:transform .32s cubic-bezier(.32,1.2,.48,1);max-height:92dvh;overflow:hidden;box-shadow:0 -8px 48px rgba(0,0,0,.55);">
+  <div style="padding:14px 20px 0;display:flex;align-items:center;justify-content:center;position:relative;">
+    <div style="width:40px;height:4px;border-radius:2px;background:#36363F;"></div>
+  </div>
+  <div id="steps-drawer-content" style="padding:20px 20px 40px;overflow-y:auto;max-height:calc(92dvh - 56px);-webkit-overflow-scrolling:touch;overscroll-behavior:contain;"></div>
+</div>
+
+<script>
+const _GRADE_COLORS = ['#3182F6','#6366F1','#9333EA','#BE185D','#DB2777'];
+function _gradeColor(val, t1, t2, t3, t4) {
+  return _GRADE_COLORS[val>=t4?4:val>=t3?3:val>=t2?2:val>=t1?1:0];
+}
+
+const _STEP_META = [
+  { key:'penetration', label:'성장 여력',   desc_pass:'아직 시장의 절반도 못 팠다 — 앞으로 클 공간이 충분히 남아 있음', desc_fail:'이미 성숙한 시장 — 더 크게 성장하기 어려운 단계' },
+  { key:'share',       label:'시장 지배력', desc_pass:'업계 1~2위 수준의 경쟁 우위 — 경쟁사가 쉽게 따라올 수 없음',    desc_fail:'경쟁자들과 뚜렷한 격차가 없어 점유율 방어가 불안함' },
+  { key:'growth_moat', label:'성장 + 경쟁력', desc_pass:'빠르게 성장하면서 경쟁사를 따돌릴 힘도 함께 갖추고 있음',   desc_fail:'성장 속도나 경쟁 우위 중 하나가 기준에 미치지 못함' },
+  { key:'peg',         label:'가격 적정성', desc_pass:'성장 속도에 비해 주가가 아직 비싸지 않음',                      desc_fail:'성장 기대가 이미 주가에 충분히 반영됐거나 과도하게 녹아 있음' },
+  { key:'eps',         label:'실적 전망',   desc_pass:'증권사들이 앞으로의 실적 예상치를 계속 올려잡는 중',            desc_fail:'실적 예상치가 제자리거나 낮아지는 추세 — 기대감이 식고 있음' },
+  { key:'momentum',    label:'주가 흐름',   desc_pass:'주가가 상승 추세에 올라타 있고 거래량도 뒷받침되고 있음',       desc_fail:'아직 추세를 회복하지 못했거나 거래량이 충분하지 않음' },
+];
+
+function openStepsDrawer(ticker) {
+  const d = MCAP2.find(x => x.ticker === ticker);
+  if (!d) return;
+
+  const item = (window.positionsData && window.positionsData.items || []).find(p => p.symbol === ticker);
+  const m    = item && item.metrics || {};
+  const peg  = m.peg != null ? m.peg : null;
+  const epsR = m.eps_revision || d.epsRev || 'NEUTRAL';
+
+  const passCount = (d.stepsList || []).filter(Boolean).length;
+  const scoreColor = passCount >= 5 ? '#DB2777' : passCount >= 3 ? '#3182F6' : '#6B6B73';
+  const barGrad    = passCount >= 5
+    ? 'linear-gradient(90deg,#3182F6,#DB2777)'
+    : passCount >= 3
+    ? 'linear-gradient(90deg,#3182F6,#6366F1)'
+    : 'linear-gradient(90deg,#36363F,#4A4A55)';
+  const barPct = Math.round(passCount / 6 * 100);
+
+  const rows = (d.stepsList || []).map((pass, i) => {
+    const meta  = _STEP_META[i];
+    const desc  = pass ? meta.desc_pass : meta.desc_fail;
+    const circleStyle = pass
+      ? 'background:rgba(255,255,255,.08);border:1.5px solid rgba(255,255,255,.25);'
+      : 'background:rgba(255,255,255,.04);border:1.5px solid #36363F;';
+    const numColor   = pass ? '#F4F5F7' : '#4A4A55';
+    const labelColor = pass ? '#F4F5F7' : '#4A4A55';
+    const descColor  = pass ? '#9A9AA3' : '#4A4A55';
+
+    let hint = '';
+    if (i === 2) hint = `성장 ${m.growth_score || '-'} · 해자 ${item && item.moat_score || '-'}`;
+    if (i === 3) hint = peg != null ? `PEG ${peg}` : '—';
+    if (i === 4) { const ec = _EPS_REV_MAP[epsR]; hint = ec ? `EPS ${ec.label}` : ''; }
+    if (i === 5) hint = `MA50 ${d.gap50 >= 0 ? '+' : ''}${d.gap50}% · ${d.vol || '-'}x`;
+
+    const hintHtml = hint
+      ? `<span style="font-size:12px;font-weight:600;color:${pass?'#9A9AA3':'#4A4A55'};background:${pass?'rgba(255,255,255,.07)':'rgba(255,255,255,.04)'};padding:2px 8px;border-radius:20px;white-space:nowrap;">${hint}</span>`
+      : '';
+    const chipHtml = `<span style="font-size:11.5px;font-weight:700;color:${pass?'#F4F5F7':'#4A4A55'};letter-spacing:.3px;">${pass ? '✓' : '✗'}</span>`;
+
+    return `
+    <div style="display:flex;align-items:flex-start;gap:12px;padding:13px 0;${i > 0 ? 'border-top:1px solid rgba(255,255,255,.05);' : ''}">
+      <div style="width:24px;height:24px;border-radius:50%;${circleStyle}display:flex;align-items:center;justify-content:center;flex:none;margin-top:2px;">
+        <span style="font-size:10px;font-weight:700;color:${numColor};">${i+1}</span>
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+          ${chipHtml}
+          <span style="font-size:14.5px;font-weight:700;color:${labelColor};">${meta.label}</span>
+          ${hintHtml}
+        </div>
+        <div style="font-size:13px;color:${descColor};margin-top:5px;line-height:1.55;">${desc}</div>
+      </div>
+    </div>`;
+  }).join('');
+
+  document.getElementById('steps-drawer-content').innerHTML = `
+    <div style="display:flex;align-items:center;gap:12px;margin-bottom:16px;margin-top:6px;">
+      <div style="width:44px;height:44px;border-radius:14px;background:#26262E;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none;border:1px solid rgba(255,255,255,.07);">
+        <img src="${d.si ? `https://cdn.simpleicons.org/${d.si}` : `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${d.domain}&size=64`}" style="width:26px;height:26px;object-fit:contain;" onerror="this.style.display='none'">
+      </div>
+      <div style="flex:1;min-width:0;">
+        <div style="font-size:17px;font-weight:700;color:#F4F5F7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${d.name}</div>
+        <div style="display:flex;align-items:center;gap:6px;margin-top:3px;">
+          <span style="font-size:12px;font-weight:600;color:#6B6B73;letter-spacing:.5px;">${ticker}</span>
+        </div>
+      </div>
+      <div style="flex:none;">
+        <span style="font-size:28px;font-weight:800;color:${scoreColor};">${passCount}</span><span style="font-size:18px;color:#6B6B73;font-weight:500;">/6</span><span style="font-size:16px;color:#6B6B73;font-weight:500;margin-left:6px;">단계 통과</span>
+      </div>
+    </div>
+    <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:8px;margin-bottom:16px;">
+      <div style="background:#26262E;border-radius:10px;padding:10px 10px 8px;text-align:center;">
+        <div style="font-size:11.5px;color:#6B6B73;margin-bottom:2px;">펀더멘털</div>
+        <div style="font-size:15px;font-weight:600;color:#F4F5F7;">${d.score}점</div>
+      </div>
+      <div style="background:#26262E;border-radius:10px;padding:10px 10px 8px;text-align:center;">
+        <div style="font-size:11.5px;color:#6B6B73;margin-bottom:2px;">실적 전망</div>
+        <div style="font-size:15px;font-weight:600;color:${epsR==='NEUTRAL'||epsR==='DOWN'?'#4A4A55':'#F4F5F7'};">${(()=>{const ec=_EPS_REV_MAP[epsR];return ec?`EPS ${ec.label}`:'-';})()}</div>
+      </div>
+      <div style="background:#26262E;border-radius:10px;padding:10px 10px 8px;text-align:center;">
+        <div style="font-size:11.5px;color:#6B6B73;margin-bottom:2px;">MA50 대비</div>
+        <div style="font-size:15px;font-weight:600;color:#F4F5F7;">${d.gap50>=0?'+':''}${d.gap50}%</div>
+      </div>
+      <div style="background:#26262E;border-radius:10px;padding:10px 10px 8px;text-align:center;">
+        <div style="font-size:11.5px;color:#6B6B73;margin-bottom:2px;">평균 거래량</div>
+        <div style="font-size:15px;font-weight:600;color:${d.vol!=null?'#F4F5F7':'#4A4A55'};">${d.vol!=null?d.vol+'x':'-'}</div>
+      </div>
+    </div>
+    <div style="height:3px;background:#2A2A33;border-radius:2px;margin-bottom:18px;overflow:hidden;">
+      <div style="height:100%;width:${barPct}%;background:${barGrad};border-radius:2px;"></div>
+    </div>
+    ${rows}
+  `;
+
+  const overlay = document.getElementById('steps-overlay');
+  const drawer  = document.getElementById('steps-drawer');
+  overlay.style.display = 'block';
+  drawer.style.display  = 'block';
+  requestAnimationFrame(() => {
+    overlay.style.opacity = '1';
+    drawer.style.transform = 'translateX(-50%) translateY(0)';
+  });
+}
+
+function closeStepsDrawer() {
+  const overlay = document.getElementById('steps-overlay');
+  const drawer  = document.getElementById('steps-drawer');
+  overlay.style.opacity = '0';
+  drawer.style.transition = 'transform .28s cubic-bezier(.4,0,.6,1)';
+  drawer.style.transform = 'translateX(-50%) translateY(100%)';
+  setTimeout(() => {
+    overlay.style.display = 'none';
+    drawer.style.display  = 'none';
+    drawer.style.transition = '';
+  }, 280);
+}
+
+(function() {
+  let startY = 0, curY = 0, dragging = false;
+  function onTouchStart(e) {
+    const content = document.getElementById('steps-drawer-content');
+    if (content && content.scrollTop > 0) return;
+    startY = e.touches[0].clientY;
+    curY   = startY;
+    dragging = true;
+    const drawer = document.getElementById('steps-drawer');
+    drawer.style.transition = 'none';
+  }
+  function onTouchMove(e) {
+    if (!dragging) return;
+    curY = e.touches[0].clientY;
+    const dy = Math.max(0, curY - startY);
+    const drawer  = document.getElementById('steps-drawer');
+    const overlay = document.getElementById('steps-overlay');
+    drawer.style.transform = `translateX(-50%) translateY(${dy}px)`;
+    overlay.style.opacity  = String(Math.max(0, 1 - dy / 260));
+  }
+  function onTouchEnd() {
+    if (!dragging) return;
+    dragging = false;
+    const dy = curY - startY;
+    if (dy > 80) {
+      closeStepsDrawer();
+    } else {
+      const drawer  = document.getElementById('steps-drawer');
+      const overlay = document.getElementById('steps-overlay');
+      drawer.style.transition = 'transform .28s cubic-bezier(.32,1.2,.48,1)';
+      drawer.style.transform  = 'translateX(-50%) translateY(0)';
+      overlay.style.opacity   = '1';
+    }
+  }
+  document.getElementById('steps-drawer').addEventListener('touchstart', onTouchStart, { passive: true });
+  document.getElementById('steps-drawer').addEventListener('touchmove',  onTouchMove,  { passive: true });
+  document.getElementById('steps-drawer').addEventListener('touchend',   onTouchEnd);
+})();
 </script>
 </body>
 </html>
