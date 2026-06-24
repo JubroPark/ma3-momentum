@@ -257,7 +257,9 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - **하트(♥) = 보유 가정**: `momtFavSet`(localStorage). 최대 15개 UX 가이드 (초과 시 토스트)
 - **2단계 트레일링 스탑**: `momtTrimSet`(localStorage) — 1차 터치→비중 축소+기록, 스탑 위 회복→초기화, 2차 터치→전량 매도
 - **뱃지 신호**: `next_action` 기반. REMOVED+하트→추세 탈락, 비하트 REMOVED→조건 대기
-- **탑픽 점수 내림차순 정렬**: MCAP2 빌드 후 `.sort(score desc)`
+- **종목 정렬**: steps 내림차순 → score 내림차순 (모멘텀 없는 종목이 펀더멘털 점수만으로 상위 노출되는 문제 방지)
+- **`calc_weight()` 자동 비중 산출**: `deployed_tranches`(수동 집행 기록) 우선, 없으면 status 기반 fallback(ENTRY_1=30%/ENTRY_2=70%/ENTRY_3=90%/TRIM=45%). MA50 이격 +50%↑ →×0.7, +80%↑ →×0.4 과열 보정. TRIM_HALF 신호 →×0.5, EXIT →0%. 결과는 `weight`(0~1)·`weight_note`(문자열)로 positions.json에 자동 기록
+- **6단계 충족(steps/stepsList)**: 배치 실행마다 `calc_criteria_count()`가 자동 재계산 → positions.json 갱신
 - **로고**: Google Favicon API (`t2.gstatic.com/faviconV2`)
 - **한국어 종목명**: 네이버 금융 API — `.O`→`.K`→접미사 없음 순 fallback
 
@@ -360,7 +362,9 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
       "gap50_pct": 0, "dist_to_stop_pct": 0,
       "vol20ma": 0, "vol_ratio": 0 },
     "next_action": "HOLD | BUY_1 | BUY_2 | BUY_3 | TRIM_HALF | EXIT",
-    "reason": ""
+    "reason": "",
+    "weight": 0.7,
+    "weight_note": "과열 구간 (MA50 +55%) — 일부 현금화 검토"
   }]
 }
 ```
@@ -406,8 +410,8 @@ PANIC 완전 홀드 시 배너: "공황 올인 — 최고점 경신까지 리밸
 
 | 화면 | 내용 |
 |---|---|
-| 탑픽(종목 선정) | 필터칩(전체/매수 후보/보유/매도 신호) · 종목 카드(**탑픽 점수 0~100** · 상태 WATCH·ENTRY_1~3·TRIM·EXIT · 50MA 이격 · 스탑선까지 거리 · 추천 액션 배지 1차/2차/3차·절반축소·청산 · 하트) |
-| 관심종목(보유·줍줍) | 포지션 단위(평단·비중·**집행 트랜치 1·2·3**·recentHigh·트레일링 스탑선·수평지지·쿨다운) · 무한보유 강조(상승률 익절 버튼 없음) · 매도 신호 탭 · 현금 비중 카드 |
+| 탑픽(종목 선정) | 필터칩(전체/매수 후보/보유/매도 신호) · 종목 카드(6단계 인디케이터 도트 · 상태 배지 · 하트) · **카드 클릭 → 6단계 드로어**(펀더멘털/실적전망/MA50이격/거래량 4컬럼 + 단계별 pass/fail 행, 스와이프 닫기) |
+| 관심종목(보유·줍줍) | **단일 리스트**(보유현황/매도신호 탭 분리 없음) · 카드 클릭 → 동일 드로어 · 현금 비중 카드 · `weight` 자동 표시 |
 | 경제지표(모멘텀 국면) | **국면 GREEN/YELLOW/RED** 배지(SPX·NDX vs MA200/MA50) · 매수 게이트 상태(허용/보수/차단) · (표시)VIX·F&G·PMI 참고 |
 | 설정 | 줍줍 비중 방식·50MA 지지 범위·트레일링(고정/ATR/혼합·%·승수·절반축소)·추세이탈 매도·탑픽 임계·재선정·동시추적·국면 지수·어닝·실행 모드 (preset 선택 기본) |
 
