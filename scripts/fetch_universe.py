@@ -41,9 +41,9 @@ def get_ko_name(symbol: str, *_) -> str:
 
 DATA    = Path(__file__).parent.parent / "app/public/data"
 OUT     = DATA / "universe.json"
-MCAP_MIN   = 30_000_000_000   # $30B 이상
+MCAP_MIN   = 1_000_000_000    # $1B 이상 (중소형 포함)
 SCORE_MIN  = 60               # 저장 최소 점수
-TOP_N      = 40               # universe.json 저장 상한
+TOP_N      = 60               # universe.json 저장 상한
 RATE_DELAY = 0.5              # 종목 간 딜레이(초) — yfinance rate limit 회피
 
 
@@ -73,6 +73,40 @@ def get_nasdaq100() -> list:
     except Exception as e:
         print(f"[경고] NASDAQ100 조회 실패: {e}")
     return []
+
+
+def get_nasdaq_all() -> list:
+    """NASDAQ 스크리너 API로 미국 전체 상장 종목 티커 추출 (NASDAQ + NYSE).
+    API 응답의 marketCap으로 MCAP_MIN 이상만 반환 — yfinance 호출 수 대폭 절감."""
+    tickers = []
+    api_headers = {**_HEADERS, "Accept": "application/json"}
+    for exchange in ("NASDAQ", "NYSE"):
+        try:
+            url = (
+                f"https://api.nasdaq.com/api/screener/stocks"
+                f"?tableonly=true&limit=6000&exchange={exchange}"
+            )
+            r = requests.get(url, headers=api_headers, timeout=20)
+            r.raise_for_status()
+            rows = r.json().get("data", {}).get("table", {}).get("rows", [])
+            qualified = []
+            for row in rows:
+                sym = row.get("symbol", "").strip()
+                if not sym:
+                    continue
+                # API mcap: "$1,234,567,890" 형식
+                mcap_str = row.get("marketCap", "").replace("$", "").replace(",", "")
+                try:
+                    mcap = float(mcap_str)
+                except ValueError:
+                    mcap = 0
+                if mcap >= MCAP_MIN:
+                    qualified.append(sym)
+            tickers.extend(qualified)
+            print(f"  {exchange}: {len(rows)}개 → 시총 필터 후 {len(qualified)}개")
+        except Exception as e:
+            print(f"[경고] {exchange} 조회 실패: {e}")
+    return tickers
 
 
 # ── 정량 해자 프록시 (moat_score 자동, 0~5) ──────────────────────────────────
@@ -303,10 +337,11 @@ def main():
     today = date.today()
     print(f"\n[유니버스 스크리닝] {today}")
 
-    sp500   = get_sp500()
-    ndq100  = get_nasdaq100()
-    tickers = list(dict.fromkeys(sp500 + ndq100))  # 순서 유지 중복 제거
-    print(f"  후보 풀: {len(tickers)}개 (S&P500 {len(sp500)} + NASDAQ100 {len(ndq100)}, 중복 제거)")
+    sp500      = get_sp500()
+    ndq100     = get_nasdaq100()
+    nasdaq_all = get_nasdaq_all()
+    tickers = list(dict.fromkeys(sp500 + ndq100 + nasdaq_all))  # 순서 유지 중복 제거
+    print(f"  후보 풀: {len(tickers)}개 (S&P500 {len(sp500)} + NASDAQ100 {len(ndq100)} + NASDAQ/NYSE {len(nasdaq_all)}, 중복 제거)")
 
     results = []
     for i, sym in enumerate(tickers):
