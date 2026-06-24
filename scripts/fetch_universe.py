@@ -274,7 +274,7 @@ def calc_earnings_momentum(info: dict, eps_consistency: float = 0.0) -> float:
 
 
 def calc_toppick_score(growth: float, moat: float, earnings: float, health: float) -> int:
-    raw = (growth * 0.30 + moat * 0.30 + earnings * 0.20 + health * 0.20) / 5.0
+    raw = (growth * 0.30 + moat * 0.30 + earnings * 0.30 + health * 0.10) / 5.0
     return min(100, max(0, round(raw * 100)))
 
 

@@ -316,8 +316,8 @@ def calc_criteria_count(
 
 
 def calc_toppick_score(growth: float, moat: float, earnings: float, health: float) -> int:
-    """미주은 v2 가중치: growth 30% · moat 30% · earnings 20% · health 20%"""
-    raw = (growth * 0.30 + moat * 0.30 + earnings * 0.20 + health * 0.20) / 5.0
+    """미주은 v2 가중치: growth 30% · moat 30% · earnings 30% · health 10%"""
+    raw = (growth * 0.30 + moat * 0.30 + earnings * 0.30 + health * 0.10) / 5.0
     return min(100, max(0, round(raw * 100)))
 
 
@@ -478,6 +478,31 @@ def calc_weight(
     return round(base, 3), ""
 
 
+# next_action → status 자동 전이 테이블
+_TRANSITIONS: dict = {
+    # (현재 status, next_action) → (새 status, deployed_tranches 갱신)
+    ("WATCH",   "BUY_1"):     ("ENTRY_1", [1]),
+    ("ENTRY_1", "BUY_2"):     ("ENTRY_2", [1, 2]),
+    ("ENTRY_2", "BUY_3"):     ("ENTRY_3", [1, 2, 3]),
+    ("ENTRY_1", "TRIM_HALF"): ("TRIM",    None),   # None = tranches 유지
+    ("ENTRY_2", "TRIM_HALF"): ("TRIM",    None),
+    ("ENTRY_3", "TRIM_HALF"): ("TRIM",    None),
+    ("TRIM",    "EXIT"):      ("EXIT",    []),
+    ("ENTRY_1", "EXIT"):      ("EXIT",    []),
+    ("ENTRY_2", "EXIT"):      ("EXIT",    []),
+    ("ENTRY_3", "EXIT"):      ("EXIT",    []),
+}
+
+
+def auto_transition(status: str, deployed_tranches: list, next_action: str) -> tuple:
+    """(new_status, new_deployed_tranches) 반환. 전이 없으면 원본 그대로."""
+    key = (status, next_action)
+    if key not in _TRANSITIONS:
+        return status, deployed_tranches
+    new_status, new_tranches = _TRANSITIONS[key]
+    return new_status, (deployed_tranches if new_tranches is None else new_tranches)
+
+
 # ── 메인 처리 ─────────────────────────────────────────────────────────────────
 
 def process_symbol(item: dict, regime: str) -> tuple:
@@ -583,8 +608,14 @@ def process_symbol(item: dict, regime: str) -> tuple:
         toppick_score=toppick_score,
     )
 
-    # 추천 비중 자동 산출
+    # 상태 자동 전이
     deployed_tranches = item.get("deployed_tranches") or []
+    new_status, deployed_tranches = auto_transition(status, deployed_tranches, next_action)
+    if new_status != status:
+        print(f"    → 상태 전이: {status} → {new_status}  (tranches={deployed_tranches})")
+        status = new_status
+
+    # 추천 비중 자동 산출
     weight, weight_note = calc_weight(
         status=status,
         deployed_tranches=deployed_tranches,
@@ -602,6 +633,8 @@ def process_symbol(item: dict, regime: str) -> tuple:
         "name":    yf_name,
         "name_ko": name_ko,
         "domain":  domain,
+        "status":  status,
+        "deployed_tranches": deployed_tranches,
         "toppick_score": toppick_score,
         "recent_high": round(recent_high, 2),
         "trailing_stop_line": trailing_stop_line,

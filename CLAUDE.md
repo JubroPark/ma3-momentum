@@ -206,7 +206,7 @@
 
 ### 7-2. 탑픽 유니버스
 
-- 스코어 0~100 = 100·(growth .30 + moat .30 + earnings_momentum .20 + financial_health .20). 편입 임계 **70**, 분기 재선정, 동시 추적 **15**.
+- 스코어 0~100 = 100·(growth .30 + moat .30 + earnings_momentum .30 + financial_health .10). 편입 임계 **70**, 분기 재선정, 동시 추적 **15**.
 - `fundamentalsBroken == true` → 즉시 REMOVED 후보(매도 로직 연계). 신규 편입은 WATCH.
 
 ### 7-3. 시장 국면 (GREEN/YELLOW/RED · 모멘텀 전용)
@@ -249,16 +249,18 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 
 ### 7-8. 구현 확정 사항 (현재 운영 중)
 
-- **universe.json**: S&P500+NASDAQ100 스크리닝, TOP_N=40, score≥60 저장
+- **universe.json**: NASDAQ+NYSE 전체 스크리닝(시총 $1B 이상), TOP_N=60, score≥60 저장. NASDAQ 스크리너 API(`api.nasdaq.com/api/screener/stocks`)로 사전 필터링 후 yfinance 호출
 - **positions.json 편입**: score≥70인 종목만 WATCH로 자동 편입
 - **REMOVED 임계**: score<40 (펀더 완전 붕괴 수준만) → WATCH→REMOVED
 - **moat_score 자동 계산**: 4요소 프록시 — Pricing Power(매출이익률)·Scale(OPM+ROE)·Innovation(R&D/Revenue, income_stmt에서 추출)·Market Premium(PBR). 수동 설정값(≠3.0) 우선
 - **EPS 일관성**: `ticker.income_stmt`의 Diluted EPS 연간 추세 → 0~1.0 → earnings_momentum에 ×2.0 반영
+- **상태 자동 전이**: `next_action` 신호 → status 자동 전이(`_TRANSITIONS` 테이블). BUY_1→ENTRY_1, BUY_2→ENTRY_2, BUY_3→ENTRY_3, TRIM_HALF→TRIM, EXIT→EXIT
 - **하트(♥) = 보유 가정**: `momtFavSet`(localStorage). 최대 15개 UX 가이드 (초과 시 토스트)
 - **2단계 트레일링 스탑**: `momtTrimSet`(localStorage) — 1차 터치→비중 축소+기록, 스탑 위 회복→초기화, 2차 터치→전량 매도
 - **뱃지 신호**: `next_action` 기반. REMOVED+하트→추세 탈락, 비하트 REMOVED→조건 대기
 - **종목 정렬**: steps 내림차순 → score 내림차순 (모멘텀 없는 종목이 펀더멘털 점수만으로 상위 노출되는 문제 방지)
-- **`calc_weight()` 자동 비중 산출**: `deployed_tranches`(수동 집행 기록) 우선, 없으면 status 기반 fallback(ENTRY_1=30%/ENTRY_2=70%/ENTRY_3=90%/TRIM=45%). MA50 이격 +50%↑ →×0.7, +80%↑ →×0.4 과열 보정. TRIM_HALF 신호 →×0.5, EXIT →0%. 결과는 `weight`(0~1)·`weight_note`(문자열)로 positions.json에 자동 기록
+- **`calc_weight()` 자동 비중 산출**: `deployed_tranches`(수동 집행 기록) 우선, 없으면 status 기반 fallback(ENTRY_1=30%/ENTRY_2=70%/ENTRY_3=90%/TRIM=45%). MA50 이격 +50%↑ →×0.7, +80%↑ →×0.4 과열 보정. TRIM_HALF 신호 →×0.5, EXIT →0%. 결과는 `weight`(0~1)·`weight_note`(문자열)로 positions.json에 기록 (백엔드 참고값)
+- **관심종목 탭 추천 비중 (프론트 동적 계산)**: ENTRY_x 종목만 active로 간주(WATCH=0%). 종합점수(toppick_score 50% + steps/6×100 50%) 비례 정규화. 마삼 모드별 주식 한도: BULL 100% / NORMAL 90% / CRISIS 80% / PANIC 70%. 현금 카드 = 100% - 합산. 종목 추가·삭제 시 즉시 재계산
 - **6단계 충족(steps/stepsList)**: 배치 실행마다 `calc_criteria_count()`가 자동 재계산 → positions.json 갱신
 - **로고**: Google Favicon API (`t2.gstatic.com/faviconV2`)
 - **한국어 종목명**: 네이버 금융 API — `.O`→`.K`→접미사 없음 순 fallback

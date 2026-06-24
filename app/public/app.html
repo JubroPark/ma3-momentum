@@ -1026,7 +1026,7 @@
               <div style="text-align:right;">
                 ${watchlist
                   ? `<div style="font-size:11px;color:var(--txt-3);margin-bottom:2px;">추천 비중</div>
-                     <div style="display:flex;align-items:baseline;gap:2px;"><span class="fav-weight-num" style="font-size:17.5px;font-weight:700;color:#f4f5f7;" data-weight="${d.weight}">${d.weight}</span><span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:1px;">%</span></div>`
+                     <div style="display:flex;align-items:baseline;gap:2px;"><span class="fav-weight-num" style="font-size:17.5px;font-weight:700;color:#f4f5f7;" data-weight="${d._fw !== undefined ? d._fw : d.weight}">${d._fw !== undefined ? d._fw : d.weight}</span><span style="font-size:13px;font-weight:500;color:var(--txt-3);margin-left:1px;">%</span></div>`
                   : `<span style="font-size:11px;font-weight:700;padding:3px 8px;border-radius:6px;background:${badge.bg};color:${badge.color};white-space:nowrap;">${badge.label}</span>`
                 }
               </div>
@@ -1162,8 +1162,23 @@
           </div>`;
           return;
         }
-        const totalWeight = list.reduce((s, d) => s + (d.weight || 0), 0);
-        const cashWeight = Math.max(0, 100 - totalWeight);
+        // 동적 비중: 마삼 모드별 주식 한도 × 트랜치 × 종합점수 비례
+        // 종합점수 = toppick_score 50% + steps(0~6 → 0~100) 50%
+        const _MODE_MAX = {BULL:100, NORMAL:90, CRISIS:80, PANIC:70};
+        const _investMax = _MODE_MAX[(typeof masam !== 'undefined' && masam.mode) || 'NORMAL'] || 90;
+        const _TB = {ENTRY_1:30, ENTRY_2:70, ENTRY_3:90, TRIM:45};
+        const active = list.filter(d => _TB[d.status] !== undefined);
+        list.forEach(d => { d._fw = 0; });
+        if (active.length > 0) {
+          const raws = active.map(d => {
+            const stepsPct = d.steps != null ? (d.steps / 6 * 100) : 0;
+            const combined = (d.score || 0) * 0.5 + stepsPct * 0.5;
+            return _TB[d.status] * (combined / 100 || 0.01);
+          });
+          const totalRaw = raws.reduce((s, v) => s + v, 0);
+          active.forEach((d, i) => { d._fw = Math.round(raws[i] / totalRaw * _investMax); });
+        }
+        const cashWeight = 100 - list.reduce((s, d) => s + (d._fw || 0), 0);
         el.innerHTML = list.map((d, i) => momtRankCard(d, i, true)).join('') + makeCashCard(cashWeight);
         twemoji && twemoji.parse(el, {folder:'svg',ext:'.svg'});
         if (window.Iconify) Iconify.scan(el);
@@ -2115,6 +2130,7 @@ function initMaxPctUI(rateEnv) {
         score:   item.toppick_score || 0,
         signal:  itemSignal(item),
         weight:  Math.round((item.weight || 0) * 100),
+        status:  item.status || 'WATCH',
         gap50:   item.metrics && item.metrics.gap50_pct != null ? item.metrics.gap50_pct : 0,
         vol:     item.metrics && item.metrics.vol_ratio != null ? item.metrics.vol_ratio.toFixed(1) : null,
         epsRev:  item.metrics && item.metrics.eps_revision || null,
