@@ -959,6 +959,7 @@
 
       const SIGNAL_TO_ACTION = {
         '조건 대기':   { label:'조건 대기',   bg:'rgba(162,201,58,.15)',  color:'#A2C93A' },
+        '진입 임박':   { label:'진입 임박',   bg:'rgba(247,169,59,.18)',  color:'#F7A93B' },
         '추세 돌파':   { label:'추세 돌파',   bg:'rgba(240,68,82,.18)',   color:'var(--up)' },
         '눌림 매수':   { label:'눌림 매수',   bg:'rgba(240,68,82,.11)',   color:'var(--up)' },
         '지지 방어': { label:'지지 방어', bg:'rgba(240,68,82,.07)',   color:'var(--up)' },
@@ -2116,6 +2117,7 @@ function initMaxPctUI(rateEnv) {
       // TRIM_HALF/EXIT는 하트 종목(보유 가정)에만 의미 있는 신호
       const action = item.next_action;
       if (action === 'TRIM_HALF' || action === 'EXIT') return '조건 대기';
+      if (item.status === 'WATCH' && (item.steps || 0) >= 5 && (item.toppick_score || 0) >= 75) return '진입 임박';
       return _ACTION_SIG[action] || '조건 대기';
     }
     MCAP2.length = 0;
