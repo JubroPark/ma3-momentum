@@ -1789,10 +1789,10 @@
       // 자릿수마다 다른 속도 (앞자리일수록 느리게)
       const duration = 0.4 + (to.length - i) * 0.18;
       const delay    = i * 0.06;
-      track.style.transform = 'translateY(-50%)';
+      track.style.transform = 'translateY(0%)';
       track.style.transition = `transform ${duration.toFixed(2)}s cubic-bezier(.22,.61,.36,1) ${delay.toFixed(2)}s`;
       requestAnimationFrame(() => requestAnimationFrame(() => {
-        track.style.transform = 'translateY(0%)';
+        track.style.transform = 'translateY(-50%)';
       }));
     });
   }
