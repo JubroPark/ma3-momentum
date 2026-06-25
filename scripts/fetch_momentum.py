@@ -103,6 +103,15 @@ def calc_growth_score(info: dict) -> float:
     rev = _safe(info, "revenueGrowth", 0.0)
     earn = _safe(info, "earningsGrowth", 0.0)
 
+    # GAAP 일회성 비용·SBC·상각으로 earningsGrowth가 왜곡되는 경우 방어:
+    # trailing EPS가 양수이고 forward EPS가 크게 높으면 forward 성장률로 대체
+    trailing_eps = _safe(info, "trailingEps", 0.0)
+    forward_eps  = _safe(info, "forwardEps",  0.0)
+    if earn <= -0.5 and trailing_eps > 0 and forward_eps > trailing_eps:
+        earn = (forward_eps - trailing_eps) / trailing_eps
+    elif (info.get('earningsGrowth') is None) and abs(trailing_eps) < 0.5 and forward_eps > 1.0:
+        earn = forward_eps
+
     def score_rev(r):
         if r > 0.50: return 5.0
         if r > 0.30: return 4.0
@@ -251,7 +260,10 @@ def calc_earnings_momentum(info: dict, eps_consistency: float = 0.0) -> float:
         elif ratio > 1.00: eps_dir = 0.5
         else:              eps_dir = 0.0
     else:
-        eps_dir = 0.0
+        if abs(trailing_eps) < 0.5 and forward_eps > 1.0:
+            eps_dir = 1.5
+        else:
+            eps_dir = 0.0
 
     if qtr_growth > 0.50:   qtr = 1.5
     elif qtr_growth > 0.20: qtr = 1.0
