@@ -1,7 +1,7 @@
 {
   "as_of": "2026-06-25",
   "total_screened": 2750,
-  "qualified": 148,
+  "qualified": 156,
   "items": [
     {
       "symbol": "LLY",
@@ -498,6 +498,19 @@
       "sector": "Energy"
     },
     {
+      "symbol": "LQDA",
+      "name": "Liquidia Corporation",
+      "name_ko": "리퀴디아",
+      "domain": "liquidia.com",
+      "toppick_score": 72,
+      "moat_score": 4.75,
+      "growth_score": 5.0,
+      "earnings_score": 1.5,
+      "health_score": 2.5,
+      "market_cap": 6717628416,
+      "sector": "Healthcare"
+    },
+    {
       "symbol": "COCO",
       "name": "The Vita Coco Company, Inc.",
       "name_ko": "비타 코코 컴퍼니",
@@ -768,19 +781,6 @@
       "earnings_score": 3.0,
       "health_score": 2.0,
       "market_cap": 4549344768,
-      "sector": "Healthcare"
-    },
-    {
-      "symbol": "VCYT",
-      "name": "Veracyte, Inc.",
-      "name_ko": "베라사이트",
-      "domain": "veracyte.com",
-      "toppick_score": 68,
-      "moat_score": 2.75,
-      "growth_score": 4.0,
-      "earnings_score": 3.8,
-      "health_score": 2.4,
-      "market_cap": 4529030656,
       "sector": "Healthcare"
     }
   ]
