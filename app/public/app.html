@@ -2317,7 +2317,7 @@ function initMaxPctUI(rateEnv) {
     if (typeof RANGE_DATA !== 'undefined') {
       if (r1) {
         RANGE_DATA.nvda.cur             = r1.price.toFixed(2);
-        RANGE_DATA.nvda.curFrom         = (r1.price - 0.24).toFixed(2);
+        RANGE_DATA.nvda.curFrom         = RANGE_DATA.nvda.cur;
         RANGE_DATA.nvda.high            = (r1.ath || 235.47).toFixed(2);
         RANGE_DATA.nvda.highFrom        = RANGE_DATA.nvda.high;
         RANGE_DATA.nvda.low             = (r1.intra_low || r1.price).toFixed(2);
@@ -2326,7 +2326,7 @@ function initMaxPctUI(rateEnv) {
       }
       if (qqq) {
         RANGE_DATA.qqq.cur             = (qqq.price || 740.62).toFixed(2);
-        RANGE_DATA.qqq.curFrom         = ((qqq.price || 740.62) - 0.24).toFixed(2);
+        RANGE_DATA.qqq.curFrom         = RANGE_DATA.qqq.cur;
         RANGE_DATA.qqq.high            = (qqq.ath || 746.16).toFixed(2);
         RANGE_DATA.qqq.highFrom        = RANGE_DATA.qqq.high;
         RANGE_DATA.qqq.low             = (qqq.intra_low || qqq.price || 686.37).toFixed(2);
