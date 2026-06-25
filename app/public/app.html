@@ -2503,9 +2503,9 @@ function initMaxPctUI(rateEnv) {
       if (descEl)  { descEl.style.display = ''; descEl.innerHTML = cfg.desc.replace('\n', '<br>'); }
 
       const WATCHLIST_REGIME_TXT = {
-        GREEN:  `SPX·NDX 추세 강세 · <span style="color:#2BC4B6;font-weight:600;">정상 진입 가능</span>`,
-        YELLOW: `추세 약화 · 경계 국면 · <span style="color:#F7A93B;font-weight:600;">1차 진입 보류</span>`,
-        RED:    `MA200 이탈 감지 · <span style="color:var(--down);font-weight:600;">매수 차단 · 위험 회피</span>`,
+        GREEN:  `SPX·NDX 추세 강세 · <span style="color:#3182F6;font-weight:600;">정상 진입 가능</span>`,
+        YELLOW: `추세 약화 · <span style="color:#F7A93B;font-weight:600;">1차 진입 보류</span>`,
+        RED:    `MA200 이탈 · <span style="color:var(--down);font-weight:600;">매수 차단 · 위험 회피</span>`,
       };
       const wlTxtEl = document.getElementById('watchlist-regime-txt');
       if (wlTxtEl) wlTxtEl.innerHTML = WATCHLIST_REGIME_TXT[regime] || WATCHLIST_REGIME_TXT.GREEN;
