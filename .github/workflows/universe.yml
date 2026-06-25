@@ -33,4 +33,4 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           git add app/public/data/universe.json
           git diff --staged --quiet || git commit -m "data: 유니버스 스크리닝 $(date -u '+%Y-%m-%d')"
-          git push
+          git pull --rebase origin main && git push

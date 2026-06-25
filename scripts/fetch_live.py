@@ -32,11 +32,11 @@ def save_json(path: Path, data: dict) -> None:
 def fetch_quote(ticker: str) -> Optional[dict]:
     try:
         t = yf.Ticker(ticker)
-        fi = t.fast_info
-        price = getattr(fi, "last_price", None)
-        prev  = getattr(fi, "previous_close", None)
-        if price is None or prev is None:
+        hist = t.history(period="2d", auto_adjust=True)
+        if len(hist) < 2:
             return None
+        price = float(hist["Close"].iloc[-1])
+        prev  = float(hist["Close"].iloc[-2])
         chg = (price - prev) / prev * 100
         return {"price": round(price, 2), "change_pct": round(chg, 2)}
     except Exception:
