@@ -400,8 +400,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.42)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "마이크론 테크놀로지",
       "domain": "micron.com",
       "weight_note": "과열 구간 (MA50 +54%) — 일부 현금화 검토"
@@ -490,8 +490,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.31)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "씨게이트",
       "domain": "seagate.com",
       "weight_note": ""
@@ -1294,8 +1294,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.36)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "하우멧 에어로스페이스",
       "domain": "howmet.com",
       "weight_note": ""
@@ -3022,8 +3022,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -3163,12 +3163,13 @@
       "name": "DHT Holdings, Inc.",
       "name_ko": "DHT 홀딩스",
       "domain": "dhtankers.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 2.95,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 19.96,
       "trailing_stop_line": 15.44,
@@ -3200,8 +3201,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.45)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+2.9%) — 2차 진입",
       "weight_note": ""
     },
     {
@@ -3598,8 +3599,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.51)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3999,8 +4000,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+0.3%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     }
   ]
