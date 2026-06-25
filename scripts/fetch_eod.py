@@ -334,7 +334,7 @@ def main():
 
     ixic_close = latest_close(ixic)
     ixic_chg   = daily_change_pct(ixic)
-    ixic_ath   = float(yf.Ticker("^IXIC").history(period="max", auto_adjust=True)["Close"].max())
+    ixic_ath   = float(yf.Ticker("^IXIC").history(period="max", auto_adjust=False)["Close"].max())
     ixic_ma200 = ma(ixic, 200)
     consec_up  = consecutive_up_days(ixic)
     vix_val    = round(latest_close(vix), 2)
@@ -373,7 +373,7 @@ def main():
     # 5. 1등주 가격
     rank1_hist = fetch_history(rank1_ticker)
     rank1_close = latest_close(rank1_hist)
-    rank1_ath   = float(yf.Ticker(rank1_ticker).history(period="max", auto_adjust=True)["Close"].max())
+    rank1_ath   = float(yf.Ticker(rank1_ticker).history(period="max", auto_adjust=False)["Close"].max())
 
     # 위기 저점: 마지막 마삼일 이후 최저 종가 (V자 반등 기준점)
     last_masam_str = new_masam_state.get("last_masam_date")

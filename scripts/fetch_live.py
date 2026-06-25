@@ -81,8 +81,8 @@ def fetch_ohlc_ath(ticker: str, since_date: Optional[str] = None) -> dict:
     """사상최고점(종가) + 마삼 이후 장중 저가"""
     try:
         t = yf.Ticker(ticker)
-        hist_max  = t.history(period="max", auto_adjust=True)
-        hist_1y   = t.history(period="1y",  auto_adjust=True)
+        hist_max  = t.history(period="max", auto_adjust=False)
+        hist_1y   = t.history(period="1y",  auto_adjust=False)
         ath       = float(hist_max["Close"].max())            if not hist_max.empty else 0
         prev_high = float(hist_1y["Close"].iloc[:-1].max())  if len(hist_1y) > 1 else ath
         # 마삼 이후 장중 저가
