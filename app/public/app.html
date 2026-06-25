@@ -851,7 +851,7 @@
           <span style="font-size:14px;font-weight:700;background:linear-gradient(90deg,#7c6dff,#4593FC);-webkit-background-clip:text;background-clip:text;color:transparent;">✦ 모멘텀 시그널</span>
           <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="#4593FC" stroke-width="2.5"><path d="M9 6l6 6-6 6"/></svg>
         </div>
-        <div style="font-size:14px;font-weight:500;color:var(--txt);line-height:1.4;padding-bottom:12px;">SPY &lt; MA200 매수 보수화 · 청산 강화 · <span style="color:var(--down);font-weight:600;">위험 회피</span></div>
+        <div id="watchlist-regime-txt" style="font-size:14px;font-weight:500;color:var(--txt);line-height:1.4;padding-bottom:12px;">-</div>
         <div style="height:1px;margin:0 -17px;background:linear-gradient(90deg,rgba(100,115,255,0) 0%,rgba(100,115,255,.55) 50%,rgba(100,115,255,0) 100%);"></div>
       </div>
 
@@ -2119,8 +2119,7 @@ function initMaxPctUI(rateEnv) {
       // TRIM_HALF/EXIT는 하트 종목(보유 가정)에만 의미 있는 신호
       const action = item.next_action;
       if (action === 'TRIM_HALF' || action === 'EXIT') return '조건 대기';
-      const stepsCount = item.metrics && item.metrics.steps_count != null ? item.metrics.steps_count : 0;
-      if (item.status === 'WATCH' && stepsCount >= 5 && (item.toppick_score || 0) >= 75) return '진입 임박';
+      if (item.status === 'WATCH' && (item.steps || 0) >= 5 && (item.toppick_score || 0) >= 75) return '진입 임박';
       return _ACTION_SIG[action] || '조건 대기';
     }
     MCAP2.length = 0;
@@ -2502,6 +2501,14 @@ function initMaxPctUI(rateEnv) {
       if (badgeEl) { badgeEl.style.background = cfg.bg; badgeEl.style.color = cfg.color; }
       if (labelEl) labelEl.textContent = cfg.label;
       if (descEl)  { descEl.style.display = ''; descEl.innerHTML = cfg.desc.replace('\n', '<br>'); }
+
+      const WATCHLIST_REGIME_TXT = {
+        GREEN:  `SPX·NDX 추세 강세 · <span style="color:#2BC4B6;font-weight:600;">정상 진입 가능</span>`,
+        YELLOW: `추세 약화 · 경계 국면 · <span style="color:#F7A93B;font-weight:600;">1차 진입 보류</span>`,
+        RED:    `MA200 이탈 감지 · <span style="color:var(--down);font-weight:600;">매수 차단 · 위험 회피</span>`,
+      };
+      const wlTxtEl = document.getElementById('watchlist-regime-txt');
+      if (wlTxtEl) wlTxtEl.innerHTML = WATCHLIST_REGIME_TXT[regime] || WATCHLIST_REGIME_TXT.GREEN;
 
       // SPX/NDX 수치
       const spx = momtMkt.spx, ndx = momtMkt.ndx;
