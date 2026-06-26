@@ -2119,7 +2119,8 @@ function initMaxPctUI(rateEnv) {
       // TRIM_HALF/EXIT는 하트 종목(보유 가정)에만 의미 있는 신호
       const action = item.next_action;
       if (action === 'TRIM_HALF' || action === 'EXIT') return '조건 대기';
-      if (item.status === 'WATCH' && (item.steps || 0) >= 5 && (item.toppick_score || 0) >= 75) return '진입 임박';
+      const stepsCount = item.metrics && item.metrics.steps_count != null ? item.metrics.steps_count : 0;
+      if (item.status === 'WATCH' && stepsCount >= 5 && (item.toppick_score || 0) >= 75) return '진입 임박';
       return _ACTION_SIG[action] || '조건 대기';
     }
     MCAP2.length = 0;
