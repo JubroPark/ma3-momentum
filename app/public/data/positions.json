@@ -268,8 +268,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.24)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "일라이 릴리",
       "domain": "lilly.com",
       "weight_note": ""
@@ -720,8 +720,8 @@
           true
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(+0.9%) + 탑픽점수 77",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "name_ko": "애널로그 디바이시스",
       "domain": "analog.com",
       "weight_note": ""
@@ -942,8 +942,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.82)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "비자",
       "domain": "visa.com",
       "weight_note": ""
@@ -2053,8 +2053,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 3.26)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -2231,8 +2231,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 3.33)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -2277,8 +2277,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.54)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -2413,8 +2413,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.24)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -2639,8 +2639,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.45)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -2648,12 +2648,13 @@
       "name": "Adeia Inc.",
       "name_ko": "아데이아",
       "domain": "adeia.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 4.15,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 33.57,
       "trailing_stop_line": 23.5,
@@ -2668,7 +2669,7 @@
         "atr_pct": 0.0729,
         "gap50_pct": 2.7,
         "dist_to_stop_pct": 23.8,
-        "vol20ma": 2546272,
+        "vol20ma": 2545179,
         "vol_ratio": 1.64,
         "growth_score": 3.5,
         "earnings_score": 3.8,
@@ -2685,8 +2686,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.64)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+2.7%) — 2차 진입",
       "weight_note": ""
     },
     {
@@ -2821,8 +2822,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 4.04)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -2911,8 +2912,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.32)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": "과열 구간 (MA50 +54%) — 일부 현금화 검토"
     },
     {
@@ -3001,8 +3002,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.58)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3135,8 +3136,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.10)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3316,8 +3317,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.44)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3406,8 +3407,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 4.75)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3452,8 +3453,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.53)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3542,8 +3543,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.98)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3766,8 +3767,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.82)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3812,8 +3813,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.61)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3858,8 +3859,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.63)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3904,8 +3905,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.29)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
