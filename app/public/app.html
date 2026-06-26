@@ -2889,7 +2889,7 @@ function closeStepsDrawer() {
   let startY = 0, active = false;
 
   document.addEventListener('touchstart', e => {
-    if (window.scrollY === 0) { startY = e.touches[0].clientY; active = true; }
+    if (window.scrollY === 0 && e.touches[0].clientY < 120) { startY = e.touches[0].clientY; active = true; }
   }, { passive: true });
 
   document.addEventListener('touchmove', e => {
