@@ -2,7 +2,7 @@ name: 유니버스 스크리닝
 
 on:
   schedule:
-    # 매일 (월~금) 23:00 UTC — EOD 배치(22:00) 완료 후 실행, 익일 sync에 반영
+    # 매일 (월~금) 23:00 UTC — EOD 배치(22:00) 완료 후 실행, 스크리닝 후 즉시 positions sync
     - cron: "0 23 * * 1-5"
   workflow_dispatch: # 수동 실행 가능
 
@@ -27,10 +27,14 @@ jobs:
       - name: 유니버스 스크리닝
         run: python scripts/fetch_universe.py
 
+      - name: 모멘텀 sync (universe → positions)
+        run: python scripts/fetch_momentum.py
+
       - name: JSON 커밋 & 푸시
         run: |
           git config user.name "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add app/public/data/universe.json
-          git diff --staged --quiet || git commit -m "data: 유니버스 스크리닝 $(date -u '+%Y-%m-%d')"
+          git add app/public/data/universe.json app/public/data/positions.json
+          git restore --staged app/public/data/push_subscriptions.json 2>/dev/null || true
+          git diff --staged --quiet || git commit -m "data: 유니버스 스크리닝 + positions sync $(date -u '+%Y-%m-%d')"
           git pull --rebase origin main && git push
