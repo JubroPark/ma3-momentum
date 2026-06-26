@@ -274,7 +274,7 @@
   .fg-bar{position:relative;height:5px;border-radius:3px;background:linear-gradient(90deg,#E84C5A 0%,#E84C5A 25%,#F7A13A 25%,#F7A13A 45%,#9A9AA3 45%,#9A9AA3 55%,#2BC4B6 55%,#2BC4B6 75%,#3182F6 75%,#3182F6 100%);}
   .fg-needle{position:absolute;top:-4px;width:3px;height:13px;background:#fff;border-radius:2px;transform:translateX(-50%);box-shadow:0 0 4px rgba(255,255,255,.5);}
   /* 경제지표 공통 */
-  .esec{display:flex;align-items:center;justify-content:space-between;padding:20px 17px 8px;}
+  .esec{display:flex;align-items:center;gap:16px;padding:20px 17px 8px;}
   .esec .etit{font-size:19.7px;font-weight:800;letter-spacing:-.5px;color:var(--txt);}
   .esec .ebadge{font-size:11px;font-weight:700;padding:3px 9px;border-radius:6px;}
   /* duo 카드 */
@@ -289,7 +289,7 @@
   .inset .tx s{display:block;font-size:12px;color:var(--txt-2);text-decoration:none;font-weight:500;margin-top:2px;}
   /* 칩 */
   .chip{font-size:11.5px;font-weight:800;padding:3px 7px;border-radius:6px;flex:none;}
-  .srow{display:flex;align-items:center;justify-content:space-between;padding:16px 0;border-bottom:1px solid var(--line);}
+  .srow{display:flex;align-items:center;gap:16px;padding:16px 0;border-bottom:1px solid var(--line);}
   .srow:last-child{border-bottom:none;}
   .srow .sk{font-size:14px;font-weight:500;}
   .srow .sk s{display:block;font-size:12.5px;color:var(--txt-3);font-weight:500;text-decoration:none;margin-top:3px;}
@@ -564,13 +564,13 @@
           <span id="range-chevron" style="display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);color:var(--txt-3);transition:transform .2s;flex:none;"><span class="iconify" data-icon="heroicons:chevron-down" data-width="10" data-height="10"></span></span>
         </div>
         <div id="range-dropdown" style="display:none;position:absolute;top:100%;left:17px;background:var(--surface-2);border-radius:12px;overflow:hidden;z-index:20;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,.4);">
-          <div id="range-opt-nvda" onclick="selectRange('nvda')" style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:14.5px;font-weight:600;color:#fff;cursor:pointer;border-bottom:1px solid var(--line);">
+          <div id="range-opt-nvda" onclick="selectRange('nvda')" style="display:flex;align-items:center;gap:16px;padding:13px 16px;font-size:14.5px;font-weight:600;color:#fff;cursor:pointer;border-bottom:1px solid var(--line);">
             1등주 (<span id="range-label-rank1">NVDA</span>)<span id="range-check-nvda" style="color:var(--blue);font-size:15px;">✓</span>
           </div>
           <div id="range-opt-rank2" onclick="selectRange('rank2')" style="display:none;align-items:center;justify-content:space-between;padding:13px 16px;font-size:14.5px;font-weight:600;color:var(--txt-3);cursor:pointer;border-bottom:1px solid var(--line);">
             2등주 (<span id="range-label-rank2">MSFT</span>)<span id="range-check-rank2" style="color:var(--blue);font-size:15px;visibility:hidden;">✓</span>
           </div>
-          <div id="range-opt-qqq" onclick="selectRange('qqq')" style="display:flex;align-items:center;justify-content:space-between;padding:13px 16px;font-size:14.5px;font-weight:600;color:var(--txt-3);cursor:pointer;">
+          <div id="range-opt-qqq" onclick="selectRange('qqq')" style="display:flex;align-items:center;gap:16px;padding:13px 16px;font-size:14.5px;font-weight:600;color:var(--txt-3);cursor:pointer;">
             QQQ<span id="range-check-qqq" style="color:var(--blue);font-size:15px;visibility:hidden;">✓</span>
           </div>
         </div>
@@ -715,7 +715,7 @@
       </div>
 
       <!-- 추가 자금 투입 조건 -->
-      <div class="sec-h" style="display:flex;align-items:center;justify-content:space-between;">
+      <div class="sec-h" style="display:flex;align-items:center;gap:16px;">
         <span>추가 자금 투입 조건</span>
         <div id="rsi-tg" style="margin-right:17px;display:flex;background:#1e1e26;border-radius:10px;padding:3px;gap:2px;">
           <button class="on" onclick="switchRsiTarget('nvda',this)" style="border:none;background:#2e2e3a;color:#f4f5f7;font-family:inherit;font-size:12px;font-weight:500;padding:3.5px 9px;border-radius:8px;cursor:pointer;">1등주</button>
@@ -749,7 +749,7 @@
       <div style="margin:0 17px 2px;padding:3.4px 0 0;font-size:12px;color:var(--txt-3);">6종 중 1개 충족 시 리밸런싱/말뚝박기 → 전량 올인 전환</div>
       <div style="margin:8px 17px 0;background:var(--surface);border-radius:13.6px;overflow:hidden;">
         <!-- 조건 ① -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:16px;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
             <div id="allin-cond1-title" style="font-size:13.8px;font-weight:700;color:var(--txt-1);">한달 +1일 마삼 미발생</div>
             <div id="allin-cond1-sub" style="font-size:12px;color:var(--txt-3);margin-top:3px;">익월 같은 날 +1일까지 마삼 無 <span style="color:#F7A93B;font-weight:600;">· 공황 기간 시 2달+1일</span></div>
@@ -760,7 +760,7 @@
           </div>
         </div>
         <!-- 조건 ② -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:16px;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
             <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">8거래일 연속 상승</div>
             <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">나스닥 8일 연속 양봉 마감</div>
@@ -771,7 +771,7 @@
           </div>
         </div>
         <!-- 조건 ③ -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:16px;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
             <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">1등주 전고점 돌파</div>
             <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">NVDA 사상 최고치 상향 돌파</div>
@@ -782,7 +782,7 @@
           </div>
         </div>
         <!-- 조건 ④ -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:16px;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
             <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">나스닥 전고 돌파</div>
             <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">^IXIC 직전 고점 상향 돌파</div>
@@ -793,7 +793,7 @@
           </div>
         </div>
         <!-- V자 올인 -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;border-bottom:1px solid var(--line);">
+        <div style="display:flex;align-items:center;gap:16px;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div>
             <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">2구간 V자 반등</div>
             <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">비제로금리 기준 +10% 회복 · 제로금리 기준 +5% 회복</div>
@@ -804,7 +804,7 @@
           </div>
         </div>
         <!-- 긴급 올인 -->
-        <div style="display:flex;align-items:center;justify-content:space-between;padding:13px 15px;">
+        <div style="display:flex;align-items:center;gap:16px;padding:13px 15px;">
           <div>
             <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">긴급 올인</div>
             <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">1등주 고점 대비 -30% 하락</div>
@@ -1313,7 +1313,7 @@
 
         <div class="disclaimer"><p>서비스를 통해 제공되는 정보는 단순 참고용이며 투자 권유가 아닙니다.<br>모든 투자 판단은 개인의 책임이며 실거래 전 백테스트 검증이 필수입니다.</p></div>
 
-        <div style="margin:0 17px 24px;padding:14px 16px;background:var(--surface-2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="margin:0 17px 24px;padding:14px 16px;background:var(--surface-2);border-radius:12px;display:flex;align-items:center;gap:16px;">
           <div style="font-size:11px;font-weight:600;color:var(--txt-3);letter-spacing:.04em;">전략 출처</div>
           <a href="https://www.youtube.com/@%EC%A0%9C%EC%9D%B4%EB%94%94%EB%B6%80%EC%9E%90%EC%97%B0%EA%B5%AC%EC%86%8CJDRich" target="_blank" rel="noopener" style="text-decoration:none;">
             <div style="display:flex;align-items:center;gap:6px;">
@@ -1413,7 +1413,7 @@
 
         <div class="disclaimer"><p>서비스를 통해 제공되는 정보는 단순 참고용이며 투자 권유가 아닙니다.<br>모든 투자 판단은 개인의 책임이며 실거래 전 백테스트 검증이 필수입니다.</p></div>
 
-        <div style="margin:0 17px 24px;padding:14px 16px;background:var(--surface-2);border-radius:12px;display:flex;align-items:center;justify-content:space-between;">
+        <div style="margin:0 17px 24px;padding:14px 16px;background:var(--surface-2);border-radius:12px;display:flex;align-items:center;gap:16px;">
           <div style="font-size:11px;font-weight:600;color:var(--txt-3);letter-spacing:.04em;">전략 출처</div>
           <a href="https://www.youtube.com/@mijooeun" target="_blank" rel="noopener" style="text-decoration:none;">
             <div style="display:flex;align-items:center;gap:6px;">
@@ -1649,7 +1649,7 @@
   function renderRangeHeader() {
     const d = RANGE_DATA[rangeTarget];
     document.getElementById('range-header-info').innerHTML = `
-      <div style="display:flex;align-items:center;justify-content:space-between;">
+      <div style="display:flex;align-items:center;gap:16px;">
         <div style="display:flex;align-items:center;gap:9px;">
           <div style="width:34px;height:34px;border-radius:50%;background:#1a1a2e;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none;">
             ${rangeTarget === 'nvda'
