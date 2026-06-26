@@ -125,7 +125,7 @@
 ## 5. 공통 파이프라인 (GitHub Actions · 공개 repo)
 
 ```
-[EOD 배치 · 미 장마감 후 1일 1회]
+[EOD 배치 · 22:00 UTC (미 장마감 후, EDT+2h / EST+1h)]
 1. EOD 수집: ^IXIC·^GSPC·^NDX·^VIX + 큐레이트 mcap + 탑픽 OHLCV·펀더 + TLT·IAU·GLD·TIP
             + FRED(DFF·DGS10·WALCL) + (표시)F&G·환율
 2. 공통 지표: MA50/MA200 · ATR14 · 수평지지 · 금리환경 · QE · 10Y 추세
@@ -134,7 +134,12 @@
 4. 전일 스냅샷 대조 → 신규 트리거 추출 → Web Push([마삼]/[모멘텀] 배지)
 5. 저장: repo JSON / Gist / KV
 
-[장중 live 배치 · 15분 주기 · 표시용만]
+[유니버스 스크리닝 · 23:00 UTC · 소요 ~40~45분]
+- NASDAQ+NYSE 전체 스크리닝 → universe.json 갱신
+- 완료 직후 fetch_momentum.py 재실행 → positions.json sync (REMOVED→WATCH 복귀 당일 반영)
+- EOD 배치(22:00)는 전날 universe.json 기준으로 sync → 유니버스 스크리닝 후 재sync로 1일 래그 해소
+
+[장중 live 배치 · 15분 주기 · 표시용만 · UTC 13:00~20:15]
 - 현재가·등락률·거리·헤지 시세 → live.json (표시값 전용)
 ```
 
@@ -257,10 +262,11 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - **상태 자동 전이**: `next_action` 신호 → status 자동 전이(`_TRANSITIONS` 테이블). BUY_1→ENTRY_1, BUY_2→ENTRY_2, BUY_3→ENTRY_3, TRIM_HALF→TRIM, EXIT→EXIT
 - **하트(♥) = 보유 가정**: `momtFavSet`(localStorage). 최대 15개 UX 가이드 (초과 시 토스트)
 - **2단계 트레일링 스탑**: `momtTrimSet`(localStorage) — 1차 터치→비중 축소+기록, 스탑 위 회복→초기화, 2차 터치→전량 매도
-- **뱃지 신호**: `next_action` 기반. REMOVED+하트→추세 탈락, 비하트 REMOVED→조건 대기
+- **뱃지 신호**: `next_action` 기반. REMOVED+하트→추세 탈락, 비하트 REMOVED→조건 대기. **진입 임박**: WATCH + `item.metrics.steps_count ≥ 5` + `toppick_score ≥ 75` → 조건 대기보다 상위 뱃지, 추천 비중 base=50 적용
 - **종목 정렬**: steps 내림차순 → score 내림차순 (모멘텀 없는 종목이 펀더멘털 점수만으로 상위 노출되는 문제 방지)
 - **`calc_weight()` 자동 비중 산출**: `deployed_tranches`(수동 집행 기록) 우선, 없으면 status 기반 fallback(ENTRY_1=30%/ENTRY_2=70%/ENTRY_3=90%/TRIM=45%). MA50 이격 +50%↑ →×0.7, +80%↑ →×0.4 과열 보정. TRIM_HALF 신호 →×0.5, EXIT →0%. 결과는 `weight`(0~1)·`weight_note`(문자열)로 positions.json에 기록 (백엔드 참고값)
-- **관심종목 탭 추천 비중 (프론트 동적 계산)**: ENTRY_x 종목만 active로 간주(WATCH=0%). 종합점수(toppick_score 50% + steps/6×100 50%) 비례 정규화. 마삼 모드별 주식 한도: BULL 100% / NORMAL 90% / CRISIS 80% / PANIC 70%. 현금 카드 = 100% - 합산. 종목 추가·삭제 시 즉시 재계산
+- **ATH 계산**: `fetch_live.py`·`fetch_eod.py`의 ATH(`ath`, `prev_high`) 산출 시 `auto_adjust=False` 사용. 배당 조정을 제거한 원본 종가 기준. `auto_adjust=True`(배당 조정)는 상대 비교(MA·수익률)에만 사용
+- **관심종목 탭 추천 비중 (프론트 동적 계산)**: 진입 임박(WATCH+steps≥5+score≥75) 및 ENTRY_x 종목을 active로 간주(그 외 WATCH=0%). base 가중치: 진입 임박=50 / ENTRY_1=30 / ENTRY_2=70 / ENTRY_3=90 / TRIM=45. 종합점수(toppick_score 50% + steps/6×100 50%) 비례 정규화. 마삼 모드별 주식 한도: BULL 100% / NORMAL 90% / CRISIS 80% / PANIC 70%. 현금 카드 = 100% - 합산. 종목 추가·삭제 시 즉시 재계산
 - **6단계 충족(steps/stepsList)**: 배치 실행마다 `calc_criteria_count()`가 자동 재계산 → positions.json 갱신
 - **로고**: Google Favicon API (`t2.gstatic.com/faviconV2`)
 - **한국어 종목명**: 네이버 금융 API — `.O`→`.K`→접미사 없음 순 fallback
