@@ -1170,13 +1170,14 @@
         const _MODE_MAX = {BULL:100, NORMAL:90, CRISIS:80, PANIC:70};
         const _investMax = _MODE_MAX[(typeof masam !== 'undefined' && masam.mode) || 'NORMAL'] || 90;
         const _TB = {ENTRY_1:30, ENTRY_2:70, ENTRY_3:90, TRIM:45};
-        const active = list.filter(d => _TB[d.status] !== undefined);
+        const _base = d => d.signal === '진입 임박' ? 50 : _TB[d.status];
+        const active = list.filter(d => _base(d) !== undefined);
         list.forEach(d => { d._fw = 0; });
         if (active.length > 0) {
           const raws = active.map(d => {
             const stepsPct = d.steps != null ? (d.steps / 6 * 100) : 0;
             const combined = (d.score || 0) * 0.5 + stepsPct * 0.5;
-            return _TB[d.status] * (combined / 100 || 0.01);
+            return _base(d) * (combined / 100 || 0.01);
           });
           const totalRaw = raws.reduce((s, v) => s + v, 0);
           active.forEach((d, i) => { d._fw = Math.round(raws[i] / totalRaw * _investMax); });
