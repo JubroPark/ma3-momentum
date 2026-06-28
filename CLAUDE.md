@@ -403,6 +403,30 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - 면책 Footer 상시 노출(어느 화면에서도 숨김 금지): "⚠️ 투자 권유 아님 · 실거래 전 백테스트 검증".
 - 토스증권 보유현황 모방 화면(`증권`)은 보조 화면으로 유지.
 
+### 9-5. PWA UX 구현 세부
+
+**Pull-to-refresh**
+- 스크롤 컨테이너: `body`(window)가 아닌 `.view.active .body` div(`overflow-y:auto`). `window.scrollY`는 항상 0이므로 사용 금지 → `getScroller().scrollTop === 0` 으로 판단.
+- `touchstart`: scrollTop===0이면 startY 기록(active는 아직 false).
+- `touchmove`: scrollTop!==0이면 즉시 비활성. dy>0(아래 드래그)일 때만 `active=true` + 인디케이터 높이 증가.
+- `touchend`: THRESHOLD(80) 절반 이상이면 새로고침. 직전에 현재 뷰를 `sessionStorage('ptr_view')`에 저장.
+- 새로고침 후 복원: `initFromData()` 완료 시점에 `sessionStorage('ptr_view')`를 읽어 `show(view)` 호출 후 즉시 삭제.
+- 새로고침 버튼(`#refresh-btn`): 현재 `display:none`으로 숨김.
+
+**localStorage 저장 항목**
+- `range_allin_nvda`, `range_prev_nvda`, `range_allin_qqq`, `range_prev_qqq`, `range_allin_rank2`, `range_prev_rank2` — 올인·직전고점 수동 입력가
+- `max_pct_nvda`, `max_pct_qqq` — 현금화 최대 한도
+- `portfolio_ratio` — 1등주:QQQ 포트폴리오 비율
+- `momtFavSet` — 모멘텀 관심종목(하트) 목록
+- `momtTrimSet` — 트레일링 스탑 1차 터치 기록
+- ⚠️ 설정 탭 토글(ON/OFF) 상태는 localStorage 미저장 → 새로고침 시 초기화됨
+
+**설정 탭 전략 출처 카드**
+- 레이아웃: 좌측 `전략 출처` 레이블 + 우측 `[유튜브 아이콘] 채널명` (두 줄: 이름 / @핸들)
+- 마삼룰: 소장 조던 / `@제이디부자연구소JDRich` → `https://www.youtube.com/@%EC%A0%9C%EC%9D%B4%EB%94%94%EB%B6%80%EC%9E%90%EC%97%B0%EA%B5%AC%EC%86%8CJDRich`
+- 모멘텀: 미국주식으로은퇴하기 / `@mijooeun` → `https://www.youtube.com/@mijooeun`
+- 두 탭 모두 출처 카드 위에 면책 disclaimer 표시
+
 ### 9-3. 마삼룰 화면
 
 | 화면 | 내용 |
