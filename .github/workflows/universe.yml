@@ -37,4 +37,4 @@ jobs:
           git add app/public/data/universe.json app/public/data/positions.json
           git restore --staged app/public/data/push_subscriptions.json 2>/dev/null || true
           git diff --staged --quiet || git commit -m "data: 유니버스 스크리닝 + positions sync $(date -u '+%Y-%m-%d')"
-          git pull --rebase origin main && git push
+          git pull --rebase --autostash origin main && git push
