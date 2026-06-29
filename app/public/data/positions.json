@@ -1121,8 +1121,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+2.6%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "name_ko": "마스터카드",
       "domain": "mastercard.com",
       "weight_note": ""
@@ -1615,8 +1615,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+2.4%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "name_ko": "케이던스 디자인 시스템즈",
       "domain": "cadence.com",
       "weight_note": ""
@@ -2158,13 +2158,11 @@
       "name": "Reddit, Inc.",
       "name_ko": "레딧",
       "domain": "redditinc.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 4.2,
       "avg_price": null,
-      "weight": 0.075,
-      "deployed_tranches": [
-        1
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 270.71,
       "trailing_stop_line": 189.5,
       "horizontal_support": 158.36,
@@ -2195,9 +2193,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (174.39 ≤ 189.50)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -8.7%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "KRYS",
@@ -3104,8 +3102,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.40)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3242,8 +3240,8 @@
           true
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(+1.7%) + 탑픽점수 73",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "weight_note": ""
     },
     {
@@ -3561,8 +3559,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.4%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -4159,13 +4157,14 @@
       "name": "Q2 Holdings, Inc.",
       "name_ko": "Q2 홀딩스",
       "domain": "q2.com",
-      "status": "ENTRY_2",
+      "status": "ENTRY_3",
       "moat_score": 3.1,
       "avg_price": null,
-      "weight": 0.7,
+      "weight": 0.9,
       "deployed_tranches": [
         1,
-        2
+        2,
+        3
       ],
       "recent_high": 94.97,
       "trailing_stop_line": 73.11,
@@ -4197,8 +4196,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (-0.3%) — 2차 진입",
+      "next_action": "BUY_3",
+      "reason": "지지선 근접(+1.1%) + 탑픽점수 74",
       "weight_note": ""
     },
     {
