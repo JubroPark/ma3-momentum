@@ -38,3 +38,11 @@ jobs:
           git restore --staged app/public/data/push_subscriptions.json 2>/dev/null || true
           git diff --staged --quiet || git commit -m "data: 유니버스 스크리닝 + positions sync $(date -u '+%Y-%m-%d')"
           git pull --rebase --autostash origin main && git push
+
+      - name: EOD 재실행 트리거 (universe 완료 후 full sync)
+        run: |
+          curl -s -X POST \
+            -H "Authorization: Bearer ${{ secrets.GH_PAT }}" \
+            -H "Accept: application/vnd.github+json" \
+            https://api.github.com/repos/JubroPark/ma3-momentum/actions/workflows/eod.yml/dispatches \
+            -d '{"ref":"main"}'
