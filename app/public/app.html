@@ -1651,11 +1651,11 @@
     document.getElementById('range-header-info').innerHTML = `
       <div style="display:flex;align-items:center;gap:16px;">
         <div style="display:flex;align-items:center;gap:9px;">
-          <div style="width:34px;height:34px;border-radius:50%;background:#1a1a2e;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none;">
+          <div style="width:36px;height:36px;border-radius:50%;background:#26262E;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none;">
             ${rangeTarget === 'nvda'
-              ? `<img src="https://cdn.simpleicons.org/nvidia/76b900" style="width:20px;height:20px;object-fit:contain;" onerror="logoFallback(this,'nvidia.com','N')">`
+              ? `<img src="https://cdn.simpleicons.org/nvidia/76b900" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'nvidia.com','N')">`
               : rangeTarget === 'rank2'
-                ? `<img src="${RANGE_DATA.rank2.si ? `https://cdn.simpleicons.org/${RANGE_DATA.rank2.si}` : `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${RANGE_DATA.rank2.domain}&size=64`}" style="width:20px;height:20px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.rank2.domain}','${RANGE_DATA.rank2.initial}')">`
+                ? `<img src="${RANGE_DATA.rank2.si ? `https://cdn.simpleicons.org/${RANGE_DATA.rank2.si}` : `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${RANGE_DATA.rank2.domain}&size=64`}" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.rank2.domain}','${RANGE_DATA.rank2.initial}')">`
                 : `<span style="font-size:12px;font-weight:800;color:#5ebaff;letter-spacing:-.02em;">QQQ</span>`
             }
           </div>
