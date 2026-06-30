@@ -1655,7 +1655,7 @@
             ${rangeTarget === 'nvda'
               ? `<img src="https://cdn.simpleicons.org/nvidia/76b900" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'nvidia.com','N')">`
               : rangeTarget === 'rank2'
-                ? `<img src="${RANGE_DATA.rank2.si ? `https://cdn.simpleicons.org/${RANGE_DATA.rank2.si}` : `https://t2.gstatic.com/faviconV2?client=SOCIAL&type=FAVICON&fallback_opts=TYPE,SIZE,URL&url=https://${RANGE_DATA.rank2.domain}&size=64`}" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.rank2.domain}','${RANGE_DATA.rank2.initial}')">`
+                ? `<img src="https://companiesmarketcap.com/img/company-logos/64/${RANGE_DATA.rank2.slug}.png" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.rank2.domain}','${RANGE_DATA.rank2.initial}')">`
                 : `<span style="font-size:12px;font-weight:800;color:#5ebaff;letter-spacing:-.02em;">QQQ</span>`
             }
           </div>
@@ -2294,8 +2294,9 @@ function initMaxPctUI(rateEnv) {
       // RANGE_DATA rank2 업데이트
       RANGE_DATA.rank2.name = r2;
       RANGE_DATA.rank2.domain  = (companies[r2] && companies[r2].domain)  || r2.toLowerCase() + '.com';
-      RANGE_DATA.rank2.si      = (companies[r2] && companies[r2].si)      || '';
       RANGE_DATA.rank2.initial = r2[0];
+      const r2item = (mcapDaily.items || []).find(function(it){ return it.ticker === r2; });
+      RANGE_DATA.rank2.slug = r2item ? (r2item.slug || r2.toLowerCase()) : r2.toLowerCase();
       // gap_within_10pct이면 2등주 옵션 표시
       const opt2 = document.getElementById('range-opt-rank2');
       if (opt2) opt2.style.display = (ls.gap_within_10pct || ls.overtake_detected) ? 'flex' : 'none';
