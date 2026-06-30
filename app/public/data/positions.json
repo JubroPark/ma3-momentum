@@ -1348,8 +1348,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.47)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "암페놀",
       "domain": "amphenol.com",
       "weight_note": ""
@@ -4194,8 +4194,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
