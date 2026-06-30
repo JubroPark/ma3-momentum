@@ -120,8 +120,10 @@ def main():
     existing_live = load_json(LIVE)
     masam_json = load_json(DATA / "masam.json")
 
-    # 1등주
-    rank1_ticker = masam_json.get("leader_status", {}).get("rank1_ticker", "NVDA")
+    # 1등주 / 2등주
+    leader = masam_json.get("leader_status", {})
+    rank1_ticker = leader.get("rank1_ticker", "NVDA")
+    rank2_ticker = leader.get("rank2_ticker", "MSFT")
 
     # 지수 조회
     ixic_q  = fetch_quote("^IXIC")
@@ -129,8 +131,10 @@ def main():
     dji_q   = fetch_quote("^DJI")
     last_masam_date = masam_json.get("masam", {}).get("last_masam_date")
     rank1_q = fetch_quote(rank1_ticker)
+    rank2_q = fetch_quote(rank2_ticker)
     qqq_q   = fetch_quote("QQQ")
     rank1_extra = fetch_ohlc_ath(rank1_ticker, since_date=last_masam_date)
+    rank2_extra = fetch_ohlc_ath(rank2_ticker, since_date=last_masam_date)
     qqq_extra   = fetch_ohlc_ath("QQQ", since_date=last_masam_date)
     ixic_extra  = fetch_ohlc_ath("^IXIC")
 
@@ -155,7 +159,7 @@ def main():
     mcap_live  = fetch_mcap_live()
     print(f"  VIX: {vix_q}  USD/KRW: {usdkrw_q}  F&G: {fear_greed}")
 
-    # 1등주 메타 (기존 값 유지)
+    # 1등주 / 2등주 메타 (기존 값 유지)
     prev_rank1 = existing_live.get("rank1", {})
     rank1_info = {
         "ticker": rank1_ticker,
@@ -166,6 +170,14 @@ def main():
         "change_pct": rank1_q["change_pct"] if rank1_q else prev_rank1.get("change_pct"),
         "ath": rank1_extra.get("ath", prev_rank1.get("ath")),
         "intra_low": rank1_extra.get("intra_low", prev_rank1.get("intra_low")),
+    }
+    prev_rank2 = existing_live.get("rank2", {})
+    rank2_info = {
+        "ticker": rank2_ticker,
+        "price": rank2_q["price"] if rank2_q else prev_rank2.get("price"),
+        "change_pct": rank2_q["change_pct"] if rank2_q else prev_rank2.get("change_pct"),
+        "ath": rank2_extra.get("ath", prev_rank2.get("ath")),
+        "intra_low": rank2_extra.get("intra_low", prev_rank2.get("intra_low")),
     }
 
     live_out = {
@@ -187,6 +199,7 @@ def main():
             "change_pct": dji_q["change_pct"] if dji_q else None,
         },
         "rank1": rank1_info,
+        "rank2": rank2_info,
         "qqq": {
             "price": qqq_q["price"] if qqq_q else existing_live.get("qqq", {}).get("price"),
             "change_pct": qqq_q["change_pct"] if qqq_q else existing_live.get("qqq", {}).get("change_pct"),

@@ -2361,6 +2361,16 @@ function initMaxPctUI(rateEnv) {
         RANGE_DATA.qqq.lowFrom         = RANGE_DATA.qqq.low;
         RANGE_DATA.qqq.demos['최고점'] = qqq.ath || 746.16;
       }
+      const r2live = live.rank2;
+      if (r2live && r2live.price) {
+        RANGE_DATA.rank2.cur             = r2live.price.toFixed(2);
+        RANGE_DATA.rank2.curFrom         = RANGE_DATA.rank2.cur;
+        RANGE_DATA.rank2.high            = r2live.ath ? r2live.ath.toFixed(2) : '--';
+        RANGE_DATA.rank2.highFrom        = RANGE_DATA.rank2.high;
+        RANGE_DATA.rank2.low             = (r2live.intra_low || r2live.price).toFixed(2);
+        RANGE_DATA.rank2.lowFrom         = RANGE_DATA.rank2.low;
+        RANGE_DATA.rank2.demos['최고점'] = r2live.ath || 0;
+      }
       // 조건 5 (2구간 V자반등): live 데이터 기반으로 계산 — intra_low 기준 2구간 위 도달 시 올인
       if (catRow && (masamMode === 'CRISIS' || masamMode === 'PANIC')) {
         const d    = RANGE_DATA[rangeTarget] || RANGE_DATA.nvda;
