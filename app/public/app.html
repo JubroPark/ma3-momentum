@@ -1595,7 +1595,7 @@
 
   const RANGE_DATA = {
     nvda: {
-      name: '엔비디아', domain: 'nvidia.com', initial: 'N',
+      name: '엔비디아', domain: 'nvidia.com', initial: 'N', slug: 'nvidia',
       demos: { '최고점': 479.86 },
       cur: '131.38', curFrom: '131.21',
       high: '479.86', highFrom: '479.50',
@@ -1653,10 +1653,10 @@
         <div style="display:flex;align-items:center;gap:9px;">
           <div style="width:36px;height:36px;border-radius:50%;background:#26262E;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none;">
             ${rangeTarget === 'nvda'
-              ? `<img src="https://cdn.simpleicons.org/nvidia/76b900" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'nvidia.com','N')">`
+              ? `<img src="https://companiesmarketcap.com/img/company-logos/64/${RANGE_DATA.nvda.slug}.png" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.nvda.domain}','${RANGE_DATA.nvda.initial}')">`
               : rangeTarget === 'rank2'
                 ? `<img src="https://companiesmarketcap.com/img/company-logos/64/${RANGE_DATA.rank2.slug}.png" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.rank2.domain}','${RANGE_DATA.rank2.initial}')">`
-                : `<span style="font-size:12px;font-weight:800;color:#5ebaff;letter-spacing:-.02em;">QQQ</span>`
+                : `<span style="font-size:12px;font-weight:800;color:#5ebaff;letter-spacing:-.02em;">Q</span>`
             }
           </div>
           <div>
@@ -2291,7 +2291,11 @@ function initMaxPctUI(rateEnv) {
       const lbl2 = document.getElementById('range-label-rank2');
       if (lbl1) lbl1.textContent = r1;
       if (lbl2) lbl2.textContent = r2;
-      // RANGE_DATA rank2 업데이트
+      // RANGE_DATA rank1/rank2 업데이트
+      RANGE_DATA.nvda.domain  = (companies[r1] && companies[r1].domain)  || r1.toLowerCase() + '.com';
+      RANGE_DATA.nvda.initial = r1[0];
+      const r1item = (mcapDaily.items || []).find(function(it){ return it.ticker === r1; });
+      RANGE_DATA.nvda.slug = r1item ? (r1item.slug || r1.toLowerCase()) : r1.toLowerCase();
       RANGE_DATA.rank2.name = r2;
       RANGE_DATA.rank2.domain  = (companies[r2] && companies[r2].domain)  || r2.toLowerCase() + '.com';
       RANGE_DATA.rank2.initial = r2[0];
