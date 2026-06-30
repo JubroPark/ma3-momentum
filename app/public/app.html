@@ -2293,7 +2293,7 @@ function initMaxPctUI(rateEnv) {
       if (lbl2) lbl2.textContent = r2;
       // RANGE_DATA rank2 업데이트
       RANGE_DATA.rank2.name = r2;
-      RANGE_DATA.rank2.domain = r2.toLowerCase() + '.com';
+      RANGE_DATA.rank2.domain = (companies[r2] && companies[r2].domain) || r2.toLowerCase() + '.com';
       RANGE_DATA.rank2.initial = r2[0];
       // gap_within_10pct이면 2등주 옵션 표시
       const opt2 = document.getElementById('range-opt-rank2');
