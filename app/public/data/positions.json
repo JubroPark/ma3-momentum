@@ -2707,13 +2707,14 @@
       "name": "Aurinia Pharmaceuticals Inc",
       "name_ko": "오리니아 파마슈티컬스",
       "domain": "auriniapharma.com",
-      "status": "ENTRY_2",
+      "status": "ENTRY_3",
       "moat_score": 4.0,
       "avg_price": null,
-      "weight": 0.7,
+      "weight": 0.9,
       "deployed_tranches": [
         1,
-        2
+        2,
+        3
       ],
       "recent_high": 18.62,
       "trailing_stop_line": 13.43,
@@ -2745,8 +2746,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (-1.2%) — 2차 진입",
+      "next_action": "BUY_3",
+      "reason": "지지선 근접(+1.1%) + 탑픽점수 72",
       "weight_note": ""
     },
     {
@@ -2836,8 +2837,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+0.6%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
