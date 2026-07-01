@@ -1,11 +1,11 @@
 {
-  "as_of": "2026-06-30",
+  "as_of": "2026-07-01",
   "mode": "CRISIS",
   "rate_env": "NON_ZERO",
   "qe_active": true,
   "treasury_10y_trend": "UNKNOWN",
   "masam": {
-    "month_count": 1,
+    "month_count": 0,
     "last_masam_date": "2026-06-05",
     "crisis_end_dday": "2026-07-06",
     "panic_end_dday": null
@@ -45,7 +45,7 @@
       "label": "한달+1일 무마삼",
       "met": false,
       "grade": "약",
-      "detail": "D-6"
+      "detail": "D-5"
     },
     {
       "id": 2,
