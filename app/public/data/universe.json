@@ -1,7 +1,7 @@
 {
-  "as_of": "2026-07-01",
-  "total_screened": 2774,
-  "qualified": 159,
+  "as_of": "2026-07-02",
+  "total_screened": 2784,
+  "qualified": 177,
   "items": [
     {
       "symbol": "APP",
@@ -13,7 +13,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 4.5,
-      "market_cap": 173086113792,
+      "market_cap": 189674815488,
       "sector": "Communication Services"
     },
     {
@@ -26,7 +26,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.5,
-      "market_cap": 1069581402112,
+      "market_cap": 1062723846144,
       "sector": "Healthcare"
     },
     {
@@ -39,7 +39,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.3,
-      "market_cap": 50712670208,
+      "market_cap": 48314560512,
       "sector": "Technology"
     },
     {
@@ -52,7 +52,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.5,
-      "market_cap": 1303647223808,
+      "market_cap": 1165850050560,
       "sector": "Technology"
     },
     {
@@ -65,7 +65,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 3.0,
-      "market_cap": 4737201152,
+      "market_cap": 4871209472,
       "sector": "Technology"
     },
     {
@@ -78,7 +78,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 1.0,
-      "market_cap": 57980956672,
+      "market_cap": 56839172096,
       "sector": "Healthcare"
     },
     {
@@ -91,7 +91,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 2.7,
-      "market_cap": 82793455616,
+      "market_cap": 73852821504,
       "sector": "Technology"
     },
     {
@@ -104,7 +104,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 4.0,
-      "market_cap": 10956741632,
+      "market_cap": 10954087424,
       "sector": "Healthcare"
     },
     {
@@ -117,7 +117,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 2.5,
-      "market_cap": 75741356032,
+      "market_cap": 66896728064,
       "sector": "Technology"
     },
     {
@@ -130,7 +130,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 2.7,
-      "market_cap": 16946192384,
+      "market_cap": 16869271552,
       "sector": "Healthcare"
     },
     {
@@ -143,7 +143,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.0,
-      "market_cap": 33415718912,
+      "market_cap": 38070587392,
       "sector": "Communication Services"
     },
     {
@@ -156,7 +156,7 @@
       "growth_score": 5.0,
       "earnings_score": 4.0,
       "health_score": 1.7,
-      "market_cap": 8410412032,
+      "market_cap": 8193033728,
       "sector": "Healthcare"
     },
     {
@@ -169,8 +169,21 @@
       "growth_score": 3.5,
       "earnings_score": 4.5,
       "health_score": 4.3,
-      "market_cap": 213907701760,
+      "market_cap": 209802805248,
       "sector": "Technology"
+    },
+    {
+      "symbol": "ONC",
+      "name": "BeOne Medicines Ltd.",
+      "name_ko": "비원 메디슨스 ADR",
+      "domain": "beonemedicines.com",
+      "toppick_score": 81,
+      "moat_score": 3.4,
+      "growth_score": 4.5,
+      "earnings_score": 5.0,
+      "health_score": 1.9,
+      "market_cap": 30164627456,
+      "sector": "Healthcare"
     },
     {
       "symbol": "AGX",
@@ -182,8 +195,21 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 3.5,
-      "market_cap": 11195069440,
+      "market_cap": 10718555136,
       "sector": "Industrials"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms, Inc.",
+      "name_ko": "메타",
+      "domain": "meta.com",
+      "toppick_score": 80,
+      "moat_score": 4.4,
+      "growth_score": 4.0,
+      "earnings_score": 3.8,
+      "health_score": 3.3,
+      "market_cap": 1555824902144,
+      "sector": "Communication Services"
     },
     {
       "symbol": "FTNT",
@@ -195,21 +221,21 @@
       "growth_score": 3.0,
       "earnings_score": 4.5,
       "health_score": 3.5,
-      "market_cap": 112549437440,
+      "market_cap": 116476436480,
       "sector": "Technology"
     },
     {
-      "symbol": "VRT",
-      "name": "Vertiv Holdings, LLC",
-      "name_ko": "버티브 홀딩스",
-      "domain": "vertiv.com",
+      "symbol": "PICS",
+      "name": "PicS N.V.",
+      "name_ko": "픽스",
+      "domain": "picpay.com",
       "toppick_score": 80,
-      "moat_score": 2.8,
+      "moat_score": 3.0,
       "growth_score": 4.5,
       "earnings_score": 5.0,
-      "health_score": 3.0,
-      "market_cap": 128607313920,
-      "sector": "Industrials"
+      "health_score": 2.3,
+      "market_cap": 1456563968,
+      "sector": "Technology"
     },
     {
       "symbol": "STRL",
@@ -221,7 +247,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 2.5,
-      "market_cap": 25756561408,
+      "market_cap": 23829176320,
       "sector": "Industrials"
     },
     {
@@ -234,7 +260,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 2.0,
-      "market_cap": 7414170112,
+      "market_cap": 7507946496,
       "sector": "Technology"
     },
     {
@@ -247,7 +273,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.5,
       "health_score": 3.0,
-      "market_cap": 103519264768,
+      "market_cap": 104183980032,
       "sector": "Technology"
     },
     {
@@ -260,7 +286,7 @@
       "growth_score": 4.0,
       "earnings_score": 3.8,
       "health_score": 3.8,
-      "market_cap": 14994578432,
+      "market_cap": 15729548288,
       "sector": "Technology"
     },
     {
@@ -273,7 +299,7 @@
       "growth_score": 4.0,
       "earnings_score": 3.8,
       "health_score": 3.8,
-      "market_cap": 2476904546304,
+      "market_cap": 2303987286016,
       "sector": "Technology"
     },
     {
@@ -286,7 +312,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 3.5,
-      "market_cap": 27708030976,
+      "market_cap": 27983306752,
       "sector": "Technology"
     },
     {
@@ -299,8 +325,21 @@
       "growth_score": 4.5,
       "earnings_score": 3.8,
       "health_score": 3.0,
-      "market_cap": 216380981248,
+      "market_cap": 207063678976,
       "sector": "Technology"
+    },
+    {
+      "symbol": "DXCM",
+      "name": "DexCom, Inc.",
+      "name_ko": "덱스컴",
+      "domain": "dexcom.com",
+      "toppick_score": 76,
+      "moat_score": 3.75,
+      "growth_score": 3.0,
+      "earnings_score": 5.0,
+      "health_score": 3.0,
+      "market_cap": 26571214848,
+      "sector": "Healthcare"
     },
     {
       "symbol": "EXEL",
@@ -312,7 +351,20 @@
       "growth_score": 2.5,
       "earnings_score": 4.5,
       "health_score": 3.8,
-      "market_cap": 13676230656,
+      "market_cap": 13563120640,
+      "sector": "Healthcare"
+    },
+    {
+      "symbol": "PODD",
+      "name": "Insulet Corporation",
+      "name_ko": "인슐릿",
+      "domain": "insulet.com",
+      "toppick_score": 76,
+      "moat_score": 3.55,
+      "growth_score": 4.5,
+      "earnings_score": 3.8,
+      "health_score": 2.2,
+      "market_cap": 11067801600,
       "sector": "Healthcare"
     },
     {
@@ -325,7 +377,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 1.5,
-      "market_cap": 4718673408,
+      "market_cap": 4832376832,
       "sector": "Technology"
     },
     {
@@ -338,7 +390,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.8,
       "health_score": 3.5,
-      "market_cap": 3631973376,
+      "market_cap": 3534914560,
       "sector": "Technology"
     },
     {
@@ -351,7 +403,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.0,
-      "market_cap": 2715044352,
+      "market_cap": 2736546560,
       "sector": "Basic Materials"
     },
     {
@@ -364,7 +416,7 @@
       "growth_score": 4.5,
       "earnings_score": 3.8,
       "health_score": 2.0,
-      "market_cap": 92677791744,
+      "market_cap": 94144356352,
       "sector": "Technology"
     },
     {
@@ -377,7 +429,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 1.2,
-      "market_cap": 11302498304,
+      "market_cap": 10748105728,
       "sector": "Technology"
     },
     {
@@ -390,7 +442,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.3,
       "health_score": 4.0,
-      "market_cap": 9283838976,
+      "market_cap": 9134387200,
       "sector": "Healthcare"
     },
     {
@@ -403,7 +455,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.0,
       "health_score": 4.5,
-      "market_cap": 652469272576,
+      "market_cap": 667664187392,
       "sector": "Financial Services"
     },
     {
@@ -416,7 +468,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.0,
       "health_score": 4.5,
-      "market_cap": 453808652288,
+      "market_cap": 461619560448,
       "sector": "Financial Services"
     },
     {
@@ -429,7 +481,7 @@
       "growth_score": 4.0,
       "earnings_score": 4.5,
       "health_score": 2.8,
-      "market_cap": 216914952192,
+      "market_cap": 211870990336,
       "sector": "Technology"
     },
     {
@@ -442,7 +494,7 @@
       "growth_score": 3.5,
       "earnings_score": 5.0,
       "health_score": 2.8,
-      "market_cap": 107572895744,
+      "market_cap": 106992746496,
       "sector": "Industrials"
     },
     {
@@ -455,7 +507,20 @@
       "growth_score": 4.5,
       "earnings_score": 2.8,
       "health_score": 3.5,
-      "market_cap": 220155363328,
+      "market_cap": 206247460864,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "CPAY",
+      "name": "Corpay, Inc.",
+      "name_ko": "콜페이",
+      "domain": "corpay.com",
+      "toppick_score": 74,
+      "moat_score": 3.4,
+      "growth_score": 3.0,
+      "earnings_score": 4.5,
+      "health_score": 4.3,
+      "market_cap": 22284492800,
       "sector": "Technology"
     },
     {
@@ -468,7 +533,7 @@
       "growth_score": 3.5,
       "earnings_score": 5.0,
       "health_score": 2.0,
-      "market_cap": 3011080192,
+      "market_cap": 3142541312,
       "sector": "Technology"
     },
     {
@@ -481,7 +546,7 @@
       "growth_score": 4.0,
       "earnings_score": 3.8,
       "health_score": 1.3,
-      "market_cap": 17310906368,
+      "market_cap": 15963064320,
       "sector": "Technology"
     },
     {
@@ -494,7 +559,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.5,
       "health_score": 2.5,
-      "market_cap": 212223442944,
+      "market_cap": 215897735168,
       "sector": "Healthcare"
     },
     {
@@ -507,7 +572,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 2.1,
-      "market_cap": 6887018496,
+      "market_cap": 7239011328,
       "sector": "Consumer Cyclical"
     },
     {
@@ -520,7 +585,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.8,
       "health_score": 2.8,
-      "market_cap": 22647306240,
+      "market_cap": 22737207296,
       "sector": "Healthcare"
     },
     {
@@ -533,7 +598,7 @@
       "growth_score": 5.0,
       "earnings_score": 1.5,
       "health_score": 2.5,
-      "market_cap": 7090237440,
+      "market_cap": 7053776384,
       "sector": "Healthcare"
     },
     {
@@ -546,33 +611,7 @@
       "growth_score": 2.0,
       "earnings_score": 4.0,
       "health_score": 3.8,
-      "market_cap": 4841986560,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "AUPH",
-      "name": "Aurinia Pharmaceuticals Inc",
-      "name_ko": "오리니아 파마슈티컬스",
-      "domain": "auriniapharma.com",
-      "toppick_score": 72,
-      "moat_score": 4.0,
-      "growth_score": 3.5,
-      "earnings_score": 3.0,
-      "health_score": 4.5,
-      "market_cap": 2182370304,
-      "sector": "Healthcare"
-    },
-    {
-      "symbol": "YOU",
-      "name": "Clear Secure, Inc.",
-      "name_ko": "클리어 시큐어",
-      "domain": "clearme.com",
-      "toppick_score": 72,
-      "moat_score": 4.05,
-      "growth_score": 3.0,
-      "earnings_score": 3.8,
-      "health_score": 3.7,
-      "market_cap": 7448943616,
+      "market_cap": 5051527680,
       "sector": "Technology"
     },
     {
@@ -585,7 +624,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 2.0,
-      "market_cap": 1154705024,
+      "market_cap": 1170555776,
       "sector": "Financial Services"
     },
     {
@@ -598,7 +637,7 @@
       "growth_score": 2.5,
       "earnings_score": 4.5,
       "health_score": 2.8,
-      "market_cap": 574032642048,
+      "market_cap": 516796121088,
       "sector": "Technology"
     },
     {
@@ -611,7 +650,7 @@
       "growth_score": 3.5,
       "earnings_score": 5.0,
       "health_score": 2.0,
-      "market_cap": 1791190784,
+      "market_cap": 1878833024,
       "sector": "Technology"
     },
     {
@@ -624,7 +663,7 @@
       "growth_score": 2.5,
       "earnings_score": 5.0,
       "health_score": 3.5,
-      "market_cap": 1175952000,
+      "market_cap": 1312340224,
       "sector": "Healthcare"
     },
     {
@@ -637,7 +676,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 2.0,
-      "market_cap": 31315499008,
+      "market_cap": 31763232768,
       "sector": "Technology"
     },
     {
@@ -650,7 +689,7 @@
       "growth_score": 4.5,
       "earnings_score": 4.5,
       "health_score": 1.7,
-      "market_cap": 4989740032,
+      "market_cap": 4924981248,
       "sector": "Real Estate"
     },
     {
@@ -663,7 +702,7 @@
       "growth_score": 4.0,
       "earnings_score": 3.8,
       "health_score": 2.0,
-      "market_cap": 947232112640,
+      "market_cap": 881959239680,
       "sector": "Technology"
     },
     {
@@ -676,7 +715,7 @@
       "growth_score": 4.5,
       "earnings_score": 3.0,
       "health_score": 2.4,
-      "market_cap": 20956723200,
+      "market_cap": 20044249088,
       "sector": "Technology"
     },
     {
@@ -689,7 +728,7 @@
       "growth_score": 4.5,
       "earnings_score": 4.5,
       "health_score": 0.8,
-      "market_cap": 4384186880,
+      "market_cap": 4691331584,
       "sector": "Financial Services"
     },
     {
@@ -702,7 +741,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.5,
       "health_score": 1.7,
-      "market_cap": 1335644672,
+      "market_cap": 1388869120,
       "sector": "Basic Materials"
     },
     {
@@ -715,7 +754,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 2.3,
-      "market_cap": 64952860672,
+      "market_cap": 65098715136,
       "sector": "Financial Services"
     },
     {
@@ -728,7 +767,7 @@
       "growth_score": 3.0,
       "earnings_score": 5.0,
       "health_score": 2.2,
-      "market_cap": 37515436032,
+      "market_cap": 37673594880,
       "sector": "Healthcare"
     },
     {
@@ -741,47 +780,8 @@
       "growth_score": 3.5,
       "earnings_score": 3.5,
       "health_score": 3.2,
-      "market_cap": 3260565248,
+      "market_cap": 3242685952,
       "sector": "Technology"
-    },
-    {
-      "symbol": "ARM",
-      "name": "Arm Holdings plc",
-      "name_ko": "암 홀딩스 ADR",
-      "domain": "arm.com",
-      "toppick_score": 69,
-      "moat_score": 4.25,
-      "growth_score": 3.0,
-      "earnings_score": 3.3,
-      "health_score": 2.7,
-      "market_cap": 378708688896,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "ALNY",
-      "name": "Alnylam Pharmaceuticals, Inc.",
-      "name_ko": "앨나일램 파마슈티컬스",
-      "domain": "alnylam.com",
-      "toppick_score": 69,
-      "moat_score": 4.75,
-      "growth_score": 2.5,
-      "earnings_score": 3.5,
-      "health_score": 2.2,
-      "market_cap": 40191291392,
-      "sector": "Healthcare"
-    },
-    {
-      "symbol": "HQY",
-      "name": "HealthEquity, Inc.",
-      "name_ko": "헬스에퀴티",
-      "domain": "healthequity.com",
-      "toppick_score": 69,
-      "moat_score": 3.65,
-      "growth_score": 2.5,
-      "earnings_score": 4.5,
-      "health_score": 2.7,
-      "market_cap": 7571566592,
-      "sector": "Healthcare"
     }
   ]
 }

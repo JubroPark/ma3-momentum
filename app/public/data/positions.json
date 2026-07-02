@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-01",
+  "as_of": "2026-07-02",
   "regime": "GREEN",
   "items": [
     {
@@ -54,17 +54,19 @@
       "domain": "meta.com",
       "si": "meta/1877f2",
       "flag": "🇺🇸",
-      "status": "REMOVED",
+      "status": "ENTRY_1",
       "moat_score": 4,
       "avg_price": null,
-      "weight": 0.0,
-      "deployed_tranches": [],
+      "weight": 0.3,
+      "deployed_tranches": [
+        1
+      ],
       "recent_high": 787.42,
       "trailing_stop_line": 629.94,
       "horizontal_support": 580.0,
       "cooldown_until": null,
-      "next_action": "HOLD",
-      "reason": "REMOVED 상태 유지",
+      "next_action": "BUY_1",
+      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.28)",
       "metrics": {
         "price": 612.91,
         "ma50": 606.51,
@@ -861,7 +863,7 @@
     {
       "symbol": "VRT",
       "name": "Vertiv Holdings, LLC",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 3.5,
       "avg_price": null,
       "weight": 0.0,
@@ -897,7 +899,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 하회 — 1차 진입 대기",
+      "reason": "REMOVED 상태 유지",
       "name_ko": "버티브 홀딩스",
       "domain": "vertiv.com",
       "weight_note": ""
@@ -2746,8 +2748,8 @@
           true
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(+1.1%) + 탑픽점수 72",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "weight_note": ""
     },
     {
@@ -2755,7 +2757,7 @@
       "name": "Corpay, Inc.",
       "name_ko": "콜페이",
       "domain": "corpay.com",
-      "status": "REMOVED",
+      "status": "WATCH",
       "moat_score": 3.4,
       "avg_price": null,
       "weight": 0.0,
@@ -2791,7 +2793,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "REMOVED 상태 유지",
+      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 0.54)",
       "weight_note": ""
     },
     {
@@ -2846,7 +2848,7 @@
       "name": "DexCom, Inc.",
       "name_ko": "덱스컴",
       "domain": "dexcom.com",
-      "status": "REMOVED",
+      "status": "WATCH",
       "moat_score": 3.75,
       "avg_price": null,
       "weight": 0.0,
@@ -2882,7 +2884,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "REMOVED 상태 유지",
+      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 0.90)",
       "weight_note": ""
     },
     {
@@ -4296,7 +4298,7 @@
       "name": "Clear Secure, Inc.",
       "name_ko": "클리어 시큐어",
       "domain": "clearme.com",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 4.05,
       "avg_price": null,
       "weight": 0.0,
@@ -4332,7 +4334,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 0.65)",
+      "reason": "REMOVED 상태 유지",
       "weight_note": ""
     },
     {
@@ -4421,6 +4423,138 @@
       },
       "next_action": "HOLD",
       "reason": "50MA 위이나 거래량 미확인 (vol_ratio 1.11)",
+      "weight_note": ""
+    },
+    {
+      "symbol": "ONC",
+      "name": "BeOne Medicines Ltd.",
+      "name_ko": "비원 메디슨스 ADR",
+      "domain": "beonemedicines.com",
+      "status": "WATCH",
+      "moat_score": 3.4,
+      "avg_price": null,
+      "weight": 0.0,
+      "deployed_tranches": [],
+      "recent_high": 377.47,
+      "trailing_stop_line": 301.98,
+      "horizontal_support": 271.47,
+      "cooldown_until": null,
+      "toppick_score": 81,
+      "metrics": {
+        "price": 290.74,
+        "ma50": 290.02,
+        "ma200": 316.24,
+        "atr14": 8.47,
+        "atr_pct": 0.0291,
+        "gap50_pct": 0.2,
+        "dist_to_stop_pct": -3.9,
+        "vol20ma": 308944,
+        "vol_ratio": 1.1,
+        "growth_score": 4.5,
+        "earnings_score": 5.0,
+        "health_score": 1.9,
+        "eps_revision": "UP_STRONG",
+        "peg": 0.0,
+        "steps_count": 4,
+        "steps_list": [
+          true,
+          false,
+          true,
+          false,
+          true,
+          true
+        ]
+      },
+      "next_action": "HOLD",
+      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 1.10)",
+      "weight_note": ""
+    },
+    {
+      "symbol": "PICS",
+      "name": "PicS N.V.",
+      "name_ko": "픽스",
+      "domain": "picpay.com",
+      "status": "WATCH",
+      "moat_score": 3.0,
+      "avg_price": null,
+      "weight": 0.0,
+      "deployed_tranches": [],
+      "recent_high": 19.0,
+      "trailing_stop_line": 13.3,
+      "horizontal_support": 10.11,
+      "cooldown_until": null,
+      "toppick_score": 80,
+      "metrics": {
+        "price": 11.24,
+        "ma50": 11.1,
+        "ma200": 12.69,
+        "atr14": 0.86,
+        "atr_pct": 0.0769,
+        "gap50_pct": 1.3,
+        "dist_to_stop_pct": -18.3,
+        "vol20ma": 527527,
+        "vol_ratio": 1.08,
+        "growth_score": 4.5,
+        "earnings_score": 5.0,
+        "health_score": 2.3,
+        "eps_revision": "UP_STRONG",
+        "peg": null,
+        "steps_count": 5,
+        "steps_list": [
+          true,
+          false,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "next_action": "HOLD",
+      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 1.08)",
+      "weight_note": ""
+    },
+    {
+      "symbol": "PODD",
+      "name": "Insulet Corporation",
+      "name_ko": "인슐릿",
+      "domain": "insulet.com",
+      "status": "WATCH",
+      "moat_score": 3.55,
+      "avg_price": null,
+      "weight": 0.0,
+      "deployed_tranches": [],
+      "recent_high": 352.82,
+      "trailing_stop_line": 282.26,
+      "horizontal_support": 145.59,
+      "cooldown_until": null,
+      "toppick_score": 76,
+      "metrics": {
+        "price": 159.79,
+        "ma50": 157.28,
+        "ma200": 248.7,
+        "atr14": 5.68,
+        "atr_pct": 0.0356,
+        "gap50_pct": 1.6,
+        "dist_to_stop_pct": -76.6,
+        "vol20ma": 1624462,
+        "vol_ratio": 0.94,
+        "growth_score": 4.5,
+        "earnings_score": 3.8,
+        "health_score": 2.2,
+        "eps_revision": "UP_STRONG",
+        "peg": 0.23,
+        "steps_count": 6,
+        "steps_list": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "next_action": "HOLD",
+      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 0.94)",
       "weight_note": ""
     }
   ]
