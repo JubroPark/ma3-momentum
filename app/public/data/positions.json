@@ -54,10 +54,10 @@
       "domain": "meta.com",
       "si": "meta/1877f2",
       "flag": "🇺🇸",
-      "status": "ENTRY_3",
+      "status": "TRIM",
       "moat_score": 4,
       "avg_price": null,
-      "weight": 0.9,
+      "weight": 0.225,
       "deployed_tranches": [
         1,
         2,
@@ -67,8 +67,8 @@
       "trailing_stop_line": 629.94,
       "horizontal_support": 580.0,
       "cooldown_until": null,
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(+0.5%) + 탑픽점수 77",
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치",
       "metrics": {
         "price": 582.9,
         "ma50": 604.81,
@@ -96,7 +96,7 @@
       },
       "toppick_score": 77,
       "name_ko": "메타",
-      "weight_note": ""
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -8.1%)"
     },
     {
       "symbol": "AAPL",
@@ -459,13 +459,14 @@
     {
       "symbol": "STX",
       "name": "Seagate Technology Holdings PLC",
-      "status": "ENTRY_2",
+      "status": "ENTRY_3",
       "moat_score": 4.5,
       "avg_price": null,
-      "weight": 0.7,
+      "weight": 0.9,
       "deployed_tranches": [
         1,
-        2
+        2,
+        3
       ],
       "recent_high": 1093.26,
       "trailing_stop_line": 765.28,
@@ -497,8 +498,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (-2.3%) — 2차 진입",
+      "next_action": "BUY_3",
+      "reason": "지지선 근접(+2.3%) + 탑픽점수 83",
       "name_ko": "씨게이트",
       "domain": "seagate.com",
       "weight_note": ""
@@ -634,8 +635,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.8%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "name_ko": "웨스턴 디지털",
       "domain": "esterndigital.com",
       "weight_note": ""
@@ -2522,8 +2523,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+2.7%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -3936,8 +3937,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+0.6%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
