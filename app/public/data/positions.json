@@ -54,19 +54,20 @@
       "domain": "meta.com",
       "si": "meta/1877f2",
       "flag": "🇺🇸",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 4,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 787.42,
       "trailing_stop_line": 629.94,
       "horizontal_support": 580.0,
       "cooldown_until": null,
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.28)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+1.1%) — 2차 진입",
       "metrics": {
         "price": 612.91,
         "ma50": 606.51,
