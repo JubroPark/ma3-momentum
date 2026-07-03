@@ -43,7 +43,7 @@ DATA    = Path(__file__).parent.parent / "app/public/data"
 OUT     = DATA / "universe.json"
 MCAP_MIN   = 1_000_000_000    # $1B 이상 (중소형 포함)
 SCORE_MIN  = 60               # 저장 최소 점수
-TOP_N      = 60               # universe.json 저장 상한
+TOP_N      = 100              # universe.json 저장 상한
 RATE_DELAY = 0.5              # 종목 간 딜레이(초) — yfinance rate limit 회피
 
 
@@ -302,12 +302,6 @@ def screen(symbol: str):
 
     mcap = info.get("marketCap") or 0
     if mcap < MCAP_MIN:
-        return None
-
-    # MA50 위 종목만 (모멘텀 확인) — info에 이미 포함된 값 사용
-    price  = info.get("currentPrice") or info.get("regularMarketPrice") or 0
-    ma50   = info.get("fiftyDayAverage") or 0
-    if price <= 0 or ma50 <= 0 or price < ma50:
         return None
 
     try:
