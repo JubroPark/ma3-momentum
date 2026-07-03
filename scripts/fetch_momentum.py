@@ -565,6 +565,11 @@ def process_symbol(item: dict, regime: str) -> tuple:
 
     print(f"    탑픽: {toppick_score}점  (G={growth_score} M={moat_score} E={earn_score} H={health_score}) EPS={eps_revision} PEG={peg}")
 
+    # REMOVED 복귀: 펀더멘털 점수가 SCORE_RECOVER 이상으로 회복되면 WATCH로 자동 복귀
+    if status == "REMOVED" and toppick_score >= SCORE_RECOVER:
+        print(f"    → REMOVED → WATCH 복귀 (score {toppick_score} ≥ {SCORE_RECOVER})")
+        status = "WATCH"
+
     price   = float(hist["Close"].iloc[-1])
     closes  = hist["Close"]
     volumes = hist["Volume"]
@@ -700,8 +705,9 @@ def process_symbol(item: dict, regime: str) -> tuple:
     return updated_item, indicator_row
 
 
-PROTECTED = {"ENTRY_1", "ENTRY_2", "ENTRY_3", "TRIM", "EXIT"}
-SCORE_DROP = 40   # 이 점수 미만 WATCH → REMOVED (펀더 완전 붕괴 수준만)
+PROTECTED     = {"ENTRY_1", "ENTRY_2", "ENTRY_3", "TRIM", "EXIT"}
+SCORE_DROP    = 40   # 이 점수 미만 WATCH → REMOVED (펀더 완전 붕괴 수준만)
+SCORE_RECOVER = 70   # 이 점수 이상 회복 시 REMOVED → WATCH 복귀
 
 
 def sync_universe(positions: dict, universe: dict) -> dict:
