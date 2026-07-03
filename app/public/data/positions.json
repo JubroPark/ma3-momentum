@@ -63,8 +63,8 @@
       "trailing_stop_line": 629.94,
       "horizontal_support": 580.0,
       "cooldown_until": null,
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "metrics": {
         "price": 582.9,
         "ma50": 604.81,
