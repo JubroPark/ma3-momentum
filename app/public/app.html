@@ -1650,7 +1650,7 @@
     const d = RANGE_DATA[rangeTarget];
     document.getElementById('range-header-info').innerHTML = `
       <div style="display:flex;align-items:center;gap:16px;">
-        <div style="display:flex;align-items:center;gap:9px;">
+        <div style="display:flex;align-items:center;gap:9px;flex:1;min-width:0;">
           <div style="width:36px;height:36px;border-radius:50%;background:#26262E;overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none;">
             ${rangeTarget === 'nvda'
               ? `<img src="https://companiesmarketcap.com/img/company-logos/64/${RANGE_DATA.nvda.slug}.png" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'${RANGE_DATA.nvda.domain}','${RANGE_DATA.nvda.initial}')">`
