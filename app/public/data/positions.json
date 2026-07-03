@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-02",
+  "as_of": "2026-07-03",
   "regime": "GREEN",
   "items": [
     {
@@ -54,21 +54,17 @@
       "domain": "meta.com",
       "si": "meta/1877f2",
       "flag": "🇺🇸",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 4,
       "avg_price": null,
-      "weight": 0.225,
-      "deployed_tranches": [
-        1,
-        2,
-        3
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 787.42,
       "trailing_stop_line": 629.94,
       "horizontal_support": 580.0,
       "cooldown_until": null,
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치",
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
       "metrics": {
         "price": 582.9,
         "ma50": 604.81,
@@ -96,7 +92,7 @@
       },
       "toppick_score": 77,
       "name_ko": "메타",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -8.1%)"
+      "weight_note": ""
     },
     {
       "symbol": "AAPL",
@@ -498,8 +494,8 @@
           true
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(+2.3%) + 탑픽점수 83",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "name_ko": "씨게이트",
       "domain": "seagate.com",
       "weight_note": ""
@@ -507,7 +503,7 @@
     {
       "symbol": "ANET",
       "name": "Arista Networks, Inc.",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 5.0,
       "avg_price": null,
       "weight": 0.0,
@@ -543,7 +539,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 1.05)",
+      "reason": "REMOVED 상태 유지",
       "name_ko": "아리스타 네트웍스",
       "domain": "arista.com",
       "weight_note": ""
@@ -1408,7 +1404,7 @@
     {
       "symbol": "GILD",
       "name": "Gilead Sciences, Inc.",
-      "status": "REMOVED",
+      "status": "WATCH",
       "moat_score": 4.5,
       "avg_price": null,
       "weight": 0.0,
@@ -1444,7 +1440,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "REMOVED 상태 유지",
+      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 0.81)",
       "name_ko": "길리어드 사이언시스",
       "domain": "gilead.com",
       "weight_note": ""
@@ -4261,7 +4257,7 @@
       "name": "Versamet Royalties Corporation",
       "name_ko": "버사멧 로열티스",
       "domain": "versamet.com",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 2.6,
       "avg_price": null,
       "weight": 0.0,
@@ -4297,7 +4293,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 하회 — 1차 진입 대기",
+      "reason": "REMOVED 상태 유지",
       "weight_note": ""
     },
     {
@@ -4481,7 +4477,7 @@
       "name": "PicS N.V.",
       "name_ko": "픽스",
       "domain": "picpay.com",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 3.0,
       "avg_price": null,
       "weight": 0.0,
@@ -4517,7 +4513,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 0.56)",
+      "reason": "REMOVED 상태 유지",
       "weight_note": ""
     },
     {
