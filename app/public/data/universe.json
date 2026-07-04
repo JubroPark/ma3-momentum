@@ -1,8 +1,34 @@
 {
-  "as_of": "2026-07-03",
+  "as_of": "2026-07-04",
   "total_screened": 2775,
-  "qualified": 176,
+  "qualified": 304,
   "items": [
+    {
+      "symbol": "NVDA",
+      "name": "NVIDIA Corporation",
+      "name_ko": "엔비디아",
+      "domain": "nvidia.com",
+      "toppick_score": 96,
+      "moat_score": 4.6,
+      "growth_score": 5.0,
+      "earnings_score": 5.0,
+      "health_score": 4.0,
+      "market_cap": 4718977351680,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "PLTR",
+      "name": "Palantir Technologies Inc.",
+      "name_ko": "팔란티어 테크놀로지스",
+      "domain": "palantir.com",
+      "toppick_score": 96,
+      "moat_score": 4.6,
+      "growth_score": 5.0,
+      "earnings_score": 5.0,
+      "health_score": 4.3,
+      "market_cap": 309972434944,
+      "sector": "Technology"
+    },
     {
       "symbol": "APP",
       "name": "Applovin Corporation",
@@ -28,6 +54,19 @@
       "health_score": 3.5,
       "market_cap": 1082493829120,
       "sector": "Healthcare"
+    },
+    {
+      "symbol": "ADSK",
+      "name": "Autodesk, Inc.",
+      "name_ko": "오토데스크",
+      "domain": "autodesk.com",
+      "toppick_score": 89,
+      "moat_score": 4.45,
+      "growth_score": 4.0,
+      "earnings_score": 5.0,
+      "health_score": 4.0,
+      "market_cap": 43808415744,
+      "sector": "Technology"
     },
     {
       "symbol": "CRDO",
@@ -69,6 +108,19 @@
       "sector": "Technology"
     },
     {
+      "symbol": "KGC",
+      "name": "Kinross Gold Corporation",
+      "name_ko": "킨로스 골드",
+      "domain": "kinross.com",
+      "toppick_score": 87,
+      "moat_score": 3.1,
+      "growth_score": 5.0,
+      "earnings_score": 5.0,
+      "health_score": 4.3,
+      "market_cap": 29506443264,
+      "sector": "Basic Materials"
+    },
+    {
       "symbol": "ARGX",
       "name": "argenx SE",
       "name_ko": "아겐스 ADR",
@@ -80,6 +132,19 @@
       "health_score": 1.0,
       "market_cap": 58725269504,
       "sector": "Healthcare"
+    },
+    {
+      "symbol": "AVGO",
+      "name": "Broadcom Inc.",
+      "name_ko": "브로드컴",
+      "domain": "broadcom.com",
+      "toppick_score": 85,
+      "moat_score": 5.0,
+      "growth_score": 4.0,
+      "earnings_score": 3.8,
+      "health_score": 4.3,
+      "market_cap": 1714869895168,
+      "sector": "Technology"
     },
     {
       "symbol": "ALAB",
@@ -106,6 +171,19 @@
       "health_score": 4.0,
       "market_cap": 11056972800,
       "sector": "Healthcare"
+    },
+    {
+      "symbol": "TER",
+      "name": "Teradyne, Inc.",
+      "name_ko": "테라다인",
+      "domain": "teradyne.com",
+      "toppick_score": 84,
+      "moat_score": 4.45,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 2.5,
+      "market_cap": 57778143232,
+      "sector": "Technology"
     },
     {
       "symbol": "NBIX",
@@ -160,6 +238,45 @@
       "sector": "Healthcare"
     },
     {
+      "symbol": "ANET",
+      "name": "Arista Networks, Inc.",
+      "name_ko": "아리스타 네트웍스",
+      "domain": "arista.com",
+      "toppick_score": 81,
+      "moat_score": 4.0,
+      "growth_score": 3.5,
+      "earnings_score": 4.5,
+      "health_score": 4.3,
+      "market_cap": 201454518272,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "PAAS",
+      "name": "Pan American Silver Corp.",
+      "name_ko": "팬 아메리카 실버",
+      "domain": "panamericansilver.com",
+      "toppick_score": 81,
+      "moat_score": 2.65,
+      "growth_score": 4.5,
+      "earnings_score": 5.0,
+      "health_score": 4.0,
+      "market_cap": 19504291840,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "AGI",
+      "name": "Alamos Gold Inc.",
+      "name_ko": "알라모스 골드",
+      "domain": "alamosgold.com",
+      "toppick_score": 81,
+      "moat_score": 2.95,
+      "growth_score": 5.0,
+      "earnings_score": 4.5,
+      "health_score": 3.0,
+      "market_cap": 13262508032,
+      "sector": "Basic Materials"
+    },
+    {
       "symbol": "AGX",
       "name": "Argan, Inc.",
       "name_ko": "아간",
@@ -173,6 +290,71 @@
       "sector": "Industrials"
     },
     {
+      "symbol": "OR",
+      "name": "OR Royalties Inc.",
+      "name_ko": "OR 로열티스",
+      "domain": "orroyalties.com",
+      "toppick_score": 81,
+      "moat_score": 2.9,
+      "growth_score": 5.0,
+      "earnings_score": 4.5,
+      "health_score": 3.5,
+      "market_cap": 5894870528,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "ARIS",
+      "name": "Aris Mining Corporation",
+      "name_ko": "아리스 마이닝",
+      "domain": "aris-mining.com",
+      "toppick_score": 81,
+      "moat_score": 2.4,
+      "growth_score": 5.0,
+      "earnings_score": 5.0,
+      "health_score": 3.2,
+      "market_cap": 3302400000,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "GOOGL",
+      "name": "Alphabet Inc.",
+      "name_ko": "알파벳 Class A",
+      "domain": "abc.xyz",
+      "toppick_score": 80,
+      "moat_score": 4.4,
+      "growth_score": 3.5,
+      "earnings_score": 4.5,
+      "health_score": 2.8,
+      "market_cap": 4391827931136,
+      "sector": "Communication Services"
+    },
+    {
+      "symbol": "GOOG",
+      "name": "Alphabet Inc.",
+      "name_ko": "알파벳 Class C",
+      "domain": "abc.xyz",
+      "toppick_score": 80,
+      "moat_score": 4.4,
+      "growth_score": 3.5,
+      "earnings_score": 4.5,
+      "health_score": 2.8,
+      "market_cap": 4346312392704,
+      "sector": "Communication Services"
+    },
+    {
+      "symbol": "META",
+      "name": "Meta Platforms, Inc.",
+      "name_ko": "메타",
+      "domain": "meta.com",
+      "toppick_score": 80,
+      "moat_score": 4.4,
+      "growth_score": 4.0,
+      "earnings_score": 3.8,
+      "health_score": 3.3,
+      "market_cap": 1479647035392,
+      "sector": "Communication Services"
+    },
+    {
       "symbol": "FTNT",
       "name": "Fortinet, Inc.",
       "name_ko": "포티넷",
@@ -184,6 +366,149 @@
       "health_score": 3.5,
       "market_cap": 114476310528,
       "sector": "Technology"
+    },
+    {
+      "symbol": "BZ",
+      "name": "KANZHUN LIMITED - American Depo",
+      "name_ko": "칸준 ADR",
+      "domain": "ir.zhipin.com",
+      "toppick_score": 80,
+      "moat_score": 3.7,
+      "growth_score": 3.5,
+      "earnings_score": 5.0,
+      "health_score": 3.5,
+      "market_cap": 5809156096,
+      "sector": "Communication Services"
+    },
+    {
+      "symbol": "INOD",
+      "name": "Innodata Inc.",
+      "name_ko": "이노데이터",
+      "domain": "innodata.com",
+      "toppick_score": 80,
+      "moat_score": 2.8,
+      "growth_score": 4.5,
+      "earnings_score": 5.0,
+      "health_score": 3.0,
+      "market_cap": 2249300992,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "PICS",
+      "name": "PicS N.V.",
+      "name_ko": "픽스",
+      "domain": "picpay.com",
+      "toppick_score": 80,
+      "moat_score": 3.0,
+      "growth_score": 4.5,
+      "earnings_score": 5.0,
+      "health_score": 2.3,
+      "market_cap": 1433238272,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "VRT",
+      "name": "Vertiv Holdings, LLC",
+      "name_ko": "버티브 홀딩스",
+      "domain": "vertiv.com",
+      "toppick_score": 80,
+      "moat_score": 2.8,
+      "growth_score": 4.5,
+      "earnings_score": 5.0,
+      "health_score": 3.0,
+      "market_cap": 115436216320,
+      "sector": "Industrials"
+    },
+    {
+      "symbol": "B",
+      "name": "Barrick Mining Corporation",
+      "name_ko": "바릭 마이닝",
+      "domain": "barrick.com",
+      "toppick_score": 80,
+      "moat_score": 2.65,
+      "growth_score": 5.0,
+      "earnings_score": 4.5,
+      "health_score": 3.5,
+      "market_cap": 64175161344,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "AU",
+      "name": "AngloGold Ashanti PLC",
+      "name_ko": "앵글로골드 아샨티",
+      "domain": "anglogoldashanti.com",
+      "toppick_score": 80,
+      "moat_score": 3.1,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 4.3,
+      "market_cap": 42801082368,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "USAC",
+      "name": "USA Compression Partners, LP",
+      "name_ko": "USA Compression Partners Common Units",
+      "domain": "usacompression.com",
+      "toppick_score": 80,
+      "moat_score": 3.15,
+      "growth_score": 4.0,
+      "earnings_score": 5.0,
+      "health_score": 3.5,
+      "market_cap": 3821471232,
+      "sector": "Energy"
+    },
+    {
+      "symbol": "SII",
+      "name": "Sprott Inc.",
+      "name_ko": "스프롯",
+      "domain": "sprott.com",
+      "toppick_score": 80,
+      "moat_score": 2.2,
+      "growth_score": 5.0,
+      "earnings_score": 5.0,
+      "health_score": 3.5,
+      "market_cap": 2964481024,
+      "sector": "Financial Services"
+    },
+    {
+      "symbol": "FSM",
+      "name": "Fortuna Mining Corp.",
+      "name_ko": "포르투나 마이닝",
+      "domain": "fortunamining.com",
+      "toppick_score": 80,
+      "moat_score": 2.45,
+      "growth_score": 4.5,
+      "earnings_score": 5.0,
+      "health_score": 4.0,
+      "market_cap": 2641788416,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "STRL",
+      "name": "Sterling Infrastructure, Inc.",
+      "name_ko": "스털링 인프라스트럭처",
+      "domain": "strlco.com",
+      "toppick_score": 79,
+      "moat_score": 2.4,
+      "growth_score": 5.0,
+      "earnings_score": 5.0,
+      "health_score": 2.5,
+      "market_cap": 21503182848,
+      "sector": "Industrials"
+    },
+    {
+      "symbol": "GFI",
+      "name": "Gold Fields Limited",
+      "name_ko": "골드 필즈 ADR",
+      "domain": "goldfields.com",
+      "toppick_score": 79,
+      "moat_score": 3.1,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 4.0,
+      "market_cap": 31716081664,
+      "sector": "Basic Materials"
     },
     {
       "symbol": "BB",
@@ -238,6 +563,19 @@
       "sector": "Technology"
     },
     {
+      "symbol": "AEM",
+      "name": "Agnico Eagle Mines Limited",
+      "name_ko": "애그니코 이글 마인스",
+      "domain": "agnicoeagle.com",
+      "toppick_score": 78,
+      "moat_score": 2.95,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 4.0,
+      "market_cap": 76935577600,
+      "sector": "Basic Materials"
+    },
+    {
       "symbol": "FICO",
       "name": "Fair Isaac Corporation",
       "name_ko": "페어 아이작",
@@ -248,6 +586,45 @@
       "earnings_score": 5.0,
       "health_score": 3.5,
       "market_cap": 29471698944,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "STX",
+      "name": "Seagate Technology Holdings PLC",
+      "name_ko": "씨게이트",
+      "domain": "seagate.com",
+      "toppick_score": 77,
+      "moat_score": 3.6,
+      "growth_score": 4.5,
+      "earnings_score": 3.8,
+      "health_score": 3.0,
+      "market_cap": 183903649792,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "ATAT",
+      "name": "Atour Lifestyle Holdings Limite",
+      "name_ko": "어투어 라이프 스타일 홀딩스 ADR",
+      "domain": "ir.yaduo.com",
+      "toppick_score": 77,
+      "moat_score": 2.75,
+      "growth_score": 4.0,
+      "earnings_score": 5.0,
+      "health_score": 3.2,
+      "market_cap": 4452351488,
+      "sector": "Consumer Cyclical"
+    },
+    {
+      "symbol": "ADI",
+      "name": "Analog Devices, Inc.",
+      "name_ko": "애널로그 디바이시스",
+      "domain": "analog.com",
+      "toppick_score": 76,
+      "moat_score": 3.35,
+      "growth_score": 4.5,
+      "earnings_score": 3.8,
+      "health_score": 3.2,
+      "market_cap": 183709745152,
       "sector": "Technology"
     },
     {
@@ -303,6 +680,19 @@
       "sector": "Technology"
     },
     {
+      "symbol": "ADEA",
+      "name": "Adeia Inc.",
+      "name_ko": "아데이아",
+      "domain": "adeia.com",
+      "toppick_score": 76,
+      "moat_score": 4.15,
+      "growth_score": 3.5,
+      "earnings_score": 3.8,
+      "health_score": 3.5,
+      "market_cap": 3219474688,
+      "sector": "Technology"
+    },
+    {
       "symbol": "AYA",
       "name": "Aya Gold & Silver Inc.",
       "name_ko": "아야 골드 앤 실버",
@@ -314,6 +704,32 @@
       "health_score": 3.0,
       "market_cap": 2812521984,
       "sector": "Basic Materials"
+    },
+    {
+      "symbol": "AG",
+      "name": "First Majestic Silver Corp.",
+      "name_ko": "퍼스트 머제스틱 실버",
+      "domain": "firstmajestic.com",
+      "toppick_score": 76,
+      "moat_score": 2.6,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 3.7,
+      "market_cap": 8798973952,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "NFLX",
+      "name": "Netflix, Inc.",
+      "name_ko": "넷플릭스",
+      "domain": "netflix.com",
+      "toppick_score": 75,
+      "moat_score": 3.3,
+      "growth_score": 3.5,
+      "earnings_score": 4.5,
+      "health_score": 3.8,
+      "market_cap": 326968508416,
+      "sector": "Communication Services"
     },
     {
       "symbol": "DDOG",
@@ -381,6 +797,19 @@
       "sector": "Financial Services"
     },
     {
+      "symbol": "ORCL",
+      "name": "Oracle Corporation",
+      "name_ko": "오라클",
+      "domain": "oracle.com",
+      "toppick_score": 75,
+      "moat_score": 4.4,
+      "growth_score": 3.0,
+      "earnings_score": 4.5,
+      "health_score": 2.0,
+      "market_cap": 404043694080,
+      "sector": "Technology"
+    },
+    {
       "symbol": "HWM",
       "name": "Howmet Aerospace Inc.",
       "name_ko": "하우멧 에어로스페이스",
@@ -394,6 +823,19 @@
       "sector": "Industrials"
     },
     {
+      "symbol": "EVR",
+      "name": "Evercore Inc.",
+      "name_ko": "에버코어",
+      "domain": "evercore.com",
+      "toppick_score": 75,
+      "moat_score": 3.15,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 1.5,
+      "market_cap": 13254166528,
+      "sector": "Financial Services"
+    },
+    {
       "symbol": "WDC",
       "name": "Western Digital Corporation",
       "name_ko": "웨스턴 디지털",
@@ -404,6 +846,58 @@
       "earnings_score": 2.8,
       "health_score": 3.5,
       "market_cap": 185783681024,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "CIEN",
+      "name": "Ciena Corporation",
+      "name_ko": "시에나",
+      "domain": "ciena.com",
+      "toppick_score": 74,
+      "moat_score": 3.3,
+      "growth_score": 4.5,
+      "earnings_score": 3.8,
+      "health_score": 2.2,
+      "market_cap": 59800449024,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "WPM",
+      "name": "Wheaton Precious Metals Corp",
+      "name_ko": "휘턴 프레셔스 메탈스",
+      "domain": "heatonpm.com",
+      "toppick_score": 74,
+      "moat_score": 3.15,
+      "growth_score": 5.0,
+      "earnings_score": 3.0,
+      "health_score": 3.5,
+      "market_cap": 52555898880,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "FNV",
+      "name": "Franco-Nevada Corporation",
+      "name_ko": "프랑코-네바다",
+      "domain": "franco-nevada.com",
+      "toppick_score": 74,
+      "moat_score": 2.9,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 2.0,
+      "market_cap": 41961508864,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "CLS",
+      "name": "Celestica, Inc.",
+      "name_ko": "셀레스티카",
+      "domain": "celestica.com",
+      "toppick_score": 74,
+      "moat_score": 1.75,
+      "growth_score": 5.0,
+      "earnings_score": 5.0,
+      "health_score": 1.8,
+      "market_cap": 38655107072,
       "sector": "Technology"
     },
     {
@@ -420,6 +914,19 @@
       "sector": "Technology"
     },
     {
+      "symbol": "CDE",
+      "name": "Coeur Mining, Inc.",
+      "name_ko": "쾨르 마이닝",
+      "domain": "coeur.com",
+      "toppick_score": 74,
+      "moat_score": 2.4,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 3.2,
+      "market_cap": 17828247552,
+      "sector": "Basic Materials"
+    },
+    {
       "symbol": "QTWO",
       "name": "Q2 Holdings, Inc.",
       "name_ko": "Q2 홀딩스",
@@ -430,6 +937,45 @@
       "earnings_score": 5.0,
       "health_score": 2.0,
       "market_cap": 3294660352,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "PTC",
+      "name": "PTC Inc.",
+      "name_ko": "PTC",
+      "domain": "ptc.com",
+      "toppick_score": 73,
+      "moat_score": 4.4,
+      "growth_score": 4.0,
+      "earnings_score": 2.3,
+      "health_score": 4.3,
+      "market_cap": 14386246656,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "VICR",
+      "name": "Vicor Corporation",
+      "name_ko": "비코",
+      "domain": "vicorpower.com",
+      "toppick_score": 73,
+      "moat_score": 3.95,
+      "growth_score": 4.0,
+      "earnings_score": 3.8,
+      "health_score": 1.3,
+      "market_cap": 12897259520,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "MGRT",
+      "name": "Mega Fortune Company Limited",
+      "name_ko": "메가 포춘",
+      "domain": "qbssystem.com",
+      "toppick_score": 73,
+      "moat_score": 3.2,
+      "growth_score": 5.0,
+      "earnings_score": 3.5,
+      "health_score": 1.2,
+      "market_cap": 1125849984,
       "sector": "Technology"
     },
     {
@@ -459,6 +1005,19 @@
       "sector": "Technology"
     },
     {
+      "symbol": "IAG",
+      "name": "Iamgold Corporation",
+      "name_ko": "아이엠골드",
+      "domain": "iamgold.com",
+      "toppick_score": 73,
+      "moat_score": 2.25,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 3.5,
+      "market_cap": 9571679232,
+      "sector": "Basic Materials"
+    },
+    {
       "symbol": "RSI",
       "name": "Rush Street Interactive, Inc.",
       "name_ko": "러시 스트리트 인터랙티브",
@@ -470,6 +1029,19 @@
       "health_score": 2.1,
       "market_cap": 7336272384,
       "sector": "Consumer Cyclical"
+    },
+    {
+      "symbol": "DHT",
+      "name": "DHT Holdings, Inc.",
+      "name_ko": "DHT 홀딩스",
+      "domain": "dhtankers.com",
+      "toppick_score": 73,
+      "moat_score": 2.95,
+      "growth_score": 5.0,
+      "earnings_score": 3.5,
+      "health_score": 2.0,
+      "market_cap": 2766695168,
+      "sector": "Energy"
     },
     {
       "symbol": "INCY",
@@ -511,6 +1083,84 @@
       "sector": "Technology"
     },
     {
+      "symbol": "COCO",
+      "name": "The Vita Coco Company, Inc.",
+      "name_ko": "비타 코코 컴퍼니",
+      "domain": "thevitacococompany.com",
+      "toppick_score": 72,
+      "moat_score": 2.25,
+      "growth_score": 4.0,
+      "earnings_score": 5.0,
+      "health_score": 2.2,
+      "market_cap": 3778572800,
+      "sector": "Consumer Defensive"
+    },
+    {
+      "symbol": "AUPH",
+      "name": "Aurinia Pharmaceuticals Inc",
+      "name_ko": "오리니아 파마슈티컬스",
+      "domain": "auriniapharma.com",
+      "toppick_score": 72,
+      "moat_score": 4.0,
+      "growth_score": 3.5,
+      "earnings_score": 3.0,
+      "health_score": 4.5,
+      "market_cap": 2007472000,
+      "sector": "Healthcare"
+    },
+    {
+      "symbol": "SCCO",
+      "name": "Southern Copper Corporation",
+      "name_ko": "서던 코퍼",
+      "domain": "southerncoppercorp.com",
+      "toppick_score": 72,
+      "moat_score": 3.4,
+      "growth_score": 4.0,
+      "earnings_score": 3.3,
+      "health_score": 3.8,
+      "market_cap": 143512846336,
+      "sector": "Basic Materials"
+    },
+    {
+      "symbol": "ICE",
+      "name": "Intercontinental Exchange Inc.",
+      "name_ko": "인터컨티넨털 익스체인지",
+      "domain": "ice.com",
+      "toppick_score": 72,
+      "moat_score": 2.7,
+      "growth_score": 3.5,
+      "earnings_score": 4.5,
+      "health_score": 3.7,
+      "market_cap": 75207516160,
+      "sector": "Financial Services"
+    },
+    {
+      "symbol": "LVS",
+      "name": "Las Vegas Sands Corp.",
+      "name_ko": "라스베이거스 샌즈",
+      "domain": "sands.com",
+      "toppick_score": 72,
+      "moat_score": 3.75,
+      "growth_score": 3.5,
+      "earnings_score": 3.8,
+      "health_score": 3.0,
+      "market_cap": 31137329152,
+      "sector": "Consumer Cyclical"
+    },
+    {
+      "symbol": "YOU",
+      "name": "Clear Secure, Inc.",
+      "name_ko": "클리어 시큐어",
+      "domain": "clearme.com",
+      "toppick_score": 72,
+      "moat_score": 4.05,
+      "growth_score": 3.0,
+      "earnings_score": 3.8,
+      "health_score": 3.7,
+      "market_cap": 7189640704,
+      "sector": "Technology"
+    },
+    {
       "symbol": "ASIC",
       "name": "Ategrity Specialty Insurance Co",
       "name_ko": "에이티그리티 스페셜티 인슈어런스 홀딩스",
@@ -522,6 +1172,19 @@
       "health_score": 2.0,
       "market_cap": 1220990080,
       "sector": "Financial Services"
+    },
+    {
+      "symbol": "MSFT",
+      "name": "Microsoft Corporation",
+      "name_ko": "마이크로소프트",
+      "domain": "microsoft.com",
+      "toppick_score": 71,
+      "moat_score": 3.7,
+      "growth_score": 3.0,
+      "earnings_score": 4.0,
+      "health_score": 3.3,
+      "market_cap": 2900729528320,
+      "sector": "Technology"
     },
     {
       "symbol": "AMAT",
@@ -550,6 +1213,19 @@
       "sector": "Healthcare"
     },
     {
+      "symbol": "FSLR",
+      "name": "First Solar, Inc.",
+      "name_ko": "퍼스트 솔라",
+      "domain": "firstsolar.com",
+      "toppick_score": 71,
+      "moat_score": 2.3,
+      "growth_score": 3.5,
+      "earnings_score": 5.0,
+      "health_score": 3.0,
+      "market_cap": 24130801664,
+      "sector": "Technology"
+    },
+    {
       "symbol": "NCNO",
       "name": "nCino, Inc.",
       "name_ko": "엔씨노",
@@ -576,6 +1252,32 @@
       "sector": "Healthcare"
     },
     {
+      "symbol": "CRM",
+      "name": "Salesforce, Inc.",
+      "name_ko": "세일즈포스",
+      "domain": "salesforce.com",
+      "toppick_score": 71,
+      "moat_score": 3.25,
+      "growth_score": 3.0,
+      "earnings_score": 4.5,
+      "health_score": 3.2,
+      "market_cap": 136044093440,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "NEM",
+      "name": "Newmont Corporation",
+      "name_ko": "뉴몬트",
+      "domain": "newmont.com",
+      "toppick_score": 71,
+      "moat_score": 2.65,
+      "growth_score": 4.0,
+      "earnings_score": 3.8,
+      "health_score": 4.0,
+      "market_cap": 103595319296,
+      "sector": "Basic Materials"
+    },
+    {
       "symbol": "TWLO",
       "name": "Twilio Inc.",
       "name_ko": "트윌리오",
@@ -600,188 +1302,6 @@
       "health_score": 1.7,
       "market_cap": 4943246848,
       "sector": "Real Estate"
-    },
-    {
-      "symbol": "AMD",
-      "name": "Advanced Micro Devices, Inc.",
-      "name_ko": "AMD(어드밴스드 마이크로 디바이시스)",
-      "domain": "amd.com",
-      "toppick_score": 70,
-      "moat_score": 3.15,
-      "growth_score": 4.0,
-      "earnings_score": 3.8,
-      "health_score": 2.0,
-      "market_cap": 844357632000,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "LSCC",
-      "name": "Lattice Semiconductor Corporati",
-      "name_ko": "래티스 세미컨덕터",
-      "domain": "latticesemi.com",
-      "toppick_score": 70,
-      "moat_score": 3.45,
-      "growth_score": 4.5,
-      "earnings_score": 3.0,
-      "health_score": 2.4,
-      "market_cap": 18705682432,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "MRX",
-      "name": "Marex Group plc",
-      "name_ko": "마렉스 그룹",
-      "domain": "marex.com",
-      "toppick_score": 70,
-      "moat_score": 2.35,
-      "growth_score": 4.5,
-      "earnings_score": 4.5,
-      "health_score": 0.8,
-      "market_cap": 4497118208,
-      "sector": "Financial Services"
-    },
-    {
-      "symbol": "NU",
-      "name": "Nu Holdings Ltd.",
-      "name_ko": "누 홀딩스",
-      "domain": "nubank.com.br",
-      "toppick_score": 70,
-      "moat_score": 1.9,
-      "growth_score": 4.0,
-      "earnings_score": 5.0,
-      "health_score": 2.3,
-      "market_cap": 66168295424,
-      "sector": "Financial Services"
-    },
-    {
-      "symbol": "A",
-      "name": "Agilent Technologies, Inc.",
-      "name_ko": "애질런트 테크놀로지스",
-      "domain": "agilent.com",
-      "toppick_score": 70,
-      "moat_score": 2.9,
-      "growth_score": 3.0,
-      "earnings_score": 5.0,
-      "health_score": 2.2,
-      "market_cap": 36911030272,
-      "sector": "Healthcare"
-    },
-    {
-      "symbol": "TDC",
-      "name": "Teradata Corporation",
-      "name_ko": "테라데이타",
-      "domain": "teradata.com",
-      "toppick_score": 70,
-      "moat_score": 3.6,
-      "growth_score": 3.5,
-      "earnings_score": 3.5,
-      "health_score": 3.2,
-      "market_cap": 3252096256,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "ARM",
-      "name": "Arm Holdings plc",
-      "name_ko": "암 홀딩스 ADR",
-      "domain": "arm.com",
-      "toppick_score": 69,
-      "moat_score": 4.25,
-      "growth_score": 3.0,
-      "earnings_score": 3.3,
-      "health_score": 2.7,
-      "market_cap": 336743890944,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "ALNY",
-      "name": "Alnylam Pharmaceuticals, Inc.",
-      "name_ko": "앨나일램 파마슈티컬스",
-      "domain": "alnylam.com",
-      "toppick_score": 69,
-      "moat_score": 4.75,
-      "growth_score": 2.5,
-      "earnings_score": 3.5,
-      "health_score": 2.2,
-      "market_cap": 41760063488,
-      "sector": "Healthcare"
-    },
-    {
-      "symbol": "WDAY",
-      "name": "Workday, Inc.",
-      "name_ko": "워크데이",
-      "domain": "orkday.com",
-      "toppick_score": 69,
-      "moat_score": 3.4,
-      "growth_score": 3.5,
-      "earnings_score": 3.8,
-      "health_score": 2.5,
-      "market_cap": 33440206848,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "HQY",
-      "name": "HealthEquity, Inc.",
-      "name_ko": "헬스에퀴티",
-      "domain": "healthequity.com",
-      "toppick_score": 69,
-      "moat_score": 3.65,
-      "growth_score": 2.5,
-      "earnings_score": 4.5,
-      "health_score": 2.7,
-      "market_cap": 7968121856,
-      "sector": "Healthcare"
-    },
-    {
-      "symbol": "DSGX",
-      "name": "The Descartes Systems Group Inc",
-      "name_ko": "데카르트 시스템즈 그룹",
-      "domain": "descartes.com",
-      "toppick_score": 69,
-      "moat_score": 3.5,
-      "growth_score": 2.5,
-      "earnings_score": 4.5,
-      "health_score": 3.2,
-      "market_cap": 6237863424,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "PCTY",
-      "name": "Paylocity Holding Corporation",
-      "name_ko": "페일로시티 홀딩",
-      "domain": "paylocity.com",
-      "toppick_score": 69,
-      "moat_score": 3.45,
-      "growth_score": 2.5,
-      "earnings_score": 4.5,
-      "health_score": 3.0,
-      "market_cap": 6162920960,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "AVPT",
-      "name": "AvePoint, Inc.",
-      "name_ko": "애브포인트",
-      "domain": "avepoint.com",
-      "toppick_score": 69,
-      "moat_score": 3.0,
-      "growth_score": 4.0,
-      "earnings_score": 3.8,
-      "health_score": 2.0,
-      "market_cap": 2429717248,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "VEEV",
-      "name": "Veeva Systems Inc.",
-      "name_ko": "비바 시스템즈",
-      "domain": "veeva.com",
-      "toppick_score": 69,
-      "moat_score": 3.9,
-      "growth_score": 2.5,
-      "earnings_score": 4.0,
-      "health_score": 3.2,
-      "market_cap": 31309322240,
-      "sector": "Healthcare"
     }
   ]
 }
