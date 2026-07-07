@@ -2113,13 +2113,16 @@ function initMaxPctUI(rateEnv) {
     // 위기→평상시 전환 후 올인 기준가가 있으면 manualPrices 자동 세팅
     const _lap = masam.last_allin_price;
     if (_lap && typeof _lap === 'object' && masam.mode === 'NORMAL') {
-      if (_lap.nvda) { manualPrices.nvda.allin = _lap.nvda; localStorage.setItem('range_allin_nvda', _lap.nvda); }
-      if (_lap.qqq)  { manualPrices.qqq.allin  = _lap.qqq;  localStorage.setItem('range_allin_qqq',  _lap.qqq);  }
+      if (_lap.nvda)  { manualPrices.nvda.allin  = _lap.nvda;  localStorage.setItem('range_allin_nvda',  _lap.nvda);  }
+      if (_lap.qqq)   { manualPrices.qqq.allin   = _lap.qqq;   localStorage.setItem('range_allin_qqq',   _lap.qqq);   }
+      if (_lap.rank2) { manualPrices.rank2.allin  = _lap.rank2; localStorage.setItem('range_allin_rank2', _lap.rank2); }
       // 직전 고점: EOD 배치가 계산한 올인 이후 최고 종가를 항상 우선 적용 (수동 입력 불필요)
-      const _prevHigh    = _lap.nvda_prev_high || _lap.nvda;
-      const _prevHighQqq = _lap.qqq_prev_high  || _lap.qqq;
-      if (_prevHigh)    manualPrices.nvda.prev = _prevHigh;
-      if (_prevHighQqq) manualPrices.qqq.prev  = _prevHighQqq;
+      const _prevHigh     = _lap.nvda_prev_high  || _lap.nvda;
+      const _prevHighQqq  = _lap.qqq_prev_high   || _lap.qqq;
+      const _prevHighRnk2 = _lap.rank2_prev_high || _lap.rank2;
+      if (_prevHigh)     manualPrices.nvda.prev  = _prevHigh;
+      if (_prevHighQqq)  manualPrices.qqq.prev   = _prevHighQqq;
+      if (_prevHighRnk2) manualPrices.rank2.prev = _prevHighRnk2;
       // 초기 탭: 올인 지점으로 세팅 (live 가격 확인 후 아래에서 재조정)
       const _nvdaAth = RANGE_DATA.nvda.demos['최고점'] || parseFloat(RANGE_DATA.nvda.high) || Infinity;
       if (_lap.nvda < _nvdaAth) {
