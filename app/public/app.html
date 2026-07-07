@@ -1697,12 +1697,14 @@
     }
 
     // 권장 비중 배너: 파란 구간 기준 1등주/QQQ/현금 비중
+    const isRebalancing = masamMode === 'NORMAL';
     const bannerMsg = document.querySelector('.view[data-view="발견"] .ai-banner .msg');
     if (bannerMsg) {
       if (curZone === 0) {
         bannerMsg.innerHTML = '주식 100%';
       } else {
-        const s = curZone * 10;
+        // 리밸런싱: 100%에서 구간마다 10%씩 매도 / 말뚝박기: 0%에서 구간마다 10%씩 매수
+        const s = isRebalancing ? 100 - curZone * 10 : curZone * 10;
         const cash = 100 - s;
         const ratio = getPortfolioRatio();
         const rParts = ratio.split(':').map(Number);
@@ -1745,19 +1747,22 @@
       <span class="rt-col-status"></span>
     </div>`;
 
-    // 기준 행
+    // 기준 행: 리밸런싱=주식100%/현금0%, 말뚝박기=주식0%/현금100%
+    const baseStock = isRebalancing ? '100%' : '0%';
+    const baseCash  = isRebalancing ? '0%'   : '100%';
     html += `<div class="rt-row">
       <span class="rt-col-zone" style="color:var(--txt);font-size:12px">기준</span>
       ${basePriceCell}
-      <span class="rt-col-stock" style="color:var(--txt-3)">0%</span>
-      <span class="rt-col-cash" style="color:var(--txt-3)">100%</span>
+      <span class="rt-col-stock" style="color:var(--txt-3)">${baseStock}</span>
+      <span class="rt-col-cash" style="color:var(--txt-3)">${baseCash}</span>
       <span class="rt-col-status"><span class="rt-done"><span class="iconify" data-icon="heroicons:check" data-width="13" data-height="13"></span></span>
     </div>`;
 
     for (let i = 1; i <= 10; i++) {
       const threshold = base * (1 - step * i);
       const pct = (step * i * 100).toFixed(1);
-      const stock = i * 10;
+      // 리밸런싱: 하락할수록 주식 줄이고 현금 확보 / 말뚝박기: 하락할수록 주식 늘림
+      const stock = isRebalancing ? 100 - i * 10 : i * 10;
       const done = i < curZone, cur = i === curZone, isV = i === vZone;
       const zCol = cur ? 'var(--blue)' : done ? 'var(--txt)' : 'var(--txt-3)';
       const sText = cur
