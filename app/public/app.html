@@ -2105,12 +2105,19 @@ function initMaxPctUI(rateEnv) {
     masamMode = masam.mode || 'NORMAL';
     initMaxPctUI(masam.rate_env || 'NON_ZERO');
 
-    // 위기→평상시 전환 후 올인 기준가가 있으면 manualPrices 자동 세팅 + "올인 지점" 탭 기본 선택
+    // 위기→평상시 전환 후 올인 기준가가 있으면 manualPrices 자동 세팅
     const _lap = masam.last_allin_price;
     if (_lap && typeof _lap === 'object' && masam.mode === 'NORMAL') {
       if (_lap.nvda) { manualPrices.nvda.allin = _lap.nvda; localStorage.setItem('range_allin_nvda', _lap.nvda); }
       if (_lap.qqq)  { manualPrices.qqq.allin  = _lap.qqq;  localStorage.setItem('range_allin_qqq',  _lap.qqq);  }
-      // ATH보다 낮으면 "올인 지점" 탭을 기본으로 (tabs가 아직 렌더링된 상태)
+      // 새 올인 이벤트(날짜 변경)면 직전 고점도 올인 가격으로 초기화
+      const _storedAllinDate = localStorage.getItem('range_allin_date');
+      if (_storedAllinDate !== _lap.date) {
+        if (_lap.nvda) { manualPrices.nvda.prev = _lap.nvda; localStorage.setItem('range_prev_nvda', _lap.nvda); }
+        if (_lap.qqq)  { manualPrices.qqq.prev  = _lap.qqq;  localStorage.setItem('range_prev_qqq',  _lap.qqq);  }
+        localStorage.setItem('range_allin_date', _lap.date);
+      }
+      // 초기 탭: 올인 지점으로 세팅 (live 가격 확인 후 아래에서 재조정)
       const _nvdaAth = RANGE_DATA.nvda.demos['최고점'] || parseFloat(RANGE_DATA.nvda.high) || Infinity;
       if (_lap.nvda < _nvdaAth) {
         rangeBase = '올인 지점';
@@ -2423,6 +2430,21 @@ function initMaxPctUI(rateEnv) {
               cat.style.border     = i === 3 ? '1.4px solid transparent' : '';
             });
           }
+        }
+      }
+
+      // NORMAL 모드: live 가격 ≥ 올인 기준가면 "직전 고점" 탭으로 자동 전환
+      if (masam.mode === 'NORMAL' && _lap && typeof _lap === 'object') {
+        const _allinBase = rangeTarget === 'qqq' ? (_lap.qqq || 0) : (_lap.nvda || 0);
+        const _liveCur   = rangeTarget === 'qqq'
+          ? parseFloat(RANGE_DATA.qqq.cur)
+          : parseFloat(RANGE_DATA.nvda.cur);
+        const _autoTab = (_allinBase > 0 && _liveCur >= _allinBase) ? '직전 고점' : '올인 지점';
+        if (rangeBase !== _autoTab) {
+          rangeBase = _autoTab;
+          document.querySelectorAll('.view[data-view="발견"] .tabs .t').forEach(function(t) {
+            t.classList.toggle('on', t.textContent.trim() === _autoTab);
+          });
         }
       }
 
