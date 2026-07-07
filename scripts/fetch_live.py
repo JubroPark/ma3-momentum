@@ -130,12 +130,18 @@ def main():
     gspc_q  = fetch_quote("^GSPC")
     dji_q   = fetch_quote("^DJI")
     last_masam_date = masam_json.get("masam", {}).get("last_masam_date")
+    # NORMAL 모드에서 올인 집행 후엔 올인 날짜부터 장중 저가 재측정
+    lap = masam_json.get("last_allin_price")
+    if masam_json.get("mode") == "NORMAL" and isinstance(lap, dict) and lap.get("date"):
+        low_since_date = lap["date"]
+    else:
+        low_since_date = last_masam_date
     rank1_q = fetch_quote(rank1_ticker)
     rank2_q = fetch_quote(rank2_ticker)
     qqq_q   = fetch_quote("QQQ")
-    rank1_extra = fetch_ohlc_ath(rank1_ticker, since_date=last_masam_date)
-    rank2_extra = fetch_ohlc_ath(rank2_ticker, since_date=last_masam_date)
-    qqq_extra   = fetch_ohlc_ath("QQQ", since_date=last_masam_date)
+    rank1_extra = fetch_ohlc_ath(rank1_ticker, since_date=low_since_date)
+    rank2_extra = fetch_ohlc_ath(rank2_ticker, since_date=low_since_date)
+    qqq_extra   = fetch_ohlc_ath("QQQ", since_date=low_since_date)
     ixic_extra  = fetch_ohlc_ath("^IXIC")
 
     # 마삼까지 거리

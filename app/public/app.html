@@ -1698,22 +1698,26 @@
 
     // 권장 비중 배너: 파란 구간 기준 1등주/QQQ/현금 비중
     const bannerMsg = document.querySelector('.view[data-view="발견"] .ai-banner .msg');
-    if (bannerMsg && curZone > 0) {
-      const s = curZone * 10;
-      const cash = 100 - s;
-      const ratio = getPortfolioRatio();
-      const rParts = ratio.split(':').map(Number);
-      const rTotal = rParts[0] + rParts[1];
-      const sep = '<span style="margin:0 2px;color:#3a3a4a;">/</span>';
-      let html;
-      if (rParts[1] === 0) {
-        html = '1등주 ' + s + '%' + sep + '현금 ' + cash + '%';
+    if (bannerMsg) {
+      if (curZone === 0) {
+        bannerMsg.innerHTML = '주식 100%';
       } else {
-        const r1 = Math.round(s * rParts[0] / rTotal);
-        const q  = s - r1;
-        html = '1등주 ' + r1 + '%' + sep + 'QQQ ' + q + '%' + sep + '현금 ' + cash + '%';
+        const s = curZone * 10;
+        const cash = 100 - s;
+        const ratio = getPortfolioRatio();
+        const rParts = ratio.split(':').map(Number);
+        const rTotal = rParts[0] + rParts[1];
+        const sep = '<span style="margin:0 2px;color:#3a3a4a;">/</span>';
+        let html;
+        if (rParts[1] === 0) {
+          html = '1등주 ' + s + '%' + sep + '현금 ' + cash + '%';
+        } else {
+          const r1 = Math.round(s * rParts[0] / rTotal);
+          const q  = s - r1;
+          html = '1등주 ' + r1 + '%' + sep + 'QQQ ' + q + '%' + sep + '현금 ' + cash + '%';
+        }
+        bannerMsg.innerHTML = html;
       }
-      bannerMsg.innerHTML = html;
     }
 
     // 재매수 구간 (위기/공황 시: 파란 구간에서 2구간 위)
@@ -2095,6 +2099,21 @@ function initMaxPctUI(rateEnv) {
     window._cachedMasam = masam;
     masamMode = masam.mode || 'NORMAL';
     initMaxPctUI(masam.rate_env || 'NON_ZERO');
+
+    // 위기→평상시 전환 후 올인 기준가가 있으면 manualPrices 자동 세팅 + "올인 지점" 탭 기본 선택
+    const _lap = masam.last_allin_price;
+    if (_lap && typeof _lap === 'object' && masam.mode === 'NORMAL') {
+      if (_lap.nvda) { manualPrices.nvda.allin = _lap.nvda; localStorage.setItem('range_allin_nvda', _lap.nvda); }
+      if (_lap.qqq)  { manualPrices.qqq.allin  = _lap.qqq;  localStorage.setItem('range_allin_qqq',  _lap.qqq);  }
+      // ATH보다 낮으면 "올인 지점" 탭을 기본으로 (tabs가 아직 렌더링된 상태)
+      const _nvdaAth = RANGE_DATA.nvda.demos['최고점'] || parseFloat(RANGE_DATA.nvda.high) || Infinity;
+      if (_lap.nvda < _nvdaAth) {
+        rangeBase = '올인 지점';
+        document.querySelectorAll('.view[data-view="발견"] .tabs .t').forEach(function(t) {
+          t.classList.toggle('on', t.textContent.trim() === '올인 지점');
+        });
+      }
+    }
 
     // 0. 모멘텀 종목 목록 동적 구성 (positions.json → MCAP2)
     // 배지는 next_action(배치 자동 계산) 기반 — status는 내부 추적용만 사용

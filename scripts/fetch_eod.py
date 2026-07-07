@@ -330,6 +330,7 @@ def main():
     ixic = fetch_history("^IXIC")
     gspc = fetch_history("^GSPC")
     ndx  = fetch_history("^NDX")
+    qqq  = fetch_history("QQQ")
     vix  = fetch_history("^VIX", period="5d")
 
     ixic_close = latest_close(ixic)
@@ -357,7 +358,8 @@ def main():
 
     # 위기/공황 → 평상시 전환 당일 기록
     released_date = existing_masam.get("released_date")
-    if prev_mode in ("CRISIS", "PANIC") and new_mode == "NORMAL":
+    _is_crisis_release = prev_mode in ("CRISIS", "PANIC") and new_mode == "NORMAL"
+    if _is_crisis_release:
         released_date = today.isoformat()
 
     # 4. mcap 순위 (투자가능 + 비USD 표시용)
@@ -374,6 +376,18 @@ def main():
     rank1_hist = fetch_history(rank1_ticker)
     rank1_close = latest_close(rank1_hist)
     rank1_ath   = float(yf.Ticker(rank1_ticker).history(period="max", auto_adjust=False)["Close"].max())
+
+    # 5b. 올인 기준가: 위기→평상시 전환 시 기준일 종가 저장
+    # ponytail: 전환일 당일 종가만 사용. 스크립트가 당일을 놓쳤다면 masam.json을 수동 패치
+    last_allin_price = existing_masam.get("last_allin_price")
+    if _is_crisis_release:
+        qqq_close = latest_close(qqq)
+        last_allin_price = {
+            "nvda": round(rank1_close, 2),
+            "qqq":  round(qqq_close, 2),
+            "date": today.isoformat(),
+        }
+        print(f"  올인 기준가: NVDA={last_allin_price['nvda']} QQQ={last_allin_price['qqq']} ({today})")
 
     # 위기 저점: 마지막 마삼일 이후 최저 종가 (V자 반등 기준점)
     last_masam_str = new_masam_state.get("last_masam_date")
@@ -443,6 +457,7 @@ def main():
         "hedge_allocation": hedge_alloc,
         "all_in_conditions": all_in,
         "released_date": released_date,
+        "last_allin_price": last_allin_price,
         "recommended_action": _recommended_action(new_mode, rank1_ticker),
     }
     save_json(DATA / "masam.json", masam_out)
