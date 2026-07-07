@@ -415,6 +415,11 @@
           const ticker = item.ticker;
           const co = companies[ticker] || {};
           const ld = liveMap[ticker] || {};
+          const eodMcap = item.mcap_usd || 0;
+          // change_pct로 실시간 시총 추정
+          const rtMcap = (ld.change_pct != null && eodMcap > 0)
+            ? eodMcap * (1 + ld.change_pct / 100)
+            : eodMcap;
           return {
             ticker: ticker,
             slug: item.slug || ticker,
@@ -423,7 +428,7 @@
             si: co.si || null,
             flag: co.flag || '',
             ticker_display: item.ticker_display || co.ticker_display || ticker,
-            mcap_usd: item.mcap_usd || 0,
+            mcap_usd: rtMcap,
             change_pct: ld.change_pct != null ? ld.change_pct : null,
           };
         });
