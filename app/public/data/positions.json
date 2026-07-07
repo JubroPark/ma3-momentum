@@ -1396,8 +1396,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "name_ko": "부킹 홀딩스",
       "domain": "bookingholdings.com",
       "weight_note": ""
@@ -3797,8 +3797,8 @@
           true
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(-0.5%) + 탑픽점수 71",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "weight_note": ""
     },
     {
