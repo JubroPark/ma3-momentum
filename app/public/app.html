@@ -2110,13 +2110,11 @@ function initMaxPctUI(rateEnv) {
     if (_lap && typeof _lap === 'object' && masam.mode === 'NORMAL') {
       if (_lap.nvda) { manualPrices.nvda.allin = _lap.nvda; localStorage.setItem('range_allin_nvda', _lap.nvda); }
       if (_lap.qqq)  { manualPrices.qqq.allin  = _lap.qqq;  localStorage.setItem('range_allin_qqq',  _lap.qqq);  }
-      // 새 올인 이벤트(날짜 변경)면 직전 고점도 올인 가격으로 초기화
-      const _storedAllinDate = localStorage.getItem('range_allin_date');
-      if (_storedAllinDate !== _lap.date) {
-        if (_lap.nvda) { manualPrices.nvda.prev = _lap.nvda; localStorage.setItem('range_prev_nvda', _lap.nvda); }
-        if (_lap.qqq)  { manualPrices.qqq.prev  = _lap.qqq;  localStorage.setItem('range_prev_qqq',  _lap.qqq);  }
-        localStorage.setItem('range_allin_date', _lap.date);
-      }
+      // 직전 고점: EOD 배치가 계산한 올인 이후 최고 종가를 항상 우선 적용 (수동 입력 불필요)
+      const _prevHigh    = _lap.nvda_prev_high || _lap.nvda;
+      const _prevHighQqq = _lap.qqq_prev_high  || _lap.qqq;
+      if (_prevHigh)    manualPrices.nvda.prev = _prevHigh;
+      if (_prevHighQqq) manualPrices.qqq.prev  = _prevHighQqq;
       // 초기 탭: 올인 지점으로 세팅 (live 가격 확인 후 아래에서 재조정)
       const _nvdaAth = RANGE_DATA.nvda.demos['최고점'] || parseFloat(RANGE_DATA.nvda.high) || Infinity;
       if (_lap.nvda < _nvdaAth) {

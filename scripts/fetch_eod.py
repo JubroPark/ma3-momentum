@@ -389,6 +389,21 @@ def main():
         }
         print(f"  올인 기준가: NVDA={last_allin_price['nvda']} QQQ={last_allin_price['qqq']} ({today})")
 
+    # NORMAL 모드에서 매 실행 시 올인 이후 최고 종가(직전 고점) 갱신
+    if new_mode == "NORMAL" and isinstance(last_allin_price, dict) and last_allin_price.get("date"):
+        allin_date_str = last_allin_price["date"]
+        try:
+            r1_since = rank1_hist.loc[allin_date_str:, "Close"]
+            last_allin_price["nvda_prev_high"] = round(float(r1_since.max()), 2) if not r1_since.empty else last_allin_price["nvda"]
+        except Exception:
+            last_allin_price["nvda_prev_high"] = last_allin_price.get("nvda_prev_high", last_allin_price["nvda"])
+        try:
+            qqq_since = qqq.loc[allin_date_str:, "Close"]
+            last_allin_price["qqq_prev_high"] = round(float(qqq_since.max()), 2) if not qqq_since.empty else last_allin_price["qqq"]
+        except Exception:
+            last_allin_price["qqq_prev_high"] = last_allin_price.get("qqq_prev_high", last_allin_price["qqq"])
+        print(f"  직전 고점: NVDA={last_allin_price['nvda_prev_high']} QQQ={last_allin_price['qqq_prev_high']}")
+
     # 위기 저점: 마지막 마삼일 이후 최저 종가 (V자 반등 기준점)
     last_masam_str = new_masam_state.get("last_masam_date")
     if last_masam_str:
