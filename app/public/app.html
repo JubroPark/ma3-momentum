@@ -1705,25 +1705,23 @@
     const isRebalancing = masamMode === 'NORMAL';
     const bannerMsg = document.querySelector('.view[data-view="발견"] .ai-banner .msg');
     if (bannerMsg) {
+      const _ratio = getPortfolioRatio();
+      const _rParts = _ratio.split(':').map(Number);
+      const _rTotal = _rParts[0] + _rParts[1];
+      const _sep = '<span style="margin:0 2px;color:#3a3a4a;">/</span>';
+      const _stockHtml = (s) => {
+        if (_rParts[1] === 0) return '1등주 ' + s + '%';
+        const r1 = Math.round(s * _rParts[0] / _rTotal);
+        const q  = s - r1;
+        return '1등주 ' + r1 + '%' + _sep + 'QQQ ' + q + '%';
+      };
       if (curZone === 0) {
-        bannerMsg.innerHTML = '주식 100%';
+        bannerMsg.innerHTML = _stockHtml(100);
       } else {
         // 리밸런싱: 100%에서 구간마다 10%씩 매도 / 말뚝박기: 0%에서 구간마다 10%씩 매수
         const s = isRebalancing ? 100 - curZone * 10 : curZone * 10;
         const cash = 100 - s;
-        const ratio = getPortfolioRatio();
-        const rParts = ratio.split(':').map(Number);
-        const rTotal = rParts[0] + rParts[1];
-        const sep = '<span style="margin:0 2px;color:#3a3a4a;">/</span>';
-        let html;
-        if (rParts[1] === 0) {
-          html = '1등주 ' + s + '%' + sep + '현금 ' + cash + '%';
-        } else {
-          const r1 = Math.round(s * rParts[0] / rTotal);
-          const q  = s - r1;
-          html = '1등주 ' + r1 + '%' + sep + 'QQQ ' + q + '%' + sep + '현금 ' + cash + '%';
-        }
-        bannerMsg.innerHTML = html;
+        bannerMsg.innerHTML = _stockHtml(s) + _sep + '현금 ' + cash + '%';
       }
     }
 
