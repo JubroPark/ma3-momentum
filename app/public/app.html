@@ -2222,12 +2222,8 @@ function initMaxPctUI(rateEnv) {
       });
     }
 
-    // 1. 기준일 업데이트 (모든 topbar)
-    const dateStr = (live.as_of || '').slice(0, 10).replace(/-/g, '.');
+    // 1. 기준일 업데이트 (모든 topbar) — 날짜는 masam.as_of(EOD 기준), 시간은 live.update_time(KST)
     const timeStr = live.update_time || '07:00 KST';
-    if (dateStr) {
-      document.querySelectorAll('.js-kijunil').forEach(el => { el.textContent = dateStr; });
-    }
     document.querySelectorAll('.topbar > span').forEach(outer => {
       if (outer.children.length >= 2) outer.children[1].textContent = timeStr;
     });
