@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-09",
+  "as_of": "2026-07-10",
   "regime": "GREEN",
   "items": [
     {
@@ -1105,11 +1105,11 @@
       "toppick_score": 81,
       "metrics": {
         "price": 523.2,
-        "ma50": 499.14,
-        "ma200": 528.89,
-        "atr14": 13.12,
-        "atr_pct": 0.0251,
-        "gap50_pct": 4.8,
+        "ma50": 498.32,
+        "ma200": 528.01,
+        "atr14": 13.1,
+        "atr_pct": 0.025,
+        "gap50_pct": 5.0,
         "dist_to_stop_pct": 8.8,
         "vol20ma": 4102939,
         "vol_ratio": 0.36,
@@ -1746,7 +1746,7 @@
         "earnings_score": 2.5,
         "health_score": 2.8,
         "eps_revision": "UP_STRONG",
-        "peg": 1.68,
+        "peg": 1.65,
         "steps_count": 5,
         "steps_list": [
           false,
@@ -2687,11 +2687,11 @@
         "price": 29.53,
         "ma50": 30.12,
         "ma200": 21.48,
-        "atr14": 2.1,
-        "atr_pct": 0.071,
+        "atr14": 2.09,
+        "atr_pct": 0.0709,
         "gap50_pct": -2.0,
         "dist_to_stop_pct": 20.4,
-        "vol20ma": 1910519,
+        "vol20ma": 1910689,
         "vol_ratio": 0.52,
         "growth_score": 3.5,
         "earnings_score": 3.8,
@@ -3360,7 +3360,7 @@
       "trailing_stop_line": 302.31,
       "horizontal_support": 337.21,
       "cooldown_until": null,
-      "toppick_score": 75,
+      "toppick_score": 72,
       "metrics": {
         "price": 339.75,
         "ma50": 342.94,
@@ -3372,7 +3372,7 @@
         "vol20ma": 391276,
         "vol_ratio": 0.75,
         "growth_score": 5.0,
-        "earnings_score": 3.8,
+        "earnings_score": 3.3,
         "health_score": 1.5,
         "eps_revision": "UP_STRONG",
         "peg": 0.18,
@@ -3973,7 +3973,7 @@
         "earnings_score": 4.5,
         "health_score": 0.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.29,
+        "peg": 0.28,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -3993,7 +3993,7 @@
       "name": "Agilent Technologies, Inc.",
       "name_ko": "애질런트 테크놀로지스",
       "domain": "agilent.com",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 2.9,
       "avg_price": null,
       "weight": 0.0,
@@ -4002,7 +4002,7 @@
       "trailing_stop_line": 125.01,
       "horizontal_support": 120.71,
       "cooldown_until": null,
-      "toppick_score": 70,
+      "toppick_score": 67,
       "metrics": {
         "price": 133.59,
         "ma50": 124.4,
@@ -4014,10 +4014,10 @@
         "vol20ma": 2333711,
         "vol_ratio": 1.02,
         "growth_score": 3.0,
-        "earnings_score": 5.0,
+        "earnings_score": 4.5,
         "health_score": 2.2,
         "eps_revision": "UP_STRONG",
-        "peg": 0.45,
+        "peg": 0.43,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -4029,7 +4029,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 1.02)",
+      "reason": "REMOVED 상태 유지",
       "weight_note": ""
     },
     {
@@ -4394,13 +4394,11 @@
       "name": "Nu Holdings Ltd.",
       "name_ko": "누 홀딩스",
       "domain": "nubank.com.br",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 1.9,
       "avg_price": null,
-      "weight": 0.075,
-      "deployed_tranches": [
-        1
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 18.76,
       "trailing_stop_line": 15.01,
       "horizontal_support": 11.78,
@@ -4431,9 +4429,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (13.67 ≤ 15.01)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -9.8%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "ONC",
@@ -5238,7 +5236,7 @@
       "weight": 0.0,
       "deployed_tranches": [],
       "recent_high": 165.21,
-      "trailing_stop_line": 128.54,
+      "trailing_stop_line": 128.51,
       "horizontal_support": 113.04,
       "cooldown_until": null,
       "toppick_score": 74,
@@ -5246,10 +5244,10 @@
         "price": 110.65,
         "ma50": 123.53,
         "ma200": 123.89,
-        "atr14": 4.91,
+        "atr14": 4.92,
         "atr_pct": 0.0444,
         "gap50_pct": -10.4,
-        "dist_to_stop_pct": -16.2,
+        "dist_to_stop_pct": -16.1,
         "vol20ma": 2382787,
         "vol_ratio": 0.5,
         "growth_score": 5.0,
