@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-07-10T21:09:34Z",
-  "update_time": "06:09 KST",
+  "as_of": "2026-07-13T13:01:41Z",
+  "update_time": "22:01 KST",
   "nasdaq": {
     "price": 26281.61,
     "change_pct": 0.29,
@@ -47,86 +47,86 @@
   },
   "mcap_live": {
     "NVDA": {
-      "change_pct": 4.27
+      "change_pct": 0.19
     },
     "AAPL": {
-      "change_pct": 0.03
+      "change_pct": 0.11
     },
     "GOOGL": {
-      "change_pct": -0.1
+      "change_pct": 0.0
     },
     "MSFT": {
-      "change_pct": 0.26
+      "change_pct": -0.06
     },
     "AMZN": {
-      "change_pct": -0.35
+      "change_pct": -0.16
     },
     "TSM": {
-      "change_pct": -1.2
+      "change_pct": -0.39
     },
     "SPCX": {
-      "change_pct": -4.58
+      "change_pct": -0.42
     },
     "AVGO": {
-      "change_pct": -0.22
+      "change_pct": -0.11
     },
     "2222.SR": {
-      "change_pct": -0.6
+      "change_pct": -0.97
     },
     "META": {
-      "change_pct": 4.59
+      "change_pct": 0.18
     },
     "TSLA": {
-      "change_pct": 0.66
+      "change_pct": 0.04
     },
     "005930.KS": {
-      "change_pct": 2.52
+      "change_pct": -10.7
     },
     "MU": {
-      "change_pct": -2.31
-    },
-    "LLY": {
-      "change_pct": -2.17
-    },
-    "BRK-B": {
       "change_pct": -0.35
     },
+    "BRK-B": {
+      "change_pct": -0.06
+    },
+    "LLY": {
+      "change_pct": 0.04
+    },
     "000660.KS": {
-      "change_pct": -0.27
-    },
-    "JPM": {
-      "change_pct": 0.27
-    },
-    "WMT": {
-      "change_pct": 2.07
+      "change_pct": -15.37
     },
     "AMD": {
-      "change_pct": 1.98
+      "change_pct": -0.34
+    },
+    "WMT": {
+      "change_pct": -0.09
+    },
+    "JPM": {
+      "change_pct": -0.12
     },
     "ASML": {
-      "change_pct": -1.06
+      "change_pct": -0.15
     },
     "V": {
-      "change_pct": 0.28
+      "change_pct": -0.05
     },
     "JNJ": {
-      "change_pct": -0.78
+      "change_pct": 0.15
     },
     "XOM": {
-      "change_pct": 1.03
+      "change_pct": 0.06
     },
     "INTC": {
-      "change_pct": -2.48
+      "change_pct": 0.22
     },
     "TCEHY": {
-      "change_pct": -0.65
+      "change_pct": -0.64
     }
   },
   "live_market": {
-    "vix": 15.03,
-    "vix_chg": -5.11,
-    "usd_krw": 1498.9,
-    "usd_krw_chg": -0.3,
+    "vix": 16.42,
+    "vix_chg": 9.25,
+    "usd_krw": 1493.1,
+    "usd_krw_chg": -0.85,
     "fear_greed": 49
   }
 }
