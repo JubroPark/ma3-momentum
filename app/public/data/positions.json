@@ -211,7 +211,7 @@
         "earnings_score": 5.0,
         "health_score": 4.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.45,
+        "peg": 0.47,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -483,7 +483,7 @@
         "earnings_score": 3.8,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.77,
+        "peg": 0.76,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -1615,7 +1615,7 @@
         "earnings_score": 4.5,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 3.8,
+        "peg": 3.81,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -2149,7 +2149,7 @@
         "earnings_score": 4.5,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.26,
+        "peg": 0.24,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -3153,7 +3153,7 @@
         "earnings_score": 4.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 2.92,
+        "peg": 2.69,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -3837,13 +3837,13 @@
         "earnings_score": 3.8,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.96,
-        "steps_count": 5,
+        "peg": 2.01,
+        "steps_count": 4,
         "steps_list": [
           true,
           false,
           true,
-          true,
+          false,
           true,
           true
         ]
@@ -3931,7 +3931,7 @@
         "earnings_score": 3.0,
         "health_score": 2.4,
         "eps_revision": "UP_STRONG",
-        "peg": 2.65,
+        "peg": 2.84,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -5289,7 +5289,7 @@
       "trailing_stop_line": 223.81,
       "horizontal_support": 204.25,
       "cooldown_until": null,
-      "toppick_score": 74,
+      "toppick_score": 71,
       "metrics": {
         "price": 202.95,
         "ma50": 220.47,
@@ -5301,7 +5301,7 @@
         "vol20ma": 810570,
         "vol_ratio": 0.9,
         "growth_score": 5.0,
-        "earnings_score": 3.8,
+        "earnings_score": 3.3,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
         "peg": 0.23,
@@ -5685,7 +5685,7 @@
       "trailing_stop_line": 135.74,
       "horizontal_support": 151.3,
       "cooldown_until": null,
-      "toppick_score": 79,
+      "toppick_score": 70,
       "metrics": {
         "price": 193.92,
         "ma50": 173.14,
@@ -5697,17 +5697,17 @@
         "vol20ma": 64940143,
         "vol_ratio": 1.12,
         "growth_score": 5.0,
-        "earnings_score": 3.8,
+        "earnings_score": 2.3,
         "health_score": 4.0,
-        "eps_revision": "UP_STRONG",
+        "eps_revision": "NEUTRAL",
         "peg": 0.06,
-        "steps_count": 5,
+        "steps_count": 4,
         "steps_list": [
           true,
           false,
           true,
           true,
-          true,
+          false,
           true
         ]
       },
