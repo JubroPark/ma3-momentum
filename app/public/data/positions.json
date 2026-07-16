@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-15",
+  "as_of": "2026-07-16",
   "regime": "GREEN",
   "items": [
     {
@@ -125,7 +125,7 @@
         "earnings_score": 2.3,
         "health_score": 3.5,
         "eps_revision": "UP",
-        "peg": 1.82,
+        "peg": 1.75,
         "steps_count": 5,
         "steps_list": [
           false,
@@ -403,8 +403,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (-2.1%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "name_ko": "마이크론 테크놀로지",
       "domain": "micron.com",
       "weight_note": ""
@@ -598,14 +598,11 @@
     {
       "symbol": "WDC",
       "name": "Western Digital Corporation",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 4.5,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 746.23,
       "trailing_stop_line": 522.36,
       "horizontal_support": 480.87,
@@ -625,7 +622,7 @@
         "earnings_score": 3.3,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.06,
+        "peg": 0.07,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -636,11 +633,11 @@
           false
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (513.84 ≤ 522.36)",
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
       "name_ko": "웨스턴 디지털",
       "domain": "esterndigital.com",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -1.7%)"
+      "weight_note": ""
     },
     {
       "symbol": "LVS",
@@ -790,7 +787,7 @@
       "trailing_stop_line": 321.9,
       "horizontal_support": 346.36,
       "cooldown_until": null,
-      "toppick_score": 84,
+      "toppick_score": 81,
       "metrics": {
         "price": 370.92,
         "ma50": 371.89,
@@ -802,9 +799,9 @@
         "vol20ma": 34263894,
         "vol_ratio": 0.82,
         "growth_score": 3.5,
-        "earnings_score": 4.5,
+        "earnings_score": 4.0,
         "health_score": 2.8,
-        "eps_revision": "UP_STRONG",
+        "eps_revision": "UP",
         "peg": 0.34,
         "steps_count": 6,
         "steps_list": [
@@ -1071,7 +1068,7 @@
         "earnings_score": 4.5,
         "health_score": 3.7,
         "eps_revision": "UP_STRONG",
-        "peg": 0.26,
+        "peg": 0.25,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -1165,7 +1162,7 @@
         "earnings_score": 3.0,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.2,
+        "peg": 0.21,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -1346,7 +1343,7 @@
         "earnings_score": 4.5,
         "health_score": 2.8,
         "eps_revision": "UP_STRONG",
-        "peg": 1.87,
+        "peg": 1.89,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -1748,7 +1745,7 @@
         "earnings_score": 2.5,
         "health_score": 2.8,
         "eps_revision": "UP_STRONG",
-        "peg": 1.65,
+        "peg": 1.67,
         "steps_count": 5,
         "steps_list": [
           false,
@@ -1792,7 +1789,7 @@
         "earnings_score": 2.8,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 1.09,
+        "peg": 1.17,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -1836,7 +1833,7 @@
         "earnings_score": 4.0,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.63,
+        "peg": 1.6,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -1880,7 +1877,7 @@
         "earnings_score": 2.8,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 5.4,
+        "peg": 5.55,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -2072,8 +2069,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (-0.6%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -2136,7 +2133,7 @@
       "trailing_stop_line": 315.03,
       "horizontal_support": 242.01,
       "cooldown_until": null,
-      "toppick_score": 87,
+      "toppick_score": 84,
       "metrics": {
         "price": 438.19,
         "ma50": 299.87,
@@ -2148,10 +2145,10 @@
         "vol20ma": 587973,
         "vol_ratio": 1.3,
         "growth_score": 4.5,
-        "earnings_score": 5.0,
+        "earnings_score": 4.5,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.27,
+        "peg": 0.26,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -2241,7 +2238,7 @@
         "earnings_score": 5.0,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.89,
+        "peg": 0.87,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -2378,7 +2375,7 @@
         "earnings_score": 5.0,
         "health_score": 1.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.34,
+        "peg": 0.33,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -2424,7 +2421,7 @@
         "earnings_score": 4.5,
         "health_score": 1.7,
         "eps_revision": "UP_STRONG",
-        "peg": 0.07,
+        "peg": 0.06,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -2471,7 +2468,7 @@
         "earnings_score": 3.8,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.62,
+        "peg": 0.63,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -2609,7 +2606,7 @@
         "earnings_score": 5.0,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.64,
+        "peg": 0.66,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -2697,7 +2694,7 @@
         "atr_pct": 0.064,
         "gap50_pct": -7.3,
         "dist_to_stop_pct": 15.1,
-        "vol20ma": 1749913,
+        "vol20ma": 1750186,
         "vol_ratio": 0.48,
         "growth_score": 3.5,
         "earnings_score": 3.8,
@@ -3121,8 +3118,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+2.9%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -3156,7 +3153,7 @@
         "earnings_score": 4.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 2.84,
+        "peg": 2.92,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -3426,7 +3423,7 @@
         "earnings_score": 3.8,
         "health_score": 1.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.12,
+        "peg": 0.13,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -3965,7 +3962,7 @@
       "trailing_stop_line": 50.25,
       "horizontal_support": 49.84,
       "cooldown_until": null,
-      "toppick_score": 70,
+      "toppick_score": 73,
       "metrics": {
         "price": 65.07,
         "ma50": 59.21,
@@ -3977,7 +3974,7 @@
         "vol20ma": 1003449,
         "vol_ratio": 0.73,
         "growth_score": 4.5,
-        "earnings_score": 4.5,
+        "earnings_score": 5.0,
         "health_score": 0.8,
         "eps_revision": "UP_STRONG",
         "peg": 0.27,
@@ -5131,7 +5128,7 @@
         "earnings_score": 3.3,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.12,
+        "peg": 0.13,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -5175,7 +5172,7 @@
         "earnings_score": 5.0,
         "health_score": 3.2,
         "eps_revision": "UP_STRONG",
-        "peg": 0.18,
+        "peg": 0.17,
         "steps_count": 4,
         "steps_list": [
           true,
