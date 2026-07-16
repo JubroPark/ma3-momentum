@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-15",
+  "as_of": "2026-07-16",
   "rank1_ticker": "NVDA",
   "items": [
     {
@@ -118,9 +118,9 @@
       "ticker_display": "005930.KS",
       "slug": "005930.KS",
       "name": "Samsung",
-      "mcap_usd": 1235072225845,
+      "mcap_usd": 1144485580252,
       "is_leader": false,
-      "gap_pct_from_rank1": 76.0
+      "gap_pct_from_rank1": 77.8
     },
     {
       "rank": 13,
@@ -154,16 +154,6 @@
     },
     {
       "rank": 16,
-      "ticker": "000660.KS",
-      "ticker_display": "000660.KS",
-      "slug": "000660.KS",
-      "name": "SK Hynix",
-      "mcap_usd": 994541124622,
-      "is_leader": false,
-      "gap_pct_from_rank1": 80.7
-    },
-    {
-      "rank": 17,
       "ticker": "JPM",
       "ticker_display": "JPM",
       "slug": "JPM",
@@ -171,6 +161,16 @@
       "mcap_usd": 929549254656,
       "is_leader": false,
       "gap_pct_from_rank1": 81.9
+    },
+    {
+      "rank": 17,
+      "ticker": "000660.KS",
+      "ticker_display": "000660.KS",
+      "slug": "000660.KS",
+      "name": "SK Hynix",
+      "mcap_usd": 901870081901,
+      "is_leader": false,
+      "gap_pct_from_rank1": 82.5
     },
     {
       "rank": 18,
