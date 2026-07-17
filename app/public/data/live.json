@@ -1,19 +1,19 @@
 {
-  "as_of": "2026-07-17T20:01:28Z",
-  "update_time": "05:01 KST",
+  "as_of": "2026-07-17T20:06:45Z",
+  "update_time": "05:06 KST",
   "nasdaq": {
     "price": 25520.24,
     "change_pct": -1.4,
-    "dist_to_masam_pct": 3.02,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -5.8,
     "last_masam_date": "2026-06-05"
   },
   "sp500": {
-    "price": 7457.68,
+    "price": 7457.69,
     "change_pct": -1.01
   },
   "dow": {
-    "price": 52146.39,
+    "price": 52146.42,
     "change_pct": -0.77
   },
   "rank1": {
@@ -116,17 +116,17 @@
       "change_pct": 0.89
     },
     "TCEHY": {
-      "change_pct": -3.37
+      "change_pct": -3.38
     },
     "INTC": {
       "change_pct": -0.14
     }
   },
   "live_market": {
-    "vix": 18.5,
-    "vix_chg": 10.58,
-    "usd_krw": 1488.9,
-    "usd_krw_chg": 0.18,
+    "vix": 18.36,
+    "vix_chg": 9.74,
+    "usd_krw": 1489.0,
+    "usd_krw_chg": 0.19,
     "fear_greed": 38
   }
 }
