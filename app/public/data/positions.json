@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-16",
+  "as_of": "2026-07-17",
   "regime": "GREEN",
   "items": [
     {
@@ -2059,8 +2059,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -5676,7 +5676,7 @@
       "trailing_stop_line": 135.74,
       "horizontal_support": 151.3,
       "cooldown_until": null,
-      "toppick_score": 83,
+      "toppick_score": 79,
       "metrics": {
         "price": 152.31,
         "ma50": 168.61,
@@ -5692,10 +5692,10 @@
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
         "peg": 0.06,
-        "steps_count": 5,
+        "steps_count": 4,
         "steps_list": [
           true,
-          true,
+          false,
           true,
           true,
           true,
