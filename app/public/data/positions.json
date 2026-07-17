@@ -370,8 +370,8 @@
       "avg_price": null,
       "weight": 0.0,
       "deployed_tranches": [],
-      "recent_high": 1213.56,
-      "trailing_stop_line": 849.49,
+      "recent_high": 1213.37,
+      "trailing_stop_line": 849.36,
       "horizontal_support": 854.35,
       "cooldown_until": null,
       "toppick_score": 87,
@@ -382,7 +382,7 @@
         "atr14": 81.36,
         "atr_pct": 0.0958,
         "gap50_pct": -9.1,
-        "dist_to_stop_pct": -0.1,
+        "dist_to_stop_pct": -0.0,
         "vol20ma": 53350893,
         "vol_ratio": 1.18,
         "growth_score": 5.0,
@@ -400,8 +400,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "지지선 이탈 (848.95 < 854.35)",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "name_ko": "마이크론 테크놀로지",
       "domain": "micron.com",
       "weight_note": ""
@@ -1344,8 +1344,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.8%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "name_ko": "암페놀",
       "domain": "amphenol.com",
       "weight_note": ""
@@ -1615,8 +1615,8 @@
           false
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(-0.4%) + 탑픽점수 78",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "name_ko": "케이던스 디자인 시스템즈",
       "domain": "cadence.com",
       "weight_note": ""
@@ -3654,8 +3654,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+0.8%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -3978,8 +3978,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.0%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -4024,8 +4024,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.78)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
