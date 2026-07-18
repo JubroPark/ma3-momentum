@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-17",
+  "as_of": "2026-07-18",
   "regime": "GREEN",
   "items": [
     {
@@ -723,7 +723,7 @@
     {
       "symbol": "NFLX",
       "name": "Netflix, Inc.",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 4.5,
       "avg_price": null,
       "weight": 0.0,
@@ -759,7 +759,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 하회 — 1차 진입 대기",
+      "reason": "REMOVED 상태 유지",
       "name_ko": "넷플릭스",
       "domain": "netflix.com",
       "weight_note": ""
@@ -820,7 +820,7 @@
       "trailing_stop_line": 319.04,
       "horizontal_support": 343.63,
       "cooldown_until": null,
-      "toppick_score": 84,
+      "toppick_score": 42,
       "metrics": {
         "price": 346.12,
         "ma50": 367.87,
@@ -831,18 +831,18 @@
         "dist_to_stop_pct": 7.8,
         "vol20ma": 23469590,
         "vol_ratio": 0.92,
-        "growth_score": 3.5,
-        "earnings_score": 4.5,
-        "health_score": 2.8,
-        "eps_revision": "UP_STRONG",
-        "peg": 0.32,
-        "steps_count": 5,
+        "growth_score": 0.0,
+        "earnings_score": 2.0,
+        "health_score": 0.0,
+        "eps_revision": "NEUTRAL",
+        "peg": null,
+        "steps_count": 2,
         "steps_list": [
+          false,
           true,
+          false,
           true,
-          true,
-          true,
-          true,
+          false,
           false
         ]
       },
@@ -2679,7 +2679,7 @@
         "atr_pct": 0.0698,
         "gap50_pct": -14.4,
         "dist_to_stop_pct": 7.4,
-        "vol20ma": 1778314,
+        "vol20ma": 1778452,
         "vol_ratio": 1.26,
         "growth_score": 3.5,
         "earnings_score": 3.8,
@@ -5678,7 +5678,7 @@
       "trailing_stop_line": 135.74,
       "horizontal_support": 151.3,
       "cooldown_until": null,
-      "toppick_score": 79,
+      "toppick_score": 83,
       "metrics": {
         "price": 154.03,
         "ma50": 166.18,
@@ -5694,10 +5694,10 @@
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
         "peg": 0.06,
-        "steps_count": 4,
+        "steps_count": 5,
         "steps_list": [
           true,
-          false,
+          true,
           true,
           true,
           true,
