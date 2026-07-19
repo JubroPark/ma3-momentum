@@ -1705,7 +1705,7 @@
       if (zoneRef <= base * (1 - step * i)) curZone = i;
     }
 
-    // 권장 비중 배너: 파란 구간 기준 1등주/QQQ/현금 비중
+    // 권장 비중 배너: NVDA/QQQ 각각 독립 구간 계산 후 비율 합산
     const isRebalancing = masamMode === 'NORMAL';
     const bannerMsg = document.querySelector('.view[data-view="발견"] .ai-banner .msg');
     if (bannerMsg) {
@@ -1713,19 +1713,62 @@
       const _rParts = _ratio.split(':').map(Number);
       const _rTotal = _rParts[0] + _rParts[1];
       const _sep = '<span style="margin:0 2px;color:#3a3a4a;">/</span>';
-      const _stockHtml = (s) => {
-        if (_rParts[1] === 0) return '1등주 ' + s + '%';
-        const r1 = Math.round(s * _rParts[0] / _rTotal);
-        const q  = s - r1;
-        return '1등주 ' + r1 + '%' + _sep + 'QQQ ' + q + '%';
+      // 특정 target의 현재 구간(zone) 계산
+      const _calcZone = (tgt) => {
+        const _d = RANGE_DATA[tgt];
+        if (!_d) return 0;
+        const _cur = parseFloat(_d.cur);
+        const _isManual = rangeBase === '직전 고점' || rangeBase === '올인 지점';
+        const _mk = rangeBase === '직전 고점' ? 'prev' : 'allin';
+        const _mv = _isManual ? (manualPrices[tgt][_mk] || 0) : 0;
+        const _base = _isManual ? _mv : (_d.demos[rangeBase] || _d.demos['최고점']);
+        if (!_base) return 0;
+        const _step = rangePctMode === 25 ? 0.025 : 0.05;
+        const _isCrisis = masamMode === 'CRISIS' || masamMode === 'PANIC';
+        const _ref = _isCrisis ? parseFloat(_d.low) || _cur : _cur;
+        let z = 0;
+        for (let i = 1; i <= 10; i++) {
+          if (_ref <= _base * (1 - _step * i)) z = i;
+        }
+        return z;
       };
-      if (curZone === 0) {
-        bannerMsg.innerHTML = _stockHtml(100);
+      if (isRebalancing) {
+        if (_rParts[1] === 0) {
+          // 1:0 — NVDA만
+          const z = _calcZone('nvda');
+          const s = 100 - z * 10;
+          const cash = 100 - s;
+          bannerMsg.innerHTML = '1등주 ' + s + '%' + (cash > 0 ? _sep + '현금 ' + cash + '%' : '');
+        } else {
+          // 1:1 / 2:1 — NVDA·QQQ 독립 구간
+          const nvdaW = _rParts[0] / _rTotal;
+          const qqqW  = _rParts[1] / _rTotal;
+          const nvdaZ = _calcZone('nvda');
+          const qqqZ  = _calcZone('qqq');
+          const nvdaPct = Math.round(nvdaW * 100 * (1 - nvdaZ * 0.1));
+          const qqqPct  = Math.round(qqqW  * 100 * (1 - qqqZ  * 0.1));
+          const cash = 100 - nvdaPct - qqqPct;
+          let html = '1등주 ' + nvdaPct + '%' + _sep + 'QQQ ' + qqqPct + '%';
+          if (cash > 0) html += _sep + '현금 ' + cash + '%';
+          bannerMsg.innerHTML = html;
+        }
       } else {
-        // 리밸런싱: 100%에서 구간마다 10%씩 매도 / 말뚝박기: 0%에서 구간마다 10%씩 매수
-        const s = isRebalancing ? 100 - curZone * 10 : curZone * 10;
-        const cash = 100 - s;
-        bannerMsg.innerHTML = _stockHtml(s) + _sep + '현금 ' + cash + '%';
+        // 말뚝박기: NVDA·QQQ 독립 구간으로 매수 비중 합산
+        if (_rParts[1] === 0) {
+          const s = curZone * 10;
+          const cash = 100 - s;
+          bannerMsg.innerHTML = '1등주 ' + s + '%' + _sep + '현금 ' + cash + '%';
+        } else {
+          const nvdaW = _rParts[0] / _rTotal;
+          const qqqW  = _rParts[1] / _rTotal;
+          const nvdaZ = _calcZone('nvda');
+          const qqqZ  = _calcZone('qqq');
+          const nvdaPct = Math.round(nvdaW * 100 * nvdaZ * 0.1);
+          const qqqPct  = Math.round(qqqW  * 100 * qqqZ  * 0.1);
+          const cash = 100 - nvdaPct - qqqPct;
+          let html = '1등주 ' + nvdaPct + '%' + _sep + 'QQQ ' + qqqPct + '%' + _sep + '현금 ' + cash + '%';
+          bannerMsg.innerHTML = html;
+        }
       }
     }
 
