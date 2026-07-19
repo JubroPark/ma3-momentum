@@ -1723,7 +1723,7 @@
         const _mv = _isManual ? (manualPrices[tgt][_mk] || 0) : 0;
         const _base = _isManual ? _mv : (_d.demos[rangeBase] || _d.demos['최고점']);
         if (!_base) return 0;
-        const _step = rangePctMode === 25 ? 0.025 : 0.05;
+        const _step = (getMaxPct(tgt === 'qqq' ? 'qqq' : 'nvda') === 25) ? 0.025 : 0.05;
         const _isCrisis = masamMode === 'CRISIS' || masamMode === 'PANIC';
         const _ref = _isCrisis ? parseFloat(_d.low) || _cur : _cur;
         let z = 0;
