@@ -408,16 +408,20 @@
           img.parentElement.appendChild(s);
         }
       }
-      function renderMcapList(mcapDaily, companies, mcapLive) {
+      function renderMcapList(mcapDaily, companies, mcapLive, liveAsOf) {
         const items = (mcapDaily && mcapDaily.items) || [];
         const liveMap = mcapLive || {};
+        // live 날짜가 EOD 날짜보다 오래됐으면 change_pct 미적용 (이중 적용 방지)
+        const eodDate  = (mcapDaily && mcapDaily.as_of || '').slice(0, 10);
+        const liveDate = (liveAsOf || '').slice(0, 10);
+        const applyLive = liveDate >= eodDate;
         const merged = items.map(function(item) {
           const ticker = item.ticker;
           const co = companies[ticker] || {};
           const ld = liveMap[ticker] || {};
           const eodMcap = item.mcap_usd || 0;
-          // change_pct로 실시간 시총 추정
-          const rtMcap = (ld.change_pct != null && eodMcap > 0)
+          // change_pct로 실시간 시총 추정 (live가 EOD와 같은 날일 때만)
+          const rtMcap = (applyLive && ld.change_pct != null && eodMcap > 0)
             ? eodMcap * (1 + ld.change_pct / 100)
             : eodMcap;
           return {
@@ -2697,7 +2701,7 @@ function initMaxPctUI(rateEnv) {
     });
 
     // 14. 시가총액 순위 — mcap_daily + companies + live 데이터로 동적 렌더링
-    renderMcapList(mcapDaily, companies, live.mcap_live);
+    renderMcapList(mcapDaily, companies, live.mcap_live, live.as_of);
 
     if (window.Iconify) Iconify.scan(document.body);
 
