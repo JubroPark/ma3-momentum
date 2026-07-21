@@ -4484,10 +4484,10 @@
       "name": "PicS N.V.",
       "name_ko": "픽스",
       "domain": "picpay.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 3.0,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -4521,9 +4521,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.43)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (12.38 ≤ 13.43)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -8.5%)"
     },
     {
       "symbol": "PODD",
