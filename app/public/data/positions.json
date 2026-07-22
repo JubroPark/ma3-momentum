@@ -4519,8 +4519,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
