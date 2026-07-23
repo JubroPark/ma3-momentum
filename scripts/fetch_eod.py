@@ -406,6 +406,34 @@ def main():
         last_allin_price["rank2_prev_high"] = _prev_high(rank2_hist,  last_allin_price.get("rank2", 0))
         print(f"  직전 고점: {rank1_ticker}={last_allin_price['nvda_prev_high']} QQQ={last_allin_price['qqq_prev_high']} {rank2_ticker}={last_allin_price['rank2_prev_high']}")
 
+    # 5c. 리밸런싱 구간 스티키 추적 (NORMAL 모드)
+    existing_reb = existing_masam.get("rebalancing", {})
+    step_pct = existing_reb.get("max_pct", 25) / 10  # 25→2.5%, 50→5%
+    if new_mode == "NORMAL" and isinstance(last_allin_price, dict):
+        _lap = last_allin_price
+        _step = step_pct / 100
+        def _zone(cur, allin, prev_high):
+            base = prev_high if (allin > 0 and cur >= allin) else allin
+            if not base: return 0
+            z = 0
+            for i in range(1, 11):
+                if cur <= base * (1 - _step * i): z = i
+            return z
+        qqq_eod_close = latest_close(qqq)
+        nvda_lz = _zone(rank1_close, _lap.get("nvda", 0), _lap.get("nvda_prev_high", 0))
+        qqq_lz  = _zone(qqq_eod_close, _lap.get("qqq", 0), _lap.get("qqq_prev_high", 0))
+        prev_nz = existing_reb.get("nvda_zone", 0)
+        prev_qz = existing_reb.get("qqq_zone", 0)
+        new_nz = max(nvda_lz, prev_nz)
+        new_qz = max(qqq_lz,  prev_qz)
+        # 막바지 2구간 상승 → 전량 재매수 → zone 리셋
+        if prev_nz > 0 and nvda_lz <= prev_nz - 2: new_nz = 0
+        if prev_qz > 0 and qqq_lz  <= prev_qz - 2: new_qz = 0
+        print(f"  리밸런싱 구간: NVDA {prev_nz}→{new_nz}  QQQ {prev_qz}→{new_qz}")
+    else:
+        new_nz = 0
+        new_qz = 0
+
     # 위기 저점: 마지막 마삼일 이후 최저 종가 (V자 반등 기준점)
     last_masam_str = new_masam_state.get("last_masam_date")
     if last_masam_str:
@@ -473,6 +501,11 @@ def main():
         "target_allocation": target_alloc,
         "hedge_allocation": hedge_alloc,
         "all_in_conditions": all_in,
+        "rebalancing": {
+            **existing_reb,
+            "nvda_zone": new_nz,
+            "qqq_zone":  new_qz,
+        },
         "released_date": released_date,
         "last_allin_price": last_allin_price,
         "recommended_action": _recommended_action(new_mode, rank1_ticker),

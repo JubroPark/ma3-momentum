@@ -413,6 +413,21 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - 새로고침 후 복원: `initFromData()` 완료 시점에 `sessionStorage('ptr_view')`를 읽어 `show(view)` 호출 후 즉시 삭제.
 - 새로고침 버튼(`#refresh-btn`): 현재 `display:none`으로 숨김.
 
+**시총 순위 실시간 보정 (renderMcapList)**
+- `live.json`의 `as_of`(UTC)와 `mcap_daily.json`의 `as_of`를 날짜(10자리)로 비교
+- `applyLive = (liveDate >= eodDate)` — live가 EOD보다 오래됐으면(주말·장 마감 후) `change_pct` 미적용
+- 이중 적용 방지: EOD 종가에 전날 등락률 재적용하는 버그 차단
+
+**기준일(topbar) 날짜/시간 표시**
+- 날짜: `masam.as_of`(EOD 배치 기준, 한국시간 기준 영업일) 사용
+- 시간: `live.update_time`(KST 문자열) 사용
+- `live.as_of`는 UTC 타임스탬프 → 날짜 표시에 사용 금지(UTC 기준 날짜가 KST와 다를 수 있음)
+
+**권장 비중 배너 (_calcZone 헬퍼)**
+- `renderRangeTable()` 내부의 `_calcZone(tgt)` 헬퍼로 NVDA·QQQ 각각 독립 구간 계산 후 비율 합산
+- step은 전역 `rangePctMode`가 아닌 `getMaxPct(tgt === 'qqq' ? 'qqq' : 'nvda')`로 타겟별 독립 적용 (rangeTarget이 달라도 QQQ의 -25% 설정이 무시되는 버그 방지)
+- `rangeBase`는 live 로드 시 현재 `rangeTarget` 기준으로 자동전환(직전 고점/올인 지점). 배너는 이 전역 `rangeBase`를 그대로 사용
+
 **localStorage 저장 항목**
 - `range_allin_nvda`, `range_prev_nvda`, `range_allin_qqq`, `range_prev_qqq`, `range_allin_rank2`, `range_prev_rank2` — 올인·직전고점 수동 입력가
 - `max_pct_nvda`, `max_pct_qqq` — 현금화 최대 한도

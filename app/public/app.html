@@ -1704,6 +1704,12 @@
     for (let i = 1; i <= 10; i++) {
       if (zoneRef <= base * (1 - step * i)) curZone = i;
     }
+    // 스티키: NORMAL 모드 직전 고점/올인 지점 탭에서 EOD 트리거 구간을 floor로 사용
+    if (!isCrisis && isManual && window._cachedMasam) {
+      const _reb = (window._cachedMasam.rebalancing) || {};
+      const _eodZ = rangeTarget === 'qqq' ? (_reb.qqq_zone || 0) : (_reb.nvda_zone || 0);
+      curZone = Math.max(curZone, _eodZ);
+    }
 
     // 권장 비중 배너: NVDA/QQQ 각각 독립 구간 계산 후 비율 합산
     const isRebalancing = masamMode === 'NORMAL';
@@ -1729,6 +1735,12 @@
         let z = 0;
         for (let i = 1; i <= 10; i++) {
           if (_ref <= _base * (1 - _step * i)) z = i;
+        }
+        // 스티키: EOD 트리거 구간 floor
+        if (!_isCrisis && _isManual && window._cachedMasam) {
+          const _reb = (window._cachedMasam.rebalancing) || {};
+          const _eodZ = tgt === 'qqq' ? (_reb.qqq_zone || 0) : (_reb.nvda_zone || 0);
+          z = Math.max(z, _eodZ);
         }
         return z;
       };
@@ -1774,6 +1786,7 @@
 
     // 재매수 구간 (위기/공황 시: 파란 구간에서 2구간 위)
     const vZone = (isCrisis && curZone >= 3) ? curZone - 2 : -1;
+    const reinvestZone = (!isCrisis && isManual && curZone >= 3) ? curZone - 2 : -1; // 전량 재매수 표시 구간
 
     const col = (txt, cls) => `<span class="${cls}">${txt}</span>`;
 
@@ -1797,15 +1810,40 @@
       <span class="rt-col-status"></span>
     </div>`;
 
+    // 전량 재매수 행: NORMAL 모드, 직전 고점/올인 지점, curZone > 0 일 때
+    // 막바지 2구간 상승 = curZone - 2 구간 가격에서 전량 재매수
+    // curZone=1 → 기준가+(+2.5%) / curZone=2 → 기준가 / curZone≥3 → 해당 구간 행에서 표시
+    if (isManual && !isCrisis && curZone > 0 && base > 0) {
+      const reinvestZone = curZone - 2; // 음수면 기준 이상
+      if (reinvestZone < 0) {
+        const reinvestPrice = base * (1 - reinvestZone * step); // e.g. base * 1.025 when curZone=1
+        const pctLabel = '+' + (Math.abs(reinvestZone) * step * 100).toFixed(1) + '%';
+        html += `<div class="rt-row" style="border-top:1px solid var(--line);opacity:0.8;">
+          <span class="rt-col-zone" style="font-size:10px;font-weight:600;color:var(--up)">▲</span>
+          <span class="rt-col-price">
+            <div style="font-size:14px;font-weight:500;color:var(--up)">$${reinvestPrice.toFixed(2)}</div>
+            <div style="font-size:12px;color:var(--up);margin-top:2px">${pctLabel}</div>
+          </span>
+          <span class="rt-col-stock" style="color:var(--up);">100%</span>
+          <span class="rt-col-cash" style="color:var(--up);">올인</span>
+          <span class="rt-col-status"><span class="rt-none"></span></span>
+        </div>`;
+      }
+    }
+
     // 기준 행: 리밸런싱=주식100%/현금0%, 말뚝박기=주식0%/현금100%
     const baseStock = isRebalancing ? '100%' : '0%';
     const baseCash  = isRebalancing ? '0%'   : '100%';
+    const baseReinvest = !isCrisis && isManual && curZone === 2;
     html += `<div class="rt-row">
       <span class="rt-col-zone" style="color:var(--txt);font-size:12px">기준</span>
       ${basePriceCell}
-      <span class="rt-col-stock" style="color:var(--txt-3)">${baseStock}</span>
-      <span class="rt-col-cash" style="color:var(--txt-3)">${baseCash}</span>
-      <span class="rt-col-status"><span class="rt-done"><span class="iconify" data-icon="heroicons:check" data-width="13" data-height="13"></span></span>
+      <span class="rt-col-stock" style="color:${baseReinvest ? 'var(--up)' : 'var(--txt-3)'};">${baseReinvest ? '100%' : baseStock}</span>
+      <span class="rt-col-cash" style="color:${baseReinvest ? 'var(--up)' : 'var(--txt-3)'};">${baseReinvest ? '올인' : baseCash}</span>
+      <span class="rt-col-status">${baseReinvest
+        ? '<span class="rt-none"></span>'
+        : '<span class="rt-done"><span class="iconify" data-icon="heroicons:check" data-width="13" data-height="13"></span></span>'
+      }</span>
     </div>`;
 
     for (let i = 1; i <= 10; i++) {
@@ -1813,11 +1851,12 @@
       const pct = (step * i * 100).toFixed(1);
       // 리밸런싱: 하락할수록 주식 줄이고 현금 확보 / 말뚝박기: 하락할수록 주식 늘림
       const stock = isRebalancing ? 100 - i * 10 : i * 10;
-      const done = i < curZone, cur = i === curZone, isV = i === vZone;
+      const done = i < curZone, cur = i === curZone, isV = i === vZone, isReinvest = i === reinvestZone;
       const zCol = cur ? 'var(--blue)' : done ? 'var(--txt)' : 'var(--txt-3)';
       const sText = cur
         ? '<span class="rt-ping"><span class="dot"></span></span>'
-        : isV ? '<span style="font-size:12px;font-weight:700;color:var(--up)">재매수</span>'
+        : isV ? '<span class="rt-none"></span>'
+        : isReinvest ? '<span class="rt-none"></span>'
         : done ? '<span class="rt-done"><span class="iconify" data-icon="heroicons:check" data-width="13" data-height="13"></span></span>'
         : '<span class="rt-none"></span>';
       const sCol = cur ? 'var(--blue)' : done ? 'var(--green)' : 'var(--txt-3)';
@@ -1830,8 +1869,8 @@
           <div style="font-size:14px;font-weight:500;color:${priceCol}">$${threshold.toFixed(2)}</div>
           <div style="font-size:12px;color:var(--txt-3);margin-top:2px">-${pct}%</div>
         </span>
-        <span class="rt-col-stock" style="color:${pctCol}">${stock}%</span>
-        <span class="rt-col-cash" style="color:${pctCol}">${100 - stock}%</span>
+        <span class="rt-col-stock" style="color:${isReinvest ? 'var(--up)' : pctCol}">${isReinvest ? '100%' : stock + '%'}</span>
+        <span class="rt-col-cash" style="color:${isReinvest ? 'var(--up)' : pctCol}">${isReinvest ? '올인' : (100 - stock) + '%'}</span>
         <span class="rt-col-status" style="color:${sCol}">${sText}</span>
       </div>`;
     }
