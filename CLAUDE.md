@@ -309,7 +309,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
   "target_allocation": { "stock_pct": 0, "hedge_pct": 0, "cash_pct": 0, "label": "" },
   "hedge_allocation": { "type": "TLT | IAU_GLD_TIP | DOLLAR | NONE",
     "rationale": "비제로+QE_OFF / 10Y 하락추세 등", "exit_trigger": "" },
-  "rebalancing": { "cash_raised_pct": 0, "max_pct": 25, "qqq_pct": 0 },
+  "rebalancing": { "cash_raised_pct": 0, "max_pct": 25, "qqq_pct": 0, "nvda_zone": 0, "qqq_zone": 0 },
   "staking": { "rate_env": "NON_ZERO", "grid_pct": 5, "target_pct": 50, "deployed_pct": 0 },
   "all_in_conditions": [
     { "id": 1, "label": "한달+1일 무마삼", "met": false, "grade": "약", "detail": "D-12" },
@@ -427,6 +427,20 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - `renderRangeTable()` 내부의 `_calcZone(tgt)` 헬퍼로 NVDA·QQQ 각각 독립 구간 계산 후 비율 합산
 - step은 전역 `rangePctMode`가 아닌 `getMaxPct(tgt === 'qqq' ? 'qqq' : 'nvda')`로 타겟별 독립 적용 (rangeTarget이 달라도 QQQ의 -25% 설정이 무시되는 버그 방지)
 - `rangeBase`는 live 로드 시 현재 `rangeTarget` 기준으로 자동전환(직전 고점/올인 지점). 배너는 이 전역 `rangeBase`를 그대로 사용
+
+**리밸런싱 스티키 구간 (직전 고점/올인 지점 탭 · NORMAL 모드)**
+- EOD 배치(`fetch_eod.py`)가 `masam.rebalancing.nvda_zone` / `qqq_zone`을 매일 갱신
+  - 당일 live_zone과 전일 저장값 중 최대값 유지(`max(live, prev)`)
+  - 막바지 2구간 상승(전량 재매수) 조건: `live_zone <= prev_zone - 2` → zone 리셋 0
+- 프론트(`renderRangeTable`)에서 `curZone = Math.max(live_zone, eod_zone)`으로 floor 적용
+- `_calcZone(tgt)` 배너도 동일한 sticky floor 적용 (배너·테이블 일관성)
+
+**전량 재매수 행 (직전 고점/올인 지점 탭 · NORMAL 모드 · curZone > 0)**
+- 막바지 2구간 상승 시 전량 재매수 지점을 테이블에 표시 (주식 100% / 현금 올인)
+- curZone=1: 기준 행 위에 별도 행 추가 (`base × 1.025`, 구간 레이블 `▲`)
+- curZone=2: 기준 행의 주식/현금 컬럼을 `100% / 올인`(빨간색)으로 표시
+- curZone≥3: `curZone-2` 구간 행의 주식/현금 컬럼을 `100% / 올인`으로 표시
+- 우측 status 인디케이터: 빈 원형(`rt-none`) — 다른 행과 동일 스타일
 
 **localStorage 저장 항목**
 - `range_allin_nvda`, `range_prev_nvda`, `range_allin_qqq`, `range_prev_qqq`, `range_allin_rank2`, `range_prev_rank2` — 올인·직전고점 수동 입력가
