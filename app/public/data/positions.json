@@ -2228,7 +2228,7 @@
         "earnings_score": 5.0,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.84,
+        "peg": 0.86,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -2549,7 +2549,7 @@
         "earnings_score": 3.3,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.91,
+        "peg": 0.88,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -2878,8 +2878,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -5580,8 +5580,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+0.6%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -6022,8 +6022,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.39)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -6068,8 +6068,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 3.22)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     }
   ]
