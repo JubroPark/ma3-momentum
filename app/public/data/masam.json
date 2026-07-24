@@ -13,7 +13,7 @@
   "leader_status": {
     "rank1_ticker": "NVDA",
     "rank2_ticker": "AAPL",
-    "gap_pct": 6.6,
+    "gap_pct": 2.4,
     "overtake_detected": false,
     "gap_within_10pct": true
   },
@@ -32,8 +32,8 @@
     "cash_raised_pct": 0,
     "max_pct": 25,
     "qqq_pct": 0,
-    "nvda_zone": 0,
-    "qqq_zone": 1
+    "nvda_zone": 1,
+    "qqq_zone": 2
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -61,14 +61,14 @@
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-11.4%"
+      "detail": "-12.3%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-7.2%"
+      "detail": "-7.8%"
     },
     {
       "id": 5,
@@ -82,7 +82,7 @@
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-7.2% (기준: -30%)"
+      "detail": "-7.8% (기준: -30%)"
     }
   ],
   "additional_buy": {
