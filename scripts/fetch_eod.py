@@ -3,6 +3,7 @@ EOD 배치 스크립트 — 미 장마감 후 1일 1회 실행
 출력: masam.json, mcap_daily.json, momentum_market.json, masam_market.json(VIX)
 """
 import json
+import math
 import sys
 import re
 import calendar
@@ -12,6 +13,14 @@ from pathlib import Path
 import yfinance as yf
 
 DATA = Path(__file__).parent.parent / "app/public/data"
+
+
+def require_valid(label: str, value: float) -> float:
+    """가격 조회 실패(NaN)가 masam.json 등에 그대로 저장되는 걸 막는 가드.
+    NaN은 JSON 스펙상 유효하지 않아 브라우저 JSON.parse가 실패하므로, 여기서 즉시 중단."""
+    if value is None or (isinstance(value, float) and math.isnan(value)):
+        sys.exit(f"[오류] {label} 값이 NaN입니다 — 데이터 소스 조회 실패로 배치를 중단합니다 (기존 데이터 보존)")
+    return value
 
 HEDGE_TICKERS = ["TLT", "IAU", "GLD", "TIP"]
 
@@ -313,7 +322,8 @@ def fetch_hedge_prices() -> dict:
     for ticker in HEDGE_TICKERS:
         try:
             hist = yf.Ticker(ticker).history(period="5d", auto_adjust=True)
-            prices[ticker] = round(float(hist["Close"].iloc[-1]), 2)
+            price = float(hist["Close"].iloc[-1])
+            prices[ticker] = round(price, 2) if not math.isnan(price) else None
         except Exception:
             prices[ticker] = None
     return prices
@@ -333,9 +343,9 @@ def main():
     qqq  = fetch_history("QQQ")
     vix  = fetch_history("^VIX", period="5d")
 
-    ixic_close = latest_close(ixic)
-    ixic_chg   = daily_change_pct(ixic)
-    ixic_ath   = float(yf.Ticker("^IXIC").history(period="max", auto_adjust=False)["Close"].max())
+    ixic_close = require_valid("IXIC 종가", latest_close(ixic))
+    ixic_chg   = require_valid("IXIC 등락률", daily_change_pct(ixic))
+    ixic_ath   = require_valid("IXIC ATH", float(yf.Ticker("^IXIC").history(period="max", auto_adjust=False)["Close"].max()))
     ixic_ma200 = ma(ixic, 200)
     consec_up  = consecutive_up_days(ixic)
     vix_val    = round(latest_close(vix), 2)
@@ -375,9 +385,10 @@ def main():
     # 5. 1등주·2등주 가격
     rank1_hist = fetch_history(rank1_ticker)
     rank2_hist = fetch_history(rank2_ticker)
-    rank1_close = latest_close(rank1_hist)
-    rank2_close = latest_close(rank2_hist)
-    rank1_ath   = float(yf.Ticker(rank1_ticker).history(period="max", auto_adjust=False)["Close"].max())
+    rank1_close = require_valid(f"{rank1_ticker} 종가", latest_close(rank1_hist))
+    rank2_close = require_valid(f"{rank2_ticker} 종가", latest_close(rank2_hist))
+    rank1_ath   = require_valid(f"{rank1_ticker} ATH", float(yf.Ticker(rank1_ticker).history(period="max", auto_adjust=False)["Close"].max()))
+    qqq_eod_close = require_valid("QQQ 종가", latest_close(qqq))
 
     # 5b. 올인 기준가: 위기→평상시 전환 시 기준일 종가 저장
     # ponytail: 전환일 당일 종가만 사용. 스크립트가 당일을 놓쳤다면 masam.json을 수동 패치
@@ -422,7 +433,6 @@ def main():
             for i in range(1, 11):
                 if cur <= base * (1 - _step * i): z = i
             return z
-        qqq_eod_close = latest_close(qqq)
         nvda_base = _base_of(rank1_close, _lap.get("nvda", 0), _lap.get("nvda_prev_high", 0))
         qqq_base  = _base_of(qqq_eod_close, _lap.get("qqq", 0), _lap.get("qqq_prev_high", 0))
         prev_nvda_low = existing_reb.get("nvda_lowest_close", 0)
@@ -521,7 +531,7 @@ def main():
         },
         "eod_close": {
             "nvda":  round(rank1_close, 2),
-            "qqq":   round(latest_close(qqq), 2),
+            "qqq":   round(qqq_eod_close, 2),
             "rank2": round(rank2_close, 2),
         },
         "released_date": released_date,
