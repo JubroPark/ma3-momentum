@@ -146,6 +146,8 @@
 > **GitHub Actions cron 주의**: scheduled workflow가 active 상태임에도 cron이 조용히 멈추는 버그 발생 이력 있음(2026-06-22 확인). 워크플로우 파일 변경 푸시로 재등록. push 충돌 방지를 위해 커밋 후 `git pull --rebase origin main && git push` 사용.
 >
 > **수동 갱신 버튼**: `POST /api/refresh` → GitHub workflow_dispatch(live.yml + eod.yml 동시 트리거) → 35초 후 앱 자동 새로고침. 모든 탭 topbar 우측 원형 버튼(`mdi-light:refresh`, 23px).
+>
+> **yfinance 일시 장애 가드 (2026-07-25 확인)**: `fetch_eod.py` 수동 실행 중 yfinance가 일시적으로 IXIC·1등주·QQQ·헤지 가격 전부 NaN을 반환한 사고 발생 → `NaN`은 JSON 스펙상 무효라 브라우저 `JSON.parse`가 실패, 앱 로딩이 깨질 뻔함. `require_valid()` 가드를 추가해 핵심 가격이 NaN이면 파일 저장 전에 배치를 즉시 중단(기존 데이터 보존)하도록 함. 재시도 시 정상 데이터로 성공 — 같은 코드로도 실행 시점에 따라 yfinance가 일시적으로 실패할 수 있음을 감안할 것.
 
 ---
 
@@ -309,7 +311,8 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
   "target_allocation": { "stock_pct": 0, "hedge_pct": 0, "cash_pct": 0, "label": "" },
   "hedge_allocation": { "type": "TLT | IAU_GLD_TIP | DOLLAR | NONE",
     "rationale": "비제로+QE_OFF / 10Y 하락추세 등", "exit_trigger": "" },
-  "rebalancing": { "cash_raised_pct": 0, "max_pct": 25, "qqq_pct": 0, "nvda_zone": 0, "qqq_zone": 0 },
+  "rebalancing": { "cash_raised_pct": 0, "max_pct": 25, "qqq_pct": 0, "nvda_lowest_close": 0, "qqq_lowest_close": 0 },
+  "eod_close": { "nvda": 0, "qqq": 0, "rank2": 0 },
   "staking": { "rate_env": "NON_ZERO", "grid_pct": 5, "target_pct": 50, "deployed_pct": 0 },
   "all_in_conditions": [
     { "id": 1, "label": "한달+1일 무마삼", "met": false, "grade": "약", "detail": "D-12" },
@@ -429,11 +432,11 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - `rangeBase`는 live 로드 시 현재 `rangeTarget` 기준으로 자동전환(직전 고점/올인 지점). 배너는 이 전역 `rangeBase`를 그대로 사용
 
 **리밸런싱 스티키 구간 (직전 고점/올인 지점 탭 · NORMAL 모드)**
-- EOD 배치(`fetch_eod.py`)가 `masam.rebalancing.nvda_zone` / `qqq_zone`을 매일 갱신
-  - 당일 live_zone과 전일 저장값 중 최대값 유지(`max(live, prev)`)
-  - 막바지 2구간 상승(전량 재매수) 조건: `live_zone <= prev_zone - 2` → zone 리셋 0
-- 프론트(`renderRangeTable`)에서 `curZone = Math.max(live_zone, eod_zone)`으로 floor 적용
-- `_calcZone(tgt)` 배너도 동일한 sticky floor 적용 (배너·테이블 일관성)
+- (2026-07-25 변경) 구간을 **그리드(2.5%/5%)에 고정된 정수**로 저장하면 프론트의 -25%/-50% 토글과 어긋나는 버그가 있어 폐기. 대신 `masam.rebalancing.nvda_lowest_close` / `qqq_lowest_close`(그리드 무관 원시 최저 EOD 종가)를 저장.
+  - EOD 배치(`fetch_eod.py`)가 매일 갱신: 저장된 저점보다 당일 종가가 낮으면 갱신, 아니면 유지(스티키)
+  - 막바지 2구간 상승(전량 재매수) 판정은 캐노니컬 그리드(`rebalancing.max_pct`, 25→2.5%/50→5%)로 계산 — 판정 통과 시 저점을 당일 종가로 리셋
+- 프론트(`renderRangeTable`, `_calcZone(tgt)`)는 이 원시 저점 가격을 가져와 **그때그때 선택된 그리드**로 구간을 재계산 후 `Math.max(live_zone, eod_zone)`으로 floor 적용 (배너·테이블 동일 로직)
+- 구간 판정 시 현재가(`RANGE_CUR`, 라이브)가 아니라 `masam.eod_close.{nvda,qqq,rank2}`(EOD 종가)를 기준으로 함 — 장중 변동만으로 구간이 흔들리지 않도록. CRISIS/PANIC 모드는 기존대로 장중 저가(`d.low`) 기준 유지.
 
 **전량 재매수 행 (직전 고점/올인 지점 탭 · NORMAL 모드 · curZone > 0)**
 - 막바지 2구간 상승 시 전량 재매수 지점을 테이블에 표시 (주식 100% / 현금 올인)
