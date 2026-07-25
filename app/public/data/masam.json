@@ -32,8 +32,8 @@
     "cash_raised_pct": 0,
     "max_pct": 25,
     "qqq_pct": 0,
-    "nvda_zone": 1,
-    "qqq_zone": 2
+    "nvda_lowest_close": 206.84,
+    "qqq_lowest_close": 684.23
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -114,5 +114,10 @@
     "qqq_prev_high": 725.51,
     "rank2_prev_high": 333.74
   },
-  "released_date": "2026-07-06"
+  "released_date": "2026-07-06",
+  "eod_close": {
+    "nvda": 206.84,
+    "qqq": 684.23,
+    "rank2": 333.02
+  }
 }
