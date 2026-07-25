@@ -406,33 +406,44 @@ def main():
         last_allin_price["rank2_prev_high"] = _prev_high(rank2_hist,  last_allin_price.get("rank2", 0))
         print(f"  직전 고점: {rank1_ticker}={last_allin_price['nvda_prev_high']} QQQ={last_allin_price['qqq_prev_high']} {rank2_ticker}={last_allin_price['rank2_prev_high']}")
 
-    # 5c. 리밸런싱 구간 스티키 추적 (NORMAL 모드)
+    # 5c. 리밸런싱 저점 스티키 추적 (NORMAL 모드)
+    # 프론트가 -25%/-50% 그리드별로 각자 맞는 구간을 계산할 수 있도록,
+    # 그리드에 종속된 구간 번호가 아니라 그리드 무관한 실제 저점 종가를 저장한다.
     existing_reb = existing_masam.get("rebalancing", {})
-    step_pct = existing_reb.get("max_pct", 25) / 10  # 25→2.5%, 50→5%
+    step_pct = existing_reb.get("max_pct", 25) / 10  # 재매수 리셋 판정용 그리드: 25→2.5%, 50→5%
     if new_mode == "NORMAL" and isinstance(last_allin_price, dict):
         _lap = last_allin_price
         _step = step_pct / 100
-        def _zone(cur, allin, prev_high):
-            base = prev_high if (allin > 0 and cur >= allin) else allin
-            if not base: return 0
+        def _base_of(cur, allin, prev_high):
+            return prev_high if (allin > 0 and cur >= allin) else allin
+        def _zone_idx(cur, base):
+            if not cur or not base: return 0
             z = 0
             for i in range(1, 11):
                 if cur <= base * (1 - _step * i): z = i
             return z
         qqq_eod_close = latest_close(qqq)
-        nvda_lz = _zone(rank1_close, _lap.get("nvda", 0), _lap.get("nvda_prev_high", 0))
-        qqq_lz  = _zone(qqq_eod_close, _lap.get("qqq", 0), _lap.get("qqq_prev_high", 0))
-        prev_nz = existing_reb.get("nvda_zone", 0)
-        prev_qz = existing_reb.get("qqq_zone", 0)
-        new_nz = max(nvda_lz, prev_nz)
-        new_qz = max(qqq_lz,  prev_qz)
-        # 막바지 2구간 상승 → 전량 재매수 → zone 리셋
-        if prev_nz > 0 and nvda_lz <= prev_nz - 2: new_nz = 0
-        if prev_qz > 0 and qqq_lz  <= prev_qz - 2: new_qz = 0
-        print(f"  리밸런싱 구간: NVDA {prev_nz}→{new_nz}  QQQ {prev_qz}→{new_qz}")
+        nvda_base = _base_of(rank1_close, _lap.get("nvda", 0), _lap.get("nvda_prev_high", 0))
+        qqq_base  = _base_of(qqq_eod_close, _lap.get("qqq", 0), _lap.get("qqq_prev_high", 0))
+        prev_nvda_low = existing_reb.get("nvda_lowest_close", 0)
+        prev_qqq_low  = existing_reb.get("qqq_lowest_close", 0)
+        prev_nz = _zone_idx(prev_nvda_low, nvda_base)
+        prev_qz = _zone_idx(prev_qqq_low,  qqq_base)
+        new_nz  = _zone_idx(rank1_close,   nvda_base)
+        new_qz  = _zone_idx(qqq_eod_close, qqq_base)
+        # 막바지 2구간 상승 → 전량 재매수 → 저점 리셋
+        if prev_nz > 0 and new_nz <= prev_nz - 2:
+            new_nvda_low = rank1_close
+        else:
+            new_nvda_low = min(prev_nvda_low, rank1_close) if prev_nvda_low else rank1_close
+        if prev_qz > 0 and new_qz <= prev_qz - 2:
+            new_qqq_low = qqq_eod_close
+        else:
+            new_qqq_low = min(prev_qqq_low, qqq_eod_close) if prev_qqq_low else qqq_eod_close
+        print(f"  리밸런싱 저점: NVDA {prev_nvda_low}→{new_nvda_low}  QQQ {prev_qqq_low}→{new_qqq_low}")
     else:
-        new_nz = 0
-        new_qz = 0
+        new_nvda_low = 0
+        new_qqq_low = 0
 
     # 위기 저점: 마지막 마삼일 이후 최저 종가 (V자 반등 기준점)
     last_masam_str = new_masam_state.get("last_masam_date")
@@ -502,9 +513,11 @@ def main():
         "hedge_allocation": hedge_alloc,
         "all_in_conditions": all_in,
         "rebalancing": {
-            **existing_reb,
-            "nvda_zone": new_nz,
-            "qqq_zone":  new_qz,
+            "cash_raised_pct":    existing_reb.get("cash_raised_pct", 0),
+            "max_pct":            existing_reb.get("max_pct", 25),
+            "qqq_pct":            existing_reb.get("qqq_pct", 0),
+            "nvda_lowest_close":  round(new_nvda_low, 2) if new_nvda_low else 0,
+            "qqq_lowest_close":   round(new_qqq_low, 2) if new_qqq_low else 0,
         },
         "eod_close": {
             "nvda":  round(rank1_close, 2),
