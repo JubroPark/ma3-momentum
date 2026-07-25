@@ -1699,7 +1699,9 @@
     const step = rangePctMode === 25 ? 0.025 : 0.05;
 
     const isCrisis = masamMode === 'CRISIS' || masamMode === 'PANIC';
-    const zoneRef = isCrisis ? parseFloat(d.low) || RANGE_CUR : RANGE_CUR;
+    const eodClose = (window._cachedMasam && window._cachedMasam.eod_close) || {};
+    const eodKey = rangeTarget === 'qqq' ? 'qqq' : rangeTarget === 'rank2' ? 'rank2' : 'nvda';
+    const zoneRef = isCrisis ? (parseFloat(d.low) || RANGE_CUR) : (eodClose[eodKey] || RANGE_CUR);
     let curZone = 0;
     for (let i = 1; i <= 10; i++) {
       if (zoneRef <= base * (1 - step * i)) curZone = i;
@@ -1731,7 +1733,9 @@
         if (!_base) return 0;
         const _step = (getMaxPct(tgt === 'qqq' ? 'qqq' : 'nvda') === 25) ? 0.025 : 0.05;
         const _isCrisis = masamMode === 'CRISIS' || masamMode === 'PANIC';
-        const _ref = _isCrisis ? parseFloat(_d.low) || _cur : _cur;
+        const _eodClose = (window._cachedMasam && window._cachedMasam.eod_close) || {};
+        const _eodKey = tgt === 'qqq' ? 'qqq' : tgt === 'rank2' ? 'rank2' : 'nvda';
+        const _ref = _isCrisis ? (parseFloat(_d.low) || _cur) : (_eodClose[_eodKey] || _cur);
         let z = 0;
         for (let i = 1; i <= 10; i++) {
           if (_ref <= _base * (1 - _step * i)) z = i;

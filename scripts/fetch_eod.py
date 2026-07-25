@@ -506,6 +506,11 @@ def main():
             "nvda_zone": new_nz,
             "qqq_zone":  new_qz,
         },
+        "eod_close": {
+            "nvda":  round(rank1_close, 2),
+            "qqq":   round(latest_close(qqq), 2),
+            "rank2": round(rank2_close, 2),
+        },
         "released_date": released_date,
         "last_allin_price": last_allin_price,
         "recommended_action": _recommended_action(new_mode, rank1_ticker),
