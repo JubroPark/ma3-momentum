@@ -414,7 +414,11 @@
         // live 날짜가 EOD 날짜보다 오래됐으면 change_pct 미적용 (이중 적용 방지)
         const eodDate  = (mcapDaily && mcapDaily.as_of || '').slice(0, 10);
         const liveDate = (liveAsOf || '').slice(0, 10);
-        const applyLive = liveDate >= eodDate;
+        // 정규장(UTC 13:00~20:15) 밖에서는 change_pct가 이미 EOD 종가에 반영된 지난 세션 값일 수 있어 미적용
+        const _u = new Date();
+        const _mins = _u.getUTCHours() * 60 + _u.getUTCMinutes();
+        const marketHoursNow = _mins >= 13 * 60 && _mins <= 20 * 60 + 15;
+        const applyLive = liveDate >= eodDate && marketHoursNow;
         const merged = items.map(function(item) {
           const ticker = item.ticker;
           const co = companies[ticker] || {};
@@ -2744,17 +2748,19 @@ function initMaxPctUI(rateEnv) {
       if (fg < 75) return '#7CB342';
       return '#2BC4B6';
     })();
+    const rollUsdKrw = lm.usd_krw ?? mkt.usd_krw;
+    const rollVix = lm.vix ?? mkt.vix;
     const mcapRollData = [
       {
         lbl: '달러 환율',
-        val: lm.usd_krw != null ? lm.usd_krw.toLocaleString('ko-KR', { minimumFractionDigits: 1 }) : '--',
+        val: rollUsdKrw != null ? rollUsdKrw.toLocaleString('ko-KR', { minimumFractionDigits: 1 }) : '--',
         chgTxt: '',
         isUp: lm.usd_krw_chg != null ? lm.usd_krw_chg > 0 : null,
       },
       {
         lbl: 'VIX',
-        val: lm.vix != null ? lm.vix.toFixed(2) : '--',
-        chgTxt: lm.vix != null ? (lm.vix < 20 ? '안정' : lm.vix < 30 ? '경계' : '공포') : '',
+        val: rollVix != null ? rollVix.toFixed(2) : '--',
+        chgTxt: rollVix != null ? (rollVix < 20 ? '안정' : rollVix < 30 ? '경계' : '공포') : '',
         isUp: lm.vix_chg != null ? lm.vix_chg > 0 : null,
       },
       {

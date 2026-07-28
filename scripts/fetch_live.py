@@ -215,11 +215,11 @@ def main():
         "hedges": hedge_prices,
         "mcap_live": mcap_live,
         "live_market": {
-            "vix":         vix_q["price"] if vix_q else None,
-            "vix_chg":     vix_q["change_pct"] if vix_q else None,
-            "usd_krw":     round(usdkrw_q["price"], 1) if usdkrw_q else None,
-            "usd_krw_chg": round(usdkrw_q["change_pct"], 2) if usdkrw_q else None,
-            "fear_greed":  fear_greed,
+            "vix":         vix_q["price"] if vix_q else existing_live.get("live_market", {}).get("vix"),
+            "vix_chg":     vix_q["change_pct"] if vix_q else existing_live.get("live_market", {}).get("vix_chg"),
+            "usd_krw":     round(usdkrw_q["price"], 1) if usdkrw_q else existing_live.get("live_market", {}).get("usd_krw"),
+            "usd_krw_chg": round(usdkrw_q["change_pct"], 2) if usdkrw_q else existing_live.get("live_market", {}).get("usd_krw_chg"),
+            "fear_greed":  fear_greed if fear_greed is not None else existing_live.get("live_market", {}).get("fear_greed"),
         },
     }
 
