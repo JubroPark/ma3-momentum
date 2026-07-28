@@ -2426,6 +2426,7 @@ function initMaxPctUI(rateEnv) {
       if (lbl1) lbl1.textContent = r1;
       if (lbl2) lbl2.textContent = r2;
       // RANGE_DATA rank1/rank2 업데이트
+      RANGE_DATA.nvda.name    = (companies[r1] && companies[r1].name_ko) || r1;
       RANGE_DATA.nvda.domain  = (companies[r1] && companies[r1].domain)  || r1.toLowerCase() + '.com';
       RANGE_DATA.nvda.initial = r1[0];
       const r1item = (mcapDaily.items || []).find(function(it){ return it.ticker === r1; });

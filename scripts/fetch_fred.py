@@ -3,6 +3,7 @@
 import os
 import json
 import sys
+import time
 from datetime import datetime
 from pathlib import Path
 from typing import Optional
@@ -14,6 +15,22 @@ if not API_KEY:
 
 OUT = Path(__file__).parent.parent / "app/public/data/masam_market.json"
 BASE = "https://api.stlouisfed.org/fred/series/observations"
+TIMEOUT = 20
+RETRIES = 3
+
+
+def _get(url: str):
+    """timeout=20s, 실패 시 최대 3회 재시도(1s/2s 대기)."""
+    last_err: urllib.error.URLError = urllib.error.URLError("unreachable")
+    for attempt in range(RETRIES):
+        try:
+            with urllib.request.urlopen(url, timeout=TIMEOUT) as r:
+                return json.loads(r.read())
+        except urllib.error.URLError as e:
+            last_err = e
+            if attempt < RETRIES - 1:
+                time.sleep(2 ** attempt)
+    raise last_err
 
 
 def fetch(series: str, limit: int = 60) -> list:
@@ -22,12 +39,11 @@ def fetch(series: str, limit: int = 60) -> list:
         f"&file_type=json&sort_order=desc&limit={limit}"
     )
     try:
-        with urllib.request.urlopen(url, timeout=10) as r:
-            data = json.loads(r.read())
+        data = _get(url)
     except urllib.error.HTTPError as e:
         sys.exit(f"FRED API 오류 ({series}): HTTP {e.code} {e.reason}")
     except urllib.error.URLError as e:
-        sys.exit(f"FRED API 연결 실패 ({series}): {e.reason}")
+        sys.exit(f"FRED API 연결 실패 ({series}, {RETRIES}회 재시도 후): {e.reason}")
 
     if "observations" not in data:
         sys.exit(f"FRED 응답 오류 ({series}): 'observations' 키 없음 — {data}")
@@ -42,8 +58,7 @@ def try_fetch(series: str, limit: int = 3) -> list:
         f"&file_type=json&sort_order=desc&limit={limit}"
     )
     try:
-        with urllib.request.urlopen(url, timeout=10) as r:
-            data = json.loads(r.read())
+        data = _get(url)
         return data.get("observations", [])
     except Exception:
         return []
