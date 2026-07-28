@@ -414,10 +414,12 @@
         // live 날짜가 EOD 날짜보다 오래됐으면 change_pct 미적용 (이중 적용 방지)
         const eodDate  = (mcapDaily && mcapDaily.as_of || '').slice(0, 10);
         const liveDate = (liveAsOf || '').slice(0, 10);
-        // 정규장(UTC 13:00~20:15) 밖에서는 change_pct가 이미 EOD 종가에 반영된 지난 세션 값일 수 있어 미적용
-        const _u = new Date();
-        const _mins = _u.getUTCHours() * 60 + _u.getUTCMinutes();
-        const marketHoursNow = _mins >= 13 * 60 && _mins <= 20 * 60 + 15;
+        // 정규장(뉴욕 09:30~16:00, 서머타임 자동 반영) 밖에서는 change_pct가
+        // 이미 EOD 종가에 반영된 지난 세션 값일 수 있어 미적용
+        const _et = new Date().toLocaleString('en-US', { timeZone: 'America/New_York', hour12: false, hour: '2-digit', minute: '2-digit' });
+        const [_etH, _etM] = _et.split(':').map(Number);
+        const _etMins = _etH * 60 + _etM;
+        const marketHoursNow = _etMins >= 9 * 60 + 30 && _etMins <= 16 * 60;
         const applyLive = liveDate >= eodDate && marketHoursNow;
         const merged = items.map(function(item) {
           const ticker = item.ticker;
@@ -448,8 +450,9 @@
           const mcapStr = d.mcap_usd > 0
             ? (d.mcap_usd >= 1e12 ? '$' + (d.mcap_usd / 1e12).toFixed(2) + 'T' : '$' + (d.mcap_usd / 1e9).toFixed(0) + 'B')
             : '--';
+          const chgLabel = marketHoursNow ? '' : '전일 장마감 ';
           const chgHtml = d.change_pct != null
-            ? `<span class="${d.change_pct >= 0 ? 'up' : 'down'}">${(d.change_pct >= 0 ? '+' : '') + d.change_pct.toFixed(1)}%</span>`
+            ? `<span class="${d.change_pct >= 0 ? 'up' : 'down'}">${chgLabel}${(d.change_pct >= 0 ? '+' : '') + d.change_pct.toFixed(1)}%</span>`
             : `<span style="color:var(--txt-3)">--</span>`;
           const gap = rank === 1
             ? `<img src="https://cdn.jsdelivr.net/gh/twitter/twemoji@latest/assets/svg/1f3c6.svg" style="width:20px;height:20px;animation:trophy-shine 3s ease-in-out infinite;">`
