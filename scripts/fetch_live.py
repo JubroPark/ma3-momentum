@@ -145,8 +145,8 @@ def main():
     ixic_extra  = fetch_ohlc_ath("^IXIC")
 
     # 마삼까지 거리
-    ixic_price = ixic_q["price"] if ixic_q else 0
-    dist_masam = masam_distance(ixic_price, existing_live) if ixic_q else 0
+    ixic_price = ixic_q["price"] if ixic_q else existing_live.get("nasdaq", {}).get("price", 0)
+    dist_masam = masam_distance(ixic_price, existing_live) if ixic_price else 0
 
     # ATH 대비 % (IXIC 52주 고점 기준)
     ixic_ath = ixic_extra.get("ath", 0)
