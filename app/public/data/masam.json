@@ -13,7 +13,7 @@
   "leader_status": {
     "rank1_ticker": "AAPL",
     "rank2_ticker": "NVDA",
-    "gap_pct": 3.8,
+    "gap_pct": 4.5,
     "overtake_detected": false,
     "gap_within_10pct": true
   },
@@ -33,7 +33,7 @@
     "max_pct": 25,
     "qqq_pct": 0,
     "nvda_lowest_close": 336.91,
-    "qqq_lowest_close": 682.12
+    "qqq_lowest_close": 675.49
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -68,7 +68,7 @@
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-8.0%"
+      "detail": "-8.2%"
     },
     {
       "id": 5,
@@ -82,7 +82,7 @@
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-8.0% (기준: -30%)"
+      "detail": "-8.2% (기준: -30%)"
     }
   ],
   "additional_buy": {
@@ -110,14 +110,14 @@
     "qqq": 722.82,
     "rank2": 312.66,
     "date": "2026-07-06",
-    "nvda_prev_high": 336.91,
+    "nvda_prev_high": 340.08,
     "qqq_prev_high": 725.51,
     "rank2_prev_high": 212.5
   },
   "released_date": "2026-07-06",
   "eod_close": {
-    "nvda": 336.91,
-    "qqq": 682.12,
-    "rank2": 196.51
+    "nvda": 340.08,
+    "qqq": 675.49,
+    "rank2": 197.01
   }
 }
