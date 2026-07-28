@@ -1286,6 +1286,13 @@
             </div>
           </div>
           <div class="srow">
+            <div class="sk">현금화 최대 한도 (2등주)<s>전고점 대비 하락 시 1구간마다 10% 매도</s></div>
+            <div class="tg" id="max-pct-rank2">
+              <button onclick="setMaxPct('rank2',25,this)">25%</button>
+              <button onclick="setMaxPct('rank2',50,this)">50%</button>
+            </div>
+          </div>
+          <div class="srow">
             <div class="sk">현금화 최대 한도 (QQQ)<s>전고점 대비 하락 시 1구간마다 10% 매도</s></div>
             <div class="tg" id="max-pct-qqq">
               <button onclick="setMaxPct('qqq',25,this)">25%</button>
@@ -1646,8 +1653,7 @@
       if (opt) opt.style.color = target === k ? '#fff' : 'var(--txt-3)';
     });
     // 타겟별 현금화 한도 설정 로드
-    const settingTarget = target === 'qqq' ? 'qqq' : 'nvda';
-    rangePctMode = getMaxPct(settingTarget);
+    rangePctMode = getMaxPct(target);
     document.querySelectorAll('.view[data-view="발견"] .pct-toggle button').forEach(b => {
       b.classList.toggle('on', b.textContent.includes(String(rangePctMode)));
     });
@@ -1738,7 +1744,7 @@
         const _mv = _isManual ? (manualPrices[tgt][_mk] || 0) : 0;
         const _base = _isManual ? _mv : (_d.demos[rangeBase] || _d.demos['최고점']);
         if (!_base) return 0;
-        const _step = (getMaxPct(tgt === 'qqq' ? 'qqq' : 'nvda') === 25) ? 0.025 : 0.05;
+        const _step = (getMaxPct(tgt) === 25) ? 0.025 : 0.05;
         const _isCrisis = masamMode === 'CRISIS' || masamMode === 'PANIC';
         const _eodClose = (window._cachedMasam && window._cachedMasam.eod_close) || {};
         const _eodKey = tgt === 'qqq' ? 'qqq' : tgt === 'rank2' ? 'rank2' : 'nvda';
@@ -2023,7 +2029,7 @@
     const tg = document.getElementById('max-pct-' + target);
     if (tg) tg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b === btn));
     // 현재 보고 있는 타겟이면 range 토글도 동기화
-    if (target === rangeTarget || (target === 'nvda' && rangeTarget !== 'qqq')) {
+    if (target === rangeTarget) {
       _syncRangePct(target);
     }
   }
@@ -2061,7 +2067,7 @@
   }
 
   function _syncRangePct(target) {
-    const pct = getMaxPct(target === 'qqq' ? 'qqq' : 'nvda');
+    const pct = getMaxPct(target);
     rangePctMode = pct;
     document.querySelectorAll('.view[data-view="발견"] .pct-toggle button').forEach(b => {
       b.classList.toggle('on', b.textContent.includes(String(pct)));
@@ -2075,9 +2081,8 @@
     const pct = el.textContent.includes('25') ? 25 : 50;
     rangePctMode = pct;
     // 설정 탭 토글도 동기화
-    const settingTarget = rangeTarget === 'qqq' ? 'qqq' : 'nvda';
-    localStorage.setItem(_maxPctKey(settingTarget), pct);
-    const tg = document.getElementById('max-pct-' + settingTarget);
+    localStorage.setItem(_maxPctKey(rangeTarget), pct);
+    const tg = document.getElementById('max-pct-' + rangeTarget);
     if (tg) tg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.textContent.includes(String(pct))));
     renderRangeTable();
   }
@@ -2176,7 +2181,7 @@
 function initMaxPctUI(rateEnv) {
   // localStorage 미설정 시 금리환경 기반 기본값 (제로=25%, 비제로=50%)
   const defaultPct = (rateEnv === 'ZERO') ? 25 : 50;
-  ['nvda', 'qqq'].forEach(t => {
+  ['nvda', 'rank2', 'qqq'].forEach(t => {
     if (!localStorage.getItem(_maxPctKey(t))) {
       localStorage.setItem(_maxPctKey(t), defaultPct);
     }
@@ -2184,8 +2189,7 @@ function initMaxPctUI(rateEnv) {
     const tg = document.getElementById('max-pct-' + t);
     if (tg) tg.querySelectorAll('button').forEach(b => b.classList.toggle('on', b.textContent.includes(String(pct))));
   });
-  const settingTarget = rangeTarget === 'qqq' ? 'qqq' : 'nvda';
-  rangePctMode = getMaxPct(settingTarget);
+  rangePctMode = getMaxPct(rangeTarget);
   document.querySelectorAll('.pct-toggle button').forEach(b => {
     b.classList.toggle('on', b.textContent.includes(String(rangePctMode)));
   });
@@ -2426,12 +2430,12 @@ function initMaxPctUI(rateEnv) {
       if (lbl1) lbl1.textContent = r1;
       if (lbl2) lbl2.textContent = r2;
       // RANGE_DATA rank1/rank2 업데이트
-      RANGE_DATA.nvda.name    = (companies[r1] && companies[r1].name_ko) || r1;
+      RANGE_DATA.nvda.name    = r1;
       RANGE_DATA.nvda.domain  = (companies[r1] && companies[r1].domain)  || r1.toLowerCase() + '.com';
       RANGE_DATA.nvda.initial = r1[0];
       const r1item = (mcapDaily.items || []).find(function(it){ return it.ticker === r1; });
       RANGE_DATA.nvda.slug = r1item ? (r1item.slug || r1.toLowerCase()) : r1.toLowerCase();
-      RANGE_DATA.rank2.name = (companies[r2] && companies[r2].name_ko) || r2;
+      RANGE_DATA.rank2.name = r2;
       RANGE_DATA.rank2.domain  = (companies[r2] && companies[r2].domain)  || r2.toLowerCase() + '.com';
       RANGE_DATA.rank2.initial = r2[0];
       const r2item = (mcapDaily.items || []).find(function(it){ return it.ticker === r2; });
