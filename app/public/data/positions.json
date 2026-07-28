@@ -321,10 +321,10 @@
     {
       "symbol": "ADSK",
       "name": "Autodesk, Inc.",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 5.0,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -358,11 +358,11 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.32)",
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (237.38 ≤ 261.43)",
       "name_ko": "오토데스크",
       "domain": "autodesk.com",
-      "weight_note": ""
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -10.1%)"
     },
     {
       "symbol": "MU",
@@ -537,8 +537,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+2.9%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "name_ko": "아리스타 네트웍스",
       "domain": "arista.com",
       "weight_note": ""
@@ -1800,10 +1800,10 @@
     {
       "symbol": "ADBE",
       "name": "Adobe Inc.",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 5.0,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -1837,11 +1837,11 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.42)",
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (249.18 ≤ 284.56)",
       "name_ko": "어도비",
       "domain": "adobe.com",
-      "weight_note": ""
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -14.2%)"
     },
     {
       "symbol": "KLAC",
@@ -3104,8 +3104,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "지지선 이탈 (221.42 < 239.15)",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -3251,10 +3251,10 @@
       "name": "Fair Isaac Corporation",
       "name_ko": "페어 아이작",
       "domain": "fico.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 2.85,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -3288,9 +3288,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.53)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (1336.22 ≤ 1473.56)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -10.3%)"
     },
     {
       "symbol": "RELY",
@@ -3617,14 +3617,11 @@
       "name": "Applied Materials, Inc.",
       "name_ko": "어플라이드 머티어리얼즈",
       "domain": "appliedmaterials.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 3.9,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 723.0,
       "trailing_stop_line": 506.1,
       "horizontal_support": 396.88,
@@ -3655,9 +3652,9 @@
           false
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (476.46 ≤ 506.10)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -6.2%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "FSLR",
@@ -4165,8 +4162,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.8%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -5185,8 +5182,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.59)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -5593,10 +5590,10 @@
       "name": "Salesforce, Inc.",
       "name_ko": "세일즈포스",
       "domain": "salesforce.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 3.25,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -5630,9 +5627,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.35)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (181.50 ≤ 203.09)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -11.9%)"
     },
     {
       "symbol": "EGO",
@@ -5810,8 +5807,8 @@
           false
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(+0.8%) + 탑픽점수 71",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "weight_note": ""
     },
     {
@@ -5863,10 +5860,10 @@
       "name": "Blackbaud, Inc.",
       "name_ko": "블랙보드",
       "domain": "blackbaud.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 3.8,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -5900,9 +5897,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.77)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (35.93 ≤ 52.69)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -46.6%)"
     },
     {
       "symbol": "OGC",
