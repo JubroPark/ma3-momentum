@@ -561,7 +561,7 @@
           </div>
         </div>
       </div>
-      <div class="ai-banner" onclick="toast('권장 비중')"><div class="inner">
+      <div class="ai-banner" onclick="openAllocDetail()"><div class="inner">
         <div class="tag">✦ 권장 비중</div>
         <div class="msg">주식 30%<span style="margin:0 3px;color:#3a3a4a;">|</span>현금 70%</div>
         <div class="chev">›</div>
@@ -1714,7 +1714,7 @@
     }
     // 스티키: NORMAL 모드 직전 고점/올인 지점 탭에서 EOD 최저 종가를 floor로 사용
     // 그리드(2.5%/5%)에 무관한 원시 저점 가격을 저장해두고, 현재 선택된 그리드로 매번 재계산
-    if (!isCrisis && isManual && window._cachedMasam) {
+    if (!isCrisis && isManual && window._cachedMasam && rangeTarget !== 'rank2') {
       const _reb = (window._cachedMasam.rebalancing) || {};
       const _lowPrice = rangeTarget === 'qqq' ? (_reb.qqq_lowest_close || 0) : (_reb.nvda_lowest_close || 0);
       let _eodZ = 0;
@@ -1753,8 +1753,8 @@
         for (let i = 1; i <= 10; i++) {
           if (_ref <= _base * (1 - _step * i)) z = i;
         }
-        // 스티키: EOD 최저 종가를 현재 그리드로 재계산한 floor
-        if (!_isCrisis && _isManual && window._cachedMasam) {
+        // 스티키: EOD 최저 종가를 현재 그리드로 재계산한 floor (rank2는 backend 미지원 → 스킵)
+        if (!_isCrisis && _isManual && window._cachedMasam && tgt !== 'rank2') {
           const _reb = (window._cachedMasam.rebalancing) || {};
           const _lowPrice = tgt === 'qqq' ? (_reb.qqq_lowest_close || 0) : (_reb.nvda_lowest_close || 0);
           let _eodZ = 0;
@@ -1767,44 +1767,35 @@
         }
         return z;
       };
-      if (isRebalancing) {
-        if (_rParts[1] === 0) {
-          // 1:0 — NVDA만
-          const z = _calcZone('nvda');
-          const s = 100 - z * 10;
-          const cash = 100 - s;
-          bannerMsg.innerHTML = '1등주 ' + s + '%' + (cash > 0 ? _sep + '현금 ' + cash + '%' : '');
-        } else {
-          // 1:1 / 2:1 — NVDA·QQQ 독립 구간
-          const nvdaW = _rParts[0] / _rTotal;
-          const qqqW  = _rParts[1] / _rTotal;
-          const nvdaZ = _calcZone('nvda');
-          const qqqZ  = _calcZone('qqq');
-          const nvdaPct = Math.round(nvdaW * 100 * (1 - nvdaZ * 0.1));
-          const qqqPct  = Math.round(qqqW  * 100 * (1 - qqqZ  * 0.1));
-          const cash = 100 - nvdaPct - qqqPct;
-          let html = '1등주 ' + nvdaPct + '%' + _sep + 'QQQ ' + qqqPct + '%';
-          if (cash > 0) html += _sep + '현금 ' + cash + '%';
-          bannerMsg.innerHTML = html;
-        }
+      // 매뉴얼 1장: 1·2등 격차 10% 이내 또는 2등주 추월 시 1등:2등 = 1:1 동일 비중 (leader_status 기준)
+      const _ls = (window._cachedMasam && window._cachedMasam.leader_status) || {};
+      const _dualLeader = !!(_ls.gap_within_10pct || _ls.overtake_detected);
+      // leaderShare(%)를 target의 구간에 따라 줄인 실비중 계산
+      const _leaderPct = (shareBase, tgt) => {
+        const z = _calcZone(tgt);
+        return isRebalancing ? shareBase * (1 - z * 0.1) : shareBase * z * 0.1;
+      };
+      const leaderShare = 100 * _rParts[0] / _rTotal; // 1등(+2등) 몫
+      const qqqShare = 100 * (_rParts[1] || 0) / _rTotal; // QQQ 몫
+      let nvdaPct, rank2Pct = 0, qqqPct = 0;
+      if (_dualLeader) {
+        nvdaPct = Math.round(_leaderPct(leaderShare / 2, 'nvda'));
+        rank2Pct = Math.round(_leaderPct(leaderShare / 2, 'rank2'));
       } else {
-        // 말뚝박기: NVDA·QQQ 독립 구간으로 매수 비중 합산
-        if (_rParts[1] === 0) {
-          const s = curZone * 10;
-          const cash = 100 - s;
-          bannerMsg.innerHTML = '1등주 ' + s + '%' + _sep + '현금 ' + cash + '%';
-        } else {
-          const nvdaW = _rParts[0] / _rTotal;
-          const qqqW  = _rParts[1] / _rTotal;
-          const nvdaZ = _calcZone('nvda');
-          const qqqZ  = _calcZone('qqq');
-          const nvdaPct = Math.round(nvdaW * 100 * nvdaZ * 0.1);
-          const qqqPct  = Math.round(qqqW  * 100 * qqqZ  * 0.1);
-          const cash = 100 - nvdaPct - qqqPct;
-          let html = '1등주 ' + nvdaPct + '%' + _sep + 'QQQ ' + qqqPct + '%' + _sep + '현금 ' + cash + '%';
-          bannerMsg.innerHTML = html;
-        }
+        nvdaPct = Math.round(_leaderPct(leaderShare, 'nvda'));
       }
+      if (qqqShare > 0) qqqPct = Math.round(_leaderPct(qqqShare, 'qqq'));
+      const cash = 100 - nvdaPct - rank2Pct - qqqPct;
+      // 배너는 1등주(+2등주 합산)/QQQ/현금만 짧게, 자세한 내역은 탭해서 드로어로
+      window._allocDetail = {
+        nvdaPct, rank2Pct, qqqPct, cash, dualLeader: _dualLeader, gapPct: _ls.gap_pct,
+        nvdaTicker: _ls.rank1_ticker || 'NVDA', rank2Ticker: _ls.rank2_ticker || 'MSFT',
+      };
+      const leaderCombined = nvdaPct + rank2Pct;
+      let html = '1등주 ' + leaderCombined + '%';
+      if (qqqPct > 0) html += _sep + 'QQQ ' + qqqPct + '%';
+      if (cash > 0) html += _sep + '현금 ' + cash + '%';
+      bannerMsg.innerHTML = html;
     }
 
     // 재매수 구간 (위기/공황 시: 파란 구간에서 2구간 위)
@@ -2906,6 +2897,15 @@ if ('serviceWorker' in navigator) {
   <div id="steps-drawer-content" style="padding:20px 20px 40px;overflow-y:auto;max-height:calc(92dvh - 56px);-webkit-overflow-scrolling:touch;overscroll-behavior:contain;"></div>
 </div>
 
+<!-- ===== 권장 비중 자세히 보기 드로어 ===== -->
+<div id="alloc-overlay" onclick="closeAllocDetail()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;transition:opacity .28s ease;opacity:0;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);"></div>
+<div id="alloc-drawer" style="display:none;position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:#1D1D25;border-radius:24px 24px 0 0;z-index:201;padding:0 0 env(safe-area-inset-bottom,24px);transition:transform .32s cubic-bezier(.32,1.2,.48,1);max-height:80dvh;overflow:hidden;box-shadow:0 -8px 48px rgba(0,0,0,.55);">
+  <div style="padding:14px 20px 0;display:flex;align-items:center;justify-content:center;">
+    <div style="width:40px;height:4px;border-radius:2px;background:#36363F;"></div>
+  </div>
+  <div id="alloc-drawer-content" style="padding:20px 20px 40px;overflow-y:auto;max-height:calc(80dvh - 40px);-webkit-overflow-scrolling:touch;overscroll-behavior:contain;"></div>
+</div>
+
 <script>
 const _GRADE_COLORS = ['#3182F6','#6366F1','#9333EA','#BE185D','#DB2777'];
 function _gradeColor(val, t1, t2, t3, t4) {
@@ -3076,6 +3076,54 @@ function closeStepsDrawer() {
   document.getElementById('steps-drawer').addEventListener('touchmove',  onTouchMove,  { passive: true });
   document.getElementById('steps-drawer').addEventListener('touchend',   onTouchEnd);
 })();
+
+// 권장 비중 자세히 보기 드로어
+function openAllocDetail() {
+  const d = window._allocDetail;
+  if (!d) return;
+  const maxPct = Math.max(d.nvdaPct, d.rank2Pct, d.qqqPct, d.cash, 1);
+  const row = (iconHtml, label, ticker, pct, accent) => pct > 0 ? `
+    <div style="display:flex;align-items:center;gap:12px;padding:14px 0;border-top:1px solid rgba(255,255,255,.06);">
+      <div style="width:36px;height:36px;border-radius:50%;background:#26262E;border:1px solid rgba(255,255,255,.07);overflow:hidden;display:flex;align-items:center;justify-content:center;flex:none;">${iconHtml}</div>
+      <div style="flex:1;min-width:0;">
+        <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;">
+          <div style="font-size:14.5px;font-weight:700;color:#F4F5F7;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${label}${ticker ? ` <span style="font-size:12px;font-weight:600;color:#6B6B73;">${ticker}</span>` : ''}</div>
+          <div style="font-size:17px;font-weight:700;color:#F4F5F7;font-variant-numeric:tabular-nums;flex:none;">${pct}%</div>
+        </div>
+        <div style="height:4px;border-radius:2px;background:rgba(255,255,255,.07);margin-top:8px;overflow:hidden;">
+          <div style="height:100%;width:${Math.round(pct / maxPct * 100)}%;border-radius:2px;background:${accent};"></div>
+        </div>
+      </div>
+    </div>` : '';
+  const logoImg = (slug, domain, initial) =>
+    `<img src="https://companiesmarketcap.com/img/company-logos/64/${slug}.png" style="width:22px;height:22px;object-fit:contain;" onerror="logoFallback(this,'${domain}','${initial}')">`;
+  const gapNote = `1·2등 시총 격차 ${d.gapPct}%`;
+  document.getElementById('alloc-drawer-content').innerHTML = `
+    <div style="display:flex;align-items:baseline;justify-content:space-between;gap:8px;margin:6px 0 8px;">
+      <div style="font-size:17px;font-weight:700;color:#F4F5F7;">✦ 권장 비중</div>
+      <div style="font-size:12.5px;color:#6B6B73;flex:none;">${gapNote}</div>
+    </div>
+    ${row(logoImg(RANGE_DATA.nvda.slug, RANGE_DATA.nvda.domain, RANGE_DATA.nvda.initial), '1등주', d.nvdaTicker, d.nvdaPct, '#3182F6')}
+    ${row(logoImg(RANGE_DATA.rank2.slug, RANGE_DATA.rank2.domain, RANGE_DATA.rank2.initial), '2등주', d.rank2Ticker, d.rank2Pct, '#8B5CF6')}
+    ${row('<span style="font-size:14px;font-weight:800;color:#5ebaff;">Q</span>', 'QQQ', '', d.qqqPct, '#2BC4B6')}
+    ${row('<span class="iconify" data-icon="heroicons:banknotes" style="font-size:15px;color:#9A9AA3;"></span>', '현금', '', d.cash, '#6B6B73')}
+  `;
+  const overlay = document.getElementById('alloc-overlay');
+  const drawer  = document.getElementById('alloc-drawer');
+  overlay.style.display = 'block';
+  drawer.style.display  = 'block';
+  requestAnimationFrame(() => {
+    overlay.style.opacity = '1';
+    drawer.style.transform = 'translateX(-50%) translateY(0)';
+  });
+}
+function closeAllocDetail() {
+  const overlay = document.getElementById('alloc-overlay');
+  const drawer  = document.getElementById('alloc-drawer');
+  overlay.style.opacity = '0';
+  drawer.style.transform = 'translateX(-50%) translateY(100%)';
+  setTimeout(() => { overlay.style.display = 'none'; drawer.style.display = 'none'; }, 280);
+}
 
 // Pull-to-refresh
 (function() {
