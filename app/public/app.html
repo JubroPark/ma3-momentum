@@ -569,7 +569,7 @@
       <!-- 주가 구간 헤더: 드롭다운 -->
       <div style="position:relative;">
         <div onclick="toggleRangeDropdown()" style="display:inline-flex;align-items:center;gap:10px;padding:22.1px 17px 3.4px;cursor:pointer;user-select:none;">
-          <span id="range-sec-title" style="font-size:19.7px;font-weight:700;letter-spacing:-0.5px;">1등주 주가 구간</span>
+          <span id="range-sec-title" style="font-size:19.7px;font-weight:700;letter-spacing:-0.5px;">주가 구간</span>
           <span id="range-chevron" style="display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);color:var(--txt-3);transition:transform .2s;flex:none;"><span class="iconify" data-icon="heroicons:chevron-down" data-width="10" data-height="10"></span></span>
         </div>
         <div id="range-dropdown" style="display:none;position:absolute;top:100%;left:17px;background:var(--surface-2);border-radius:12px;overflow:hidden;z-index:20;min-width:160px;box-shadow:0 8px 24px rgba(0,0,0,.4);">
@@ -1644,8 +1644,7 @@
     rangeDropdownOpen = false;
     document.getElementById('range-dropdown').style.display = 'none';
     document.getElementById('range-chevron').style.transform = '';
-    const titleMap = { nvda: '1등주 주가 구간', rank2: '2등주 주가 구간', qqq: 'QQQ 주가 구간' };
-    document.getElementById('range-sec-title').textContent = titleMap[target] || '1등주 주가 구간';
+    document.getElementById('range-sec-title').textContent = '주가 구간';
     ['nvda', 'rank2', 'qqq'].forEach(k => {
       const chk = document.getElementById('range-check-' + k);
       const opt = document.getElementById('range-opt-' + k);
