@@ -148,6 +148,14 @@
 > **수동 갱신 버튼**: `POST /api/refresh` → GitHub workflow_dispatch(live.yml + eod.yml 동시 트리거) → 35초 후 앱 자동 새로고침. 모든 탭 topbar 우측 원형 버튼(`mdi-light:refresh`, 23px).
 >
 > **yfinance 일시 장애 가드 (2026-07-25 확인)**: `fetch_eod.py` 수동 실행 중 yfinance가 일시적으로 IXIC·1등주·QQQ·헤지 가격 전부 NaN을 반환한 사고 발생 → `NaN`은 JSON 스펙상 무효라 브라우저 `JSON.parse`가 실패, 앱 로딩이 깨질 뻔함. `require_valid()` 가드를 추가해 핵심 가격이 NaN이면 파일 저장 전에 배치를 즉시 중단(기존 데이터 보존)하도록 함. 재시도 시 정상 데이터로 성공 — 같은 코드로도 실행 시점에 따라 yfinance가 일시적으로 실패할 수 있음을 감안할 것.
+>
+> **1등주 교체(오버테이크) 후유증 (2026-07-28 확인)**: 리더가 바뀌어도 자동으로 안 따라가는 필드가 있음.
+> 1. `last_allin_price.nvda`(올인 진입가)는 위기→평상시 전환 시점에만 기록되고 이후 매일 갱신되지 않음 — 리더가 바뀌면 구 리더의 진입가가 신규 리더에 잘못 적용된 채 남음(`nvda_prev_high`는 매 배치 현재 rank1_ticker 히스토리로 재계산돼 자동 정정되지만 `nvda`는 아님). 발견 시 `masam.json`의 `last_allin_price.nvda`를 당일 종가(`eod_close.nvda`)로 수동 패치.
+> 2. 장중 라이브 배치(`live.yml`)는 시장시간(UTC 13:00~20:15) 안에만 돌기 때문에, EOD 배치가 장 마감 후~다음 라이브 배치 사이에 리더를 바꾸면 그 사이 `live.json`의 `rank1`/`rank2` 슬롯에 구 리더 시세가 남아 프론트에서 "이름은 새 리더, 가격은 구 리더" 불일치가 생김. 다음 라이브 배치가 돌면 자동 정정 — 급하면 `gh workflow run "장중 준실시간 배치"`로 수동 트리거.
+>
+> **나스닥 시세 조회 실패 시 0 폴백 버그 (2026-07-28 수정)**: `fetch_live.py`가 `^IXIC` 조회에 실패하면 `ixic_price`를 0으로 대체해 `from_ath_pct`가 `(0-ATH)/ATH*100 = -100%`로 잘못 계산되던 버그. 화면에 쓰이는 `nasdaq.price`와 동일하게 캐시된 값으로 폴백하도록 수정.
+>
+> **FRED API 타임아웃 (2026-07-28 수정)**: `fetch_fred.py` timeout 10s→20s + 실패 시 최대 3회 재시도(1s/2s 백오프) — EOD 배치가 FRED 응답 지연으로 통째로 실패하던 문제 완화.
 
 ---
 
@@ -426,9 +434,10 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - 시간: `live.update_time`(KST 문자열) 사용
 - `live.as_of`는 UTC 타임스탬프 → 날짜 표시에 사용 금지(UTC 기준 날짜가 KST와 다를 수 있음)
 
-**권장 비중 배너 (_calcZone 헬퍼)**
-- `renderRangeTable()` 내부의 `_calcZone(tgt)` 헬퍼로 NVDA·QQQ 각각 독립 구간 계산 후 비율 합산
-- step은 전역 `rangePctMode`가 아닌 `getMaxPct(tgt === 'qqq' ? 'qqq' : 'nvda')`로 타겟별 독립 적용 (rangeTarget이 달라도 QQQ의 -25% 설정이 무시되는 버그 방지)
+**권장 비중 배너 (_calcZone 헬퍼) — (2026-07-28 개편)**
+- `renderRangeTable()` 내부의 `_calcZone(tgt)` 헬퍼로 1등주·2등주·QQQ 각각 독립 구간 계산 후 비율 합산. step은 `getMaxPct(tgt)`로 세 타겟 완전 독립 적용(과거엔 2등주가 1등주 설정을 공유하는 버그가 있었음)
+- `leader_status.gap_within_10pct || overtake_detected`(매뉴얼 1장: 1·2등 시총 격차 10% 이내/역전) → 1등:2등 = 1:1로 리더 몫을 반씩 나눠 각자 구간 축소 계산. 아니면 1등주가 리더 몫 전체
+- 배너 자체는 **1등주(+2등주 합산)/QQQ/현금만** 짧게 표시(overflow 방지) — 탭하면 `openAllocDetail()`이 하단 드로어(`#alloc-overlay`/`#alloc-drawer`)를 열어 로고·티커·정확한 개별 %·비중 막대바를 표시. 상세 데이터는 `window._allocDetail`에 스테이징
 - `rangeBase`는 live 로드 시 현재 `rangeTarget` 기준으로 자동전환(직전 고점/올인 지점). 배너는 이 전역 `rangeBase`를 그대로 사용
 
 **리밸런싱 스티키 구간 (직전 고점/올인 지점 탭 · NORMAL 모드)**
@@ -445,9 +454,14 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - curZone≥3: `curZone-2` 구간 행의 주식/현금 컬럼을 `100% / 올인`으로 표시
 - 우측 status 인디케이터: 빈 원형(`rt-none`) — 다른 행과 동일 스타일
 
+**주가 구간 드롭다운/타이틀 (2026-07-28)**
+- 타이틀은 종목 접두어 없이 "주가 구간"으로 통일(드롭다운 열면 바로 종목 보이므로 중복 제거)
+- 드롭다운 표기 통일: "1등주 (티커)" / "2등주 (티커)" / "나스닥 (QQQ)"
+- 주의: 부모에 `display:flex; gap`이 있으면 텍스트 중간의 `<span>`으로 쪼개진 조각들 사이에도 gap이 적용돼 괄호 안에 의도치 않은 여백이 생김 — 라벨 전체를 span 하나로 감싸서 해결(1·2등주 라벨에 적용됨)
+
 **localStorage 저장 항목**
 - `range_allin_nvda`, `range_prev_nvda`, `range_allin_qqq`, `range_prev_qqq`, `range_allin_rank2`, `range_prev_rank2` — 올인·직전고점 수동 입력가
-- `max_pct_nvda`, `max_pct_qqq` — 현금화 최대 한도
+- `max_pct_nvda`, `max_pct_rank2`, `max_pct_qqq` — 현금화 최대 한도 (2026-07-28부터 세 타겟 완전 독립, 설정 탭에 2등주 행 추가)
 - `portfolio_ratio` — 1등주:QQQ 포트폴리오 비율
 - `momtFavSet` — 모멘텀 관심종목(하트) 목록
 - `momtTrimSet` — 트레일링 스탑 1차 터치 기록
