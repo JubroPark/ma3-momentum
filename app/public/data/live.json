@@ -1,49 +1,49 @@
 {
-  "as_of": "2026-07-29T13:01:29Z",
-  "update_time": "22:01 KST",
+  "as_of": "2026-07-29T13:15:57Z",
+  "update_time": "22:15 KST",
   "nasdaq": {
-    "price": NaN,
-    "change_pct": NaN,
+    "price": 24876.91,
+    "change_pct": -0.22,
     "dist_to_masam_pct": NaN,
-    "from_ath_pct": NaN,
+    "from_ath_pct": -8.2,
     "last_masam_date": "2026-06-05"
   },
   "sp500": {
-    "price": NaN,
-    "change_pct": NaN
+    "price": 7428.78,
+    "change_pct": 0.21
   },
   "dow": {
-    "price": NaN,
-    "change_pct": NaN
+    "price": 52747.32,
+    "change_pct": 1.03
   },
   "rank1": {
     "ticker": "AAPL",
     "name": "엔비디아",
     "domain": "nvidia.com",
     "si": "nvidia/76b900",
-    "price": NaN,
-    "change_pct": NaN,
-    "ath": 336.91,
+    "price": 340.08,
+    "change_pct": 0.94,
+    "ath": 340.08,
     "intra_low": 307.0
   },
   "rank2": {
     "ticker": "NVDA",
-    "price": NaN,
-    "change_pct": NaN,
+    "price": 197.01,
+    "change_pct": 0.25,
     "ath": 235.74,
     "intra_low": 191.14
   },
   "qqq": {
-    "price": NaN,
-    "change_pct": NaN,
+    "price": 675.49,
+    "change_pct": -0.97,
     "ath": 746.16,
-    "intra_low": 675.95
+    "intra_low": 667.88
   },
   "hedges": {
-    "TLT": NaN,
-    "IAU": NaN,
-    "GLD": NaN,
-    "TIP": NaN
+    "TLT": 84.24,
+    "IAU": 75.7,
+    "GLD": 369.37,
+    "TIP": 107.66
   },
   "mcap_live": {
     "AAPL": {
@@ -123,10 +123,10 @@
     }
   },
   "live_market": {
-    "vix": 18.21,
-    "vix_chg": -2.46,
-    "usd_krw": 1453.2,
-    "usd_krw_chg": -0.77,
+    "vix": 18.72,
+    "vix_chg": 2.8,
+    "usd_krw": 1452.5,
+    "usd_krw_chg": -0.81,
     "fear_greed": 40
   }
 }
