@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-07-29T14:46:05Z",
-  "update_time": "23:46 KST",
+  "as_of": "2026-07-29T15:01:34Z",
+  "update_time": "00:01 KST",
   "nasdaq": {
     "price": 24668.72,
     "change_pct": null,
@@ -23,7 +23,7 @@
     "si": "nvidia/76b900",
     "price": 341.89,
     "change_pct": 0.53,
-    "ath": 341.46,
+    "ath": 340.26,
     "intra_low": 307.0
   },
   "rank2": {
@@ -47,86 +47,86 @@
   },
   "mcap_live": {
     "AAPL": {
-      "change_pct": 0.06
+      "change_pct": -0.3
     },
     "NVDA": {
-      "change_pct": -3.28
+      "change_pct": -2.61
     },
     "GOOGL": {
-      "change_pct": -0.82
+      "change_pct": -0.42
     },
     "MSFT": {
-      "change_pct": -0.21
+      "change_pct": -0.24
     },
     "AMZN": {
-      "change_pct": -1.79
+      "change_pct": -1.69
     },
     "TSM": {
-      "change_pct": -4.35
+      "change_pct": -3.94
     },
     "AVGO": {
-      "change_pct": -2.77
+      "change_pct": -1.98
     },
     "2222.SR": {
       "change_pct": -0.08
     },
     "SPCX": {
-      "change_pct": -2.91
+      "change_pct": -3.61
     },
     "META": {
-      "change_pct": -1.26
+      "change_pct": -1.41
     },
     "TSLA": {
-      "change_pct": -1.5
+      "change_pct": -1.44
     },
     "BRK-B": {
-      "change_pct": -0.69
+      "change_pct": -0.71
     },
     "LLY": {
-      "change_pct": 0.18
+      "change_pct": 0.07
     },
     "005930.KS": {
       "change_pct": -5.23
     },
     "JPM": {
-      "change_pct": -2.19
+      "change_pct": -2.03
     },
     "MU": {
-      "change_pct": -6.4
+      "change_pct": -5.23
     },
     "WMT": {
-      "change_pct": -0.54
+      "change_pct": -1.02
     },
     "000660.KS": {
       "change_pct": -9.61
     },
     "AMD": {
-      "change_pct": -6.66
+      "change_pct": -6.16
     },
     "V": {
-      "change_pct": 1.94
+      "change_pct": 1.98
     },
     "JNJ": {
-      "change_pct": -0.26
+      "change_pct": -0.74
     },
     "XOM": {
-      "change_pct": 2.54
+      "change_pct": 1.93
     },
     "ASML": {
-      "change_pct": -3.3
+      "change_pct": -2.38
     },
     "TCEHY": {
-      "change_pct": 2.46
+      "change_pct": 2.34
     },
     "MA": {
-      "change_pct": 0.55
+      "change_pct": 0.26
     }
   },
   "live_market": {
     "vix": 19.22,
     "vix_chg": 5.55,
-    "usd_krw": 1451.9,
-    "usd_krw_chg": -0.86,
-    "fear_greed": 34
+    "usd_krw": 1452.1,
+    "usd_krw_chg": -0.84,
+    "fear_greed": 33
   }
 }
