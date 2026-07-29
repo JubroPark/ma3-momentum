@@ -3,7 +3,7 @@
   "mode": "NORMAL",
   "rate_env": "NON_ZERO",
   "qe_active": true,
-  "treasury_10y_trend": "UP",
+  "treasury_10y_trend": "UNKNOWN",
   "masam": {
     "month_count": 0,
     "last_masam_date": "2026-06-05",
@@ -13,7 +13,7 @@
   "leader_status": {
     "rank1_ticker": "AAPL",
     "rank2_ticker": "NVDA",
-    "gap_pct": 4.5,
+    "gap_pct": 7.3,
     "overtake_detected": false,
     "gap_within_10pct": true
   },
@@ -33,7 +33,7 @@
     "max_pct": 25,
     "qqq_pct": 0,
     "nvda_lowest_close": 336.91,
-    "qqq_lowest_close": 675.49
+    "qqq_lowest_close": 661.73
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -59,16 +59,16 @@
     {
       "id": 3,
       "label": "1등주 전고 돌파",
-      "met": true,
+      "met": false,
       "grade": "강",
-      "detail": "+0.0%"
+      "detail": "-0.6%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-8.2%"
+      "detail": "-9.8%"
     },
     {
       "id": 5,
@@ -82,7 +82,7 @@
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-8.2% (기준: -30%)"
+      "detail": "-9.8% (기준: -30%)"
     }
   ],
   "additional_buy": {
@@ -116,8 +116,8 @@
   },
   "released_date": "2026-07-06",
   "eod_close": {
-    "nvda": 340.08,
-    "qqq": 675.49,
-    "rank2": 197.01
+    "nvda": 338.19,
+    "qqq": 661.73,
+    "rank2": 190.01
   }
 }
