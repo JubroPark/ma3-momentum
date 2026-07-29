@@ -536,8 +536,8 @@
           true
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(-2.6%) + 탑픽점수 87",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "name_ko": "아리스타 네트웍스",
       "domain": "arista.com",
       "weight_note": ""
@@ -712,8 +712,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "지지선 이탈 (353.37 < 383.32)",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "name_ko": "애널로그 디바이시스",
       "domain": "analog.com",
       "weight_note": ""
@@ -943,18 +943,19 @@
     {
       "symbol": "AMT",
       "name": "American Tower Corporation (REI",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 4.25,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 205.06,
       "trailing_stop_line": 164.05,
       "horizontal_support": 172.64,
       "cooldown_until": null,
-      "toppick_score": 70,
+      "toppick_score": 71,
       "metrics": {
         "price": 179.26,
         "ma50": 175.99,
@@ -967,9 +968,9 @@
         "vol_ratio": 1.67,
         "growth_score": 3.0,
         "earnings_score": 3.3,
-        "health_score": 3.5,
+        "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.38,
+        "peg": 0.21,
         "steps_count": 5,
         "steps_list": [
           false,
@@ -980,8 +981,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.67)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+1.9%) — 2차 진입",
       "name_ko": "아메리칸 타워",
       "domain": "americantower.com",
       "weight_note": ""
@@ -1026,8 +1027,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.35)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "포티넷",
       "domain": "fortinet.com",
       "weight_note": ""
@@ -1126,14 +1127,11 @@
     {
       "symbol": "NXPI",
       "name": "NXP Semiconductors N.V.",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 4.0,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 332.67,
       "trailing_stop_line": 248.66,
       "horizontal_support": 284.78,
@@ -1164,11 +1162,11 @@
           false
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (240.98 ≤ 248.66)",
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
       "name_ko": "NXP 세미콘덕터",
       "domain": "nxp.com",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -3.2%)"
+      "weight_note": ""
     },
     {
       "symbol": "AMP",
@@ -2464,8 +2462,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "지지선 이탈 (374.67 < 404.56)",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -2688,8 +2686,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "지지선 이탈 (23.16 < 26.89)",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -2782,8 +2780,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.60)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3825,8 +3823,8 @@
           false
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(-1.8%) + 탑픽점수 70",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "weight_note": ""
     },
     {
@@ -3845,7 +3843,7 @@
       "trailing_stop_line": 103.94,
       "horizontal_support": 100.0,
       "cooldown_until": null,
-      "toppick_score": 70,
+      "toppick_score": 66,
       "metrics": {
         "price": 127.1,
         "ma50": 108.1,
@@ -3857,10 +3855,10 @@
         "vol20ma": 1895626,
         "vol_ratio": 1.49,
         "growth_score": 3.5,
-        "earnings_score": 3.3,
-        "health_score": 2.8,
+        "earnings_score": 2.8,
+        "health_score": 2.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.21,
+        "peg": 0.48,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -4305,7 +4303,7 @@
         1
       ],
       "recent_high": 62.18,
-      "trailing_stop_line": 47.4,
+      "trailing_stop_line": 47.39,
       "horizontal_support": 54.09,
       "cooldown_until": null,
       "toppick_score": 72,
@@ -4334,8 +4332,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.90)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -5403,10 +5401,10 @@
       "name": "PTC Inc.",
       "name_ko": "PTC",
       "domain": "ptc.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 4.4,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -5440,9 +5438,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.78)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (132.46 ≤ 173.22)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -30.8%)"
     },
     {
       "symbol": "MGRT",
