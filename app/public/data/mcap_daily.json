@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-29",
+  "as_of": "2026-07-30",
   "rank1_ticker": "AAPL",
   "items": [
     {
@@ -78,7 +78,7 @@
       "ticker_display": "2222.SR",
       "slug": "2222.SR",
       "name": "Saudi Aramco",
-      "mcap_usd": 1693841629540,
+      "mcap_usd": 1693345309855,
       "is_leader": false,
       "gap_pct_from_rank1": 65.9
     },
@@ -138,7 +138,7 @@
       "ticker_display": "005930.KS",
       "slug": "005930.KS",
       "name": "Samsung",
-      "mcap_usd": 947926735130,
+      "mcap_usd": 950904324006,
       "is_leader": false,
       "gap_pct_from_rank1": 80.9
     },
@@ -174,16 +174,6 @@
     },
     {
       "rank": 18,
-      "ticker": "V",
-      "ticker_display": "V",
-      "slug": "V",
-      "name": "Visa",
-      "mcap_usd": 701230022656,
-      "is_leader": false,
-      "gap_pct_from_rank1": 85.9
-    },
-    {
-      "rank": 19,
       "ticker": "AMD",
       "ticker_display": "AMD",
       "slug": "AMD",
@@ -193,14 +183,24 @@
       "gap_pct_from_rank1": 85.9
     },
     {
+      "rank": 19,
+      "ticker": "V",
+      "ticker_display": "V",
+      "slug": "V",
+      "name": "Visa",
+      "mcap_usd": 677389729792,
+      "is_leader": false,
+      "gap_pct_from_rank1": 86.4
+    },
+    {
       "rank": 20,
       "ticker": "000660.KS",
       "ticker_display": "000660.KS",
       "slug": "000660.KS",
       "name": "SK Hynix",
-      "mcap_usd": 688554459029,
+      "mcap_usd": 651193389699,
       "is_leader": false,
-      "gap_pct_from_rank1": 86.1
+      "gap_pct_from_rank1": 86.9
     },
     {
       "rank": 21,
@@ -238,7 +238,7 @@
       "ticker_display": "688825.SS",
       "slug": "688825.SS",
       "name": "CXMT",
-      "mcap_usd": 555060720693,
+      "mcap_usd": 555142931575,
       "is_leader": false,
       "gap_pct_from_rank1": 88.8
     },
