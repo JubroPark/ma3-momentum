@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-29",
+  "as_of": "2026-07-30",
   "regime": "GREEN",
   "items": [
     {
@@ -167,7 +167,7 @@
         "earnings_score": 5.0,
         "health_score": 4.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.31,
+        "peg": 0.32,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -981,8 +981,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.9%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "name_ko": "아메리칸 타워",
       "domain": "americantower.com",
       "weight_note": ""
@@ -1132,8 +1132,8 @@
       "avg_price": null,
       "weight": 0.0,
       "deployed_tranches": [],
-      "recent_high": 332.67,
-      "trailing_stop_line": 248.66,
+      "recent_high": 331.55,
+      "trailing_stop_line": 247.82,
       "horizontal_support": 284.78,
       "cooldown_until": null,
       "toppick_score": 69,
@@ -1144,7 +1144,7 @@
         "atr14": 12.17,
         "atr_pct": 0.0505,
         "gap50_pct": -17.7,
-        "dist_to_stop_pct": -3.2,
+        "dist_to_stop_pct": -2.8,
         "vol20ma": 4084828,
         "vol_ratio": 1.85,
         "growth_score": 3.5,
@@ -1162,8 +1162,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "name_ko": "NXP 세미콘덕터",
       "domain": "nxp.com",
       "weight_note": ""
@@ -1733,7 +1733,7 @@
         "earnings_score": 3.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.8,
+        "peg": 0.81,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -2669,7 +2669,7 @@
         "atr_pct": 0.0629,
         "gap50_pct": -20.1,
         "dist_to_stop_pct": -1.5,
-        "vol20ma": 1288627,
+        "vol20ma": 1288810,
         "vol_ratio": 1.33,
         "growth_score": 3.5,
         "earnings_score": 3.8,
@@ -3128,7 +3128,7 @@
         "earnings_score": 4.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 2.4,
+        "peg": 2.42,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -5401,13 +5401,11 @@
       "name": "PTC Inc.",
       "name_ko": "PTC",
       "domain": "ptc.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 4.4,
       "avg_price": null,
-      "weight": 0.075,
-      "deployed_tranches": [
-        1
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 216.53,
       "trailing_stop_line": 173.22,
       "horizontal_support": 111.17,
@@ -5438,9 +5436,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (132.46 ≤ 173.22)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -30.8%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "MGRT",
@@ -5679,7 +5677,7 @@
       "trailing_stop_line": 135.74,
       "horizontal_support": 151.3,
       "cooldown_until": null,
-      "toppick_score": 83,
+      "toppick_score": 81,
       "metrics": {
         "price": 126.79,
         "ma50": 157.82,
@@ -5694,11 +5692,11 @@
         "earnings_score": 3.8,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.04,
-        "steps_count": 5,
+        "peg": 0.05,
+        "steps_count": 4,
         "steps_list": [
           true,
-          true,
+          false,
           true,
           true,
           true,
@@ -6008,7 +6006,7 @@
         "earnings_score": 5.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.33,
+        "peg": 0.32,
         "steps_count": 4,
         "steps_list": [
           false,

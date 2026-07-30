@@ -1,7 +1,7 @@
 {
-  "as_of": "2026-07-28",
-  "total_screened": 2751,
-  "qualified": 301,
+  "as_of": "2026-07-30",
+  "total_screened": 2739,
+  "qualified": 296,
   "items": [
     {
       "symbol": "NVDA",
@@ -13,7 +13,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 4.0,
-      "market_cap": 4771778920448,
+      "market_cap": 4602232045568,
       "sector": "Technology"
     },
     {
@@ -26,7 +26,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 4.3,
-      "market_cap": 296139948032,
+      "market_cap": 294869368832,
       "sector": "Technology"
     },
     {
@@ -39,7 +39,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 4.5,
-      "market_cap": 140496633856,
+      "market_cap": 134194397184,
       "sector": "Communication Services"
     },
     {
@@ -52,7 +52,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 4.0,
-      "market_cap": 50121658368,
+      "market_cap": 51783372800,
       "sector": "Technology"
     },
     {
@@ -65,7 +65,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.5,
-      "market_cap": 1088513048576,
+      "market_cap": 1079024943104,
       "sector": "Healthcare"
     },
     {
@@ -78,7 +78,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 2.5,
-      "market_cap": 54242037760,
+      "market_cap": 55213830144,
       "sector": "Healthcare"
     },
     {
@@ -91,7 +91,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.3,
-      "market_cap": 35855970304,
+      "market_cap": 33090502656,
       "sector": "Technology"
     },
     {
@@ -104,7 +104,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 3.0,
-      "market_cap": 5167705600,
+      "market_cap": 4818572288,
       "sector": "Technology"
     },
     {
@@ -117,7 +117,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.5,
-      "market_cap": 926700994560,
+      "market_cap": 834621538304,
       "sector": "Technology"
     },
     {
@@ -130,7 +130,7 @@
       "growth_score": 5.0,
       "earnings_score": 4.5,
       "health_score": 1.7,
-      "market_cap": 8399695872,
+      "market_cap": 8186910208,
       "sector": "Healthcare"
     },
     {
@@ -143,7 +143,20 @@
       "growth_score": 4.0,
       "earnings_score": 3.8,
       "health_score": 4.3,
-      "market_cap": 1812209860608,
+      "market_cap": 1761827225600,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "CDNS",
+      "name": "Cadence Design Systems, Inc.",
+      "name_ko": "케이던스 디자인 시스템즈",
+      "domain": "cadence.com",
+      "toppick_score": 85,
+      "moat_score": 4.2,
+      "growth_score": 4.0,
+      "earnings_score": 5.0,
+      "health_score": 3.0,
+      "market_cap": 91780538368,
       "sector": "Technology"
     },
     {
@@ -156,7 +169,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 2.7,
-      "market_cap": 44605489152,
+      "market_cap": 42807418880,
       "sector": "Technology"
     },
     {
@@ -169,7 +182,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 4.0,
-      "market_cap": 10737412096,
+      "market_cap": 10709405696,
       "sector": "Healthcare"
     },
     {
@@ -182,7 +195,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 2.5,
-      "market_cap": 50195243008,
+      "market_cap": 50001133568,
       "sector": "Technology"
     },
     {
@@ -195,7 +208,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 2.7,
-      "market_cap": 18383554560,
+      "market_cap": 18178430976,
       "sector": "Healthcare"
     },
     {
@@ -208,7 +221,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.0,
-      "market_cap": 34351312896,
+      "market_cap": 34264684544,
       "sector": "Communication Services"
     },
     {
@@ -221,33 +234,33 @@
       "growth_score": 5.0,
       "earnings_score": 4.5,
       "health_score": 4.3,
-      "market_cap": 28073512960,
+      "market_cap": 27715278848,
       "sector": "Basic Materials"
+    },
+    {
+      "symbol": "STX",
+      "name": "Seagate Technology Holdings PLC",
+      "name_ko": "씨게이트",
+      "domain": "seagate.com",
+      "toppick_score": 83,
+      "moat_score": 3.3,
+      "growth_score": 4.5,
+      "earnings_score": 5.0,
+      "health_score": 3.0,
+      "market_cap": 171407360000,
+      "sector": "Technology"
     },
     {
       "symbol": "SKHY",
       "name": "SK hynix Inc.",
       "name_ko": "SK하이닉스 ADR",
       "domain": "skhynix.com",
-      "toppick_score": 83,
-      "moat_score": 3.7,
+      "toppick_score": 81,
+      "moat_score": 3.4,
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 4.0,
-      "market_cap": 924018081792,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "ANET",
-      "name": "Arista Networks, Inc.",
-      "name_ko": "아리스타 네트웍스",
-      "domain": "arista.com",
-      "toppick_score": 82,
-      "moat_score": 4.3,
-      "growth_score": 3.5,
-      "earnings_score": 4.5,
-      "health_score": 4.3,
-      "market_cap": 213693644800,
+      "market_cap": 900025024512,
       "sector": "Technology"
     },
     {
@@ -260,8 +273,21 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 1.9,
-      "market_cap": 34285625344,
+      "market_cap": 33948434432,
       "sector": "Healthcare"
+    },
+    {
+      "symbol": "ANET",
+      "name": "Arista Networks, Inc.",
+      "name_ko": "아리스타 네트웍스",
+      "domain": "arista.com",
+      "toppick_score": 81,
+      "moat_score": 4.0,
+      "growth_score": 3.5,
+      "earnings_score": 4.5,
+      "health_score": 4.3,
+      "market_cap": 198911000576,
+      "sector": "Technology"
     },
     {
       "symbol": "MCO",
@@ -273,7 +299,7 @@
       "growth_score": 3.5,
       "earnings_score": 4.5,
       "health_score": 4.5,
-      "market_cap": 83854237696,
+      "market_cap": 83687981056,
       "sector": "Financial Services"
     },
     {
@@ -286,7 +312,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 4.0,
-      "market_cap": 18214961152,
+      "market_cap": 17928441856,
       "sector": "Basic Materials"
     },
     {
@@ -299,21 +325,8 @@
       "growth_score": 5.0,
       "earnings_score": 4.5,
       "health_score": 3.0,
-      "market_cap": 12090804224,
+      "market_cap": 12002611200,
       "sector": "Basic Materials"
-    },
-    {
-      "symbol": "AGX",
-      "name": "Argan, Inc.",
-      "name_ko": "아간",
-      "domain": "arganinc.com",
-      "toppick_score": 81,
-      "moat_score": 2.4,
-      "growth_score": 5.0,
-      "earnings_score": 5.0,
-      "health_score": 3.5,
-      "market_cap": 7327860736,
-      "sector": "Industrials"
     },
     {
       "symbol": "ARIS",
@@ -325,7 +338,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 3.2,
-      "market_cap": 2986608128,
+      "market_cap": 2868960000,
       "sector": "Basic Materials"
     },
     {
@@ -338,7 +351,7 @@
       "growth_score": 4.0,
       "earnings_score": 3.8,
       "health_score": 3.3,
-      "market_cap": 1506325692416,
+      "market_cap": 1486526087168,
       "sector": "Communication Services"
     },
     {
@@ -351,7 +364,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.5,
       "health_score": 3.5,
-      "market_cap": 109882605568,
+      "market_cap": 112256385024,
       "sector": "Technology"
     },
     {
@@ -364,7 +377,7 @@
       "growth_score": 3.5,
       "earnings_score": 5.0,
       "health_score": 3.5,
-      "market_cap": 7069295616,
+      "market_cap": 7194416128,
       "sector": "Communication Services"
     },
     {
@@ -377,7 +390,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 2.3,
-      "market_cap": 1606885504,
+      "market_cap": 1571896960,
       "sector": "Technology"
     },
     {
@@ -390,7 +403,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 3.0,
-      "market_cap": 103540367360,
+      "market_cap": 85856346112,
       "sector": "Industrials"
     },
     {
@@ -403,7 +416,7 @@
       "growth_score": 5.0,
       "earnings_score": 4.5,
       "health_score": 3.5,
-      "market_cap": 61622263808,
+      "market_cap": 61068017664,
       "sector": "Basic Materials"
     },
     {
@@ -416,8 +429,21 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 4.3,
-      "market_cap": 39928655872,
+      "market_cap": 39382454272,
       "sector": "Basic Materials"
+    },
+    {
+      "symbol": "AGX",
+      "name": "Argan, Inc.",
+      "name_ko": "아간",
+      "domain": "arganinc.com",
+      "toppick_score": 80,
+      "moat_score": 2.1,
+      "growth_score": 5.0,
+      "earnings_score": 5.0,
+      "health_score": 3.5,
+      "market_cap": 6902376448,
+      "sector": "Industrials"
     },
     {
       "symbol": "USAC",
@@ -429,7 +455,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 3.5,
-      "market_cap": 3753334016,
+      "market_cap": 3688096768,
       "sector": "Energy"
     },
     {
@@ -442,7 +468,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 3.5,
-      "market_cap": 2728570368,
+      "market_cap": 2680872704,
       "sector": "Financial Services"
     },
     {
@@ -455,7 +481,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 4.0,
-      "market_cap": 2550901248,
+      "market_cap": 2535753216,
       "sector": "Basic Materials"
     },
     {
@@ -468,7 +494,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 4.0,
-      "market_cap": 29202767872,
+      "market_cap": 28836055040,
       "sector": "Basic Materials"
     },
     {
@@ -481,7 +507,7 @@
       "growth_score": 4.0,
       "earnings_score": 3.8,
       "health_score": 3.8,
-      "market_cap": 16615126016,
+      "market_cap": 16538684416,
       "sector": "Technology"
     },
     {
@@ -494,7 +520,7 @@
       "growth_score": 5.0,
       "earnings_score": 5.0,
       "health_score": 2.5,
-      "market_cap": 16511805440,
+      "market_cap": 15166225408,
       "sector": "Industrials"
     },
     {
@@ -507,7 +533,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 3.0,
-      "market_cap": 1879642496,
+      "market_cap": 1809106944,
       "sector": "Technology"
     },
     {
@@ -520,8 +546,21 @@
       "growth_score": 4.0,
       "earnings_score": 3.8,
       "health_score": 3.8,
-      "market_cap": 2034705629184,
+      "market_cap": 1943216324608,
       "sector": "Technology"
+    },
+    {
+      "symbol": "V",
+      "name": "Visa Inc.",
+      "name_ko": "비자",
+      "domain": "visa.com",
+      "toppick_score": 78,
+      "moat_score": 4.0,
+      "growth_score": 3.0,
+      "earnings_score": 4.5,
+      "health_score": 4.5,
+      "market_cap": 677389729792,
+      "sector": "Financial Services"
     },
     {
       "symbol": "FICO",
@@ -533,7 +572,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 3.5,
-      "market_cap": 30988150784,
+      "market_cap": 31842967552,
       "sector": "Technology"
     },
     {
@@ -546,21 +585,8 @@
       "growth_score": 5.0,
       "earnings_score": 4.0,
       "health_score": 3.5,
-      "market_cap": 5519878656,
+      "market_cap": 5529253376,
       "sector": "Basic Materials"
-    },
-    {
-      "symbol": "STX",
-      "name": "Seagate Technology Holdings PLC",
-      "name_ko": "씨게이트",
-      "domain": "seagate.com",
-      "toppick_score": 77,
-      "moat_score": 3.6,
-      "growth_score": 4.5,
-      "earnings_score": 3.8,
-      "health_score": 3.0,
-      "market_cap": 169078194176,
-      "sector": "Technology"
     },
     {
       "symbol": "WDC",
@@ -572,7 +598,7 @@
       "growth_score": 4.5,
       "earnings_score": 3.3,
       "health_score": 3.5,
-      "market_cap": 159763628032,
+      "market_cap": 159256936448,
       "sector": "Technology"
     },
     {
@@ -585,7 +611,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.5,
       "health_score": 4.0,
-      "market_cap": 5279106048,
+      "market_cap": 5134845952,
       "sector": "Financial Services"
     },
     {
@@ -598,7 +624,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 3.2,
-      "market_cap": 4846181376,
+      "market_cap": 4882109952,
       "sector": "Consumer Cyclical"
     },
     {
@@ -611,7 +637,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 2.0,
-      "market_cap": 4741552640,
+      "market_cap": 4577444352,
       "sector": "Technology"
     },
     {
@@ -624,21 +650,21 @@
       "growth_score": 4.5,
       "earnings_score": 3.8,
       "health_score": 3.2,
-      "market_cap": 178191040512,
+      "market_cap": 172121948160,
       "sector": "Technology"
     },
     {
-      "symbol": "CDNS",
-      "name": "Cadence Design Systems, Inc.",
-      "name_ko": "케이던스 디자인 시스템즈",
-      "domain": "cadence.com",
+      "symbol": "DXCM",
+      "name": "DexCom, Inc.",
+      "name_ko": "덱스컴",
+      "domain": "dexcom.com",
       "toppick_score": 76,
-      "moat_score": 4.2,
+      "moat_score": 3.75,
       "growth_score": 3.0,
-      "earnings_score": 4.5,
+      "earnings_score": 5.0,
       "health_score": 3.0,
-      "market_cap": 95079292928,
-      "sector": "Technology"
+      "market_cap": 28994496512,
+      "sector": "Healthcare"
     },
     {
       "symbol": "EXEL",
@@ -650,7 +676,7 @@
       "growth_score": 2.5,
       "earnings_score": 4.5,
       "health_score": 3.8,
-      "market_cap": 14204076032,
+      "market_cap": 13907477504,
       "sector": "Healthcare"
     },
     {
@@ -663,7 +689,7 @@
       "growth_score": 4.5,
       "earnings_score": 3.8,
       "health_score": 2.2,
-      "market_cap": 11599754240,
+      "market_cap": 11817937920,
       "sector": "Healthcare"
     },
     {
@@ -676,7 +702,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 1.5,
-      "market_cap": 4912389632,
+      "market_cap": 4903967744,
       "sector": "Technology"
     },
     {
@@ -689,7 +715,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.0,
-      "market_cap": 2780985088,
+      "market_cap": 2755182080,
       "sector": "Basic Materials"
     },
     {
@@ -702,7 +728,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.8,
       "health_score": 3.5,
-      "market_cap": 2773887744,
+      "market_cap": 2554403328,
       "sector": "Technology"
     },
     {
@@ -715,7 +741,7 @@
       "growth_score": 4.0,
       "earnings_score": 3.5,
       "health_score": 2.8,
-      "market_cap": 4081251516416,
+      "market_cap": 4117941452800,
       "sector": "Communication Services"
     },
     {
@@ -728,7 +754,7 @@
       "growth_score": 4.0,
       "earnings_score": 3.5,
       "health_score": 2.8,
-      "market_cap": 4067676389376,
+      "market_cap": 4106323230720,
       "sector": "Communication Services"
     },
     {
@@ -741,7 +767,7 @@
       "growth_score": 4.5,
       "earnings_score": 3.8,
       "health_score": 2.0,
-      "market_cap": 89303293952,
+      "market_cap": 94044684288,
       "sector": "Technology"
     },
     {
@@ -754,34 +780,8 @@
       "growth_score": 3.5,
       "earnings_score": 3.3,
       "health_score": 4.0,
-      "market_cap": 9897661440,
+      "market_cap": 9878090752,
       "sector": "Healthcare"
-    },
-    {
-      "symbol": "SIMO",
-      "name": "Silicon Motion Technology Corpo",
-      "name_ko": "실리콘 모션 테크놀로지 ADR",
-      "domain": "siliconmotion.com",
-      "toppick_score": 75,
-      "moat_score": 3.25,
-      "growth_score": 5.0,
-      "earnings_score": 3.8,
-      "health_score": 1.2,
-      "market_cap": 7507872768,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "V",
-      "name": "Visa Inc.",
-      "name_ko": "비자",
-      "domain": "visa.com",
-      "toppick_score": 75,
-      "moat_score": 4.0,
-      "growth_score": 3.0,
-      "earnings_score": 4.0,
-      "health_score": 4.5,
-      "market_cap": 697160237056,
-      "sector": "Financial Services"
     },
     {
       "symbol": "MA",
@@ -793,7 +793,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.0,
       "health_score": 4.5,
-      "market_cap": 497236836352,
+      "market_cap": 497740480512,
       "sector": "Financial Services"
     },
     {
@@ -806,7 +806,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.5,
       "health_score": 2.0,
-      "market_cap": 345541312512,
+      "market_cap": 339146670080,
       "sector": "Technology"
     },
     {
@@ -819,7 +819,7 @@
       "growth_score": 3.5,
       "earnings_score": 5.0,
       "health_score": 2.8,
-      "market_cap": 114446745600,
+      "market_cap": 109145325568,
       "sector": "Industrials"
     },
     {
@@ -832,7 +832,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.3,
       "health_score": 4.0,
-      "market_cap": 71860207616,
+      "market_cap": 72220229632,
       "sector": "Basic Materials"
     },
     {
@@ -845,7 +845,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 1.5,
-      "market_cap": 13171385344,
+      "market_cap": 11786939392,
       "sector": "Financial Services"
     },
     {
@@ -858,21 +858,8 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.7,
-      "market_cap": 7747244544,
+      "market_cap": 7515172864,
       "sector": "Basic Materials"
-    },
-    {
-      "symbol": "DXCM",
-      "name": "DexCom, Inc.",
-      "name_ko": "덱스컴",
-      "domain": "dexcom.com",
-      "toppick_score": 74,
-      "moat_score": 3.75,
-      "growth_score": 3.0,
-      "earnings_score": 4.5,
-      "health_score": 3.0,
-      "market_cap": 28882593792,
-      "sector": "Healthcare"
     },
     {
       "symbol": "WPM",
@@ -884,7 +871,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.0,
       "health_score": 3.5,
-      "market_cap": 49763028992,
+      "market_cap": 49708531712,
       "sector": "Basic Materials"
     },
     {
@@ -897,7 +884,7 @@
       "growth_score": 4.5,
       "earnings_score": 3.8,
       "health_score": 2.2,
-      "market_cap": 49615716352,
+      "market_cap": 46764838912,
       "sector": "Technology"
     },
     {
@@ -910,7 +897,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.5,
       "health_score": 4.3,
-      "market_cap": 25119893504,
+      "market_cap": 25677430784,
       "sector": "Technology"
     },
     {
@@ -923,7 +910,7 @@
       "growth_score": 3.0,
       "earnings_score": 5.0,
       "health_score": 3.8,
-      "market_cap": 6232845312,
+      "market_cap": 6421316608,
       "sector": "Technology"
     },
     {
@@ -936,7 +923,7 @@
       "growth_score": 3.5,
       "earnings_score": 5.0,
       "health_score": 2.0,
-      "market_cap": 3708449280,
+      "market_cap": 3782317568,
       "sector": "Technology"
     },
     {
@@ -949,7 +936,20 @@
       "growth_score": 4.0,
       "earnings_score": 2.3,
       "health_score": 4.3,
-      "market_cap": 14728143872,
+      "market_cap": 15299898368,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "SIMO",
+      "name": "Silicon Motion Technology Corpo",
+      "name_ko": "실리콘 모션 테크놀로지 ADR",
+      "domain": "siliconmotion.com",
+      "toppick_score": 73,
+      "moat_score": 2.95,
+      "growth_score": 5.0,
+      "earnings_score": 3.8,
+      "health_score": 1.2,
+      "market_cap": 7109794816,
       "sector": "Technology"
     },
     {
@@ -962,7 +962,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 0.8,
-      "market_cap": 4615085056,
+      "market_cap": 4541715456,
       "sector": "Financial Services"
     },
     {
@@ -975,7 +975,7 @@
       "growth_score": 4.0,
       "earnings_score": 4.5,
       "health_score": 2.8,
-      "market_cap": 3973897984,
+      "market_cap": 3857388032,
       "sector": "Consumer Defensive"
     },
     {
@@ -988,7 +988,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.5,
       "health_score": 1.2,
-      "market_cap": 1402362496,
+      "market_cap": 1333612416,
       "sector": "Technology"
     },
     {
@@ -1001,7 +1001,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.5,
       "health_score": 2.5,
-      "market_cap": 225339801600,
+      "market_cap": 228081385472,
       "sector": "Healthcare"
     },
     {
@@ -1014,7 +1014,7 @@
       "growth_score": 4.0,
       "earnings_score": 4.5,
       "health_score": 2.8,
-      "market_cap": 176969236480,
+      "market_cap": 184916541440,
       "sector": "Technology"
     },
     {
@@ -1027,7 +1027,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.5,
-      "market_cap": 8242279936,
+      "market_cap": 8051539968,
       "sector": "Basic Materials"
     },
     {
@@ -1040,7 +1040,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 2.1,
-      "market_cap": 7107014144,
+      "market_cap": 7125539840,
       "sector": "Consumer Cyclical"
     },
     {
@@ -1053,7 +1053,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.5,
       "health_score": 2.0,
-      "market_cap": 2993763840,
+      "market_cap": 2987322112,
       "sector": "Energy"
     },
     {
@@ -1066,7 +1066,7 @@
       "growth_score": 2.0,
       "earnings_score": 4.0,
       "health_score": 4.0,
-      "market_cap": 99049046016,
+      "market_cap": 104713420800,
       "sector": "Technology"
     },
     {
@@ -1092,7 +1092,7 @@
       "growth_score": 2.0,
       "earnings_score": 4.0,
       "health_score": 3.8,
-      "market_cap": 4780708864,
+      "market_cap": 4758874624,
       "sector": "Technology"
     },
     {
@@ -1105,7 +1105,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.0,
       "health_score": 4.5,
-      "market_cap": 1923880960,
+      "market_cap": 1952173440,
       "sector": "Healthcare"
     },
     {
@@ -1118,7 +1118,7 @@
       "growth_score": 3.5,
       "earnings_score": 4.5,
       "health_score": 3.7,
-      "market_cap": 86365069312,
+      "market_cap": 87247265792,
       "sector": "Financial Services"
     },
     {
@@ -1131,7 +1131,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.8,
       "health_score": 3.2,
-      "market_cap": 15365269504,
+      "market_cap": 15076720640,
       "sector": "Basic Materials"
     },
     {
@@ -1144,7 +1144,7 @@
       "growth_score": 3.0,
       "earnings_score": 3.8,
       "health_score": 3.7,
-      "market_cap": 7196323840,
+      "market_cap": 7804482560,
       "sector": "Technology"
     },
     {
@@ -1157,7 +1157,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.0,
       "health_score": 3.3,
-      "market_cap": 2921974988800,
+      "market_cap": 2901100986368,
       "sector": "Technology"
     },
     {
@@ -1170,20 +1170,7 @@
       "growth_score": 3.0,
       "earnings_score": 3.3,
       "health_score": 3.5,
-      "market_cap": 608011091968,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "AMAT",
-      "name": "Applied Materials, Inc.",
-      "name_ko": "어플라이드 머티어리얼즈",
-      "domain": "appliedmaterials.com",
-      "toppick_score": 71,
-      "moat_score": 3.9,
-      "growth_score": 2.5,
-      "earnings_score": 4.5,
-      "health_score": 2.8,
-      "market_cap": 378289913856,
+      "market_cap": 595620003840,
       "sector": "Technology"
     },
     {
@@ -1196,7 +1183,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.0,
       "health_score": 3.8,
-      "market_cap": 253033545728,
+      "market_cap": 247764090880,
       "sector": "Technology"
     },
     {
@@ -1209,7 +1196,7 @@
       "growth_score": 2.5,
       "earnings_score": 3.8,
       "health_score": 3.3,
-      "market_cap": 166767673344,
+      "market_cap": 164793565184,
       "sector": "Healthcare"
     },
     {
@@ -1222,7 +1209,7 @@
       "growth_score": 3.5,
       "earnings_score": 5.0,
       "health_score": 3.0,
-      "market_cap": 21768976384,
+      "market_cap": 21409007616,
       "sector": "Technology"
     },
     {
@@ -1235,7 +1222,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.0,
       "health_score": 3.2,
-      "market_cap": 15936717824,
+      "market_cap": 16326365184,
       "sector": "Healthcare"
     },
     {
@@ -1248,7 +1235,7 @@
       "growth_score": 3.5,
       "earnings_score": 5.0,
       "health_score": 2.0,
-      "market_cap": 2027825152,
+      "market_cap": 2062882048,
       "sector": "Technology"
     },
     {
@@ -1261,7 +1248,7 @@
       "growth_score": 3.0,
       "earnings_score": 4.5,
       "health_score": 3.2,
-      "market_cap": 148648493056,
+      "market_cap": 154283229184,
       "sector": "Technology"
     },
     {
@@ -1274,7 +1261,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.8,
       "health_score": 2.3,
-      "market_cap": 166652919808,
+      "market_cap": 161052180480,
       "sector": "Financial Services"
     },
     {
@@ -1287,7 +1274,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.3,
       "health_score": 2.0,
-      "market_cap": 40615378944,
+      "market_cap": 41342439424,
       "sector": "Basic Materials"
     },
     {
@@ -1300,7 +1287,20 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 1.8,
-      "market_cap": 40263581696,
+      "market_cap": 37763567616,
+      "sector": "Technology"
+    },
+    {
+      "symbol": "TWLO",
+      "name": "Twilio Inc.",
+      "name_ko": "트윌리오",
+      "domain": "twilio.com",
+      "toppick_score": 71,
+      "moat_score": 2.2,
+      "growth_score": 4.0,
+      "earnings_score": 5.0,
+      "health_score": 2.0,
+      "market_cap": 28571428864,
       "sector": "Technology"
     }
   ]
