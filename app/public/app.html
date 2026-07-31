@@ -1719,9 +1719,11 @@
     }
     // 스티키: NORMAL 모드 직전 고점/올인 지점 탭에서 EOD 최저 종가를 floor로 사용
     // 그리드(2.5%/5%)에 무관한 원시 저점 가격을 저장해두고, 현재 선택된 그리드로 매번 재계산
-    if (!isCrisis && isManual && window._cachedMasam && rangeTarget !== 'rank2') {
+    if (!isCrisis && isManual && window._cachedMasam) {
       const _reb = (window._cachedMasam.rebalancing) || {};
-      const _lowPrice = rangeTarget === 'qqq' ? (_reb.qqq_lowest_close || 0) : (_reb.nvda_lowest_close || 0);
+      const _lowPrice = rangeTarget === 'qqq' ? (_reb.qqq_lowest_close || 0)
+        : rangeTarget === 'rank2' ? (_reb.rank2_lowest_close || 0)
+        : (_reb.nvda_lowest_close || 0);
       let _eodZ = 0;
       if (_lowPrice > 0) {
         for (let i = 1; i <= 10; i++) {
@@ -1758,10 +1760,12 @@
         for (let i = 1; i <= 10; i++) {
           if (_ref <= _base * (1 - _step * i)) z = i;
         }
-        // 스티키: EOD 최저 종가를 현재 그리드로 재계산한 floor (rank2는 backend 미지원 → 스킵)
-        if (!_isCrisis && _isManual && window._cachedMasam && tgt !== 'rank2') {
+        // 스티키: EOD 최저 종가를 현재 그리드로 재계산한 floor
+        if (!_isCrisis && _isManual && window._cachedMasam) {
           const _reb = (window._cachedMasam.rebalancing) || {};
-          const _lowPrice = tgt === 'qqq' ? (_reb.qqq_lowest_close || 0) : (_reb.nvda_lowest_close || 0);
+          const _lowPrice = tgt === 'qqq' ? (_reb.qqq_lowest_close || 0)
+            : tgt === 'rank2' ? (_reb.rank2_lowest_close || 0)
+            : (_reb.nvda_lowest_close || 0);
           let _eodZ = 0;
           if (_lowPrice > 0) {
             for (let i = 1; i <= 10; i++) {
@@ -2537,13 +2541,16 @@ function initMaxPctUI(rateEnv) {
         }
       }
 
-      // NORMAL 모드: live 가격 ≥ 올인 기준가면 "직전 고점" 탭으로 자동 전환
+      // NORMAL 모드: 올인 이후 신고점(직전 고점)이 이미 기록됐으면 "직전 고점" 탭으로 자동 전환
+      // (리밸런싱은 전고점 기준이 원칙 — live 가격이 올인가 아래로 되돌아왔다고 올인 지점 탭으로 돌아가면 안 됨)
       if (masam.mode === 'NORMAL' && _lap && typeof _lap === 'object') {
-        const _allinBase = rangeTarget === 'qqq' ? (_lap.qqq || 0) : (_lap.nvda || 0);
-        const _liveCur   = rangeTarget === 'qqq'
-          ? parseFloat(RANGE_DATA.qqq.cur)
-          : parseFloat(RANGE_DATA.nvda.cur);
-        const _autoTab = (_allinBase > 0 && _liveCur >= _allinBase) ? '직전 고점' : '올인 지점';
+        const _allinBase   = rangeTarget === 'qqq' ? (_lap.qqq || 0)
+          : rangeTarget === 'rank2' ? (_lap.rank2 || 0)
+          : (_lap.nvda || 0);
+        const _prevHighVal = rangeTarget === 'qqq' ? (_lap.qqq_prev_high || 0)
+          : rangeTarget === 'rank2' ? (_lap.rank2_prev_high || 0)
+          : (_lap.nvda_prev_high || 0);
+        const _autoTab = (_allinBase > 0 && _prevHighVal > _allinBase) ? '직전 고점' : '올인 지점';
         if (rangeBase !== _autoTab) {
           rangeBase = _autoTab;
           document.querySelectorAll('.view[data-view="발견"] .tabs .t').forEach(function(t) {

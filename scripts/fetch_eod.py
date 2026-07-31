@@ -404,8 +404,15 @@ def main():
         print(f"  올인 기준가: {rank1_ticker}={last_allin_price['nvda']} QQQ={last_allin_price['qqq']} {rank2_ticker}={last_allin_price['rank2']} ({today})")
 
     # NORMAL 모드에서 매 실행 시 올인 이후 최고 종가(직전 고점) 갱신
+    # 새로 전고점을 경신한 대상은 저점 스티키도 함께 리셋해야 함(전고점 갱신 전 저점을
+    # 새 전고점 대비 구간 계산에 그대로 쓰면, 아직 그 전고점에 도달하기도 전의 옛 저점이
+    # "전고점 대비 N구간 하락"으로 잘못 잡히는 버그가 생김 — 2026-07-31 확인)
+    _nvda_new_peak = _qqq_new_peak = _rank2_new_peak = False
     if new_mode == "NORMAL" and isinstance(last_allin_price, dict) and last_allin_price.get("date"):
         allin_date_str = last_allin_price["date"]
+        _old_nvda_ph  = last_allin_price.get("nvda_prev_high", 0)
+        _old_qqq_ph   = last_allin_price.get("qqq_prev_high", 0)
+        _old_rank2_ph = last_allin_price.get("rank2_prev_high", 0)
         def _prev_high(hist, fallback: float) -> float:
             try:
                 since = hist.loc[allin_date_str:, "Close"]
@@ -415,6 +422,9 @@ def main():
         last_allin_price["nvda_prev_high"]  = _prev_high(rank1_hist, last_allin_price.get("nvda", 0))
         last_allin_price["qqq_prev_high"]   = _prev_high(qqq,        last_allin_price.get("qqq", 0))
         last_allin_price["rank2_prev_high"] = _prev_high(rank2_hist,  last_allin_price.get("rank2", 0))
+        _nvda_new_peak  = last_allin_price["nvda_prev_high"]  > _old_nvda_ph
+        _qqq_new_peak   = last_allin_price["qqq_prev_high"]   > _old_qqq_ph
+        _rank2_new_peak = last_allin_price["rank2_prev_high"] > _old_rank2_ph
         print(f"  직전 고점: {rank1_ticker}={last_allin_price['nvda_prev_high']} QQQ={last_allin_price['qqq_prev_high']} {rank2_ticker}={last_allin_price['rank2_prev_high']}")
 
     # 5c. 리밸런싱 저점 스티키 추적 (NORMAL 모드)
@@ -433,27 +443,38 @@ def main():
             for i in range(1, 11):
                 if cur <= base * (1 - _step * i): z = i
             return z
-        nvda_base = _base_of(rank1_close, _lap.get("nvda", 0), _lap.get("nvda_prev_high", 0))
-        qqq_base  = _base_of(qqq_eod_close, _lap.get("qqq", 0), _lap.get("qqq_prev_high", 0))
-        prev_nvda_low = existing_reb.get("nvda_lowest_close", 0)
-        prev_qqq_low  = existing_reb.get("qqq_lowest_close", 0)
-        prev_nz = _zone_idx(prev_nvda_low, nvda_base)
-        prev_qz = _zone_idx(prev_qqq_low,  qqq_base)
+        nvda_base  = _base_of(rank1_close,   _lap.get("nvda", 0),   _lap.get("nvda_prev_high", 0))
+        qqq_base   = _base_of(qqq_eod_close, _lap.get("qqq", 0),    _lap.get("qqq_prev_high", 0))
+        rank2_base = _base_of(rank2_close,   _lap.get("rank2", 0),  _lap.get("rank2_prev_high", 0))
+        prev_nvda_low  = existing_reb.get("nvda_lowest_close", 0)
+        prev_qqq_low   = existing_reb.get("qqq_lowest_close", 0)
+        prev_rank2_low = existing_reb.get("rank2_lowest_close", 0)
+        prev_nz = _zone_idx(prev_nvda_low,  nvda_base)
+        prev_qz = _zone_idx(prev_qqq_low,   qqq_base)
+        prev_r2z = _zone_idx(prev_rank2_low, rank2_base)
         new_nz  = _zone_idx(rank1_close,   nvda_base)
         new_qz  = _zone_idx(qqq_eod_close, qqq_base)
-        # 막바지 2구간 상승 → 전량 재매수 → 저점 리셋
-        if prev_nz > 0 and new_nz <= prev_nz - 2:
+        new_r2z = _zone_idx(rank2_close,   rank2_base)
+        # 저점 리셋 조건: (1) 막바지 2구간 상승 → 전량 재매수, 또는 (2) 오늘 전고점을 새로 경신
+        # (2)가 없으면 전고점 갱신 후에도 그 전고점에 도달하기 전의 옛 저점이 그대로 남아
+        # "전고점 대비 N구간 하락"으로 잘못 계산되는 버그가 생김
+        if (prev_nz > 0 and new_nz <= prev_nz - 2) or _nvda_new_peak:
             new_nvda_low = rank1_close
         else:
             new_nvda_low = min(prev_nvda_low, rank1_close) if prev_nvda_low else rank1_close
-        if prev_qz > 0 and new_qz <= prev_qz - 2:
+        if (prev_qz > 0 and new_qz <= prev_qz - 2) or _qqq_new_peak:
             new_qqq_low = qqq_eod_close
         else:
             new_qqq_low = min(prev_qqq_low, qqq_eod_close) if prev_qqq_low else qqq_eod_close
-        print(f"  리밸런싱 저점: NVDA {prev_nvda_low}→{new_nvda_low}  QQQ {prev_qqq_low}→{new_qqq_low}")
+        if (prev_r2z > 0 and new_r2z <= prev_r2z - 2) or _rank2_new_peak:
+            new_rank2_low = rank2_close
+        else:
+            new_rank2_low = min(prev_rank2_low, rank2_close) if prev_rank2_low else rank2_close
+        print(f"  리밸런싱 저점: {rank1_ticker} {prev_nvda_low}→{new_nvda_low}  QQQ {prev_qqq_low}→{new_qqq_low}  {rank2_ticker} {prev_rank2_low}→{new_rank2_low}")
     else:
         new_nvda_low = 0
         new_qqq_low = 0
+        new_rank2_low = 0
 
     # 위기 저점: 마지막 마삼일 이후 최저 종가 (V자 반등 기준점)
     last_masam_str = new_masam_state.get("last_masam_date")
@@ -528,6 +549,7 @@ def main():
             "qqq_pct":            existing_reb.get("qqq_pct", 0),
             "nvda_lowest_close":  round(new_nvda_low, 2) if new_nvda_low else 0,
             "qqq_lowest_close":   round(new_qqq_low, 2) if new_qqq_low else 0,
+            "rank2_lowest_close": round(new_rank2_low, 2) if new_rank2_low else 0,
         },
         "eod_close": {
             "nvda":  round(rank1_close, 2),
