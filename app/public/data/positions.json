@@ -810,12 +810,13 @@
     {
       "symbol": "GOOG",
       "name": "Alphabet Inc.",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 5.0,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 398.8,
       "trailing_stop_line": 319.04,
@@ -847,8 +848,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.51)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+0.0%) — 2차 진입",
       "name_ko": "알파벳 Class C",
       "domain": "abc.xyz",
       "weight_note": ""
@@ -2290,8 +2291,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (-0.3%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -2652,8 +2653,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (-1.0%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -2740,8 +2741,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "지지선 이탈 (14.88 < 15.63)",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
