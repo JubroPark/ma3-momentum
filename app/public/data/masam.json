@@ -11,10 +11,10 @@
     "panic_end_dday": null
   },
   "leader_status": {
-    "rank1_ticker": "AAPL",
-    "rank2_ticker": "NVDA",
-    "gap_pct": 3.5,
-    "overtake_detected": false,
+    "rank1_ticker": "NVDA",
+    "rank2_ticker": "AAPL",
+    "gap_pct": 6.7,
+    "overtake_detected": true,
     "gap_within_10pct": true
   },
   "target_allocation": {
@@ -32,9 +32,9 @@
     "cash_raised_pct": 0,
     "max_pct": 25,
     "qqq_pct": 0,
-    "nvda_lowest_close": 333.43,
-    "qqq_lowest_close": 661.73,
-    "rank2_lowest_close": 190.01
+    "nvda_lowest_close": 200.75,
+    "qqq_lowest_close": 687.99,
+    "rank2_lowest_close": 308.91
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -55,35 +55,35 @@
       "label": "8거래일 연속 상승",
       "met": false,
       "grade": "중",
-      "detail": "1일 연속"
+      "detail": "2일 연속"
     },
     {
       "id": 3,
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-2.0%"
+      "detail": "-14.8%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-7.3%"
+      "detail": "-6.3%"
     },
     {
       "id": 5,
       "label": "2구간 V자(+10%)",
       "met": false,
       "grade": "중",
-      "detail": "+2.8% (필요: +10%)"
+      "detail": "+3.8% (필요: +10%)"
     },
     {
       "id": 6,
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-7.3% (기준: -30%)"
+      "detail": "-6.3% (기준: -30%)"
     }
   ],
   "additional_buy": {
@@ -104,21 +104,21 @@
       30
     ]
   },
-  "recommended_action": "리밸런싱 유지 — 1등주(AAPL) 집중",
+  "recommended_action": "리밸런싱 유지 — 1등주(NVDA) 집중",
   "alerts": [],
   "last_allin_price": {
     "nvda": 312.66,
     "qqq": 722.82,
     "rank2": 195.55,
     "date": "2026-07-06",
-    "nvda_prev_high": 340.08,
+    "nvda_prev_high": 212.5,
     "qqq_prev_high": 725.51,
-    "rank2_prev_high": 212.5
+    "rank2_prev_high": 340.08
   },
   "released_date": "2026-07-06",
   "eod_close": {
-    "nvda": 333.43,
-    "qqq": 683.55,
-    "rank2": 195.04
+    "nvda": 200.75,
+    "qqq": 687.99,
+    "rank2": 308.91
   }
 }
