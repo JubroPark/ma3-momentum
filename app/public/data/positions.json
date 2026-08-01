@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-07-31",
+  "as_of": "2026-08-01",
   "regime": "GREEN",
   "items": [
     {
@@ -848,8 +848,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+0.0%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "name_ko": "알파벳 Class C",
       "domain": "abc.xyz",
       "weight_note": ""
@@ -2680,7 +2680,7 @@
         "atr_pct": 0.0581,
         "gap50_pct": -8.0,
         "dist_to_stop_pct": 10.7,
-        "vol20ma": 1229908,
+        "vol20ma": 1230067,
         "vol_ratio": 1.02,
         "growth_score": 3.5,
         "earnings_score": 3.8,
@@ -3655,7 +3655,7 @@
       "name": "First Solar, Inc.",
       "name_ko": "퍼스트 솔라",
       "domain": "firstsolar.com",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 2.3,
       "avg_price": null,
       "weight": 0.0,
@@ -3691,7 +3691,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 하회 — 1차 진입 대기",
+      "reason": "REMOVED 상태 유지",
       "weight_note": ""
     },
     {
@@ -4747,7 +4747,7 @@
       "name": "Aris Mining Corporation",
       "name_ko": "아리스 마이닝",
       "domain": "aris-mining.com",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 2.4,
       "avg_price": null,
       "weight": 0.0,
@@ -4783,7 +4783,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 하회 — 1차 진입 대기",
+      "reason": "REMOVED 상태 유지",
       "weight_note": ""
     },
     {
@@ -5099,7 +5099,7 @@
       "name": "Agnico Eagle Mines Limited",
       "name_ko": "애그니코 이글 마인스",
       "domain": "agnicoeagle.com",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 2.95,
       "avg_price": null,
       "weight": 0.0,
@@ -5135,7 +5135,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "50MA 하회 — 1차 진입 대기",
+      "reason": "REMOVED 상태 유지",
       "weight_note": ""
     },
     {
@@ -6161,6 +6161,184 @@
       },
       "next_action": "HOLD",
       "reason": "50MA 하회 — 1차 진입 대기",
+      "weight_note": ""
+    },
+    {
+      "symbol": "HOOD",
+      "name": "Robinhood Markets, Inc.",
+      "name_ko": "로빈후드",
+      "domain": "robinhood.com",
+      "status": "WATCH",
+      "moat_score": 4.45,
+      "avg_price": null,
+      "weight": 0.0,
+      "deployed_tranches": [],
+      "recent_high": 152.46,
+      "trailing_stop_line": 106.72,
+      "horizontal_support": 78.93,
+      "cooldown_until": null,
+      "toppick_score": 79,
+      "metrics": {
+        "price": 86.56,
+        "ma50": 96.64,
+        "ma200": 99.29,
+        "atr14": 6.31,
+        "atr_pct": 0.0729,
+        "gap50_pct": -10.4,
+        "dist_to_stop_pct": -23.3,
+        "vol20ma": 21397687,
+        "vol_ratio": 1.06,
+        "growth_score": 3.5,
+        "earnings_score": 4.5,
+        "health_score": 2.0,
+        "eps_revision": "UP_STRONG",
+        "peg": 0.8,
+        "steps_count": 5,
+        "steps_list": [
+          true,
+          true,
+          true,
+          true,
+          true,
+          false
+        ]
+      },
+      "next_action": "HOLD",
+      "reason": "50MA 하회 — 1차 진입 대기",
+      "weight_note": ""
+    },
+    {
+      "symbol": "BMY",
+      "name": "Bristol-Myers Squibb Company",
+      "name_ko": "브리스톨-마이어스 스큅",
+      "domain": "bms.com",
+      "status": "WATCH",
+      "moat_score": 4.4,
+      "avg_price": null,
+      "weight": 0.0,
+      "deployed_tranches": [],
+      "recent_high": 65.31,
+      "trailing_stop_line": 52.25,
+      "horizontal_support": 57.97,
+      "cooldown_until": null,
+      "toppick_score": 77,
+      "metrics": {
+        "price": 65.31,
+        "ma50": 57.76,
+        "ma200": 54.55,
+        "atr14": 1.8,
+        "atr_pct": 0.0276,
+        "gap50_pct": 13.1,
+        "dist_to_stop_pct": 20.0,
+        "vol20ma": 10797727,
+        "vol_ratio": 0.94,
+        "growth_score": 3.5,
+        "earnings_score": 3.8,
+        "health_score": 3.3,
+        "eps_revision": "UP_STRONG",
+        "peg": 0.09,
+        "steps_count": 5,
+        "steps_list": [
+          false,
+          true,
+          true,
+          true,
+          true,
+          true
+        ]
+      },
+      "next_action": "HOLD",
+      "reason": "50MA 위이나 거래량 미확인 (vol_ratio 0.94)",
+      "weight_note": ""
+    },
+    {
+      "symbol": "ARM",
+      "name": "Arm Holdings plc",
+      "name_ko": "암 홀딩스 ADR",
+      "domain": "arm.com",
+      "status": "WATCH",
+      "moat_score": 3.75,
+      "avg_price": null,
+      "weight": 0.0,
+      "deployed_tranches": [],
+      "recent_high": 439.46,
+      "trailing_stop_line": 307.62,
+      "horizontal_support": 200.89,
+      "cooldown_until": null,
+      "toppick_score": 73,
+      "metrics": {
+        "price": 239.69,
+        "ma50": 324.65,
+        "ma200": 189.88,
+        "atr14": 23.38,
+        "atr_pct": 0.0975,
+        "gap50_pct": -26.2,
+        "dist_to_stop_pct": -28.3,
+        "vol20ma": 6299252,
+        "vol_ratio": 1.14,
+        "growth_score": 4.0,
+        "earnings_score": 3.8,
+        "health_score": 2.0,
+        "eps_revision": "UP_STRONG",
+        "peg": 2.24,
+        "steps_count": 4,
+        "steps_list": [
+          true,
+          true,
+          true,
+          false,
+          true,
+          false
+        ]
+      },
+      "next_action": "HOLD",
+      "reason": "50MA 하회 — 1차 진입 대기",
+      "weight_note": ""
+    },
+    {
+      "symbol": "TAL",
+      "name": "TAL Education Group",
+      "name_ko": "TAL 에듀케이션 그룹 ADR",
+      "domain": "100tal.com",
+      "status": "ENTRY_1",
+      "moat_score": 2.15,
+      "avg_price": null,
+      "weight": 0.3,
+      "deployed_tranches": [
+        1
+      ],
+      "recent_high": 12.91,
+      "trailing_stop_line": 10.33,
+      "horizontal_support": 10.89,
+      "cooldown_until": null,
+      "toppick_score": 71,
+      "metrics": {
+        "price": 12.5,
+        "ma50": 9.95,
+        "ma200": 10.98,
+        "atr14": 0.4,
+        "atr_pct": 0.0321,
+        "gap50_pct": 25.6,
+        "dist_to_stop_pct": 17.4,
+        "vol20ma": 4215607,
+        "vol_ratio": 1.53,
+        "growth_score": 4.5,
+        "earnings_score": 4.5,
+        "health_score": 2.2,
+        "eps_revision": "UP_STRONG",
+        "peg": 0.01,
+        "steps_count": 4,
+        "steps_list": [
+          true,
+          false,
+          false,
+          true,
+          true,
+          true
+        ]
+      },
+      "next_action": "BUY_1",
+      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.53)",
       "weight_note": ""
     }
   ]
