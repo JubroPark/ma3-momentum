@@ -309,6 +309,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 | `momentum_market.json` | 국면 GREEN/YELLOW/RED·SPX·NDX 추세·매수 게이트 | B |
 | `params.json` | 전략별 파라미터 · 부록 Z 옵션 토글 상태 | 공통 |
 | `live.json` | 준실시간 표시값(현재가·등락률·거리·헤지 시세) — 표시 전용 | 공통 |
+| `notifications.json` | 알림 히스토리(마삼 모드 전환·시총 순위 역전), 최근 30일 유지 — `fetch_eod.py`가 전일 대비 diff해서 append | A |
 
 ### masam.json 핵심 필드
 
@@ -475,7 +476,17 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - `portfolio_ratio` — 1등주:QQQ 포트폴리오 비율
 - `momtFavSet` — 모멘텀 관심종목(하트) 목록
 - `momtTrimSet` — 트레일링 스탑 1차 터치 기록
+- `alloc_history`, `alloc_last` — 권장 비중 변경 히스토리·직전 스냅샷 (2026-08-03 추가, 아래 참고)
 - ⚠️ 설정 탭 토글(ON/OFF) 상태는 localStorage 미저장 → 새로고침 시 초기화됨
+
+**알림 히스토리 (벨 아이콘) — (2026-08-03 추가)**
+- 마삼룰 화면(발견/관심/경제지표/설정) topbar에 `.notif-btn`(`.refresh-btn`과 동일 스타일) 추가, 클릭 시 `#notif-overlay`/`#notif-drawer`(`#alloc-drawer`와 동일한 하단 드로어 패턴) 오픈. 경제지표·설정은 마삼룰·모멘텀이 topbar를 공유하므로 `updateSettingsView()`에서 `.notif-btn` 표시를 `currentMode` 기준으로 같이 토글.
+- **2원화 추적**(근거: 권장 비중은 `portfolio_ratio`/`max_pct_*` 같은 기기별 localStorage 설정에 의존해 서버가 재현 불가):
+  - 마삼 모드 전환·시총 순위 역전 → 서버(`notifications.json`, `fetch_eod.py`가 전일 대비 diff)
+  - 권장 비중 변경 → 클라이언트(`localStorage['alloc_history']`, `checkAllocationChange()`가 페이지 로드마다 diff) — 기기별로 따로 쌓임, 동기화 안 됨(의도된 동작)
+- 두 소스는 `renderNotifList()`가 날짜 내림차순으로 병합해 `window._notifEvents`에 저장, `openNotifDrawer()`가 렌더링
+- 권장 비중 변경 메시지는 `window._allocDetail`의 `nvdaZone`/`rank2Zone`/`qqqZone`(구간 번호, `renderRangeTable()`에서 계산)을 우선 표시하고 결과 비중을 뒤에 붙임(예: `1등주 1→2구간 — 주식 80% → 70%, 현금 20% → 30%`) — 처음엔 퍼센트만 비교했다가 1·2등 리더 몫 재배분으로 합계가 상쇄돼 "38%→38%"처럼 의미 없는 문구가 나오는 버그를 실사용 테스트로 발견해 수정
+- 설계·구현 근거: `docs/superpowers/specs/2026-08-03-notification-history-design.md`, `docs/superpowers/plans/2026-08-03-notification-history.md`
 
 **설정 탭 전략 출처 카드**
 - 레이아웃: 좌측 `전략 출처` 레이블 + 우측 `[유튜브 아이콘] 채널명` (두 줄: 이름 / @핸들)
