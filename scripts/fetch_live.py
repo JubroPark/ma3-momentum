@@ -61,19 +61,16 @@ def fetch_fear_greed() -> Optional[int]:
 
 
 def fetch_mcap_live() -> dict:
-    """mcap_daily.json의 ticker 목록에서 change_pct만 수집. mcap_usd는 daily 기준."""
+    """mcap_daily.json의 ticker 목록에서 change_pct만 수집. mcap_usd는 daily 기준.
+    ponytail: fast_info의 last_price/previous_close는 야후 캐시 타이밍에 따라
+    fetch_quote()의 종가 대 종가 등락률과 어긋나는 경우가 확인됨(2026-08-02, AAPL
+    -7.35% vs -1.1%) — fetch_quote()와 동일하게 history(2d) 종가 기준으로 통일."""
     mcap_daily = load_json(DATA / "mcap_daily.json")
     result = {}
     for item in mcap_daily.get("items", []):
         ticker = item["ticker"]
-        try:
-            fi = yf.Ticker(ticker).fast_info
-            price = getattr(fi, "last_price", None)
-            prev  = getattr(fi, "previous_close", None)
-            change_pct = round((price - prev) / prev * 100, 2) if price and prev else None
-            result[ticker] = {"change_pct": change_pct}
-        except Exception:
-            result[ticker] = {"change_pct": None}
+        q = fetch_quote(ticker)
+        result[ticker] = {"change_pct": q["change_pct"] if q else None}
     return result
 
 
