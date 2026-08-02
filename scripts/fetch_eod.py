@@ -566,6 +566,33 @@ def main():
     }
     save_json(DATA / "masam.json", masam_out)
 
+    # 10. 알림 히스토리: 마삼 모드 전환·시총 순위 역전 기록 (최근 30일 유지)
+    # ponytail: 서버가 계산 가능한 이벤트만 기록. 권장 비중은 기기별 localStorage
+    # 설정에 의존해 서버가 재현 불가 → 프론트(app.html)가 클라이언트에서 별도 기록.
+    notif_events = []
+    if prev_mode != new_mode:
+        notif_events.append({
+            "date": today.isoformat(),
+            "type": "masam_mode",
+            "text": f"{prev_mode} → {new_mode} 전환",
+        })
+    prev_rank1 = existing_masam.get("leader_status", {}).get("rank1_ticker")
+    if prev_rank1 and prev_rank1 != rank1_ticker:
+        notif_events.append({
+            "date": today.isoformat(),
+            "type": "leader_swap",
+            "text": f"1등주가 {prev_rank1} → {rank1_ticker}로 바뀌었습니다",
+        })
+    if notif_events:
+        notifications = load_json(DATA / "notifications.json")
+        if not isinstance(notifications, list):
+            notifications = []
+        notifications.extend(notif_events)
+        cutoff = (today - timedelta(days=30)).isoformat()
+        notifications = [n for n in notifications if n.get("date", "") >= cutoff]
+        save_json(DATA / "notifications.json", notifications)
+        print(f"  알림 기록: {len(notif_events)}건 추가 (보관 {len(notifications)}건)")
+
     # mcap_daily.json — 상위 25개 저장 (표시는 20개, 버퍼 5개)
     save_json(DATA / "mcap_daily.json", {
         "as_of": today.isoformat(),

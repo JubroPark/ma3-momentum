@@ -1780,25 +1780,28 @@
       const _ls = (window._cachedMasam && window._cachedMasam.leader_status) || {};
       const _dualLeader = !!(_ls.gap_within_10pct || _ls.overtake_detected);
       // leaderShare(%)를 target의 구간에 따라 줄인 실비중 계산
-      const _leaderPct = (shareBase, tgt) => {
-        const z = _calcZone(tgt);
+      const _leaderPct = (shareBase, z) => {
         return isRebalancing ? shareBase * (1 - z * 0.1) : shareBase * z * 0.1;
       };
       const leaderShare = 100 * _rParts[0] / _rTotal; // 1등(+2등) 몫
       const qqqShare = 100 * (_rParts[1] || 0) / _rTotal; // QQQ 몫
+      const nvdaZone = _calcZone('nvda');
+      const rank2Zone = _calcZone('rank2');
+      const qqqZone = _calcZone('qqq');
       let nvdaPct, rank2Pct = 0, qqqPct = 0;
       if (_dualLeader) {
-        nvdaPct = Math.round(_leaderPct(leaderShare / 2, 'nvda'));
-        rank2Pct = Math.round(_leaderPct(leaderShare / 2, 'rank2'));
+        nvdaPct = Math.round(_leaderPct(leaderShare / 2, nvdaZone));
+        rank2Pct = Math.round(_leaderPct(leaderShare / 2, rank2Zone));
       } else {
-        nvdaPct = Math.round(_leaderPct(leaderShare, 'nvda'));
+        nvdaPct = Math.round(_leaderPct(leaderShare, nvdaZone));
       }
-      if (qqqShare > 0) qqqPct = Math.round(_leaderPct(qqqShare, 'qqq'));
+      if (qqqShare > 0) qqqPct = Math.round(_leaderPct(qqqShare, qqqZone));
       const cash = 100 - nvdaPct - rank2Pct - qqqPct;
       // 배너는 1등주(+2등주 합산)/QQQ/현금만 짧게, 자세한 내역은 탭해서 드로어로
       window._allocDetail = {
         nvdaPct, rank2Pct, qqqPct, cash, dualLeader: _dualLeader, gapPct: _ls.gap_pct,
         nvdaTicker: _ls.rank1_ticker || 'NVDA', rank2Ticker: _ls.rank2_ticker || 'MSFT',
+        nvdaZone, rank2Zone, qqqZone,
       };
       const leaderCombined = nvdaPct + rank2Pct;
       let html = '1등주 ' + leaderCombined + '%';
@@ -2125,6 +2128,9 @@
     const feedMomt  = document.getElementById('feed-momt');
     if(feedMasam) feedMasam.style.display = isMomt ? 'none' : '';
     if(feedMomt)  feedMomt.style.display  = isMomt ? '' : 'none';
+    document.querySelectorAll('.view[data-view="피드"] .notif-btn, .view[data-view="설정"] .notif-btn').forEach(b => {
+      b.style.display = isMomt ? 'none' : 'flex';
+    });
   }
   function stratToggle(el){
     el.parentNode.querySelectorAll('.st').forEach(s=>s.classList.remove('on'));
@@ -2201,7 +2207,7 @@ function initMaxPctUI(rateEnv) {
 
 (async function initFromData() {
   try {
-    const [masam, live, mkt, momtMkt, positions, mcapDaily, companies] = await Promise.all([
+    const [masam, live, mkt, momtMkt, positions, mcapDaily, companies, notifications] = await Promise.all([
       fetch('/data/masam.json').then(r => r.json()),
       fetch('/data/live.json').then(r => r.json()),
       fetch('/data/masam_market.json').then(r => r.json()),
@@ -2209,6 +2215,7 @@ function initMaxPctUI(rateEnv) {
       fetch('/data/positions.json').then(r => r.json()),
       fetch('/data/mcap_daily.json').then(r => r.json()).catch(() => ({})),
       fetch('/data/companies.json').then(r => r.json()).catch(() => ({})),
+      fetch('/data/notifications.json').then(r => r.json()).catch(() => []),
     ]);
     window.positionsData = positions;
     window._cachedMasam = masam;
@@ -2561,6 +2568,7 @@ function initMaxPctUI(rateEnv) {
 
       if (typeof renderRangeHeader === 'function') renderRangeHeader();
       if (typeof renderRangeTable  === 'function') renderRangeTable();
+      if (typeof checkAllocationChange === 'function') checkAllocationChange();
     }
 
     // 7. 경제지표 탭: Fear & Greed (live_market 우선, 없으면 masam_market EOD 값 fallback)
@@ -2812,6 +2820,9 @@ function initMaxPctUI(rateEnv) {
     // 14. 시가총액 순위 — mcap_daily + companies + live 데이터로 동적 렌더링
     renderMcapList(mcapDaily, companies, live.mcap_live, live.as_of);
 
+    // 15. 알림 히스토리: 서버 기록(notifications) + 로컬 권장비중 이력 병합
+    if (typeof renderNotifList === 'function') renderNotifList(notifications);
+
     if (window.Iconify) Iconify.scan(document.body);
 
     const ptrView = sessionStorage.getItem('ptr_view');
@@ -2918,6 +2929,15 @@ if ('serviceWorker' in navigator) {
     <div style="width:40px;height:4px;border-radius:2px;background:#36363F;"></div>
   </div>
   <div id="alloc-drawer-content" style="padding:20px 20px 40px;overflow-y:auto;max-height:calc(80dvh - 40px);-webkit-overflow-scrolling:touch;overscroll-behavior:contain;"></div>
+</div>
+
+<!-- ===== 알림 히스토리 드로어 ===== -->
+<div id="notif-overlay" onclick="closeNotifDrawer()" style="display:none;position:fixed;inset:0;background:rgba(0,0,0,.65);z-index:200;transition:opacity .28s ease;opacity:0;backdrop-filter:blur(3px);-webkit-backdrop-filter:blur(3px);"></div>
+<div id="notif-drawer" style="display:none;position:fixed;bottom:0;left:50%;transform:translateX(-50%) translateY(100%);width:100%;max-width:430px;background:#1D1D25;border-radius:24px 24px 0 0;z-index:201;padding:0 0 env(safe-area-inset-bottom,24px);transition:transform .32s cubic-bezier(.32,1.2,.48,1);max-height:80dvh;overflow:hidden;box-shadow:0 -8px 48px rgba(0,0,0,.55);">
+  <div style="padding:14px 20px 0;display:flex;align-items:center;justify-content:center;">
+    <div style="width:40px;height:4px;border-radius:2px;background:#36363F;"></div>
+  </div>
+  <div id="notif-drawer-content" style="padding:20px 20px 40px;overflow-y:auto;max-height:calc(80dvh - 40px);-webkit-overflow-scrolling:touch;overscroll-behavior:contain;"></div>
 </div>
 
 <script>
@@ -3138,6 +3158,105 @@ function closeAllocDetail() {
   drawer.style.transform = 'translateX(-50%) translateY(100%)';
   setTimeout(() => { overlay.style.display = 'none'; drawer.style.display = 'none'; }, 280);
 }
+function openNotifDrawer() {
+  const events = window._notifEvents || [];
+  const ICONS = { masam_mode: 'heroicons:arrow-path', leader_swap: 'heroicons:trophy', allocation: 'heroicons:chart-pie' };
+  const rows = events.length
+    ? events.map(e => `
+      <div style="display:flex;gap:12px;padding:14px 0;border-top:1px solid rgba(255,255,255,.06);">
+        <div style="width:32px;height:32px;border-radius:50%;background:#26262E;display:flex;align-items:center;justify-content:center;flex:none;">
+          <span class="iconify" data-icon="${ICONS[e.type] || 'heroicons:bell'}" style="font-size:16px;color:#9A9AA3;"></span>
+        </div>
+        <div style="flex:1;min-width:0;">
+          <div style="font-size:11.5px;color:#6B6B73;margin-bottom:2px;">${e.date}</div>
+          <div style="font-size:14px;font-weight:500;color:#F4F5F7;">${e.text}</div>
+        </div>
+      </div>`).join('')
+    : `<div style="padding:40px 0;text-align:center;color:#6B6B73;font-size:14px;">최근 30일간 변동 이력이 없습니다</div>`;
+  document.getElementById('notif-drawer-content').innerHTML = `
+    <div style="font-size:17px;font-weight:700;color:#F4F5F7;margin:6px 0 8px;">🔔 최근 변동 히스토리</div>
+    ${rows}
+  `;
+  const overlay = document.getElementById('notif-overlay');
+  const drawer  = document.getElementById('notif-drawer');
+  overlay.style.display = 'block';
+  drawer.style.display  = 'block';
+  requestAnimationFrame(() => {
+    overlay.style.opacity = '1';
+    drawer.style.transform = 'translateX(-50%) translateY(0)';
+  });
+  if (window.Iconify) Iconify.scan(drawer);
+}
+function checkAllocationChange() {
+  const d = window._allocDetail;
+  if (!d) return;
+  const today = new Date().toISOString().slice(0, 10);
+  const snapshot = JSON.stringify({
+    nvdaPct: d.nvdaPct, rank2Pct: d.rank2Pct, qqqPct: d.qqqPct, cash: d.cash,
+    nvdaZone: d.nvdaZone, rank2Zone: d.rank2Zone, qqqZone: d.qqqZone,
+  });
+  const last = localStorage.getItem('alloc_last');
+  if (last && last !== snapshot) {
+    let prev;
+    try { prev = JSON.parse(last); } catch (e) { prev = null; }
+    if (prev) {
+      // 구간(zone) 이동이 원인인 경우 "왜" 바뀌었는지 먼저 보여주고, 그 결과로
+      // 주식/현금 비중이 얼마나 바뀌었는지를 뒤에 붙인다. 합산값만 비교하면
+      // "38% → 38%"처럼 리더 몫 재배분이 상쇄되어 의미 없는 문구가 나올 수 있어서
+      // 실제 비교는 항상 개별 필드(zone·pct)로 한다.
+      const ZONE_LABELS = { nvdaZone: '1등주', rank2Zone: '2등주', qqqZone: 'QQQ' };
+      const zoneParts = [];
+      ['nvdaZone', 'rank2Zone', 'qqqZone'].forEach(key => {
+        if (prev[key] != null && d[key] != null && prev[key] !== d[key]) {
+          zoneParts.push(`${ZONE_LABELS[key]} ${prev[key]}→${d[key]}구간`);
+        }
+      });
+      const pctChanged = prev.nvdaPct !== d.nvdaPct || prev.rank2Pct !== d.rank2Pct
+        || prev.qqqPct !== d.qqqPct || prev.cash !== d.cash;
+      if (zoneParts.length || pctChanged) {
+        const prevStock = prev.nvdaPct + prev.rank2Pct + prev.qqqPct;
+        const nowStock  = d.nvdaPct + d.rank2Pct + d.qqqPct;
+        const zonePrefix = zoneParts.length ? `${zoneParts.join(', ')} — ` : '';
+        const text = `${zonePrefix}주식 ${prevStock}% → ${nowStock}%, 현금 ${prev.cash}% → ${d.cash}%`;
+        let history = [];
+        try { history = JSON.parse(localStorage.getItem('alloc_history') || '[]'); } catch (e) {}
+        history.push({ date: today, text });
+        const cutoff = new Date();
+        cutoff.setDate(cutoff.getDate() - 30);
+        const cutoffStr = cutoff.toISOString().slice(0, 10);
+        history = history.filter(h => h.date >= cutoffStr);
+        localStorage.setItem('alloc_history', JSON.stringify(history));
+      }
+    }
+  }
+  localStorage.setItem('alloc_last', snapshot);
+}
+function renderNotifList(serverEvents) {
+  let allocHistory = [];
+  try { allocHistory = JSON.parse(localStorage.getItem('alloc_history') || '[]'); } catch (e) {}
+  const allocEvents = allocHistory.map(h => ({ date: h.date, type: 'allocation', text: h.text }));
+  const merged = [...(serverEvents || []), ...allocEvents].sort((a, b) => b.date.localeCompare(a.date));
+  window._notifEvents = merged;
+}
+function closeNotifDrawer() {
+  const overlay = document.getElementById('notif-overlay');
+  const drawer  = document.getElementById('notif-drawer');
+  overlay.style.opacity = '0';
+  drawer.style.transform = 'translateX(-50%) translateY(100%)';
+  setTimeout(() => { overlay.style.display = 'none'; drawer.style.display = 'none'; }, 280);
+}
+function injectNotifBell() {
+  const bellHtml = `<button class="refresh-btn notif-btn" style="display:flex;" onclick="openNotifDrawer()" title="변동 히스토리"><span class="iconify" data-icon="heroicons:bell" style="font-size:20px;width:20px;height:20px;"></span></button>`;
+  ['관심', '발견', '피드', '설정'].forEach(view => {
+    const topbar = document.querySelector(`.view[data-view="${view}"] .topbar`);
+    if (!topbar) return;
+    const refreshBtn = topbar.querySelector('.refresh-btn');
+    if (!refreshBtn || topbar.querySelector('.notif-btn')) return;
+    refreshBtn.insertAdjacentHTML('beforebegin', bellHtml);
+  });
+  if (window.Iconify) Iconify.scan(document.body);
+}
+injectNotifBell();
 
 // Pull-to-refresh
 (function() {
