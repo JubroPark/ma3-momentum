@@ -32,8 +32,8 @@
     "cash_raised_pct": 0,
     "max_pct": 25,
     "qqq_pct": 0,
-    "nvda_lowest_close": 200.75,
-    "qqq_lowest_close": 687.99,
+    "nvda_lowest_close": 190.01,
+    "qqq_lowest_close": 661.73,
     "rank2_lowest_close": 308.91
   },
   "staking": {
@@ -107,13 +107,18 @@
   "recommended_action": "리밸런싱 유지 — 1등주(NVDA) 집중",
   "alerts": [],
   "last_allin_price": {
-    "nvda": 312.66,
+    "nvda": 195.55,
     "qqq": 722.82,
-    "rank2": 195.55,
+    "rank2": 312.66,
     "date": "2026-07-06",
     "nvda_prev_high": 212.5,
     "qqq_prev_high": 725.51,
-    "rank2_prev_high": 340.08
+    "rank2_prev_high": 340.08,
+    "by_ticker": {
+      "NVDA": { "allin": 195.55, "prev_high": 212.5, "lowest_close": 190.01, "since": "2026-07-06" },
+      "AAPL": { "allin": 312.66, "prev_high": 340.08, "lowest_close": 308.91, "since": "2026-07-06" },
+      "QQQ":  { "allin": 722.82, "prev_high": 725.51, "lowest_close": 661.73, "since": "2026-07-06" }
+    }
   },
   "released_date": "2026-07-06",
   "eod_close": {
