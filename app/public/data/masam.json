@@ -1,9 +1,9 @@
 {
-  "as_of": "2026-08-01",
+  "as_of": "2026-08-03",
   "mode": "NORMAL",
   "rate_env": "NON_ZERO",
   "qe_active": true,
-  "treasury_10y_trend": "UNKNOWN",
+  "treasury_10y_trend": "UP",
   "masam": {
     "month_count": 0,
     "last_masam_date": "2026-06-05",
@@ -12,8 +12,8 @@
   },
   "leader_status": {
     "rank1_ticker": "NVDA",
-    "rank2_ticker": "AAPL",
-    "gap_pct": 6.7,
+    "rank2_ticker": "GOOGL",
+    "gap_pct": 9.0,
     "overtake_detected": false,
     "gap_within_10pct": true
   },
@@ -32,9 +32,9 @@
     "cash_raised_pct": 0,
     "max_pct": 25,
     "qqq_pct": 0,
-    "nvda_lowest_close": 190.01,
-    "qqq_lowest_close": 661.73,
-    "rank2_lowest_close": 308.91
+    "nvda_lowest_close": 206.64,
+    "qqq_lowest_close": 700.07,
+    "rank2_lowest_close": 373.51
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -55,35 +55,35 @@
       "label": "8거래일 연속 상승",
       "met": false,
       "grade": "중",
-      "detail": "2일 연속"
+      "detail": "3일 연속"
     },
     {
       "id": 3,
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-14.8%"
+      "detail": "-12.3%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-6.3%"
+      "detail": "-4.4%"
     },
     {
       "id": 5,
       "label": "2구간 V자(+10%)",
       "met": false,
       "grade": "중",
-      "detail": "+3.8% (필요: +10%)"
+      "detail": "+6.0% (필요: +10%)"
     },
     {
       "id": 6,
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-6.3% (기준: -30%)"
+      "detail": "-4.4% (기준: -30%)"
     }
   ],
   "additional_buy": {
@@ -109,21 +109,42 @@
   "last_allin_price": {
     "nvda": 195.55,
     "qqq": 722.82,
-    "rank2": 312.66,
+    "rank2": 373.51,
     "date": "2026-07-06",
     "nvda_prev_high": 212.5,
     "qqq_prev_high": 725.51,
-    "rank2_prev_high": 340.08,
+    "rank2_prev_high": 373.51,
     "by_ticker": {
-      "NVDA": { "allin": 195.55, "prev_high": 212.5, "lowest_close": 190.01, "since": "2026-07-06" },
-      "AAPL": { "allin": 312.66, "prev_high": 340.08, "lowest_close": 308.91, "since": "2026-07-06" },
-      "QQQ":  { "allin": 722.82, "prev_high": 725.51, "lowest_close": 661.73, "since": "2026-07-06" }
+      "NVDA": {
+        "allin": 195.55,
+        "prev_high": 212.5,
+        "lowest_close": 206.64,
+        "since": "2026-07-06"
+      },
+      "AAPL": {
+        "allin": 312.66,
+        "prev_high": 340.08,
+        "lowest_close": 308.91,
+        "since": "2026-07-06"
+      },
+      "QQQ": {
+        "allin": 722.82,
+        "prev_high": 725.51,
+        "lowest_close": 700.07,
+        "since": "2026-07-06"
+      },
+      "GOOGL": {
+        "allin": 373.51,
+        "prev_high": 373.51,
+        "lowest_close": 373.51,
+        "since": "2026-08-03"
+      }
     }
   },
   "released_date": "2026-07-06",
   "eod_close": {
-    "nvda": 200.75,
-    "qqq": 687.99,
-    "rank2": 308.91
+    "nvda": 206.64,
+    "qqq": 700.07,
+    "rank2": 373.51
   }
 }
