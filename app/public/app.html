@@ -2829,6 +2829,27 @@ function initMaxPctUI(rateEnv) {
     if (ptrView) { sessionStorage.removeItem('ptr_view'); show(ptrView); }
   } catch (e) {
     console.error('[Ma3] Data init failed:', e);
+    const banner = document.createElement('div');
+    banner.style.cssText = 'position:fixed;top:0;left:0;right:0;z-index:9999;background:#F04452;color:#fff;padding:12px 17px;font-size:13.5px;font-weight:600;display:flex;align-items:center;justify-content:space-between;gap:12px;';
+    banner.innerHTML = '<span>⚠️ 데이터를 불러오지 못했습니다 — 화면이 최신 상태가 아닐 수 있습니다</span>';
+    const btn = document.createElement('button');
+    btn.textContent = '새로고침';
+    btn.style.cssText = 'background:#fff;color:#F04452;border:none;border-radius:8px;padding:6px 12px;font-weight:700;font-size:13px;flex:none;cursor:pointer;';
+    btn.onclick = async () => {
+      try {
+        if (window.caches) {
+          const keys = await caches.keys();
+          await Promise.all(keys.map(k => caches.delete(k)));
+        }
+        if (navigator.serviceWorker) {
+          const regs = await navigator.serviceWorker.getRegistrations();
+          await Promise.all(regs.map(r => r.unregister()));
+        }
+      } catch (_) {}
+      location.reload();
+    };
+    banner.appendChild(btn);
+    document.body.prepend(banner);
   }
 })();
 </script>
@@ -3160,7 +3181,7 @@ function closeAllocDetail() {
 }
 function openNotifDrawer() {
   const events = window._notifEvents || [];
-  const ICONS = { masam_mode: 'heroicons:arrow-path', leader_swap: 'heroicons:trophy', allocation: 'heroicons:chart-pie' };
+  const ICONS = { masam_mode: 'heroicons:arrow-path', leader_swap: 'heroicons:trophy', rank2_swap: 'heroicons:arrows-right-left', zone_reach: 'heroicons:arrow-trending-down', allocation: 'heroicons:chart-pie' };
   const rows = events.length
     ? events.map(e => `
       <div style="display:flex;gap:12px;padding:14px 0;border-top:1px solid rgba(255,255,255,.06);">

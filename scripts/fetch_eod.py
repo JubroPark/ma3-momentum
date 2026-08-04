@@ -423,17 +423,18 @@ def main():
             if cur <= base * (1 - _step * i): z = i
         return z
 
-    def _update_ticker(by_ticker: dict, ticker: str, close: float, hist, today_iso: str) -> dict:
+    def _update_ticker(by_ticker: dict, ticker: str, close: float, hist, today_iso: str):
         """티커별 진입가/직전고점/저점 스티키를 자기 자신의 이력으로만 갱신(순위 무관).
         직전고점은 매 배치 해당 티커 자신의 전체 히스토리(자기 since일 이후)로 재계산해
-        배치가 하루 이틀 빠지더라도 스스로 정정됨."""
+        배치가 하루 이틀 빠지더라도 스스로 정정됨.
+        반환값: (entry, zone_reach) — zone_reach는 오늘 새로 도달한 최심 구간(신기록일 때만 정수, 아니면 None)"""
         close = round(close, 2)
         entry = by_ticker.get(ticker)
         if not entry:
             # 처음 추적하는 종목(신규 1·2등 진입) — 오늘 종가로 새로 시작
             entry = {"allin": close, "prev_high": close, "lowest_close": close, "since": today_iso}
             by_ticker[ticker] = entry
-            return entry
+            return entry, None
         since_date = entry.get("since") or today_iso
         old_high = entry.get("prev_high", entry.get("allin", close))
         try:
@@ -449,20 +450,32 @@ def main():
         # 저점 리셋 조건: (1) 막바지 2구간 상승 → 전량 재매수, (2) 오늘 전고점을 새로 경신
         # (2)가 없으면 전고점 갱신 후에도 그 전고점에 도달하기 전의 옛 저점이 그대로 남아
         # "전고점 대비 N구간 하락"으로 잘못 계산되는 버그가 생김 — 2026-07-31 확인
-        if (prev_zone > 0 and new_zone <= prev_zone - 2) or new_peak:
+        is_reset = (prev_zone > 0 and new_zone <= prev_zone - 2) or new_peak
+        if is_reset:
             new_low = close
         else:
             new_low = min(prev_low, close) if prev_low else close
+        # 구간 도달 알림: 리셋이 아니면서 이전보다 더 깊은 구간에 새로 도달했을 때만 기록
+        zone_reach = None
+        if not is_reset and new_low < prev_low:
+            deepest_zone = _zone_idx(new_low, base)
+            if deepest_zone > prev_zone:
+                zone_reach = deepest_zone
         entry["prev_high"] = new_high
         entry["lowest_close"] = new_low
-        return entry
+        return entry, zone_reach
+
+    # 알림 히스토리 이벤트(마삼 전환·순위 역전·구간 도달) — 최근 30일 보관
+    # ponytail: 서버가 계산 가능한 이벤트만 기록. 권장 비중은 기기별 localStorage
+    # 설정에 의존해 서버가 재현 불가 → 프론트(app.html)가 클라이언트에서 별도 기록.
+    notif_events = []
 
     if new_mode == "NORMAL" and isinstance(last_allin_price, dict) and "by_ticker" in last_allin_price:
         by_ticker = last_allin_price["by_ticker"]
         _today_iso = today.isoformat()
-        nvda_entry  = _update_ticker(by_ticker, rank1_ticker, rank1_close,   rank1_hist, _today_iso)
-        rank2_entry = _update_ticker(by_ticker, rank2_ticker, rank2_close,   rank2_hist, _today_iso)
-        qqq_entry   = _update_ticker(by_ticker, "QQQ",        qqq_eod_close, qqq,        _today_iso)
+        nvda_entry,  nvda_zone  = _update_ticker(by_ticker, rank1_ticker, rank1_close,   rank1_hist, _today_iso)
+        rank2_entry, rank2_zone = _update_ticker(by_ticker, rank2_ticker, rank2_close,   rank2_hist, _today_iso)
+        qqq_entry,   qqq_zone   = _update_ticker(by_ticker, "QQQ",        qqq_eod_close, qqq,        _today_iso)
         # 레거시 슬롯 필드는 현재 순위 기준으로 매 배치 파생(프론트가 nvda/qqq/rank2 키를 그대로 씀)
         last_allin_price["nvda"]             = nvda_entry["allin"]
         last_allin_price["nvda_prev_high"]   = nvda_entry["prev_high"]
@@ -475,6 +488,13 @@ def main():
         new_qqq_low   = qqq_entry["lowest_close"]
         print(f"  직전 고점: {rank1_ticker}={nvda_entry['prev_high']} QQQ={qqq_entry['prev_high']} {rank2_ticker}={rank2_entry['prev_high']}")
         print(f"  리밸런싱 저점: {rank1_ticker}={new_nvda_low}  QQQ={new_qqq_low}  {rank2_ticker}={new_rank2_low}")
+        for _label, _zone in ((rank1_ticker, nvda_zone), ("QQQ", qqq_zone), (rank2_ticker, rank2_zone)):
+            if _zone:
+                notif_events.append({
+                    "date": today.isoformat(),
+                    "type": "zone_reach",
+                    "text": f"{_label} 직전고점 대비 {_zone}구간({step_pct * _zone:.1f}%) 하락 도달",
+                })
     else:
         new_nvda_low = 0
         new_qqq_low = 0
@@ -567,9 +587,6 @@ def main():
     save_json(DATA / "masam.json", masam_out)
 
     # 10. 알림 히스토리: 마삼 모드 전환·시총 순위 역전 기록 (최근 30일 유지)
-    # ponytail: 서버가 계산 가능한 이벤트만 기록. 권장 비중은 기기별 localStorage
-    # 설정에 의존해 서버가 재현 불가 → 프론트(app.html)가 클라이언트에서 별도 기록.
-    notif_events = []
     if prev_mode != new_mode:
         notif_events.append({
             "date": today.isoformat(),
@@ -582,6 +599,13 @@ def main():
             "date": today.isoformat(),
             "type": "leader_swap",
             "text": f"1등주가 {prev_rank1} → {rank1_ticker}로 바뀌었습니다",
+        })
+    prev_rank2 = existing_masam.get("leader_status", {}).get("rank2_ticker")
+    if prev_rank2 and prev_rank2 != rank2_ticker:
+        notif_events.append({
+            "date": today.isoformat(),
+            "type": "rank2_swap",
+            "text": f"2등주가 {prev_rank2} → {rank2_ticker}로 바뀌었습니다",
         })
     if notif_events:
         notifications = load_json(DATA / "notifications.json")

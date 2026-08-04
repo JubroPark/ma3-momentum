@@ -4,6 +4,7 @@
       masam_market.json (VIX·공포탐욕·달러환율 실시간 갱신)
 """
 import json
+import math
 import urllib.request
 from datetime import datetime, timezone
 from pathlib import Path
@@ -25,8 +26,20 @@ def load_json(path: Path) -> dict:
         return {}
 
 
+def _sanitize_nan(obj):
+    """NaN/Infinity는 표준 JSON에 없는 값 — json.dumps가 그대로 NaN 토큰을
+    써버려 브라우저 JSON.parse가 깨짐. 저장 직전 재귀적으로 null로 치환."""
+    if isinstance(obj, dict):
+        return {k: _sanitize_nan(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_sanitize_nan(v) for v in obj]
+    if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+        return None
+    return obj
+
+
 def save_json(path: Path, data: dict) -> None:
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    path.write_text(json.dumps(_sanitize_nan(data), ensure_ascii=False, indent=2), encoding="utf-8")
 
 
 def fetch_quote(ticker: str) -> Optional[dict]:
