@@ -224,8 +224,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 4.09)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "팔란티어 테크놀로지스",
       "domain": "palantir.com",
       "weight_note": ""
@@ -317,8 +317,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.37)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "브로드컴",
       "domain": "broadcom.com",
       "weight_note": ""
@@ -1025,7 +1025,7 @@
         "earnings_score": 4.5,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.36,
+        "peg": 1.35,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -1445,8 +1445,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.56)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "길리어드 사이언시스",
       "domain": "gilead.com",
       "weight_note": ""
@@ -2078,12 +2078,13 @@
       "name": "Astera Labs, Inc.",
       "name_ko": "아스테라 랩스",
       "domain": "asteralabs.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 4.5,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 483.02,
       "trailing_stop_line": 338.11,
@@ -2104,7 +2105,7 @@
         "earnings_score": 3.8,
         "health_score": 2.7,
         "eps_revision": "UP_STRONG",
-        "peg": 1.69,
+        "peg": 1.68,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -2115,8 +2116,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.14)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+1.3%) — 2차 진입",
       "weight_note": ""
     },
     {
@@ -2316,7 +2317,7 @@
         1
       ],
       "recent_high": 31.54,
-      "trailing_stop_line": 25.24,
+      "trailing_stop_line": 25.23,
       "horizontal_support": 21.91,
       "cooldown_until": null,
       "toppick_score": 78,
@@ -2327,7 +2328,7 @@
         "atr14": 0.83,
         "atr_pct": 0.0294,
         "gap50_pct": 9.9,
-        "dist_to_stop_pct": 10.7,
+        "dist_to_stop_pct": 10.8,
         "vol20ma": 3928411,
         "vol_ratio": 1.37,
         "growth_score": 4.0,
@@ -2345,8 +2346,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.37)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -3012,7 +3013,7 @@
         "earnings_score": 3.8,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 7.29,
+        "peg": 6.93,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -4538,10 +4539,10 @@
       "name": "Insulet Corporation",
       "name_ko": "인슐릿",
       "domain": "insulet.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 3.55,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -4575,9 +4576,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.32)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (166.82 ≤ 282.16)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -69.1%)"
     },
     {
       "symbol": "KGC",
@@ -5862,8 +5863,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.92)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
