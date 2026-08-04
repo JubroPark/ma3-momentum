@@ -493,6 +493,10 @@ def main():
         nvda_entry,  nvda_zone,  nvda_step_pct  = _update_ticker(by_ticker, rank1_ticker, rank1_close,   rank1_hist, _today_iso)
         rank2_entry, rank2_zone, rank2_step_pct = _update_ticker(by_ticker, rank2_ticker, rank2_close,   rank2_hist, _today_iso)
         qqq_entry,   qqq_zone,   qqq_step_pct   = _update_ticker(by_ticker, "QQQ",        qqq_eod_close, qqq,        _today_iso)
+        # 오늘 1등인 티커는 "1등 해본 적 있음"으로 영구 마킹 — 격차 10% 이내라는 이유만으로
+        # 한 번도 1등을 탈환한 적 없는 2등주가 권장 비중(1:1 배분)에 잡히는 걸 막기 위함
+        # (2026-08-04 확인: gap_within_10pct만으로는 부족, 실제 추월 이력이 있어야 함)
+        nvda_entry["ever_rank1"] = True
         # 레거시 슬롯 필드는 현재 순위 기준으로 매 배치 파생(프론트가 nvda/qqq/rank2 키를 그대로 씀)
         last_allin_price["nvda"]             = nvda_entry["allin"]
         last_allin_price["nvda_prev_high"]   = nvda_entry["prev_high"]
@@ -580,6 +584,9 @@ def main():
             "gap_pct": gap_pct,
             "overtake_detected": existing_masam.get("leader_status", {}).get("rank1_ticker") != rank1_ticker,
             "gap_within_10pct": gap_pct <= 10.0,
+            # 2등주가 격차 10% 이내로 들어와도, 실제로 1등을 해본 적 없으면 권장 비중
+            # 1:1 배분 대상이 아님(프론트에서 dualLeader 판정에 사용)
+            "rank2_ever_rank1": bool((last_allin_price or {}).get("by_ticker", {}).get(rank2_ticker, {}).get("ever_rank1", False)),
         },
         "target_allocation": target_alloc,
         "hedge_allocation": hedge_alloc,

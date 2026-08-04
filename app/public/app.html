@@ -1778,7 +1778,8 @@
       };
       // 매뉴얼 1장: 1·2등 격차 10% 이내 또는 2등주 추월 시 1등:2등 = 1:1 동일 비중 (leader_status 기준)
       const _ls = (window._cachedMasam && window._cachedMasam.leader_status) || {};
-      const _dualLeader = !!(_ls.gap_within_10pct || _ls.overtake_detected);
+      // 격차 10% 이내라도 2등주가 실제로 1등을 해본 적(overtake) 없으면 1:1 배분 대상 아님
+      const _dualLeader = !!(_ls.overtake_detected || (_ls.gap_within_10pct && _ls.rank2_ever_rank1));
       // leaderShare(%)를 target의 구간에 따라 줄인 실비중 계산
       const _leaderPct = (shareBase, z) => {
         return isRebalancing ? shareBase * (1 - z * 0.1) : shareBase * z * 0.1;

@@ -15,7 +15,8 @@
     "rank2_ticker": "GOOGL",
     "gap_pct": 9.0,
     "overtake_detected": false,
-    "gap_within_10pct": true
+    "gap_within_10pct": true,
+    "rank2_ever_rank1": false
   },
   "target_allocation": {
     "stock_pct": 100,
@@ -124,13 +125,15 @@
         "allin": 195.55,
         "prev_high": 212.5,
         "lowest_close": 190.01,
-        "since": "2026-07-06"
+        "since": "2026-07-06",
+        "ever_rank1": true
       },
       "AAPL": {
         "allin": 312.66,
         "prev_high": 340.08,
         "lowest_close": 308.91,
-        "since": "2026-07-06"
+        "since": "2026-07-06",
+        "ever_rank1": true
       },
       "QQQ": {
         "allin": 722.82,
