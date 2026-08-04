@@ -13,13 +13,18 @@ def zone_idx(cur, base, step):
 
 
 def update(prev_low, prev_high, close, step):
-    """반환: (new_low, new_high, zone_reach)"""
+    """반환: (new_low, new_high, zone_reach). fetch_eod.py의 _update_ticker와 동일 로직.
+    리셋 판정은 구간 "번호" 비교가 아니라 표에 적힌 목표 구간의 실제 가격 도달 여부로 함
+    (zone_idx는 zone1 문턱만 넘으면 전부 0구간으로 뭉뚱그려서, 기준가 자체엔 못 미쳤는데도
+    리셋되는 버그가 있었음 — 2026-08-04 확인)."""
     new_peak = close > prev_high
     high = max(prev_high, close)
     base = high
     prev_zone = zone_idx(prev_low, base, step)
-    new_zone = zone_idx(close, base, step)
-    is_reset = (prev_zone > 0 and new_zone <= prev_zone - 2) or new_peak
+    target_zone = prev_zone - 2
+    recovery_price = base * (1 - step * target_zone)
+    reached_recovery = prev_zone >= 2 and close >= recovery_price
+    is_reset = reached_recovery or new_peak
     new_low = close if is_reset else (min(prev_low, close) if prev_low else close)
     zone_reach = None
     if not is_reset and new_low < prev_low:
@@ -53,6 +58,16 @@ def test():
     # 전고점 신규 경신 → 리셋(저점을 오늘 종가로), zone_reach 없음
     low, high, zr = update(prev_low=90, prev_high=100, close=105, step=0.05)
     assert zr is None and low == 105 and high == 105
+
+    # 실제 세션 리그레션(2026-08-04): 저점 190.01(2구간, 전고점 212.5)에서 206.64로 반등해도
+    # 0구간 기준가(212.5) 자체엔 못 미쳤으므로 리셋되면 안 됨 — zone_idx 번호 비교로는
+    # 잘못 리셋되던 버그
+    low, high, zr = update(prev_low=190.01, prev_high=212.5, close=206.64, step=0.05)
+    assert low == 190.01, f"저점 유지 기대, 실제 low={low}"
+
+    # 반대로 종가가 실제 기준가(212.5) 이상으로 회복하면 정상적으로 리셋
+    low, high, zr = update(prev_low=190.01, prev_high=212.5, close=212.5, step=0.05)
+    assert low == 212.5, f"리셋 기대, 실제 low={low}"
 
     print("OK — all zone_reach cases passed")
 

@@ -457,11 +457,17 @@ def main():
         base = _base_of(close, entry.get("allin", 0), new_high)
         prev_low = entry.get("lowest_close", 0)
         prev_zone = _zone_idx(prev_low, base, step)
-        new_zone  = _zone_idx(close, base, step)
         # 저점 리셋 조건: (1) 막바지 2구간 상승 → 전량 재매수, (2) 오늘 전고점을 새로 경신
         # (2)가 없으면 전고점 갱신 후에도 그 전고점에 도달하기 전의 옛 저점이 그대로 남아
         # "전고점 대비 N구간 하락"으로 잘못 계산되는 버그가 생김 — 2026-07-31 확인
-        is_reset = (prev_zone > 0 and new_zone <= prev_zone - 2) or new_peak
+        # (1)의 "2구간 상승"은 구간 번호(new_zone <= prev_zone-2) 비교가 아니라 표에 적힌
+        # 목표 구간의 실제 가격에 도달했는지로 판정해야 함 — zone_idx는 "zone1 문턱만 넘으면
+        # 전부 0구간"으로 뭉뚱그려서, 기준가(전고점) 자체엔 못 미쳤는데도 리셋되는 버그가
+        # 있었음(2026-08-04 확인). 목표 구간 가격 = base*(1-step*(prev_zone-2))
+        target_zone = prev_zone - 2
+        recovery_price = base * (1 - step * target_zone)
+        reached_recovery = prev_zone >= 2 and close >= recovery_price
+        is_reset = reached_recovery or new_peak
         if is_reset:
             new_low = close
         else:
