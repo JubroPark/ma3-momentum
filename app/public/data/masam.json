@@ -31,9 +31,14 @@
   "rebalancing": {
     "cash_raised_pct": 0,
     "max_pct": 25,
+    "max_pct_by_ticker": {
+      "NVDA": 50,
+      "QQQ": 50,
+      "GOOGL": 50
+    },
     "qqq_pct": 0,
-    "nvda_lowest_close": 190.01,
-    "qqq_lowest_close": 700.07,
+    "nvda_lowest_close": 206.64,
+    "qqq_lowest_close": 661.73,
     "rank2_lowest_close": 373.51
   },
   "staking": {
@@ -118,7 +123,7 @@
       "NVDA": {
         "allin": 195.55,
         "prev_high": 212.5,
-        "lowest_close": 190.01,
+        "lowest_close": 206.64,
         "since": "2026-07-06"
       },
       "AAPL": {
@@ -130,7 +135,7 @@
       "QQQ": {
         "allin": 722.82,
         "prev_high": 725.51,
-        "lowest_close": 700.07,
+        "lowest_close": 661.73,
         "since": "2026-07-06"
       },
       "GOOGL": {

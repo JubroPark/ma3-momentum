@@ -398,8 +398,17 @@ def main():
     # 현재 순위 기준으로 파생만 함(프론트 호환용).
     last_allin_price = existing_masam.get("last_allin_price")
     existing_reb = existing_masam.get("rebalancing", {})
-    step_pct = existing_reb.get("max_pct", 25) / 10  # 재매수 리셋 판정용 그리드: 25→2.5%, 50→5%
-    _step = step_pct / 100
+    # 재매수 리셋 판정 그리드: 티커별 독립(25→2.5%, 50→5%). 프론트의 max_pct_{target}
+    # localStorage 토글과 별개(서버는 기기별 설정을 알 수 없음) — masam.json을 소스로 삼아
+    # 필요 시 수동 조정. 과거엔 단일 rebalancing.max_pct 하나로 전 종목을 판정해서, 종목별로
+    # 프론트 그리드를 다르게 설정해도 리셋 시점이 안 맞는 문제가 있었음(2026-08-04 확인).
+    _max_pct_by_ticker = existing_reb.get("max_pct_by_ticker", {})
+    # 신규 티커 기본 그리드: 프론트(initMaxPctUI)와 동일하게 금리환경 기반(제로=25%/비제로=50%).
+    # max_pct_by_ticker에 명시적으로 저장된 값이 있으면 그게 우선(수동 조정 반영).
+    _default_max_pct = 25 if rate_env == "ZERO" else 50
+
+    def _step_of(ticker: str) -> float:
+        return _max_pct_by_ticker.get(ticker, _default_max_pct) / 1000
 
     if _is_crisis_release:
         _t = today.isoformat()
@@ -416,25 +425,27 @@ def main():
     def _base_of(cur, allin, prev_high):
         return prev_high if (allin > 0 and cur >= allin) else allin
 
-    def _zone_idx(cur, base):
+    def _zone_idx(cur, base, step):
         if not cur or not base: return 0
         z = 0
         for i in range(1, 11):
-            if cur <= base * (1 - _step * i): z = i
+            if cur <= base * (1 - step * i): z = i
         return z
 
     def _update_ticker(by_ticker: dict, ticker: str, close: float, hist, today_iso: str):
         """티커별 진입가/직전고점/저점 스티키를 자기 자신의 이력으로만 갱신(순위 무관).
         직전고점은 매 배치 해당 티커 자신의 전체 히스토리(자기 since일 이후)로 재계산해
         배치가 하루 이틀 빠지더라도 스스로 정정됨.
+        구간 그리드는 티커별 독립(max_pct_by_ticker) — 종목마다 리셋 시점이 달라짐.
         반환값: (entry, zone_reach) — zone_reach는 오늘 새로 도달한 최심 구간(신기록일 때만 정수, 아니면 None)"""
+        step = _step_of(ticker)
         close = round(close, 2)
         entry = by_ticker.get(ticker)
         if not entry:
             # 처음 추적하는 종목(신규 1·2등 진입) — 오늘 종가로 새로 시작
             entry = {"allin": close, "prev_high": close, "lowest_close": close, "since": today_iso}
             by_ticker[ticker] = entry
-            return entry, None
+            return entry, None, step * 100
         since_date = entry.get("since") or today_iso
         old_high = entry.get("prev_high", entry.get("allin", close))
         try:
@@ -445,8 +456,8 @@ def main():
         new_peak = new_high > old_high
         base = _base_of(close, entry.get("allin", 0), new_high)
         prev_low = entry.get("lowest_close", 0)
-        prev_zone = _zone_idx(prev_low, base)
-        new_zone  = _zone_idx(close, base)
+        prev_zone = _zone_idx(prev_low, base, step)
+        new_zone  = _zone_idx(close, base, step)
         # 저점 리셋 조건: (1) 막바지 2구간 상승 → 전량 재매수, (2) 오늘 전고점을 새로 경신
         # (2)가 없으면 전고점 갱신 후에도 그 전고점에 도달하기 전의 옛 저점이 그대로 남아
         # "전고점 대비 N구간 하락"으로 잘못 계산되는 버그가 생김 — 2026-07-31 확인
@@ -458,12 +469,12 @@ def main():
         # 구간 도달 알림: 리셋이 아니면서 이전보다 더 깊은 구간에 새로 도달했을 때만 기록
         zone_reach = None
         if not is_reset and new_low < prev_low:
-            deepest_zone = _zone_idx(new_low, base)
+            deepest_zone = _zone_idx(new_low, base, step)
             if deepest_zone > prev_zone:
                 zone_reach = deepest_zone
         entry["prev_high"] = new_high
         entry["lowest_close"] = new_low
-        return entry, zone_reach
+        return entry, zone_reach, step * 100
 
     # 알림 히스토리 이벤트(마삼 전환·순위 역전·구간 도달) — 최근 30일 보관
     # ponytail: 서버가 계산 가능한 이벤트만 기록. 권장 비중은 기기별 localStorage
@@ -473,9 +484,9 @@ def main():
     if new_mode == "NORMAL" and isinstance(last_allin_price, dict) and "by_ticker" in last_allin_price:
         by_ticker = last_allin_price["by_ticker"]
         _today_iso = today.isoformat()
-        nvda_entry,  nvda_zone  = _update_ticker(by_ticker, rank1_ticker, rank1_close,   rank1_hist, _today_iso)
-        rank2_entry, rank2_zone = _update_ticker(by_ticker, rank2_ticker, rank2_close,   rank2_hist, _today_iso)
-        qqq_entry,   qqq_zone   = _update_ticker(by_ticker, "QQQ",        qqq_eod_close, qqq,        _today_iso)
+        nvda_entry,  nvda_zone,  nvda_step_pct  = _update_ticker(by_ticker, rank1_ticker, rank1_close,   rank1_hist, _today_iso)
+        rank2_entry, rank2_zone, rank2_step_pct = _update_ticker(by_ticker, rank2_ticker, rank2_close,   rank2_hist, _today_iso)
+        qqq_entry,   qqq_zone,   qqq_step_pct   = _update_ticker(by_ticker, "QQQ",        qqq_eod_close, qqq,        _today_iso)
         # 레거시 슬롯 필드는 현재 순위 기준으로 매 배치 파생(프론트가 nvda/qqq/rank2 키를 그대로 씀)
         last_allin_price["nvda"]             = nvda_entry["allin"]
         last_allin_price["nvda_prev_high"]   = nvda_entry["prev_high"]
@@ -488,12 +499,12 @@ def main():
         new_qqq_low   = qqq_entry["lowest_close"]
         print(f"  직전 고점: {rank1_ticker}={nvda_entry['prev_high']} QQQ={qqq_entry['prev_high']} {rank2_ticker}={rank2_entry['prev_high']}")
         print(f"  리밸런싱 저점: {rank1_ticker}={new_nvda_low}  QQQ={new_qqq_low}  {rank2_ticker}={new_rank2_low}")
-        for _label, _zone in ((rank1_ticker, nvda_zone), ("QQQ", qqq_zone), (rank2_ticker, rank2_zone)):
+        for _label, _zone, _step_pct in ((rank1_ticker, nvda_zone, nvda_step_pct), ("QQQ", qqq_zone, qqq_step_pct), (rank2_ticker, rank2_zone, rank2_step_pct)):
             if _zone:
                 notif_events.append({
                     "date": today.isoformat(),
                     "type": "zone_reach",
-                    "text": f"{_label} 직전고점 대비 {_zone}구간({step_pct * _zone:.1f}%) 하락 도달",
+                    "text": f"{_label} 직전고점 대비 {_zone}구간({_step_pct * _zone:.1f}%) 하락 도달",
                 })
     else:
         new_nvda_low = 0
@@ -569,7 +580,13 @@ def main():
         "all_in_conditions": all_in,
         "rebalancing": {
             "cash_raised_pct":    existing_reb.get("cash_raised_pct", 0),
-            "max_pct":            existing_reb.get("max_pct", 25),
+            "max_pct":            existing_reb.get("max_pct", 25),  # 신규 티커 기본값(폴백)으로만 사용
+            "max_pct_by_ticker":  {
+                **_max_pct_by_ticker,
+                rank1_ticker: _max_pct_by_ticker.get(rank1_ticker, _default_max_pct),
+                rank2_ticker: _max_pct_by_ticker.get(rank2_ticker, _default_max_pct),
+                "QQQ":        _max_pct_by_ticker.get("QQQ", _default_max_pct),
+            },
             "qqq_pct":            existing_reb.get("qqq_pct", 0),
             "nvda_lowest_close":  round(new_nvda_low, 2) if new_nvda_low else 0,
             "qqq_lowest_close":   round(new_qqq_low, 2) if new_qqq_low else 0,
