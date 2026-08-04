@@ -3182,13 +3182,14 @@ function closeAllocDetail() {
 }
 function openNotifDrawer() {
   const events = window._notifEvents || [];
-  const ICONS = { masam_mode: 'heroicons:arrow-path', leader_swap: 'heroicons:trophy', rank2_swap: 'heroicons:arrows-right-left', zone_reach: 'heroicons:arrow-trending-down', allocation: 'heroicons:chart-pie' };
+  // 하단 탭(bxs: BoxIcons Solid)과 동일한 아이콘 패밀리로 통일
+  const ICONS = { masam_mode: 'bxs:analyse', leader_swap: 'bxs:trophy', rank2_swap: 'bxs:left-right-arrow-circle', zone_reach: 'bxs:down-arrow-circle', allocation: 'bxs:pie-chart-alt-2' };
   const rows = events.length ? events.map(_renderNotifRow).join('')
     : `<div style="padding:40px 0;text-align:center;color:#6B6B73;font-size:14px;">최근 30일간 변동 이력이 없습니다</div>`;
   function _renderNotifRow(e) {
     const isAlloc = e.type === 'allocation' && e.prevStock != null && e.nowStock != null;
     const up = isAlloc && e.nowStock > e.prevStock;
-    const icon = isAlloc ? (up ? 'heroicons:arrow-trending-up' : 'heroicons:arrow-trending-down') : (ICONS[e.type] || 'heroicons:bell');
+    const icon = isAlloc ? (up ? 'bxs:up-arrow-circle' : 'bxs:down-arrow-circle') : (ICONS[e.type] || 'bxs:bell');
     const iconColor = isAlloc ? (up ? '#3182F6' : '#9A9AA3') : '#9A9AA3';
     const body = isAlloc
       ? `<div style="font-size:14px;font-weight:500;color:#F4F5F7;font-variant-numeric:tabular-nums;">주식 비중 <span style="font-weight:700;color:${up ? 'var(--blue)' : '#9A9AA3'}">${e.prevStock}% → ${e.nowStock}%</span></div>
@@ -3206,7 +3207,7 @@ function openNotifDrawer() {
       </div>`;
   }
   document.getElementById('notif-drawer-content').innerHTML = `
-    <div style="font-size:17px;font-weight:700;color:#F4F5F7;margin:6px 0 8px;">🔔 최근 변동 히스토리</div>
+    <div style="display:flex;align-items:center;gap:7px;font-size:17px;font-weight:700;color:#F4F5F7;margin:6px 0 8px;"><span class="iconify" data-icon="heroicons:bell" style="font-size:17px;width:17px;height:17px;"></span>최근 변동 히스토리</div>
     ${rows}
   `;
   const overlay = document.getElementById('notif-overlay');

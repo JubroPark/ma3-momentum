@@ -163,6 +163,20 @@
 > **나스닥 시세 조회 실패 시 0 폴백 버그 (2026-07-28 수정)**: `fetch_live.py`가 `^IXIC` 조회에 실패하면 `ixic_price`를 0으로 대체해 `from_ath_pct`가 `(0-ATH)/ATH*100 = -100%`로 잘못 계산되던 버그. 화면에 쓰이는 `nasdaq.price`와 동일하게 캐시된 값으로 폴백하도록 수정.
 >
 > **FRED API 타임아웃 (2026-07-28 수정)**: `fetch_fred.py` timeout 10s→20s + 실패 시 최대 3회 재시도(1s/2s 백오프) — EOD 배치가 FRED 응답 지연으로 통째로 실패하던 문제 완화.
+>
+> **by_ticker 구조 도입 완료 (2026-08-01) — 위 4번 항목 슈퍼시드**: `last_allin_price.by_ticker[티커]`로 진입가/직전고점/저점을 티커 심볼 자체에 귀속해 추적하는 구조 구현 완료(`_update_ticker()`). 랭크가 바뀌어도(1등↔2등, 랭크 밖으로 밀려남 포함) 해당 티커가 매일 갱신 대상에서 빠질 뿐 데이터는 그대로 보존되고, 다시 랭크에 들어오면 이어서 갱신됨 — "수동 패치" 대응은 더 이상 기본 대응이 아니며, by_ticker 자체가 깨진 경우에만 예외적으로 필요.
+>
+> **재매수 리셋이 "구간 번호" 비교라 부정확했던 버그 (2026-08-04 수정)**: `zone_idx()`가 "zone1 문턱만 넘으면 전부 0구간"으로 뭉뚱그려서, 예를 들어 직전고점 $212.5·저점 2구간($190.01)에서 종가가 $206.64로 반등해도(0구간 문턱 $201.88은 넘었지만 기준가 $212.5 자체엔 못 미침) "2구간 상승"으로 오판해 저점 스티키가 리셋되던 문제. 리셋 판정을 구간 번호(`new_zone <= prev_zone-2`) 대신 **목표 구간에 적힌 실제 가격**(`base*(1-step*(prev_zone-2))`) 도달 여부로 변경. `scripts/test_zone_reach.py`에 이 경계 사례 회귀 테스트 있음.
+>
+> **재매수 리셋 그리드를 티커별 독립으로 (2026-08-04)**: 기존엔 `rebalancing.max_pct` 단일값으로 전 종목의 리셋을 판정해서, 프론트에서 종목마다 다른 그리드(-25%/-50%)로 보고 있어도 서버 판정은 항상 하나의 그리드만 썼음. `rebalancing.max_pct_by_ticker`(티커 키)로 분리, 신규 티커 기본값은 프론트(`initMaxPctUI`)와 동일하게 금리환경 기반(제로=25%/비제로=50%).
+>
+> **2등주 권장 비중 배분에 실제 1등 이력 조건 추가 (2026-08-04)**: `gap_within_10pct`(격차 10% 이내)만으로 1:1 배분 대상이 되면, 한 번도 1등을 탈환한 적 없는 종목(예: GOOGL이 NVDA와 격차만 좁혀진 경우)까지 잡히는 문제. `by_ticker[티커].ever_rank1`(오늘 1등인 티커에 영구 마킹)을 `leader_status.rank2_ever_rank1`으로 노출, 프론트 `dualLeader` 판정을 `overtake_detected || (gap_within_10pct && rank2_ever_rank1)`로 변경.
+>
+> **live.json에 유효하지 않은 NaN 값이 저장돼 앱이 통째로 안 뜬 사고 (2026-08-04)**: `fetch_live.py`의 `fetch_mcap_live()`가 일부 티커(예: 2222.SR 사우디 아람코)에서 `price`/`prev_close`가 NaN이어도 그대로 `change_pct`에 담아 저장 → Python `json.dumps`는 NaN을 비표준 `NaN` 토큰으로 그대로 씀 → 브라우저 `JSON.parse`가 통째로 실패해 `initFromData()`가 죽고 **더미(플레이스홀더) 데이터만 화면에 남는데 티도 안 남**. `save_json()`에 재귀적으로 NaN/Infinity를 `null`로 치환하는 `_sanitize_nan()` 안전장치 추가(어떤 필드에서 NaN이 나와도 방어). "새로고침해도 똑같다"는 증상이면 이 클래스의 버그(파일 자체가 깨져서 매번 파싱 실패)를 의심할 것 — PWA 캐시 문제와 헷갈리기 쉬움.
+>
+> **데이터 로딩 실패가 조용히 은닉되던 문제 (2026-08-04 수정)**: 위 NaN 사고처럼 `initFromData()`가 어떤 이유로든 실패하면 `catch(e){ console.error(...) }`만 하고 사용자에게는 아무 표시가 없어서, 하드코딩된 플레이스홀더 값(기준일 "2025.06.14" 등 `app.html`에 데모용으로 박혀있는 값)이 진짜 데이터인 것처럼 그대로 남아있었음. 실패 시 상단에 빨간 배너("데이터를 불러오지 못했습니다")와 캐시·서비스워커까지 초기화하는 "새로고침" 버튼을 표시하도록 수정.
+>
+> **PWA 앱 셸이 예전 빌드로 고착돼 새로고침해도 안 바뀌던 문제 (2026-08-04 수정)**: `next.config.mjs`의 `withPWAInit({ runtimeCaching: [...] })`에 `/data/*.json` 규칙만 있고 `app.html`(문서) 자체엔 런타임 캐싱 규칙이 없어서, 빌드 시점에 precache된 옛 `app.html`이 계속 서빙됨(정상적인 새로고침으로는 갱신 안 됨 — 서비스워커가 새로 활성화돼야 하는데 그 트리거가 없었음). `app.html`을 precache `exclude`에 추가하고 NetworkFirst(5초 타임아웃) 런타임 규칙 추가.
 
 ---
 
@@ -453,7 +467,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 **리밸런싱 스티키 구간 (직전 고점/올인 지점 탭 · NORMAL 모드)**
 - (2026-07-25 변경) 구간을 **그리드(2.5%/5%)에 고정된 정수**로 저장하면 프론트의 -25%/-50% 토글과 어긋나는 버그가 있어 폐기. 대신 `masam.rebalancing.nvda_lowest_close` / `qqq_lowest_close` / `rank2_lowest_close`(그리드 무관 원시 최저 EOD 종가)를 저장.
   - EOD 배치(`fetch_eod.py`)가 매일 갱신: 저장된 저점보다 당일 종가가 낮으면 갱신, 아니면 유지(스티키)
-  - 막바지 2구간 상승(전량 재매수) 판정은 캐노니컬 그리드(`rebalancing.max_pct`, 25→2.5%/50→5%)로 계산 — 판정 통과 시 저점을 당일 종가로 리셋
+  - 막바지 2구간 상승(전량 재매수) 판정: (2026-08-04 변경) 그리드는 티커별 독립(`rebalancing.max_pct_by_ticker[티커]`, §5 참고). 판정도 "구간 번호 비교"가 아니라 목표 구간의 실제 가격(`base*(1-step*(prev_zone-2))`) 도달 여부로 함 — 판정 통과 시 저점을 당일 종가로 리셋
   - (2026-07-31 수정) `rank2_lowest_close`는 원래 백엔드 미구현 상태로 프론트·백엔드 모두 2등주를 스킵하고 있었음 → 1등주 교체(오버테이크)로 NVDA가 2등주로 밀린 뒤, 종가 기준 2구간 하락이 있었는데도 스티키 floor가 없어 다음날 반등만 해도 체크가 사라지는 버그로 이어짐. `fetch_eod.py`에 rank2 저점 스티키 계산 추가 + `app.html`의 `rangeTarget/tgt !== 'rank2'` 스킵 제거로 1·2등주 완전 동등 처리
 - 프론트(`renderRangeTable`, `_calcZone(tgt)`)는 이 원시 저점 가격을 가져와 **그때그때 선택된 그리드**로 구간을 재계산 후 `Math.max(live_zone, eod_zone)`으로 floor 적용 (배너·테이블 동일 로직)
 - 구간 판정 시 현재가(`RANGE_CUR`, 라이브)가 아니라 `masam.eod_close.{nvda,qqq,rank2}`(EOD 종가)를 기준으로 함 — 장중 변동만으로 구간이 흔들리지 않도록. CRISIS/PANIC 모드는 기존대로 장중 저가(`d.low`) 기준 유지.
@@ -482,10 +496,11 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 **알림 히스토리 (벨 아이콘) — (2026-08-03 추가)**
 - 마삼룰 화면(발견/관심/경제지표/설정) topbar에 `.notif-btn`(`.refresh-btn`과 동일 스타일) 추가, 클릭 시 `#notif-overlay`/`#notif-drawer`(`#alloc-drawer`와 동일한 하단 드로어 패턴) 오픈. 경제지표·설정은 마삼룰·모멘텀이 topbar를 공유하므로 `updateSettingsView()`에서 `.notif-btn` 표시를 `currentMode` 기준으로 같이 토글.
 - **2원화 추적**(근거: 권장 비중은 `portfolio_ratio`/`max_pct_*` 같은 기기별 localStorage 설정에 의존해 서버가 재현 불가):
-  - 마삼 모드 전환·시총 순위 역전 → 서버(`notifications.json`, `fetch_eod.py`가 전일 대비 diff)
+  - 마삼 모드 전환·1등주 교체·2등주 교체·구간 도달 → 서버(`notifications.json`, `fetch_eod.py`가 전일 대비 diff). 이벤트 타입: `masam_mode`/`leader_swap`/`rank2_swap`/`zone_reach`(2026-08-04에 뒤 2종 추가 — 기존엔 1등주 교체만 기록해서 2등주 교체나 실제 구간 도달 이력이 어디에도 안 남았음)
   - 권장 비중 변경 → 클라이언트(`localStorage['alloc_history']`, `checkAllocationChange()`가 페이지 로드마다 diff) — 기기별로 따로 쌓임, 동기화 안 됨(의도된 동작)
 - 두 소스는 `renderNotifList()`가 날짜 내림차순으로 병합해 `window._notifEvents`에 저장, `openNotifDrawer()`가 렌더링
-- 권장 비중 변경 메시지는 `window._allocDetail`의 `nvdaZone`/`rank2Zone`/`qqqZone`(구간 번호, `renderRangeTable()`에서 계산)을 우선 표시하고 결과 비중을 뒤에 붙임(예: `1등주 1→2구간 — 주식 80% → 70%, 현금 20% → 30%`) — 처음엔 퍼센트만 비교했다가 1·2등 리더 몫 재배분으로 합계가 상쇄돼 "38%→38%"처럼 의미 없는 문구가 나오는 버그를 실사용 테스트로 발견해 수정
+- 권장 비중 변경 항목: (2026-08-04 재설계) 기존엔 `1등주 4→1구간, 2등주 3→0구간, QQQ 3→1구간 — 주식 68%→93%, 현금 32%→7%`처럼 한 줄에 다 욱여넣어 가독성이 나빴음. `alloc_history`를 flat text 대신 구조화 필드(`prevStock`/`nowStock`/`zoneParts`)로 저장하도록 바꾸고, 렌더링 시 "주식 비중 68%→93%"를 주 정보(숫자만 강조, 리스트 다른 항목과 폰트 크기는 동일하게)로, 구간 변화는 알약 칩으로 부가정보화. 기존에 이미 저장된 flat text 항목은 폴백으로 그대로 표시(하위호환)
+- 아이콘: 하단 탭과 동일한 `bxs:`(BoxIcons Solid) 패밀리로 통일(기존 heroicons에서 변경, 2026-08-04). **주의**: boxicons solid 세트가 생각보다 좁아서 `bxs:repeat`/`bxs:refresh`/`bxs:transfer-alt` 등 그럴듯한 이름이 실제로는 존재하지 않아 빈 아이콘으로 렌더링됨 — 새 bxs 아이콘을 쓸 땐 반드시 브라우저에서 실제 렌더링 확인할 것. 확인된 것: `bxs:trophy`(1등주 교체), `bxs:left-right-arrow-circle`(2등주 교체), `bxs:down-arrow-circle`(구간 도달), `bxs:up-arrow-circle`/`bxs:down-arrow-circle`(권장비중 증가/감소), `bxs:analyse`(마삼 모드 전환), `bxs:pie-chart-alt-2`/`bxs:bell`(기본값). 드로어 헤더의 🔔 이모지도 topbar 벨 버튼과 동일한 `heroicons:bell`로 교체(이모지를 구조적 아이콘으로 쓰지 말 것 원칙)
 - 설계·구현 근거: `docs/superpowers/specs/2026-08-03-notification-history-design.md`, `docs/superpowers/plans/2026-08-03-notification-history.md`
 
 **설정 탭 전략 출처 카드**
