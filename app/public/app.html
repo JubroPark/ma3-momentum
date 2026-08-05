@@ -1645,6 +1645,36 @@
     document.getElementById('range-dropdown').style.display = rangeDropdownOpen ? 'block' : 'none';
     document.getElementById('range-chevron').style.transform = rangeDropdownOpen ? 'rotate(180deg)' : '';
   }
+  // NORMAL 모드: 올인가(재매수 리셋 포함) 위로 종가가 마감하면 "직전 고점", 아직 못 넘었으면
+  // "올인 지점" — 타겟(nvda/rank2/qqq) 각자 자기 종가·올인가로 독립 판정. (2026-08-04 변경)
+  // 예전엔 종가 대신 직전고점(prev_high, since일 이후 누적 최고가)과 비교했는데, prev_high는
+  // 정의상 항상 오늘 종가 이상이라(당일 신고점이 아닌 한) 재매수 리셋 직후에도 곧장 "직전
+  // 고점"으로 넘어가버려 자동전환이 사실상 항상 무력화되는 문제가 있었음.
+  function autoBaseFor(target) {
+    const masam = window._cachedMasam;
+    const _lap = masam && masam.last_allin_price;
+    if (!masam || masam.mode !== 'NORMAL' || !_lap || typeof _lap !== 'object') return '최고점';
+    const _key = target === 'qqq' ? 'qqq' : target === 'rank2' ? 'rank2' : 'nvda';
+    const _allinBase = _lap[_key] || 0;
+    const _eodClose = (masam.eod_close || {})[_key] || 0;
+    return (_allinBase > 0 && _eodClose > _allinBase) ? '직전 고점' : '올인 지점';
+  }
+  // 주가 구간 표에서 "지금 보고 있는" 탭(rangeBase, 전역 하나)을 세팅. 사용자가 최고점/직전
+  // 고점/올인지점을 수동으로 눌러 볼 수도 있으므로 이건 뷰(현재 rangeTarget) 전용이고,
+  // 권장 비중 배너(_calcZone)는 타겟별로 autoBaseFor()를 각자 다시 불러써서 서로 독립임 —
+  // 안 그러면 QQQ 탭에서 "직전고점⇄올인지점"을 바꿀 때 1등주 권장 비중까지 같이 흔들리는
+  // 버그가 생김(전역 rangeBase를 모든 타겟이 공유했던 것).
+  // target 전환 시(selectRange)마다 다시 계산해야 함 — 처음엔 페이지 로드 시 한 번만 계산돼서
+  // 드롭다운으로 다른 종목으로 바꿔도 재평가가 안 되던 버그가 있었음.
+  function applyAutoTab(target) {
+    const _autoTab = autoBaseFor(target);
+    if (rangeBase !== _autoTab) {
+      rangeBase = _autoTab;
+      document.querySelectorAll('.view[data-view="발견"] .tabs .t').forEach(function(t) {
+        t.classList.toggle('on', t.textContent.trim() === _autoTab);
+      });
+    }
+  }
   function selectRange(target) {
     rangeTarget = target;
     rangeDropdownOpen = false;
@@ -1662,6 +1692,7 @@
     document.querySelectorAll('.view[data-view="발견"] .pct-toggle button').forEach(b => {
       b.classList.toggle('on', b.textContent.includes(String(rangePctMode)));
     });
+    applyAutoTab(target);
     renderRangeHeader();
     renderRangeTable();
   }
@@ -1746,10 +1777,13 @@
         const _d = RANGE_DATA[tgt];
         if (!_d) return 0;
         const _cur = parseFloat(_d.cur);
-        const _isManual = rangeBase === '직전 고점' || rangeBase === '올인 지점';
-        const _mk = rangeBase === '직전 고점' ? 'prev' : 'allin';
+        // 타겟 자신의 종가·올인가로 독립 판정 (전역 rangeBase 아님 — QQQ 탭에서
+        // 직전고점⇄올인지점을 바꿔도 1등주 권장 비중은 안 흔들려야 함, 2026-08-04 수정)
+        const _tgtBase = autoBaseFor(tgt);
+        const _isManual = _tgtBase === '직전 고점' || _tgtBase === '올인 지점';
+        const _mk = _tgtBase === '직전 고점' ? 'prev' : 'allin';
         const _mv = _isManual ? (manualPrices[tgt][_mk] || 0) : 0;
-        const _base = _isManual ? _mv : (_d.demos[rangeBase] || _d.demos['최고점']);
+        const _base = _isManual ? _mv : (_d.demos[_tgtBase] || _d.demos['최고점']);
         if (!_base) return 0;
         const _step = (getMaxPct(tgt) === 25) ? 0.025 : 0.05;
         const _isCrisis = masamMode === 'CRISIS' || masamMode === 'PANIC';
@@ -2549,23 +2583,7 @@ function initMaxPctUI(rateEnv) {
         }
       }
 
-      // NORMAL 모드: 올인 이후 신고점(직전 고점)이 이미 기록됐으면 "직전 고점" 탭으로 자동 전환
-      // (리밸런싱은 전고점 기준이 원칙 — live 가격이 올인가 아래로 되돌아왔다고 올인 지점 탭으로 돌아가면 안 됨)
-      if (masam.mode === 'NORMAL' && _lap && typeof _lap === 'object') {
-        const _allinBase   = rangeTarget === 'qqq' ? (_lap.qqq || 0)
-          : rangeTarget === 'rank2' ? (_lap.rank2 || 0)
-          : (_lap.nvda || 0);
-        const _prevHighVal = rangeTarget === 'qqq' ? (_lap.qqq_prev_high || 0)
-          : rangeTarget === 'rank2' ? (_lap.rank2_prev_high || 0)
-          : (_lap.nvda_prev_high || 0);
-        const _autoTab = (_allinBase > 0 && _prevHighVal > _allinBase) ? '직전 고점' : '올인 지점';
-        if (rangeBase !== _autoTab) {
-          rangeBase = _autoTab;
-          document.querySelectorAll('.view[data-view="발견"] .tabs .t').forEach(function(t) {
-            t.classList.toggle('on', t.textContent.trim() === _autoTab);
-          });
-        }
-      }
+      applyAutoTab(rangeTarget);
 
       if (typeof renderRangeHeader === 'function') renderRangeHeader();
       if (typeof renderRangeTable  === 'function') renderRangeTable();
