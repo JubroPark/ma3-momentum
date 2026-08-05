@@ -34,12 +34,12 @@
     "max_pct": 25,
     "max_pct_by_ticker": {
       "NVDA": 50,
-      "QQQ": 50,
+      "QQQ": 25,
       "GOOGL": 50
     },
     "qqq_pct": 0,
     "nvda_lowest_close": 190.01,
-    "qqq_lowest_close": 661.73,
+    "qqq_lowest_close": 723.85,
     "rank2_lowest_close": 377.65
   },
   "staking": {
@@ -138,7 +138,7 @@
       "QQQ": {
         "allin": 722.82,
         "prev_high": 725.51,
-        "lowest_close": 661.73,
+        "lowest_close": 723.85,
         "since": "2026-07-06"
       },
       "GOOGL": {
