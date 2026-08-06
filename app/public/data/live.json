@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-08-05T22:17:10Z",
-  "update_time": "07:17 KST",
+  "as_of": "2026-08-06T13:01:30Z",
+  "update_time": "22:01 KST",
   "nasdaq": {
     "price": 26363.44,
     "change_pct": -0.83,
@@ -68,7 +68,7 @@
       "change_pct": 0.03
     },
     "2222.SR": {
-      "change_pct": null
+      "change_pct": -0.9
     },
     "META": {
       "change_pct": 0.14
@@ -79,11 +79,11 @@
     "TSLA": {
       "change_pct": -1.77
     },
-    "005930.KS": {
-      "change_pct": 2.5
-    },
     "BRK-B": {
       "change_pct": 0.32
+    },
+    "005930.KS": {
+      "change_pct": -6.3
     },
     "LLY": {
       "change_pct": 4.86
@@ -97,11 +97,11 @@
     "WMT": {
       "change_pct": 0.71
     },
-    "000660.KS": {
-      "change_pct": 5.77
-    },
     "AMD": {
       "change_pct": -7.04
+    },
+    "000660.KS": {
+      "change_pct": -10.37
     },
     "V": {
       "change_pct": -0.28
@@ -116,17 +116,17 @@
       "change_pct": 1.04
     },
     "688825.SS": {
-      "change_pct": -1.27
+      "change_pct": -4.31
     },
     "TCEHY": {
-      "change_pct": -1.96
+      "change_pct": -1.94
     }
   },
   "live_market": {
-    "vix": 15.81,
-    "vix_chg": -4.18,
-    "usd_krw": 1421.9,
-    "usd_krw_chg": -0.46,
+    "vix": 15.85,
+    "vix_chg": 0.25,
+    "usd_krw": 1423.5,
+    "usd_krw_chg": -0.35,
     "fear_greed": 60
   }
 }
