@@ -72,5 +72,38 @@ def test():
     print("OK — all zone_reach cases passed")
 
 
+def update_allin(prev_low, prev_high, allin, close, step):
+    """fetch_eod.py의 _update_ticker 중 allin(올인 지점 기준가) 갱신 로직만 분리 재현.
+    new_peak(단순 신고가)만으로는 allin을 건드리면 안 되고, reached_recovery(2구간 하락 후
+    실제 재매수)일 때만 갱신해야 함 — 아니면 신고가 찍을 때마다 prev_high와 allin이 같은
+    값으로 붕괴해 '직전 고점'/'올인 지점' 두 탭이 항상 동일하게 표시되는 버그가 생김
+    (2026-08-06 확인)."""
+    new_peak = close > prev_high
+    high = max(prev_high, close)
+    base = high
+    prev_zone = zone_idx(prev_low, base, step)
+    target_zone = prev_zone - 2
+    recovery_price = base * (1 - step * target_zone)
+    reached_recovery = prev_zone >= 2 and close >= recovery_price
+    new_allin = close if reached_recovery else allin
+    return new_allin, high
+
+
+def test_allin_vs_prev_high():
+    # NVDA 시나리오: 진입가 195.55, 직전고점 212.5에서 219.22로 신고가 경신(2구간 하락 없이
+    # 그냥 전고 돌파) → prev_high는 219.22로 갱신되지만, allin은 195.55 그대로 유지돼야 함
+    allin, high = update_allin(prev_low=212.5, prev_high=212.5, allin=195.55, close=219.22, step=0.05)
+    assert high == 219.22, f"직전고점 갱신 기대, 실제 {high}"
+    assert allin == 195.55, f"단순 신고가로는 올인 기준가 유지 기대, 실제 {allin}"
+
+    # 반대로 2구간 하락(저점 190.01, base 212.5) 후 목표구간가(212.5) 이상 회복 → 진짜 재매수,
+    # allin이 회복 종가로 갱신돼야 함
+    allin, high = update_allin(prev_low=190.01, prev_high=212.5, allin=195.55, close=212.5, step=0.05)
+    assert allin == 212.5, f"재매수 리셋 기대, 실제 allin={allin}"
+
+    print("OK — allin vs prev_high divergence passed")
+
+
 if __name__ == "__main__":
     test()
+    test_allin_vs_prev_high()

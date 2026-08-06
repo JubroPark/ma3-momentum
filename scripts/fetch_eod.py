@@ -470,11 +470,12 @@ def main():
         is_reset = reached_recovery or new_peak
         if is_reset:
             new_low = close
-            # 재매수(2구간 반등) 리셋도 "새로 전량 매수(=올인)"한 것으로 보고 allin 갱신.
-            # 이래야 프론트의 올인지점↔직전고점 탭 자동전환(_autoTab, prev_high > allin
-            # 여부로 판정)이 최초 위기 진입 때만이 아니라 매 재매수 사이클마다 작동함
-            # (2026-08-04 확인: allin이 안 바뀌어 자동전환이 첫 사이클 이후로 멈춰있었음)
-            entry["allin"] = close
+            # allin(올인 지점 기준가) 갱신은 reached_recovery(2구간 하락 후 실제 재매수)일 때만.
+            # new_peak(단순 신고가 경신)까지 여기 묶으면 prev_high도 매 신고가마다 같이
+            # 갱신되는 필드라서, 신고가를 찍을 때마다 올인 지점=직전 고점이 같은 값으로
+            # 붕괴해 두 탭이 항상 동일하게 표시되는 버그가 생김(2026-08-06 확인).
+            if reached_recovery:
+                entry["allin"] = close
         else:
             new_low = min(prev_low, close) if prev_low else close
         # 구간 도달 알림: 리셋이 아니면서 이전보다 더 깊은 구간에 새로 도달했을 때만 기록
