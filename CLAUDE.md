@@ -463,13 +463,20 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - `renderRangeTable()` 내부의 `_calcZone(tgt)` 헬퍼로 1등주·2등주·QQQ 각각 독립 구간 계산 후 비율 합산. step은 `getMaxPct(tgt)`로 세 타겟 완전 독립 적용(과거엔 2등주가 1등주 설정을 공유하는 버그가 있었음)
 - `leader_status.gap_within_10pct || overtake_detected`(매뉴얼 1장: 1·2등 시총 격차 10% 이내/역전) → 1등:2등 = 1:1로 리더 몫을 반씩 나눠 각자 구간 축소 계산. 아니면 1등주가 리더 몫 전체
 - 배너 자체는 **1등주(+2등주 합산)/QQQ/현금만** 짧게 표시(overflow 방지) — 탭하면 `openAllocDetail()`이 하단 드로어(`#alloc-overlay`/`#alloc-drawer`)를 열어 로고·티커·정확한 개별 %·비중 막대바를 표시. 상세 데이터는 `window._allocDetail`에 스테이징
-- `rangeBase`는 live 로드 시 현재 `rangeTarget` 기준으로 자동전환(직전 고점/올인 지점). 배너는 이 전역 `rangeBase`를 그대로 사용
+- `rangeBase`는 live 로드 시 현재 `rangeTarget` 기준으로 자동전환(직전 고점/올인 지점). (2026-08-06 수정) 배너의 `_calcZone(tgt)`는 이 전역 `rangeBase`를 쓰지 않고 타겟별로 `autoBaseFor(tgt)`를 독립적으로 다시 불러씀 — 예전엔 전역값을 공유해서 QQQ 탭에서 직전고점⇄올인지점을 수동으로 바꾸면 1등주 배너 %까지 같이 흔들리는 버그가 있었음(아래 "직전 고점/올인 지점 자동전환" 참고)
+
+**직전 고점/올인 지점 자동전환 (2026-08-06 수정)**
+- `autoBaseFor(target)`: `masam.eod_close[target] > masam.last_allin_price.by_ticker[티커].allin`이면 "직전 고점" 탭, 아니면 "올인 지점" 탭. **주의**: 예전엔 `prev_high > allin`으로 비교했는데, `prev_high`는 정의상 오늘 종가를 포함한 누적 최고치라 사실상 항상 참에 가까워서 자동전환이 사실상 안 먹혔음 — `eod_close`(오늘 종가) 자체와 비교하도록 수정
+- `applyAutoTab(target)`가 `initFromData()`(최초 로드)와 `selectRange(target)`(타겟 전환 시마다) 양쪽에서 호출되도록 함 — 예전엔 최초 로드 1회만 평가하고 이후 타겟을 바꿔도 재평가가 안 됐음
+- 백엔드(`fetch_eod.py`)의 재매수 리셋 시 `entry["allin"]`을 당일 종가로 갱신해야 프론트가 비교할 새 기준가가 생김(위 리밸런싱 스티키 구간 참고)
 
 **리밸런싱 스티키 구간 (직전 고점/올인 지점 탭 · NORMAL 모드)**
 - (2026-07-25 변경) 구간을 **그리드(2.5%/5%)에 고정된 정수**로 저장하면 프론트의 -25%/-50% 토글과 어긋나는 버그가 있어 폐기. 대신 `masam.rebalancing.nvda_lowest_close` / `qqq_lowest_close` / `rank2_lowest_close`(그리드 무관 원시 최저 EOD 종가)를 저장.
   - EOD 배치(`fetch_eod.py`)가 매일 갱신: 저장된 저점보다 당일 종가가 낮으면 갱신, 아니면 유지(스티키)
   - 막바지 2구간 상승(전량 재매수) 판정: (2026-08-04 변경) 그리드는 티커별 독립(`rebalancing.max_pct_by_ticker[티커]`, §5 참고). 판정도 "구간 번호 비교"가 아니라 목표 구간의 실제 가격(`base*(1-step*(prev_zone-2))`) 도달 여부로 함 — 판정 통과 시 저점을 당일 종가로 리셋
   - (2026-07-31 수정) `rank2_lowest_close`는 원래 백엔드 미구현 상태로 프론트·백엔드 모두 2등주를 스킵하고 있었음 → 1등주 교체(오버테이크)로 NVDA가 2등주로 밀린 뒤, 종가 기준 2구간 하락이 있었는데도 스티키 floor가 없어 다음날 반등만 해도 체크가 사라지는 버그로 이어짐. `fetch_eod.py`에 rank2 저점 스티키 계산 추가 + `app.html`의 `rangeTarget/tgt !== 'rank2'` 스킵 제거로 1·2등주 완전 동등 처리
+  - **올인 기준가(`allin`) 갱신을 `reached_recovery`로만 한정 (2026-08-06 수정)**: `_update_ticker()`의 `is_reset = reached_recovery or new_peak`에서, `entry["allin"]` 갱신까지 `is_reset` 전체(즉 `new_peak` 단독으로도)에 걸려있었음. `prev_high`(직전 고점)는 신고가 때마다 항상 갱신되는 필드라, 얕은 눌림 후 소폭 신고가만 찍어도 `allin`이 덩달아 리셋돼 "직전 고점"/"올인 지점" 두 탭이 실제로는 아직 재매수 조건(2구간 이상 회복)을 못 채웠는데도 같은 값으로 붕괴하는 버그가 있었음. `entry["allin"] = close`를 `reached_recovery`(2구간 하락 후 실제 회복)일 때만 실행하도록 분리. `test_zone_reach.py::test_allin_vs_prev_high`에 회귀 테스트 있음.
+    - 단, **저점이 이미 2구간 이상 깊었던 상태에서 신고가를 찍으면** `reached_recovery`도 함께 True가 돼서(회복 목표가가 새 고점=오늘 종가 자체가 되어 항상 자명하게 충족) 결과적으로 `allin`도 같이 갱신됨 — 이건 버그가 아니라 정상(진짜 2구간 이상 회복이 실제로 일어난 것). NVDA가 2026-08-05에 저점 190.01(2구간 하락)에서 종가 219.22로 신고가 경신했을 때 직전고점·올인지점이 둘 다 219.22로 같아진 게 이 케이스. 반대로 QQQ처럼 저점에서 2구간만 회복하고 옛 전고점은 못 넘은 경우(`allin` 723.85 < `prev_high` 725.51)는 두 값이 정상적으로 분리됨.
 - 프론트(`renderRangeTable`, `_calcZone(tgt)`)는 이 원시 저점 가격을 가져와 **그때그때 선택된 그리드**로 구간을 재계산 후 `Math.max(live_zone, eod_zone)`으로 floor 적용 (배너·테이블 동일 로직)
 - 구간 판정 시 현재가(`RANGE_CUR`, 라이브)가 아니라 `masam.eod_close.{nvda,qqq,rank2}`(EOD 종가)를 기준으로 함 — 장중 변동만으로 구간이 흔들리지 않도록. CRISIS/PANIC 모드는 기존대로 장중 저가(`d.low`) 기준 유지.
 
@@ -497,11 +504,12 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 **알림 히스토리 (벨 아이콘) — (2026-08-03 추가)**
 - 마삼룰 화면(발견/관심/경제지표/설정) topbar에 `.notif-btn`(`.refresh-btn`과 동일 스타일) 추가, 클릭 시 `#notif-overlay`/`#notif-drawer`(`#alloc-drawer`와 동일한 하단 드로어 패턴) 오픈. 경제지표·설정은 마삼룰·모멘텀이 topbar를 공유하므로 `updateSettingsView()`에서 `.notif-btn` 표시를 `currentMode` 기준으로 같이 토글.
 - **2원화 추적**(근거: 권장 비중은 `portfolio_ratio`/`max_pct_*` 같은 기기별 localStorage 설정에 의존해 서버가 재현 불가):
-  - 마삼 모드 전환·1등주 교체·2등주 교체·구간 도달 → 서버(`notifications.json`, `fetch_eod.py`가 전일 대비 diff). 이벤트 타입: `masam_mode`/`leader_swap`/`rank2_swap`/`zone_reach`(2026-08-04에 뒤 2종 추가 — 기존엔 1등주 교체만 기록해서 2등주 교체나 실제 구간 도달 이력이 어디에도 안 남았음)
+  - 마삼 모드 전환·1등주 교체·2등주 교체·구간 도달·구간 회복 → 서버(`notifications.json`, `fetch_eod.py`가 전일 대비 diff). 이벤트 타입: `masam_mode`/`leader_swap`/`rank2_swap`/`zone_reach`(2026-08-04에 뒤 2종 추가)/`zone_reset`(2026-08-06 추가)
+  - **`zone_reset` 추가 배경 (2026-08-06)**: `zone_reach`(구간 하락 도달)만 있고 반대 방향(구간 회복=전량 재매수) 이벤트가 없어서, 이 전환은 클라이언트 `alloc_history`에만 기록됐음 — `alloc_history`는 "직전 로드 시점 스냅샷과의 diff"라 그 전환을 실제로 겪은 기기에서만 쌓이고, 전환 이후에 처음 접속하거나 로컬스토리지가 지워진 기기는 그 전환 이력을 영영 볼 수 없었음. `_update_ticker()`가 `reset_from_zone`(reached_recovery로 리셋되며 벗어난 구간, 0구간 리셋은 알림 의미 없어 제외)을 함께 반환하도록 해서 서버 쪽에도 대칭 기록.
   - 권장 비중 변경 → 클라이언트(`localStorage['alloc_history']`, `checkAllocationChange()`가 페이지 로드마다 diff) — 기기별로 따로 쌓임, 동기화 안 됨(의도된 동작)
 - 두 소스는 `renderNotifList()`가 날짜 내림차순으로 병합해 `window._notifEvents`에 저장, `openNotifDrawer()`가 렌더링
 - 권장 비중 변경 항목: (2026-08-04 재설계) 기존엔 `1등주 4→1구간, 2등주 3→0구간, QQQ 3→1구간 — 주식 68%→93%, 현금 32%→7%`처럼 한 줄에 다 욱여넣어 가독성이 나빴음. `alloc_history`를 flat text 대신 구조화 필드(`prevStock`/`nowStock`/`zoneParts`)로 저장하도록 바꾸고, 렌더링 시 "주식 비중 68%→93%"를 주 정보(숫자만 강조, 리스트 다른 항목과 폰트 크기는 동일하게)로, 구간 변화는 알약 칩으로 부가정보화. 기존에 이미 저장된 flat text 항목은 폴백으로 그대로 표시(하위호환)
-- 아이콘: 하단 탭과 동일한 `bxs:`(BoxIcons Solid) 패밀리로 통일(기존 heroicons에서 변경, 2026-08-04). **주의**: boxicons solid 세트가 생각보다 좁아서 `bxs:repeat`/`bxs:refresh`/`bxs:transfer-alt` 등 그럴듯한 이름이 실제로는 존재하지 않아 빈 아이콘으로 렌더링됨 — 새 bxs 아이콘을 쓸 땐 반드시 브라우저에서 실제 렌더링 확인할 것. 확인된 것: `bxs:trophy`(1등주 교체), `bxs:left-right-arrow-circle`(2등주 교체), `bxs:down-arrow-circle`(구간 도달), `bxs:up-arrow-circle`/`bxs:down-arrow-circle`(권장비중 증가/감소), `bxs:analyse`(마삼 모드 전환), `bxs:pie-chart-alt-2`/`bxs:bell`(기본값). 드로어 헤더의 🔔 이모지도 topbar 벨 버튼과 동일한 `heroicons:bell`로 교체(이모지를 구조적 아이콘으로 쓰지 말 것 원칙)
+- 아이콘: 하단 탭과 동일한 `bxs:`(BoxIcons Solid) 패밀리로 통일(기존 heroicons에서 변경, 2026-08-04). **주의**: boxicons solid 세트가 생각보다 좁아서 그럴듯한 이름이 실제로는 존재하지 않아 빈 아이콘으로 렌더링되는 경우가 많음(`bxs:repeat`/`bxs:refresh`/`bxs:transfer-alt`/`bxs:left-right-arrow-circle` 전부 미존재로 확인됨— `left-right-arrow-circle`은 2026-08-04에 "확인됨"으로 잘못 기록됐다가 2026-08-06 실사용 중 빈 원으로 뜨는 게 발견됨). **아이콘 존재 여부는 브라우저 렌더링이 아니라 `curl -s https://api.iconify.design/bxs.json?icons=아이콘명`으로 확인할 것**(단일 svg 엔드포인트 `/bxs/이름.svg`는 존재하는 아이콘도 404를 내는 경우가 있어 신뢰 불가 — 반드시 json 배치 엔드포인트로 확인). 확인된 것: `bxs:sort-alt`(1등주/2등주 교체 — 2026-08-06부터 두 이벤트 동일 아이콘으로 통일, 트로피는 "1등 등극" 의미가 강해 2등 교체엔 안 맞아서 제외), `bxs:down-arrow-circle`(구간 도달), `bxs:up-arrow-circle`(구간 회복/권장비중 증가), `bxs:analyse`(마삼 모드 전환), `bxs:pie-chart-alt-2`/`bxs:bell`(기본값). 드로어 헤더의 🔔 이모지도 topbar 벨 버튼과 동일한 `heroicons:bell`로 교체(이모지를 구조적 아이콘으로 쓰지 말 것 원칙)
 - 설계·구현 근거: `docs/superpowers/specs/2026-08-03-notification-history-design.md`, `docs/superpowers/plans/2026-08-03-notification-history.md`
 
 **설정 탭 전략 출처 카드**
