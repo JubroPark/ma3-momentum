@@ -3201,7 +3201,7 @@ function closeAllocDetail() {
 function openNotifDrawer() {
   const events = window._notifEvents || [];
   // 하단 탭(bxs: BoxIcons Solid)과 동일한 아이콘 패밀리로 통일
-  const ICONS = { masam_mode: 'bxs:analyse', leader_swap: 'bxs:trophy', rank2_swap: 'bxs:left-right-arrow-circle', zone_reach: 'bxs:down-arrow-circle', allocation: 'bxs:pie-chart-alt-2' };
+  const ICONS = { masam_mode: 'bxs:analyse', leader_swap: 'bxs:trophy', rank2_swap: 'bxs:sort-alt', zone_reach: 'bxs:down-arrow-circle', zone_reset: 'bxs:up-arrow-circle', allocation: 'bxs:pie-chart-alt-2' };
   const rows = events.length ? events.map(_renderNotifRow).join('')
     : `<div style="padding:40px 0;text-align:center;color:#6B6B73;font-size:14px;">최근 30일간 변동 이력이 없습니다</div>`;
   function _renderNotifRow(e) {

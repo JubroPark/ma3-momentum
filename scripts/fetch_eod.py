@@ -437,7 +437,9 @@ def main():
         직전고점은 매 배치 해당 티커 자신의 전체 히스토리(자기 since일 이후)로 재계산해
         배치가 하루 이틀 빠지더라도 스스로 정정됨.
         구간 그리드는 티커별 독립(max_pct_by_ticker) — 종목마다 리셋 시점이 달라짐.
-        반환값: (entry, zone_reach) — zone_reach는 오늘 새로 도달한 최심 구간(신기록일 때만 정수, 아니면 None)"""
+        반환값: (entry, zone_reach, reset_from_zone, step_pct) — zone_reach는 오늘 새로 도달한
+        최심 구간(신기록일 때만 정수, 아니면 None). reset_from_zone은 오늘 실제 재매수
+        (reached_recovery)로 리셋되면서 벗어난 구간(0구간에서의 리셋은 알림 의미 없어 제외)"""
         step = _step_of(ticker)
         close = round(close, 2)
         entry = by_ticker.get(ticker)
@@ -445,7 +447,7 @@ def main():
             # 처음 추적하는 종목(신규 1·2등 진입) — 오늘 종가로 새로 시작
             entry = {"allin": close, "prev_high": close, "lowest_close": close, "since": today_iso}
             by_ticker[ticker] = entry
-            return entry, None, step * 100
+            return entry, None, None, step * 100
         since_date = entry.get("since") or today_iso
         old_high = entry.get("prev_high", entry.get("allin", close))
         try:
@@ -484,9 +486,16 @@ def main():
             deepest_zone = _zone_idx(new_low, base, step)
             if deepest_zone > prev_zone:
                 zone_reach = deepest_zone
+        # 구간 회복(전량 재매수) 알림: 실제 재매수(reached_recovery)로 리셋되면서 현금을
+        # 확보하고 있던 구간(>0)을 벗어났을 때만 기록. 권장 비중 %는 기기별 portfolio_ratio에
+        # 의존해 서버가 계산 못 하지만, "구간이 회복됐다"는 사실 자체는 서버가 계산 가능한데도
+        # 기존엔 zone_reach(하락 방향)만 기록하고 회복 방향 이벤트가 없어서, 이 이벤트를 놓친
+        # 기기(특히 이 전환을 직접 겪지 못하고 이미 회복된 뒤에 처음 접속한 기기)는 권장 비중
+        # 변경 히스토리에서 이 전환을 영영 볼 수 없었음 (2026-08-06 확인)
+        reset_from_zone = prev_zone if (reached_recovery and prev_zone > 0) else None
         entry["prev_high"] = new_high
         entry["lowest_close"] = new_low
-        return entry, zone_reach, step * 100
+        return entry, zone_reach, reset_from_zone, step * 100
 
     # 알림 히스토리 이벤트(마삼 전환·순위 역전·구간 도달) — 최근 30일 보관
     # ponytail: 서버가 계산 가능한 이벤트만 기록. 권장 비중은 기기별 localStorage
@@ -496,9 +505,9 @@ def main():
     if new_mode == "NORMAL" and isinstance(last_allin_price, dict) and "by_ticker" in last_allin_price:
         by_ticker = last_allin_price["by_ticker"]
         _today_iso = today.isoformat()
-        nvda_entry,  nvda_zone,  nvda_step_pct  = _update_ticker(by_ticker, rank1_ticker, rank1_close,   rank1_hist, _today_iso)
-        rank2_entry, rank2_zone, rank2_step_pct = _update_ticker(by_ticker, rank2_ticker, rank2_close,   rank2_hist, _today_iso)
-        qqq_entry,   qqq_zone,   qqq_step_pct   = _update_ticker(by_ticker, "QQQ",        qqq_eod_close, qqq,        _today_iso)
+        nvda_entry,  nvda_zone,  nvda_reset,  nvda_step_pct  = _update_ticker(by_ticker, rank1_ticker, rank1_close,   rank1_hist, _today_iso)
+        rank2_entry, rank2_zone, rank2_reset, rank2_step_pct = _update_ticker(by_ticker, rank2_ticker, rank2_close,   rank2_hist, _today_iso)
+        qqq_entry,   qqq_zone,   qqq_reset,   qqq_step_pct   = _update_ticker(by_ticker, "QQQ",        qqq_eod_close, qqq,        _today_iso)
         # 오늘 1등인 티커는 "1등 해본 적 있음"으로 영구 마킹 — 격차 10% 이내라는 이유만으로
         # 한 번도 1등을 탈환한 적 없는 2등주가 권장 비중(1:1 배분)에 잡히는 걸 막기 위함
         # (2026-08-04 확인: gap_within_10pct만으로는 부족, 실제 추월 이력이 있어야 함)
@@ -515,12 +524,22 @@ def main():
         new_qqq_low   = qqq_entry["lowest_close"]
         print(f"  직전 고점: {rank1_ticker}={nvda_entry['prev_high']} QQQ={qqq_entry['prev_high']} {rank2_ticker}={rank2_entry['prev_high']}")
         print(f"  리밸런싱 저점: {rank1_ticker}={new_nvda_low}  QQQ={new_qqq_low}  {rank2_ticker}={new_rank2_low}")
-        for _label, _zone, _step_pct in ((rank1_ticker, nvda_zone, nvda_step_pct), ("QQQ", qqq_zone, qqq_step_pct), (rank2_ticker, rank2_zone, rank2_step_pct)):
+        for _label, _zone, _reset, _step_pct in (
+            (rank1_ticker, nvda_zone, nvda_reset, nvda_step_pct),
+            ("QQQ", qqq_zone, qqq_reset, qqq_step_pct),
+            (rank2_ticker, rank2_zone, rank2_reset, rank2_step_pct),
+        ):
             if _zone:
                 notif_events.append({
                     "date": today.isoformat(),
                     "type": "zone_reach",
                     "text": f"{_label} 직전고점 대비 {_zone}구간({_step_pct * _zone:.1f}%) 하락 도달",
+                })
+            if _reset:
+                notif_events.append({
+                    "date": today.isoformat(),
+                    "type": "zone_reset",
+                    "text": f"{_label} 구간 회복 — {_reset}구간→0구간 (전량 재매수)",
                 })
     else:
         new_nvda_low = 0
