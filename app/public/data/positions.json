@@ -809,8 +809,8 @@
           true
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(+2.3%) + 탑픽점수 81",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "name_ko": "알파벳 Class A",
       "domain": "abc.xyz",
       "weight_note": ""
@@ -857,8 +857,8 @@
           true
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(+2.9%) + 탑픽점수 81",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "name_ko": "알파벳 Class C",
       "domain": "abc.xyz",
       "weight_note": ""
@@ -2900,13 +2900,11 @@
       "name": "Sezzle Inc.",
       "name_ko": "세즐",
       "domain": "sezzle.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 4.0,
       "avg_price": null,
-      "weight": 0.075,
-      "deployed_tranches": [
-        1
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 188.55,
       "trailing_stop_line": 131.99,
       "horizontal_support": 108.51,
@@ -2937,9 +2935,9 @@
           false
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (118.02 ≤ 131.99)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -11.8%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "GRND",
@@ -3752,8 +3750,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 3.64)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -4674,12 +4672,13 @@
       "name": "Alamos Gold Inc.",
       "name_ko": "알라모스 골드",
       "domain": "alamosgold.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 2.95,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 55.22,
       "trailing_stop_line": 43.28,
@@ -4711,8 +4710,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.47)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+2.9%) — 2차 진입",
       "weight_note": ""
     },
     {
@@ -4720,10 +4719,10 @@
       "name": "OR Royalties Inc.",
       "name_ko": "OR 로열티스",
       "domain": "orroyalties.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 2.9,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -4757,9 +4756,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.40)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (33.08 ≤ 38.05)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -15.0%)"
     },
     {
       "symbol": "ARIS",
@@ -5333,8 +5332,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.59)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -6685,10 +6684,10 @@
       "name": "TPG Inc.",
       "name_ko": "TPG",
       "domain": "tpg.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 2.4,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -6722,21 +6721,22 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.70)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (48.99 ≤ 54.29)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -10.8%)"
     },
     {
       "symbol": "BCRX",
       "name": "BioCryst Pharmaceuticals, Inc.",
       "name_ko": "바이오크리스트 파마슈티컬스",
       "domain": "biocryst.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 3.25,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 11.11,
       "trailing_stop_line": 8.84,
@@ -6768,8 +6768,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.31)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+0.7%) — 2차 진입",
       "weight_note": ""
     }
   ]
