@@ -4672,14 +4672,11 @@
       "name": "Alamos Gold Inc.",
       "name_ko": "알라모스 골드",
       "domain": "alamosgold.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 2.95,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 55.22,
       "trailing_stop_line": 43.28,
       "horizontal_support": 29.49,
@@ -4710,9 +4707,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (33.15 ≤ 43.28)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -30.6%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "OR",
@@ -4754,8 +4751,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -6717,8 +6714,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -6817,10 +6814,10 @@
       "name": "Aura Minerals Inc.",
       "name_ko": "아우라 미네랄스",
       "domain": "auraminerals.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 3.7,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -6854,9 +6851,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.49)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (74.13 ≤ 79.26)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -6.9%)"
     },
     {
       "symbol": "MTSI",
@@ -6988,8 +6985,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.86)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
