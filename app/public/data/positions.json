@@ -1594,15 +1594,11 @@
     {
       "symbol": "CDNS",
       "name": "Cadence Design Systems, Inc.",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 4.5,
       "avg_price": null,
-      "weight": 0.225,
-      "deployed_tranches": [
-        1,
-        2,
-        3
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 416.39,
       "trailing_stop_line": 333.11,
       "horizontal_support": 331.56,
@@ -1633,11 +1629,11 @@
           false
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치",
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
       "name_ko": "케이던스 디자인 시스템즈",
       "domain": "cadence.com",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -0.4%)"
+      "weight_note": ""
     },
     {
       "symbol": "MO",
@@ -2128,13 +2124,11 @@
       "name": "Dave Inc.",
       "name_ko": "데이브",
       "domain": "dave.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 4.0,
       "avg_price": null,
-      "weight": 0.075,
-      "deployed_tranches": [
-        1
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 442.53,
       "trailing_stop_line": 309.77,
       "horizontal_support": 242.01,
@@ -2165,9 +2159,9 @@
           false
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (308.82 ≤ 309.77)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -0.3%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "RDDT",
@@ -6849,8 +6843,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
