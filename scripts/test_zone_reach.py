@@ -104,6 +104,41 @@ def test_allin_vs_prev_high():
     print("OK — allin vs prev_high divergence passed")
 
 
+def update_since(prev_low, prev_high, allin, since, close, step, today):
+    """entry['since'] 리셋 로직만 분리 재현. reached_recovery 때 since를 오늘로 리셋해야
+    prev_high가 재매수 이전 히스토리를 계속 끌고 오지 않음 (2026-08-10 확인)."""
+    high = max(prev_high, close)
+    base = high
+    prev_zone = zone_idx(prev_low, base, step)
+    target_zone = prev_zone - 2
+    recovery_price = base * (1 - step * target_zone)
+    reached_recovery = prev_zone >= 2 and close >= recovery_price
+    if reached_recovery:
+        allin = close
+        since = today
+        high = close
+    return allin, high, since
+
+
+def test_since_reset_on_recovery():
+    # 재매수(reached_recovery) 발생 시 since가 오늘로 리셋되어, prev_high가 재매수 이전의
+    # 옛 전고점을 더 이상 반영하지 않아야 함. 안 그러면 재매수 직후에도 prevHigh(옛 전고점)가
+    # 새 allin(재매수가)보다 훨씬 높게 남아 프론트 자동전환(prevHigh > allin)이 곧장
+    # "직전 고점"으로 넘어가버려 사실상 매 사이클 무력화됨 (2026-08-10 확인)
+    allin, high, since = update_since(
+        prev_low=190.01, prev_high=212.5, allin=195.55, since='2026-07-06',
+        close=212.5, step=0.05, today='2026-08-15',
+    )
+    assert allin == 212.5
+    assert high == 212.5, f"재매수 시점에 prev_high도 재매수가로 리셋 기대, 실제 {high}"
+    assert since == '2026-08-15', f"since 리셋 기대, 실제 {since}"
+    # 재매수 직후: 아직 신고가 안 찍었으므로 prevHigh == allin (직전고점 아님, 올인지점이어야 함)
+    assert not (high > allin), "재매수 직후엔 prevHigh가 allin을 넘으면 안 됨(자동전환 무력화 재발)"
+
+    print("OK — since reset on recovery passed")
+
+
 if __name__ == "__main__":
     test()
     test_allin_vs_prev_high()
+    test_since_reset_on_recovery()

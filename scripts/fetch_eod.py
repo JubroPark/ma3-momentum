@@ -478,6 +478,16 @@ def main():
             # 붕괴해 두 탭이 항상 동일하게 표시되는 버그가 생김(2026-08-06 확인).
             if reached_recovery:
                 entry["allin"] = close
+                # since도 같이 리셋. 안 그러면 prev_high가 이번 재매수 이전(붕괴 전 옛
+                # 전고점) 히스토리를 계속 포함해서, 재매수 직후에도 prevHigh가 새 allin
+                # 보다 훨씬 높게 남아있게 되고, 프론트 자동전환(prevHigh > allin)이 재매수
+                # 직후부터 곧장 "직전 고점"으로 넘어가버려 사실상 매 사이클 무력화됨
+                # (2026-08-10 확인 — 이래서 프론트가 대신 eodClose > allin으로 비교하도록
+                # 바뀌어 있었는데, 그건 "신고가 찍고 눌림" 케이스에서 직전고점 유지가 안 되는
+                # 또 다른 버그였음. since를 재매수 시점으로 리셋하면 두 요구사항이 동시에
+                # 성립해서 프론트도 prevHigh > allin으로 되돌릴 수 있음)
+                entry["since"] = today_iso
+                new_high = close
         else:
             new_low = min(prev_low, close) if prev_low else close
         # 구간 도달 알림: 리셋이 아니면서 이전보다 더 깊은 구간에 새로 도달했을 때만 기록

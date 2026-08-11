@@ -1645,19 +1645,21 @@
     document.getElementById('range-dropdown').style.display = rangeDropdownOpen ? 'block' : 'none';
     document.getElementById('range-chevron').style.transform = rangeDropdownOpen ? 'rotate(180deg)' : '';
   }
-  // NORMAL 모드: 올인가(재매수 리셋 포함) 위로 종가가 마감하면 "직전 고점", 아직 못 넘었으면
-  // "올인 지점" — 타겟(nvda/rank2/qqq) 각자 자기 종가·올인가로 독립 판정. (2026-08-04 변경)
-  // 예전엔 종가 대신 직전고점(prev_high, since일 이후 누적 최고가)과 비교했는데, prev_high는
-  // 정의상 항상 오늘 종가 이상이라(당일 신고점이 아닌 한) 재매수 리셋 직후에도 곧장 "직전
-  // 고점"으로 넘어가버려 자동전환이 사실상 항상 무력화되는 문제가 있었음.
+  // NORMAL 모드: 올인가(재매수 리셋 포함) 이후로 신고점을 한 번이라도 찍었으면 "직전 고점",
+  // 아직 못 찍었으면 "올인 지점" — 타겟(nvda/rank2/qqq) 각자 독립 판정. (2026-08-10 재변경)
+  // 종가와 비교하던 버전(2026-08-04~)은 "신고점 찍고 눌림" 케이스에서 직전 고점을 계속
+  // 봐야 하는데 종가가 다시 allin 밑으로 내려오면 올인 지점으로 되돌아가버리는 버그가 있었음.
+  // prev_high와 비교하던 원래 버전이 "재매수 직후 자동전환 무력화"됐던 원인은 prev_high의
+  // since 기준일이 재매수 시점으로 리셋 안 됐기 때문(fetch_eod.py 쪽 버그) — 그걸 고쳤으므로
+  // 여기서도 prev_high 비교로 되돌림.
   function autoBaseFor(target) {
     const masam = window._cachedMasam;
     const _lap = masam && masam.last_allin_price;
     if (!masam || masam.mode !== 'NORMAL' || !_lap || typeof _lap !== 'object') return '최고점';
     const _key = target === 'qqq' ? 'qqq' : target === 'rank2' ? 'rank2' : 'nvda';
     const _allinBase = _lap[_key] || 0;
-    const _eodClose = (masam.eod_close || {})[_key] || 0;
-    return (_allinBase > 0 && _eodClose > _allinBase) ? '직전 고점' : '올인 지점';
+    const _prevHigh = _lap[_key + '_prev_high'] || 0;
+    return (_allinBase > 0 && _prevHigh > _allinBase) ? '직전 고점' : '올인 지점';
   }
   // 주가 구간 표에서 "지금 보고 있는" 탭(rangeBase, 전역 하나)을 세팅. 사용자가 최고점/직전
   // 고점/올인지점을 수동으로 눌러 볼 수도 있으므로 이건 뷰(현재 rangeTarget) 전용이고,
