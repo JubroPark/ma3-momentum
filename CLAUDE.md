@@ -465,10 +465,14 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - 배너 자체는 **1등주(+2등주 합산)/QQQ/현금만** 짧게 표시(overflow 방지) — 탭하면 `openAllocDetail()`이 하단 드로어(`#alloc-overlay`/`#alloc-drawer`)를 열어 로고·티커·정확한 개별 %·비중 막대바를 표시. 상세 데이터는 `window._allocDetail`에 스테이징
 - `rangeBase`는 live 로드 시 현재 `rangeTarget` 기준으로 자동전환(직전 고점/올인 지점). (2026-08-06 수정) 배너의 `_calcZone(tgt)`는 이 전역 `rangeBase`를 쓰지 않고 타겟별로 `autoBaseFor(tgt)`를 독립적으로 다시 불러씀 — 예전엔 전역값을 공유해서 QQQ 탭에서 직전고점⇄올인지점을 수동으로 바꾸면 1등주 배너 %까지 같이 흔들리는 버그가 있었음(아래 "직전 고점/올인 지점 자동전환" 참고)
 
-**직전 고점/올인 지점 자동전환 (2026-08-06 수정)**
-- `autoBaseFor(target)`: `masam.eod_close[target] > masam.last_allin_price.by_ticker[티커].allin`이면 "직전 고점" 탭, 아니면 "올인 지점" 탭. **주의**: 예전엔 `prev_high > allin`으로 비교했는데, `prev_high`는 정의상 오늘 종가를 포함한 누적 최고치라 사실상 항상 참에 가까워서 자동전환이 사실상 안 먹혔음 — `eod_close`(오늘 종가) 자체와 비교하도록 수정
+**직전 고점/올인 지점 자동전환 (2026-08-10 재수정 — `prev_high > allin` 비교로 원복)**
+- `autoBaseFor(target)`: `masam.last_allin_price.by_ticker[티커].prev_high > allin`이면 "직전 고점" 탭, 아니면 "올인 지점" 탭.
+- **비교 기준을 두 번 오갔음. 결론: `prev_high > allin`이 맞고, `eod_close > allin`은 틀렸다.**
+  - 원래(~2026-08-04) `prev_high > allin`로 비교했는데, `prev_high`는 재매수 이후에도 재매수 이전 옛 전고점을 계속 반영해서(아래 `since` 리셋 누락 버그) 재매수 직후에도 이미 참이 되어버려 "자동전환이 사실상 항상 직전고점"으로 무력화된 것처럼 보였음
+  - 그래서 2026-08-06에 `eod_close(오늘 종가) > allin`으로 바꿨는데, 이러면 "신고점을 찍고 종가가 다시 눌리는" 흔한 케이스에서 직전 고점을 계속 봐야 하는데도 올인 지점으로 되돌아가버리는 **다른** 버그가 생김(2026-08-10, NVDA: allin 219.22 / 직전고점 223.96 / 종가 217.55에서 재현·확인)
+  - 진짜 원인은 비교 기준이 아니라 `fetch_eod.py`가 `reached_recovery`(재매수) 시 `entry["allin"]`만 리셋하고 `entry["since"]`(직전고점 계산 시작일)는 안 건드린 것이었음 → 아래 "리밸런싱 스티키 구간"의 `since` 리셋 항목 참고. 이걸 고치면 재매수 직후 `prev_high`가 `allin`과 함께 리셋돼 자동전환이 다시 "올인 지점"부터 정상 시작하므로, `prev_high > allin` 비교로 되돌려도 두 문제 모두 해결됨
 - `applyAutoTab(target)`가 `initFromData()`(최초 로드)와 `selectRange(target)`(타겟 전환 시마다) 양쪽에서 호출되도록 함 — 예전엔 최초 로드 1회만 평가하고 이후 타겟을 바꿔도 재평가가 안 됐음
-- 백엔드(`fetch_eod.py`)의 재매수 리셋 시 `entry["allin"]`을 당일 종가로 갱신해야 프론트가 비교할 새 기준가가 생김(위 리밸런싱 스티키 구간 참고)
+- 백엔드(`fetch_eod.py`)의 재매수 리셋 시 `entry["allin"]`과 `entry["since"]`를 **함께** 당일로 갱신해야 프론트가 비교할 새 기준가·새 직전고점 창이 동시에 생김(아래 리밸런싱 스티키 구간 참고)
 
 **리밸런싱 스티키 구간 (직전 고점/올인 지점 탭 · NORMAL 모드)**
 - (2026-07-25 변경) 구간을 **그리드(2.5%/5%)에 고정된 정수**로 저장하면 프론트의 -25%/-50% 토글과 어긋나는 버그가 있어 폐기. 대신 `masam.rebalancing.nvda_lowest_close` / `qqq_lowest_close` / `rank2_lowest_close`(그리드 무관 원시 최저 EOD 종가)를 저장.
@@ -477,6 +481,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
   - (2026-07-31 수정) `rank2_lowest_close`는 원래 백엔드 미구현 상태로 프론트·백엔드 모두 2등주를 스킵하고 있었음 → 1등주 교체(오버테이크)로 NVDA가 2등주로 밀린 뒤, 종가 기준 2구간 하락이 있었는데도 스티키 floor가 없어 다음날 반등만 해도 체크가 사라지는 버그로 이어짐. `fetch_eod.py`에 rank2 저점 스티키 계산 추가 + `app.html`의 `rangeTarget/tgt !== 'rank2'` 스킵 제거로 1·2등주 완전 동등 처리
   - **올인 기준가(`allin`) 갱신을 `reached_recovery`로만 한정 (2026-08-06 수정)**: `_update_ticker()`의 `is_reset = reached_recovery or new_peak`에서, `entry["allin"]` 갱신까지 `is_reset` 전체(즉 `new_peak` 단독으로도)에 걸려있었음. `prev_high`(직전 고점)는 신고가 때마다 항상 갱신되는 필드라, 얕은 눌림 후 소폭 신고가만 찍어도 `allin`이 덩달아 리셋돼 "직전 고점"/"올인 지점" 두 탭이 실제로는 아직 재매수 조건(2구간 이상 회복)을 못 채웠는데도 같은 값으로 붕괴하는 버그가 있었음. `entry["allin"] = close`를 `reached_recovery`(2구간 하락 후 실제 회복)일 때만 실행하도록 분리. `test_zone_reach.py::test_allin_vs_prev_high`에 회귀 테스트 있음.
     - 단, **저점이 이미 2구간 이상 깊었던 상태에서 신고가를 찍으면** `reached_recovery`도 함께 True가 돼서(회복 목표가가 새 고점=오늘 종가 자체가 되어 항상 자명하게 충족) 결과적으로 `allin`도 같이 갱신됨 — 이건 버그가 아니라 정상(진짜 2구간 이상 회복이 실제로 일어난 것). NVDA가 2026-08-05에 저점 190.01(2구간 하락)에서 종가 219.22로 신고가 경신했을 때 직전고점·올인지점이 둘 다 219.22로 같아진 게 이 케이스. 반대로 QQQ처럼 저점에서 2구간만 회복하고 옛 전고점은 못 넘은 경우(`allin` 723.85 < `prev_high` 725.51)는 두 값이 정상적으로 분리됨.
+  - **재매수 시 `since`도 함께 리셋 (2026-08-10 수정)**: `reached_recovery`일 때 `entry["allin"]`은 리셋하면서 `entry["since"]`(직전고점 `prev_high` 계산의 시작일 — `hist.loc[since_date:, "Close"].max()`)는 그대로 둬서, 재매수 직후에도 `prev_high`가 재매수 이전(붕괴 전) 옛 전고점을 계속 반영하고 있었음. 그 결과 재매수 직후 `prev_high`가 새 `allin`보다 이미 훨씬 높은 채로 남아, 위 "직전 고점/올인 지점 자동전환"이 매 재매수 사이클마다 곧장 무력화되는 문제로 이어짐(2026-08-06에 이걸 `eod_close` 비교로 우회했다가 다른 버그가 남). `reached_recovery`일 때 `entry["since"] = today`와 `new_high = close`(=`prev_high`도 재매수가로 리셋)를 함께 실행하도록 수정 — 재매수 직후엔 `prev_high == allin`(올인 지점부터 시작), 그 이후 진짜 신고점을 찍어야만 `prev_high > allin`(직전 고점)으로 전환됨. `test_zone_reach.py::test_since_reset_on_recovery`에 회귀 테스트 있음.
 - 프론트(`renderRangeTable`, `_calcZone(tgt)`)는 이 원시 저점 가격을 가져와 **그때그때 선택된 그리드**로 구간을 재계산 후 `Math.max(live_zone, eod_zone)`으로 floor 적용 (배너·테이블 동일 로직)
 - 구간 판정 시 현재가(`RANGE_CUR`, 라이브)가 아니라 `masam.eod_close.{nvda,qqq,rank2}`(EOD 종가)를 기준으로 함 — 장중 변동만으로 구간이 흔들리지 않도록. CRISIS/PANIC 모드는 기존대로 장중 저가(`d.low`) 기준 유지.
 
