@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-08-10T21:50:52Z",
-  "update_time": "06:50 KST",
+  "as_of": "2026-08-11T13:01:41Z",
+  "update_time": "22:01 KST",
   "nasdaq": {
     "price": 26605.36,
     "change_pct": -0.32,
@@ -29,9 +29,9 @@
   "rank2": {
     "ticker": "AAPL",
     "price": 308.26,
-    "change_pct": -1.62,
+    "change_pct": -1.53,
     "ath": 340.08,
-    "intra_low": 300.0
+    "intra_low": 299.74
   },
   "qqq": {
     "price": 720.87,
@@ -50,7 +50,7 @@
       "change_pct": -2.86
     },
     "AAPL": {
-      "change_pct": -1.62
+      "change_pct": -1.53
     },
     "GOOGL": {
       "change_pct": 0.91
@@ -71,7 +71,7 @@
       "change_pct": 4.23
     },
     "2222.SR": {
-      "change_pct": null
+      "change_pct": -0.08
     },
     "META": {
       "change_pct": 0.48
@@ -82,11 +82,11 @@
     "BRK-B": {
       "change_pct": 1.46
     },
-    "005930.KS": {
-      "change_pct": -0.43
-    },
     "LLY": {
       "change_pct": 3.9
+    },
+    "005930.KS": {
+      "change_pct": 4.13
     },
     "MU": {
       "change_pct": -1.89
@@ -101,7 +101,7 @@
       "change_pct": -2.86
     },
     "000660.KS": {
-      "change_pct": -0.14
+      "change_pct": 0.35
     },
     "V": {
       "change_pct": -0.33
@@ -119,14 +119,14 @@
       "change_pct": -0.65
     },
     "688825.SS": {
-      "change_pct": -2.25
+      "change_pct": -1.75
     }
   },
   "live_market": {
-    "vix": 15.46,
-    "vix_chg": 3.76,
-    "usd_krw": 1417.7,
-    "usd_krw_chg": -0.32,
-    "fear_greed": 64
+    "vix": 15.54,
+    "vix_chg": 0.52,
+    "usd_krw": 1412.8,
+    "usd_krw_chg": 0.41,
+    "fear_greed": 65
   }
 }
