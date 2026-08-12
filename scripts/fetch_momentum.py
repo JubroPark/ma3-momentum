@@ -26,6 +26,7 @@ universe.json 연동 (fetch_universe.py 실행 후):
   - ENTRY_1/2/3, TRIM, EXIT 종목은 절대 건드리지 않음
 """
 import json
+import math
 import requests
 from datetime import date
 from pathlib import Path
@@ -86,8 +87,22 @@ def load_json(path: Path) -> dict:
         return {}
 
 
+def _sanitize_nan(obj):
+    """NaN/Infinity는 표준 JSON에 없는 값 — json.dumps가 그대로 NaN 토큰을
+    써버려 브라우저 JSON.parse가 깨짐. 저장 직전 재귀적으로 null로 치환.
+    (fetch_live.py와 동일 패턴 — 2026-08-13, SCCO의 atr14/atr_pct가 NaN으로
+    저장돼 앱이 통째로 안 뜬 사고 후 이 파이프라인에도 뒤늦게 적용)"""
+    if isinstance(obj, dict):
+        return {k: _sanitize_nan(v) for k, v in obj.items()}
+    if isinstance(obj, list):
+        return [_sanitize_nan(v) for v in obj]
+    if isinstance(obj, float) and (math.isnan(obj) or math.isinf(obj)):
+        return None
+    return obj
+
+
 def save_json(path: Path, data: dict) -> None:
-    path.write_text(json.dumps(data, ensure_ascii=False, indent=2), encoding="utf-8")
+    path.write_text(json.dumps(_sanitize_nan(data), ensure_ascii=False, indent=2), encoding="utf-8")
     print(f"  저장: {path.name}")
 
 
@@ -346,7 +361,8 @@ def calc_atr14(hist) -> float:
             abs(highs[i] - closes[i - 1]),
             abs(lows[i] - closes[i - 1]),
         )
-        trs.append(tr)
+        if not math.isnan(tr):
+            trs.append(tr)
     if not trs:
         return 0.0
     return float(sum(trs[-14:]) / min(len(trs[-14:]), 14))
