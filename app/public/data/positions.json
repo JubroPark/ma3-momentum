@@ -1550,12 +1550,13 @@
     {
       "symbol": "CIEN",
       "name": "Ciena Corporation",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 3.0,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 627.0,
       "trailing_stop_line": 438.9,
@@ -1587,8 +1588,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.33)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+2.5%) — 2차 진입",
       "name_ko": "시에나",
       "domain": "ciena.com",
       "weight_note": ""
@@ -4360,10 +4361,10 @@
       "name": "nCino, Inc.",
       "name_ko": "엔씨노",
       "domain": "ncino.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 2.65,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -4397,9 +4398,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.43)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (20.66 ≤ 25.64)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -24.1%)"
     },
     {
       "symbol": "NU",
@@ -5156,14 +5157,11 @@
       "name": "Atour Lifestyle Holdings Limite",
       "name_ko": "어투어 라이프 스타일 홀딩스 ADR",
       "domain": "ir.yaduo.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 2.75,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 42.21,
       "trailing_stop_line": 33.77,
       "horizontal_support": 31.38,
@@ -5194,9 +5192,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (33.07 ≤ 33.77)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -2.1%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "AG",
