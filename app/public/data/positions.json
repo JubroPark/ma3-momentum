@@ -6583,10 +6583,10 @@
       "name": "Hecla Mining Company",
       "name_ko": "헤클라 마이닝",
       "domain": "hecla.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 2.85,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -6620,9 +6620,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.47)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (17.95 ≤ 23.45)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -30.6%)"
     },
     {
       "symbol": "TGS",
@@ -7551,8 +7551,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
