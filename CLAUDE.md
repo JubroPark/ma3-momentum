@@ -178,6 +178,10 @@
 > **데이터 로딩 실패가 조용히 은닉되던 문제 (2026-08-04 수정)**: 위 NaN 사고처럼 `initFromData()`가 어떤 이유로든 실패하면 `catch(e){ console.error(...) }`만 하고 사용자에게는 아무 표시가 없어서, 하드코딩된 플레이스홀더 값(기준일 "2025.06.14" 등 `app.html`에 데모용으로 박혀있는 값)이 진짜 데이터인 것처럼 그대로 남아있었음. 실패 시 상단에 빨간 배너("데이터를 불러오지 못했습니다")와 캐시·서비스워커까지 초기화하는 "새로고침" 버튼을 표시하도록 수정.
 >
 > **PWA 앱 셸이 예전 빌드로 고착돼 새로고침해도 안 바뀌던 문제 (2026-08-04 수정)**: `next.config.mjs`의 `withPWAInit({ runtimeCaching: [...] })`에 `/data/*.json` 규칙만 있고 `app.html`(문서) 자체엔 런타임 캐싱 규칙이 없어서, 빌드 시점에 precache된 옛 `app.html`이 계속 서빙됨(정상적인 새로고침으로는 갱신 안 됨 — 서비스워커가 새로 활성화돼야 하는데 그 트리거가 없었음). `app.html`을 precache `exclude`에 추가하고 NetworkFirst(5초 타임아웃) 런타임 규칙 추가.
+>
+> **`_sanitize_nan()`이 모멘텀 파이프라인엔 이식이 안 돼 있던 사고 (2026-08-13)**: 위 2026-08-04 NaN 사고 때 안전장치를 `fetch_live.py`에만 추가하고 `fetch_momentum.py`(`indicators.json`/`positions.json` 생성)엔 빠뜨림 → SCCO의 `atr14`/`atr_pct`가 (아마 데이터 결측일로) NaN이 되면서 `calc_atr14()`가 예외 없이 조용히 NaN을 전파, 그대로 저장돼 앱이 통째로 안 뜸. `fetch_momentum.py`에도 동일한 `_sanitize_nan()` 추가 + `calc_atr14()`가 NaN true range를 애초에 평균 계산에 안 섞도록 필터링. **NaN 안전장치는 JSON을 저장하는 배치 스크립트 전부(현재 `fetch_eod.py`/`fetch_live.py`/`fetch_momentum.py`)에 동일하게 있어야 함 — 스크립트 하나 새로 추가하거나 리팩터링할 때 빠뜨리기 쉬우니 체크할 것.**
+>
+> **장중 배치가 24시간+ 계속 크래시하며 전 종목 가격이 null로 굳어진 사고 (2026-08-18)**: 두 버그가 겹침. (1) `fetch_quote()`가 `period="2d"`(달력일 기준)로 조회했는데, 데이터 소스에 하루 공백(2026-08-17)이 끼면서 실제 거래일 2개를 못 채워 매번 조회 실패로 처리됨 → `period="5d"`로 넉넉히 받아 마지막 2개 실제 거래일 행을 쓰도록 수정. (2) 조회 실패 시 `existing_live.get("nasdaq", {}).get("price", 0)`로 직전 값에 폴백하는데, `.get(key, default)`의 `default`는 키가 "없을 때"만 적용되고 **이미 null로 저장된 값이 있으면 그 null을 그대로 돌려줌** — 그 `None`이 `from_ath_pct` 계산 뺄셈에 그대로 들어가 `TypeError`로 스크립트 전체가 죽는 자기영속 크래시로 이어짐(한번 null이 저장되면 다음 실행도 크래시 → 영영 회복 불가). 폴백을 `.get(key) or 0` 패턴으로 바꾸고 산술 연산 직전에도 None 가드 추가. **"이전 값으로 폴백" 코드에 `.get(key, default)`를 쓸 땐, 그 값이 이미 `None`으로 저장돼 있을 수 있다는 걸 항상 의심할 것 — `default`는 키 부재에만 적용되고 저장된 `None`엔 안 먹힘.**
 
 ---
 
