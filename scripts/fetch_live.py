@@ -45,7 +45,12 @@ def save_json(path: Path, data: dict) -> None:
 def fetch_quote(ticker: str) -> Optional[dict]:
     try:
         t = yf.Ticker(ticker)
-        hist = t.history(period="2d", auto_adjust=True)
+        # period="2d"는 달력일 기준이라 휴장일·데이터 공백(예: 2026-08-17)이 하루만
+        # 껴도 실제 거래일 2개를 못 채워 행이 1개만 돌아옴 → 매번 실패로 이어져
+        # 아래 existing_live 폴백의 null이 무한히 재생산되는 사고로 번짐(2026-08-18
+        # 확인, 전 종목 24시간+ null). 여유 있게 5일치를 받아 마지막 2개 실제
+        # 거래일 행을 쓰도록 변경.
+        hist = t.history(period="5d", auto_adjust=True)
         if len(hist) < 2:
             return None
         price = float(hist["Close"].iloc[-1])
@@ -110,7 +115,7 @@ def fetch_ohlc_ath(ticker: str, since_date: Optional[str] = None) -> dict:
 
 def masam_distance(ixic_price: float, existing_live: dict) -> float:
     """현재가 기준 마삼(-3%) 거리"""
-    prev = existing_live.get("nasdaq", {}).get("price", 0)
+    prev = existing_live.get("nasdaq", {}).get("price") or 0
     if prev <= 0:
         return 0.0
     # 오늘 open 기준이 없으면 live의 직전 종가로 근사
@@ -155,12 +160,16 @@ def main():
     ixic_extra  = fetch_ohlc_ath("^IXIC")
 
     # 마삼까지 거리
-    ixic_price = ixic_q["price"] if ixic_q else existing_live.get("nasdaq", {}).get("price", 0)
+    # existing_live.nasdaq.price가 이전에 이미 null로 저장돼 있으면 .get(...,0)의
+    # 기본값은 키가 "없을 때"만 적용돼 None을 그대로 돌려줌 — 폴백이 계속 None을
+    # 물려받아 다음 줄 산술 연산에서 매번 크래시하는 자기영속 버그가 있었음
+    # (2026-08-18 확인: ^IXIC 조회가 여러 배치에 걸쳐 계속 실패하면서 발생)
+    ixic_price = ixic_q["price"] if ixic_q else (existing_live.get("nasdaq", {}).get("price") or 0)
     dist_masam = masam_distance(ixic_price, existing_live) if ixic_price else 0
 
     # ATH 대비 % (IXIC 52주 고점 기준)
     ixic_ath = ixic_extra.get("ath", 0)
-    from_ath_pct = round((ixic_price - ixic_ath) / ixic_ath * 100, 1) if ixic_ath > 0 else 0
+    from_ath_pct = round((ixic_price - ixic_ath) / ixic_ath * 100, 1) if ixic_ath > 0 and ixic_price else 0
 
     # 헤지
     hedge_prices = {}
