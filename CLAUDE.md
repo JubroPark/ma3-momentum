@@ -88,7 +88,8 @@
 | 탑픽 가격 OHLCV | yfinance/Stooq | 모멘텀 지표(MA50/200·ATR·수평지지) | 코어 |
 | 탑픽 펀더멘털 | 운영자 입력 + 외부 매핑 | 탑픽 스코어(0~100) | 분기 갱신 |
 | 헤지 4종 `TLT`·`IAU`·`GLD`·`TIP` | yfinance | 마삼 헤지 배치 | 코어 |
-| FRED `DFF`·`DGS10`·`WALCL` | FRED API | 금리환경·10Y 추세·QE 판정 | 코어 (헤지 완전자동) |
+| FRED `DFF`·`DGS10`·`WALCL` | FRED API | 금리환경·10Y 추세·QE 판정 | 코어 (헤지 완전자동, 마삼룰 판정용 — critical) |
+| FRED `DGS30`·`WRESBAL`·`DTWEXBGS`·`T5YIFR`·`TREAST`·`THREEFYTP10` | FRED API | 경제지표 탭 [일간]/[주간] 매크로 대시보드 | 표시 전용(2026-08-21 추가, §9-5 참고). 실패해도 배치 안 죽음(non-critical) |
 | VIX `^VIX` | yfinance | 경제지표 **표시** + 부록 Z 옵션 | 표시용 |
 | Fear & Greed | CNN 비공식 API | 경제지표 **표시** + 부록 Z 옵션 | 표시용·캐시 24h·실패 시 N/A |
 | ~~PMI(제조·서비스)~~ | ~~무료 자동 소스 없음~~ | ~~제거됨~~ | 자동화 불가로 경제지표 탭에서 제거 |
@@ -390,6 +391,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - `walcl_trillion`: WALCL 최신값 ÷ 1,000,000 (단위: 조 달러) (fetch_fred.py)
 - `market_sentiment` / `spy_ma200_label`: NDX vs MA200 기준, ±2% 임계 (fetch_eod.py)
 - `dff_trend` / `treasury_10y_trend`: 20일 기울기, ±20bp 임계 (fetch_fred.py)
+- **경제지표 매크로 대시보드 확장 필드 (2026-08-21 추가, §9-5 참고)**: `treasury_30y`·`treasury_30y_10y_spread`·`wresbal_trillion`·`dollar_index`·`inflation_expectation_5y5y`·`treast_trillion`·`term_premium_10y`(전부 표시 전용) + `qe_state`("QE_ON"/"LIQUIDITY_SUPPLY"/"QT"/"UNKNOWN", 표시 전용 — 마삼룰 헤지 판정용 `qe_active`와 별개) + `{지표}_chg_20d`/`{지표}_chg_4w`·`{지표}_chg_dir`(추세) + `{지표}_as_of`(기준일) + `history.{지표}`(60개 스파크라인용 배열)
 
 ### positions.json 핵심 필드 (모멘텀)
 
@@ -501,6 +503,13 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 - 드롭다운 표기 통일: "1등주 (티커)" / "2등주 (티커)" / "나스닥 (QQQ)"
 - 주의: 부모에 `display:flex; gap`이 있으면 텍스트 중간의 `<span>`으로 쪼개진 조각들 사이에도 gap이 적용돼 괄호 안에 의도치 않은 여백이 생김 — 라벨 전체를 span 하나로 감싸서 해결(1·2등주 라벨에 적용됨)
 
+**경제지표 탭 FRED 매크로 대시보드 (2026-08-21 4단계 확장)**
+- **1단계 — 시리즈 설정 배열화**: `fetch_fred.py`의 `SERIES` 리스트에서 시리즈 ID를 한 곳에서 관리. `critical=True`(DFF/DGS10/WALCL — 마삼룰 헤지 판정용, `fetch_eod.py`의 `calc_hedge_type()`에 직접 입력됨)는 실패 시 `fetch()`가 배치 전체를 `sys.exit`으로 중단(기존 파일 보존). `critical=False`(신규 6종)는 `try_fetch()`로 개별 실패해도 그 필드만 `null`, 배치는 계속. 요청받았던 `ACMTP10`은 FRED에 실재하지 않는 ID(404) — ACM 10년 기간프리미엄의 진짜 ID는 `THREEFYTP10`. **아이콘과 마찬가지로 FRED 시리즈 ID도 존재 여부를 코드 작성 전에 `curl -s https://fred.stlouisfed.org/graph/fredgraph.csv?id=시리즈ID`(API 키 불필요한 공개 CSV 엔드포인트)로 확인할 것** — 그럴듯한 이름이 실제로는 없는 경우가 있음.
+- **2단계 — QE 3-state 판정**: `qe_state`("QE_ON"/"LIQUIDITY_SUPPLY"/"QT"/"UNKNOWN", `fetch_fred.py`)를 신설. WALCL 단독 증가만 보면 TGA 변동·레포 사용 등 비QE성 요인으로도 오판 가능 → TREAST(연준의 순수 국채 보유량) 방향까지 같이 봐서 `WALCL↑+TREAST↑=QE_ON`, `WALCL↑+TREAST 횡보/감소=LIQUIDITY_SUPPLY`, `WALCL 횡보/감소=QT`(TREAST 방향 무관, WALCL↓+TREAST↑ 같은 애매한 조합도 이 케이스로 떨어짐 — "총자산 자체가 안 늘면 QE 아님"이 우선). **표시 전용 — 마삼룰 헤지 자동판정이 쓰는 기존 `qe_active` 불리언(WALCL 단독 4주 이평 비교)은 그대로 유지**, 절대 대체하지 않음. "4주 증가" 판정은 `ma4_up()` 헬퍼로 통일(최근 4개 관측치 평균 vs 이전 4개 평균 — 기존 WALCL 단독 판정과 동일 방식이라 일관성 유지).
+- **3단계 — 추세 축**: `change_over()` 헬퍼로 변화량 계산 — 일간 시리즈(DFF·10Y·30Y·스프레드·달러지수·기대인플레·기간프리미엄)는 20영업일, 주간 시리즈(WALCL·TREAST·WRESBAL)는 4주(20주간 관측치는 ~5개월 전과 비교하는 셈이라 "최근 변화" 취지에 안 맞음, 2단계 QE 판정과 동일 윈도우로 일관성 유지). `history.{지표}` 배열을 60개로 확장(기존 20/12개). 프론트 `macroCard(label, chipText, subText, sparkValues, chg, chgDir, asOf)` 헬퍼로 카드 렌더링 통합(예전엔 idx-cell 마크업을 카드마다 복제).
+- **4단계 — 발표 주기 분리**: 상단 그리드는 VIX·나스닥시장심리·금리환경·DFF(마삼룰 판정 직결) 4카드만 유지, 연준총자산(WALCL)·10Y를 포함한 나머지는 접이식 아코디언 2개로 분리 — `[일간] 금리·통화`(10Y/30Y/스프레드/기간프리미엄/달러인덱스/기대인플레), `[주간] 연준 유동성`(WALCL/TREAST/WRESBAL/QE 3-state 배지). WALCL/TREAST/WRESBAL은 수요일 기준 주간 발표라 일간 지표와 섞이면 며칠 지난 값을 오늘 값으로 오독하기 쉬움 → 카드마다 `{지표}_as_of`(실제 관측치 날짜)를 "기준일" 텍스트로 표시. `toggleAccordion(id)`로 접기/펼치기(기본 접힘).
+- **부수 버그 수정**: `fetch_fred.py`가 파일을 재작성할 때 `existing`에서 정해둔 필드(vix 등) 몇 개만 화이트리스트로 옮기던 구조라, `fetch_eod.py`가 나중에 추가한 필드(예: `vix_chg_20d`)가 `fetch_fred.py` 재실행 시 조용히 사라지는 문제가 있었음 → `**existing`을 먼저 펼치고 이 스크립트가 계산한 키만 덮어쓰는 방식으로 변경(`fetch_eod.py`는 원래부터 이 안전한 패턴이었음, `fetch_fred.py`만 예전 방식이 남아있었던 것).
+
 **localStorage 저장 항목**
 - `range_allin_nvda`, `range_prev_nvda`, `range_allin_qqq`, `range_prev_qqq`, `range_allin_rank2`, `range_prev_rank2` — 올인·직전고점 수동 입력가
 - `max_pct_nvda`, `max_pct_rank2`, `max_pct_qqq` — 현금화 최대 한도 (2026-07-28부터 세 타겟 완전 독립, 설정 탭에 2등주 행 추가)
@@ -533,7 +542,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 |---|---|
 | 발견(현재 상태) | 지수 롤(나스닥/S&P/다우) · 국면칩(리밸런싱/말뚝박기/V자반등/올인/마삼해제) · 모드 배지(NORMAL/CRISIS/PANIC) + 이번 달 마삼 N회·해제 D-day · 나스닥 최고점 대비 %·최근 마삼일 · 목표 비중 배너 · **1등주 주가 구간**(드롭다운 1등주/QQQ · 탭 최고점/직전고점/직접입력 · -25%/-50% · 말뚝 구간 테이블) |
 | 관심(시가총액 순위) | 큐레이트 글로벌 시총 순위(1등주 트로피·**1등주 대비 격차%**) · 롤(환율/VIX/공포탐욕) |
-| 경제지표(시장환경·표시) | 금리환경·DFF(전월 인상/인하/동결)·연준총자산($xT·QE)·**10Y 추세**·**나스닥 시장심리(NDX vs MA200)**·**✦ 헤지 권장 배너(슬라이드)** · 추가 자금(RSI14/MFI14, 1등주/QQQ 토글) · **올인 체크리스트 6종** · (표시)Fear&Greed·VIX |
+| 경제지표(시장환경·표시) | VIX·나스닥 시장심리·금리환경·DFF(전월 인상/인하/동결) 상단 4카드(마삼룰 판정 직결, 스파크라인·20일 변화량 포함) · **[일간 금리·통화]/[주간 연준 유동성] 아코디언**(10Y/30Y/스프레드/기간프리미엄/달러인덱스/기대인플레, WALCL/TREAST/WRESBAL/QE 3-state 배지, 카드별 기준일 표시 — §9-5 "경제지표 탭 FRED 매크로 대시보드" 참고) · **✦ 헤지 권장 배너(슬라이드)** · 추가 자금(RSI14/MFI14, 1등주/QQQ 토글) · **올인 체크리스트 6종** · (표시)Fear&Greed |
 | 설정 | 리밸런싱 한도(25%/50%) · **부록 Z 옵션 토글**(충돌 옵션 경고 배너) |
 
 PANIC 완전 홀드 시 배너: "공황 올인 — 최고점 경신까지 리밸런싱·말뚝 중단".
