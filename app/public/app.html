@@ -664,14 +664,11 @@
         </div>
       </div>
 
-      <!-- Row 1: VIX / 시장 심리 -->
+      <!-- Row 1: 금리 환경 / 시장 심리 -->
       <div class="idx-row">
         <div class="idx-cell">
-          <div class="lbl">VIX 변동성</div>
-          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">안정 구간</span>
-            <span style="font-size:12px;color:var(--txt-3);">19.06</span>
-          </div>
+          <div class="lbl">금리 환경</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">비제로금리</span><span style="font-size:12px;color:var(--txt-3);">DFF &gt; 0.25%</span></div>
         </div>
         <div class="idx-cell">
           <div class="lbl">나스닥 시장심리</div>
@@ -679,11 +676,15 @@
         </div>
       </div>
 
-      <!-- Row 2: 금리 환경 / 기준금리 -->
+      <!-- Row 2: VIX / 기준금리 -->
       <div class="idx-row">
         <div class="idx-cell">
-          <div class="lbl">금리 환경</div>
-          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;"><span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">비제로금리</span><span style="font-size:12px;color:var(--txt-3);">DFF &gt; 0.25%</span></div>
+          <div class="lbl">VIX 변동성</div>
+          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
+            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">안정 구간</span>
+            <span style="font-size:12px;color:var(--txt-3);">19.06</span>
+          </div>
+          <div class="spark" style="margin-top:6px;"></div>
         </div>
         <div class="idx-cell">
           <div class="lbl">기준금리 (DFF)</div>
@@ -691,23 +692,49 @@
             <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">4.33%</span>
             <span style="font-size:12px;color:var(--txt-3);">전월 동결</span>
           </div>
+          <div class="spark" style="margin-top:6px;"></div>
         </div>
       </div>
 
-      <!-- Row 3: 연준 총자산 / 10Y 국채금리 -->
-      <div class="idx-row">
-        <div class="idx-cell">
-          <div class="lbl">연준 총자산</div>
-          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">$6.72T</span>
-            <span style="font-size:12px;color:var(--txt-3);">QE_OFF · 축소 중</span>
+      <!-- 4단계(2026-08-21): 일간/주간 발표 주기 분리 아코디언. 상단 그리드는
+           VIX·시장심리·금리환경·DFF(마삼룰 판정 직결)만 유지, 연준총자산·10Y를
+           포함한 나머지 매크로 지표는 발표 주기별로 여기에 분리 배치 —
+           WALCL/TREAST/WRESBAL은 주간(수요일 기준) 발표라 일간 지표와 섞어두면
+           며칠 지난 값을 오늘 값으로 오독하기 쉬움. -->
+      <div class="econ-accordion">
+        <div class="acc-header" onclick="toggleAccordion('acc-daily')" style="display:flex;align-items:center;justify-content:space-between;padding:15.3px 17px 8.5px;cursor:pointer;">
+          <span style="font-size:14px;font-weight:700;color:var(--txt);">[일간] 금리·통화</span>
+          <span class="acc-chevron" id="acc-daily-chevron" style="display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);color:var(--txt-3);transition:transform .2s;flex:none;"><span class="iconify" data-icon="heroicons:chevron-down" data-width="10" data-height="10"></span></span>
+        </div>
+        <div class="acc-body" id="acc-daily-body" style="display:none;">
+          <div class="idx-row">
+            <div class="idx-cell" id="card-10y"></div>
+            <div class="idx-cell" id="card-30y"></div>
+          </div>
+          <div class="idx-row">
+            <div class="idx-cell" id="card-spread"></div>
+            <div class="idx-cell" id="card-term-premium"></div>
+          </div>
+          <div class="idx-row">
+            <div class="idx-cell" id="card-dollar-index"></div>
+            <div class="idx-cell" id="card-inflation-exp"></div>
           </div>
         </div>
-        <div class="idx-cell">
-          <div class="lbl">미 10Y 국채금리</div>
-          <div style="margin-top:6px;display:flex;align-items:center;gap:6px;">
-            <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">4.51%</span>
-            <span style="font-size:12px;color:var(--txt-3);">+0.04%p ↑</span>
+      </div>
+
+      <div class="econ-accordion">
+        <div class="acc-header" onclick="toggleAccordion('acc-weekly')" style="display:flex;align-items:center;justify-content:space-between;padding:15.3px 17px 8.5px;cursor:pointer;">
+          <span style="font-size:14px;font-weight:700;color:var(--txt);">[주간] 연준 유동성</span>
+          <span class="acc-chevron" id="acc-weekly-chevron" style="display:flex;align-items:center;justify-content:center;width:16px;height:16px;border-radius:50%;border:1.5px solid var(--line);color:var(--txt-3);transition:transform .2s;flex:none;"><span class="iconify" data-icon="heroicons:chevron-down" data-width="10" data-height="10"></span></span>
+        </div>
+        <div class="acc-body" id="acc-weekly-body" style="display:none;">
+          <div class="idx-row">
+            <div class="idx-cell" id="card-walcl"></div>
+            <div class="idx-cell" id="card-treast"></div>
+          </div>
+          <div class="idx-row">
+            <div class="idx-cell" id="card-wresbal"></div>
+            <div class="idx-cell" id="card-qe-state"></div>
           </div>
         </div>
       </div>
@@ -1652,6 +1679,66 @@
   // prev_high와 비교하던 원래 버전이 "재매수 직후 자동전환 무력화"됐던 원인은 prev_high의
   // since 기준일이 재매수 시점으로 리셋 안 됐기 때문(fetch_eod.py 쪽 버그) — 그걸 고쳤으므로
   // 여기서도 prev_high 비교로 되돌림.
+  // 경제지표 탭 미니 추세선. values는 오래된→최신 순 숫자 배열(날짜 불필요, 방향만 보여줌).
+  function sparkline(values) {
+    if (!values || values.length < 2) return '';
+    const w = 100, h = 20, pad = 2;
+    const min = Math.min(...values), max = Math.max(...values);
+    const range = (max - min) || 1;
+    const step = (w - pad * 2) / (values.length - 1);
+    const pts = values.map((v, i) => {
+      const x = pad + i * step;
+      const y = pad + (h - pad * 2) * (1 - (v - min) / range);
+      return x.toFixed(1) + ',' + y.toFixed(1);
+    }).join(' ');
+    const color = values[values.length - 1] >= values[0] ? '#F04452' : '#4593FC';
+    return `<svg width="100%" height="${h}" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" style="display:block;"><polyline points="${pts}" fill="none" stroke="${color}" stroke-width="1.6" vector-effect="non-scaling-stroke" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+  }
+
+  // 추세 변화량 배지 텍스트. val=숫자, unit='%p'|'T' 등, windowLabel='20일'|'4주'.
+  // null/undefined면 배지를 안 그림(macroCard가 그대로 건너뜀).
+  function chgText(val, unit, windowLabel) {
+    if (val == null) return null;
+    const sign = val > 0 ? '+' : '';
+    return windowLabel + ' ' + sign + val.toFixed(2) + unit;
+  }
+
+  // 경제지표 카드 하나를 통째로 그리는 재사용 헬퍼(3단계, 2026-08-21) — idx-cell
+  // 마크업을 카드마다 복제하지 않도록 도입. chgText/chgDir가 없으면(null) 변화량
+  // 줄은 생략(예: 추세 대상 아닌 카드, 혹은 신규 시리즈 조회 실패로 값 없음).
+  // asOf(4단계, 2026-08-21): 일간/주간 발표 주기 구분 섹션 카드에 기준일 표시용
+  // — 없으면(상단 그리드 카드처럼) 표시 안 함.
+  function macroCard(label, chipText, subText, sparkValues, chg, chgDir, asOf) {
+    const dirColor = chgDir === 'UP' ? '#F04452' : chgDir === 'DOWN' ? '#4593FC' : 'var(--txt-3)';
+    const dirArrow = chgDir === 'UP' ? '↑' : chgDir === 'DOWN' ? '↓' : '→';
+    const chgHtml = chg
+      ? `<div style="font-size:11px;color:${dirColor};margin-top:4px;">${chg} ${dirArrow}</div>`
+      : '';
+    const subHtml = subText ? `<span style="font-size:12px;color:var(--txt-3);">${subText}</span>` : '';
+    const sparkHtml = sparkValues && sparkValues.length >= 2
+      ? `<div class="spark" style="margin-top:6px;">${sparkline(sparkValues)}</div>` : '';
+    const asOfHtml = asOf ? `<div style="font-size:10.5px;color:var(--txt-3);margin-top:4px;">기준일 ${asOf}</div>` : '';
+    return `
+      <div class="lbl">${label}</div>
+      <div style="margin-top:6px;display:flex;align-items:center;gap:6px;flex-wrap:wrap;">
+        <span class="chip" style="background:#202027;color:#fff;font-weight:500;font-size:13px;">${chipText}</span>
+        ${subHtml}
+      </div>
+      ${chgHtml}
+      ${sparkHtml}
+      ${asOfHtml}`;
+  }
+
+  // 4단계(2026-08-21): 일간/주간 아코디언 섹션 접기/펼치기. 기본 접힘 상태.
+  function toggleAccordion(id) {
+    const body = document.getElementById(id + '-body');
+    const chev = document.getElementById(id + '-chevron');
+    if (!body) return;
+    const isOpen = body.style.display !== 'none';
+    body.style.display = isOpen ? 'none' : 'block';
+    if (chev) chev.style.transform = isOpen ? '' : 'rotate(180deg)';
+  }
+
   function autoBaseFor(target) {
     const masam = window._cachedMasam;
     const _lap = masam && masam.last_allin_price;
@@ -2620,18 +2707,23 @@ function initMaxPctUI(rateEnv) {
     }
 
     // 8. 경제지표 탭: VIX / 금리환경 / DFF / DGS10 / PMI
+    // 추세(스파크라인+20일·4주 변화량)가 있는 4개 카드(VIX/DFF/연준총자산/10Y)는
+    // macroCard() 헬퍼로 통째로 다시 그림(3단계, 2026-08-21) — 카드 늘어날 때마다
+    // idx-cell 마크업을 복제하지 않아도 되게 하려는 목적. 시장심리/금리환경 2개는
+    // 추세 대상이 아니라 기존 방식(부분 텍스트 갱신) 그대로 둠.
     const liveVix = live.live_market?.vix ?? null;
     const feedView = document.querySelector('.view[data-view="피드"]');
     if (feedView) {
       const idxRows = feedView.querySelectorAll('.idx-row');
-      // Row 0: VIX | 시장 심리
+      const hist = mkt.history || {};
+      // Row 0: 금리환경 | 시장 심리 (2026-08-21: VIX와 위치 교체)
       if (idxRows[0]) {
         const cells = idxRows[0].querySelectorAll('.idx-cell');
-        const chip  = cells[0]?.querySelector('.chip');
-        const numEl = cells[0]?.querySelector('span:not(.chip)');
-        if (chip)  chip.textContent  = liveVix != null ? (liveVix < 20 ? '안정 구간' : liveVix < 30 ? '경계 구간' : '공포 구간') : '--';
-        if (numEl) numEl.textContent = liveVix != null ? liveVix.toFixed(2) : '--';
-        // 시장 심리 (SPX vs MA200)
+        if (mkt.dff != null) {
+          const rateChip = cells[0]?.querySelector('.chip');
+          if (rateChip) rateChip.textContent = mkt.dff > 0.25 ? '비제로금리' : '제로금리';
+        }
+        // 시장 심리 (SPX vs MA200) — 추세 대상 아님, 기존 방식 유지
         if (mkt.market_sentiment) {
           const sentChip = cells[1]?.querySelector('.chip');
           const sentSub  = cells[1]?.querySelector('span:not(.chip)');
@@ -2639,33 +2731,70 @@ function initMaxPctUI(rateEnv) {
           if (sentSub && mkt.spy_ma200_label) sentSub.textContent = mkt.spy_ma200_label;
         }
       }
-      // Row 1: 금리환경 | DFF
-      if (idxRows[1] && mkt.dff != null) {
-        const cells    = idxRows[1].querySelectorAll('.idx-cell');
-        const rateChip = cells[0]?.querySelector('.chip');
-        const dffChip  = cells[1]?.querySelector('.chip');
-        const dffSub   = cells[1]?.querySelector('span:not(.chip)');
-        if (rateChip) rateChip.textContent = mkt.dff > 0.25 ? '비제로금리' : '제로금리';
-        if (dffChip)  dffChip.textContent  = mkt.dff.toFixed(2) + '%';
-        if (dffSub && mkt.dff_change_text)  dffSub.textContent = '전월 ' + mkt.dff_change_text;
-      }
-      // Row 2: 연준 총자산 | DGS10
-      if (idxRows[2] && mkt.treasury_10y != null) {
-        const cells   = idxRows[2].querySelectorAll('.idx-cell');
-        const walclChip = cells[0]?.querySelector('.chip');
-        const subEl   = cells[0]?.querySelector('span:not(.chip)');
-        const dgsChip = cells[1]?.querySelector('.chip');
-        if (walclChip && mkt.walcl_trillion != null) walclChip.textContent = '$' + mkt.walcl_trillion.toFixed(2) + 'T';
-        if (subEl)    subEl.textContent  = mkt.qe_active ? 'QE_ON · 확장 중' : 'QE_OFF · 축소 중';
-        if (dgsChip)  dgsChip.textContent = mkt.treasury_10y.toFixed(2) + '%';
-        const dgsSub = cells[1]?.querySelector('span:not(.chip)');
-        if (dgsSub && mkt.treasury_10y_change != null) {
-          const chg = mkt.treasury_10y_change;
-          const sign = chg >= 0 ? '+' : '';
-          const arrow = chg > 0 ? '↑' : chg < 0 ? '↓' : '→';
-          dgsSub.textContent = sign + chg.toFixed(2) + '%p ' + arrow;
+      // Row 1: VIX | DFF (2026-08-21: 금리환경과 위치 교체)
+      if (idxRows[1]) {
+        const cells = idxRows[1].querySelectorAll('.idx-cell');
+        const vixChip = liveVix != null ? (liveVix < 20 ? '안정 구간' : liveVix < 30 ? '경계 구간' : '공포 구간') : '--';
+        const vixSub  = liveVix != null ? liveVix.toFixed(2) : '--';
+        if (cells[0]) cells[0].innerHTML = macroCard('VIX 변동성', vixChip, vixSub, hist.vix, chgText(mkt.vix_chg_20d, 'p', '20일'), mkt.vix_chg_dir);
+        if (mkt.dff != null) {
+          const dffSub = mkt.dff_change_text ? '전월 ' + mkt.dff_change_text : '';
+          if (cells[1]) cells[1].innerHTML = macroCard('기준금리 (DFF)', mkt.dff.toFixed(2) + '%', dffSub, hist.dff, chgText(mkt.dff_chg_20d, '%p', '20일'), mkt.dff_chg_dir);
         }
       }
+      // 4단계(2026-08-21): 일간[금리·통화]/주간[연준 유동성] 아코디언 카드.
+      // 신규 6종은 critical=False라 조회 실패 시 값이 null로 옴 — 그 카드만
+      // "데이터 없음"으로 표시(요청하신 카드 단위 degrade).
+      const na = (v, fmt) => v == null ? '데이터 없음' : fmt(v);
+      const setCard = (id, html) => { const el = document.getElementById(id); if (el) el.innerHTML = html; };
+
+      // 10Y 서브텍스트는 기존 "전일 대비" 배지(일간 변동) 유지 —
+      // chg(20일 추세)는 별도 줄로 추가되는 것이라 서로 다른 정보라 둘 다 보존
+      let dgsSub = '';
+      if (mkt.treasury_10y_change != null) {
+        const c = mkt.treasury_10y_change;
+        dgsSub = (c >= 0 ? '+' : '') + c.toFixed(2) + '%p ' + (c > 0 ? '↑' : c < 0 ? '↓' : '→') + ' (전일)';
+      }
+      setCard('card-10y', macroCard('미 10Y 국채금리',
+        na(mkt.treasury_10y, v => v.toFixed(2) + '%'), dgsSub, hist.treasury_10y,
+        chgText(mkt.treasury_10y_chg_20d, '%p', '20일'), mkt.treasury_10y_chg_dir, mkt.treasury_10y_as_of));
+      setCard('card-30y', macroCard('미 30Y 국채금리',
+        na(mkt.treasury_30y, v => v.toFixed(2) + '%'), '', hist.treasury_30y,
+        chgText(mkt.treasury_30y_chg_20d, '%p', '20일'), mkt.treasury_30y_chg_dir, mkt.treasury_30y_as_of));
+      setCard('card-spread', macroCard('30Y-10Y 스프레드',
+        na(mkt.treasury_30y_10y_spread, v => (v >= 0 ? '+' : '') + v.toFixed(2) + '%p'), '', hist.treasury_30y_10y_spread,
+        chgText(mkt.treasury_30y_10y_spread_chg_20d, '%p', '20일'), mkt.treasury_30y_10y_spread_chg_dir, mkt.treasury_30y_as_of));
+      setCard('card-term-premium', macroCard('10Y 기간프리미엄',
+        na(mkt.term_premium_10y, v => v.toFixed(2) + '%'), '', hist.term_premium_10y,
+        chgText(mkt.term_premium_10y_chg_20d, '%p', '20일'), mkt.term_premium_10y_chg_dir, mkt.term_premium_10y_as_of));
+      setCard('card-dollar-index', macroCard('달러 인덱스 (DTWEXBGS)',
+        na(mkt.dollar_index, v => v.toFixed(2)), '', hist.dollar_index,
+        chgText(mkt.dollar_index_chg_20d, '', '20일'), mkt.dollar_index_chg_dir, mkt.dollar_index_as_of));
+      setCard('card-inflation-exp', macroCard('5년 후 5년 기대인플레',
+        na(mkt.inflation_expectation_5y5y, v => v.toFixed(2) + '%'), '', hist.inflation_expectation_5y5y,
+        chgText(mkt.inflation_expectation_5y5y_chg_20d, '%p', '20일'), mkt.inflation_expectation_5y5y_chg_dir, mkt.inflation_expectation_5y5y_as_of));
+
+      const walclSub = mkt.qe_active ? 'QE_ON · 확장 중' : 'QE_OFF · 축소 중';
+      setCard('card-walcl', macroCard('연준 총자산 (WALCL)',
+        na(mkt.walcl_trillion, v => '$' + v.toFixed(2) + 'T'), walclSub, hist.walcl_trillion,
+        chgText(mkt.walcl_trillion_chg_4w, 'T', '4주'), mkt.walcl_trillion_chg_dir, mkt.walcl_trillion_as_of));
+      setCard('card-treast', macroCard('연준 국채보유 (TREAST)',
+        na(mkt.treast_trillion, v => '$' + v.toFixed(2) + 'T'), '', hist.treast_trillion,
+        chgText(mkt.treast_trillion_chg_4w, 'T', '4주'), mkt.treast_trillion_chg_dir, mkt.treast_trillion_as_of));
+      setCard('card-wresbal', macroCard('은행 지준금 (WRESBAL)',
+        na(mkt.wresbal_trillion, v => '$' + v.toFixed(2) + 'T'), '', hist.wresbal_trillion,
+        chgText(mkt.wresbal_trillion_chg_4w, 'T', '4주'), mkt.wresbal_trillion_chg_dir, mkt.wresbal_trillion_as_of));
+
+      // QE 3-state 배지 — 마삼룰 헤지 판정용 qe_active와는 별개(표시 전용, 2단계 참고)
+      const QE_LABEL = { QE_ON: 'QE_ON', LIQUIDITY_SUPPLY: '유동성 공급 (비QE)', QT: 'QT', UNKNOWN: '판정 불가' };
+      const QE_SUB   = {
+        QE_ON: 'WALCL↑ · TREAST↑ — 실제 국채 매입 동반',
+        LIQUIDITY_SUPPLY: 'WALCL↑ · TREAST 횡보/감소 — 레포 등 비QE성 공급',
+        QT: 'WALCL 횡보/감소',
+        UNKNOWN: 'TREAST 조회 실패',
+      };
+      setCard('card-qe-state', macroCard('QE 판정 (3-state)',
+        QE_LABEL[mkt.qe_state] || '판정 불가', QE_SUB[mkt.qe_state] || '', null, null, null, mkt.walcl_trillion_as_of));
     }
 
     // 9. RSI/MFI 업데이트

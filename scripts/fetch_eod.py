@@ -341,7 +341,7 @@ def main():
     gspc = fetch_history("^GSPC")
     ndx  = fetch_history("^NDX")
     qqq  = fetch_history("QQQ")
-    vix  = fetch_history("^VIX", period="5d")
+    vix  = fetch_history("^VIX", period="30d")
 
     ixic_close = require_valid("IXIC 종가", latest_close(ixic))
     ixic_chg   = require_valid("IXIC 등락률", daily_change_pct(ixic))
@@ -700,11 +700,21 @@ def main():
 
     # masam_market.json — FRED 필드는 fetch_fred.py가 담당, VIX·시장심리만 갱신
     existing_fm = load_json(DATA / "masam_market.json")
+    vix_closes = vix["Close"].tail(60).tolist()
+    vix_history = [round(float(v), 2) for v in vix_closes]
+    # 3단계(2026-08-21): 다른 매크로 카드와 동일하게 VIX도 20영업일 변화량 추가
+    vix_chg_20d = round(vix_closes[-1] - vix_closes[-21], 2) if len(vix_closes) >= 21 else None
+    vix_chg_dir = None
+    if vix_chg_20d is not None:
+        vix_chg_dir = "UP" if vix_chg_20d > 0 else "DOWN" if vix_chg_20d < 0 else "FLAT"
     save_json(DATA / "masam_market.json", {
         **existing_fm,
         "vix": vix_val,
+        "vix_chg_20d": vix_chg_20d,
+        "vix_chg_dir": vix_chg_dir,
         "market_sentiment": market_sentiment,
         "spy_ma200_label": spy_ma200_label,
+        "history": {**existing_fm.get("history", {}), "vix": vix_history},
     })
 
     # hedge_prices.json
