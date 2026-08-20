@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-08-20T20:15:54Z",
-  "update_time": "05:15 KST",
+  "as_of": "2026-08-20T20:28:36Z",
+  "update_time": "05:28 KST",
   "nasdaq": {
     "price": 26067.17,
     "change_pct": -1.0,
@@ -42,7 +42,7 @@
   "hedges": {
     "TLT": 82.34,
     "IAU": 85.13,
-    "GLD": 415.26,
+    "GLD": 415.27,
     "TIP": 107.52
   },
   "mcap_live": {
@@ -86,7 +86,7 @@
       "change_pct": -2.81
     },
     "BRK-B": {
-      "change_pct": -0.51
+      "change_pct": -0.55
     },
     "MU": {
       "change_pct": 3.97
@@ -123,10 +123,10 @@
     }
   },
   "live_market": {
-    "vix": 15.97,
-    "vix_chg": 7.25,
+    "vix": 16.0,
+    "vix_chg": 7.45,
     "usd_krw": 1393.5,
     "usd_krw_chg": -1.42,
-    "fear_greed": 53
+    "fear_greed": 52
   }
 }
