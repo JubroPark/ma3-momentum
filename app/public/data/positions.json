@@ -6170,10 +6170,10 @@
       "name": "Robinhood Markets, Inc.",
       "name_ko": "로빈후드",
       "domain": "robinhood.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 4.45,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -6207,9 +6207,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.53)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (108.13 ≤ 115.27)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -6.6%)"
     },
     {
       "symbol": "BMY",
