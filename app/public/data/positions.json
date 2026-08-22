@@ -6205,8 +6205,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -7733,10 +7733,10 @@
       "name": "Futu Holdings Limited",
       "name_ko": "푸투 홀딩스 ADR",
       "domain": "futuholdings.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 4.0,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -7770,9 +7770,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.47)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (123.64 ≤ 156.72)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -26.8%)"
     }
   ]
 }
