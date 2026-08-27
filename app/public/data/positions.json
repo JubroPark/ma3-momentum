@@ -76,9 +76,9 @@
         "vol20ma": 17778610,
         "vol_ratio": 1.75,
         "growth_score": 1.5,
-        "earnings_score": 2.3,
+        "earnings_score": 1.8,
         "health_score": 2.5,
-        "eps_revision": "UP_STRONG",
+        "eps_revision": "UP",
         "peg": null,
         "steps_count": 5,
         "steps_list": [
@@ -90,7 +90,7 @@
           true
         ]
       },
-      "toppick_score": 52,
+      "toppick_score": 49,
       "name_ko": "메타",
       "weight_note": ""
     },
@@ -213,7 +213,7 @@
         "earnings_score": 5.0,
         "health_score": 4.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.7,
+        "peg": 0.68,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -480,7 +480,7 @@
         "earnings_score": 5.0,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.41,
+        "peg": 0.4,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -528,7 +528,7 @@
         "earnings_score": 4.5,
         "health_score": 4.3,
         "eps_revision": "UP_STRONG",
-        "peg": 1.8,
+        "peg": 1.7,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -888,7 +888,7 @@
         "earnings_score": 5.0,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.13,
+        "peg": 1.09,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -983,7 +983,7 @@
         "earnings_score": 2.3,
         "health_score": 3.8,
         "eps_revision": "DOWN",
-        "peg": 0.17,
+        "peg": 0.18,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -1015,7 +1015,7 @@
       "trailing_stop_line": 134.63,
       "horizontal_support": 133.05,
       "cooldown_until": null,
-      "toppick_score": 83,
+      "toppick_score": 80,
       "metrics": {
         "price": 157.54,
         "ma50": 156.49,
@@ -1027,10 +1027,10 @@
         "vol20ma": 4774763,
         "vol_ratio": 0.62,
         "growth_score": 3.0,
-        "earnings_score": 4.5,
+        "earnings_score": 4.0,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.27,
+        "peg": 1.24,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -1302,7 +1302,7 @@
         "earnings_score": 4.5,
         "health_score": 2.8,
         "eps_revision": "UP_STRONG",
-        "peg": 1.76,
+        "peg": 1.72,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -1349,7 +1349,7 @@
         "earnings_score": 5.0,
         "health_score": 2.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.68,
+        "peg": 0.67,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -1484,7 +1484,7 @@
         "earnings_score": 3.3,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.56,
+        "peg": 1.57,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -1530,7 +1530,7 @@
         "earnings_score": 4.5,
         "health_score": 2.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.87,
+        "peg": 0.86,
         "steps_count": 5,
         "steps_list": [
           false,
@@ -1706,7 +1706,7 @@
         "earnings_score": 4.5,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.17,
+        "peg": 1.13,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -1750,7 +1750,7 @@
         "earnings_score": 3.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.77,
+        "peg": 0.76,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -1794,7 +1794,7 @@
         "earnings_score": 2.8,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 1.3,
+        "peg": 1.26,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -1882,7 +1882,7 @@
         "earnings_score": 2.8,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 3.63,
+        "peg": 3.62,
         "steps_count": 2,
         "steps_list": [
           false,
@@ -1951,26 +1951,26 @@
       "avg_price": null,
       "weight": 0.0,
       "deployed_tranches": [],
-      "recent_high": 517.74,
-      "trailing_stop_line": 414.19,
+      "recent_high": 516.58,
+      "trailing_stop_line": 413.26,
       "horizontal_support": 402.43,
       "cooldown_until": null,
       "toppick_score": 57,
       "metrics": {
         "price": 436.49,
-        "ma50": 419.05,
-        "ma200": 429.96,
-        "atr14": 9.44,
+        "ma50": 418.13,
+        "ma200": 429.0,
+        "atr14": 9.42,
         "atr_pct": 0.0216,
-        "gap50_pct": 4.2,
-        "dist_to_stop_pct": 5.1,
+        "gap50_pct": 4.4,
+        "dist_to_stop_pct": 5.3,
         "vol20ma": 1913554,
         "vol_ratio": 0.73,
         "growth_score": 2.0,
         "earnings_score": 2.3,
         "health_score": 3.7,
         "eps_revision": "UP",
-        "peg": 1.5,
+        "peg": 1.49,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -2014,7 +2014,7 @@
         "earnings_score": 2.3,
         "health_score": 3.0,
         "eps_revision": "UP",
-        "peg": 3.98,
+        "peg": 4.02,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -2192,7 +2192,7 @@
         "earnings_score": 3.8,
         "health_score": 3.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.2,
+        "peg": 0.21,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -2287,7 +2287,7 @@
         "earnings_score": 4.5,
         "health_score": 2.7,
         "eps_revision": "UP_STRONG",
-        "peg": 0.74,
+        "peg": 0.72,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -2381,7 +2381,7 @@
         "earnings_score": 5.0,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.42,
+        "peg": 0.41,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -2653,7 +2653,7 @@
         "earnings_score": 4.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.67,
+        "peg": 0.68,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -2831,7 +2831,7 @@
         "earnings_score": 5.0,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.31,
+        "peg": 0.3,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -2919,7 +2919,7 @@
         "earnings_score": 4.5,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.54,
+        "peg": 0.55,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -3010,7 +3010,7 @@
         "earnings_score": 3.8,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.31,
+        "peg": 0.3,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -3144,7 +3144,7 @@
         "earnings_score": 4.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 1.91,
+        "peg": 1.9,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -3173,7 +3173,7 @@
       "trailing_stop_line": 35.56,
       "horizontal_support": 34.6,
       "cooldown_until": null,
-      "toppick_score": 65,
+      "toppick_score": 68,
       "metrics": {
         "price": 41.2,
         "ma50": 39.22,
@@ -3185,17 +3185,17 @@
         "vol20ma": 2093623,
         "vol_ratio": 1.66,
         "growth_score": 5.0,
-        "earnings_score": 1.5,
+        "earnings_score": 2.0,
         "health_score": 3.8,
-        "eps_revision": "DOWN",
+        "eps_revision": "UP",
         "peg": 0.01,
-        "steps_count": 4,
+        "steps_count": 5,
         "steps_list": [
           true,
           false,
           true,
           true,
-          false,
+          true,
           true
         ]
       },
@@ -3236,7 +3236,7 @@
         "earnings_score": 3.5,
         "health_score": 2.3,
         "eps_revision": "DOWN",
-        "peg": 0.02,
+        "peg": 0.03,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -3414,7 +3414,7 @@
         "earnings_score": 3.3,
         "health_score": 1.7,
         "eps_revision": "UP_STRONG",
-        "peg": 4.43,
+        "peg": 4.36,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -3534,7 +3534,7 @@
       "trailing_stop_line": 66.61,
       "horizontal_support": 72.29,
       "cooldown_until": null,
-      "toppick_score": 70,
+      "toppick_score": 73,
       "metrics": {
         "price": 62.8,
         "ma50": 69.96,
@@ -3546,7 +3546,7 @@
         "vol20ma": 814000,
         "vol_ratio": 0.77,
         "growth_score": 4.0,
-        "earnings_score": 4.5,
+        "earnings_score": 5.0,
         "health_score": 2.8,
         "eps_revision": "UP_STRONG",
         "peg": 0.3,
@@ -4295,8 +4295,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -4372,7 +4372,7 @@
         "earnings_score": 5.0,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.47,
+        "peg": 0.46,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -4594,7 +4594,7 @@
         "earnings_score": 4.5,
         "health_score": 4.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.19,
+        "peg": 0.2,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -4667,7 +4667,7 @@
       "trailing_stop_line": 44.17,
       "horizontal_support": 29.49,
       "cooldown_until": null,
-      "toppick_score": 72,
+      "toppick_score": 75,
       "metrics": {
         "price": 37.55,
         "ma50": 31.74,
@@ -4679,9 +4679,9 @@
         "vol20ma": 5215034,
         "vol_ratio": 0.53,
         "growth_score": 4.0,
-        "earnings_score": 4.0,
+        "earnings_score": 4.5,
         "health_score": 3.0,
-        "eps_revision": "UP",
+        "eps_revision": "UP_STRONG",
         "peg": 0.2,
         "steps_count": 4,
         "steps_list": [
@@ -4799,7 +4799,7 @@
       "trailing_stop_line": 18.67,
       "horizontal_support": 12.85,
       "cooldown_until": null,
-      "toppick_score": 74,
+      "toppick_score": 71,
       "metrics": {
         "price": 18.84,
         "ma50": 15.05,
@@ -4811,17 +4811,17 @@
         "vol20ma": 5538770,
         "vol_ratio": 4.64,
         "growth_score": 3.5,
-        "earnings_score": 4.0,
+        "earnings_score": 3.5,
         "health_score": 3.5,
-        "eps_revision": "UP",
-        "peg": 0.08,
-        "steps_count": 5,
+        "eps_revision": "DOWN",
+        "peg": 0.07,
+        "steps_count": 4,
         "steps_list": [
           false,
           true,
           true,
           true,
-          true,
+          false,
           true
         ]
       },
@@ -4858,7 +4858,7 @@
         "earnings_score": 4.5,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.22,
+        "peg": 0.23,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -4902,7 +4902,7 @@
         "earnings_score": 3.3,
         "health_score": 4.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.32,
+        "peg": 0.33,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -5063,7 +5063,7 @@
       "trailing_stop_line": 47.23,
       "horizontal_support": 33.35,
       "cooldown_until": null,
-      "toppick_score": 71,
+      "toppick_score": 74,
       "metrics": {
         "price": 47.82,
         "ma50": 36.55,
@@ -5075,9 +5075,9 @@
         "vol20ma": 3851370,
         "vol_ratio": 1.21,
         "growth_score": 4.5,
-        "earnings_score": 2.8,
+        "earnings_score": 3.3,
         "health_score": 4.5,
-        "eps_revision": "UP",
+        "eps_revision": "UP_STRONG",
         "peg": 0.12,
         "steps_count": 5,
         "steps_list": [
@@ -5210,7 +5210,7 @@
         "earnings_score": 3.8,
         "health_score": 3.7,
         "eps_revision": "UP_STRONG",
-        "peg": 0.29,
+        "peg": 0.3,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -5300,7 +5300,7 @@
         "earnings_score": 2.8,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.81,
+        "peg": 0.83,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -5552,7 +5552,7 @@
       "trailing_stop_line": 173.63,
       "horizontal_support": 169.64,
       "cooldown_until": null,
-      "toppick_score": 70,
+      "toppick_score": 73,
       "metrics": {
         "price": 213.75,
         "ma50": 185.38,
@@ -5564,10 +5564,10 @@
         "vol20ma": 1062980,
         "vol_ratio": 1.05,
         "growth_score": 4.0,
-        "earnings_score": 2.8,
+        "earnings_score": 3.3,
         "health_score": 4.3,
-        "eps_revision": "UP",
-        "peg": 0.45,
+        "eps_revision": "UP_STRONG",
+        "peg": 0.46,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -5655,7 +5655,7 @@
         "earnings_score": 4.5,
         "health_score": 1.7,
         "eps_revision": "UP_STRONG",
-        "peg": 7.44,
+        "peg": 7.62,
         "steps_count": 2,
         "steps_list": [
           false,
@@ -5967,7 +5967,7 @@
         "earnings_score": 4.5,
         "health_score": 4.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.58,
+        "peg": 0.57,
         "steps_count": 5,
         "steps_list": [
           false,
@@ -6191,7 +6191,7 @@
         "earnings_score": 4.5,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.01,
+        "peg": 1.04,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -6281,7 +6281,7 @@
         "earnings_score": 3.8,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 2.34,
+        "peg": 2.25,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -6420,7 +6420,7 @@
         "earnings_score": 3.8,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.7,
+        "peg": 0.68,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -6510,7 +6510,7 @@
         "earnings_score": 3.8,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.15,
+        "peg": 0.14,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -6579,7 +6579,7 @@
       "avg_price": null,
       "weight": 0.0,
       "deployed_tranches": [],
-      "recent_high": 31.8,
+      "recent_high": 31.79,
       "trailing_stop_line": 24.03,
       "horizontal_support": 14.67,
       "cooldown_until": null,
@@ -6587,9 +6587,9 @@
       "metrics": {
         "price": 20.7,
         "ma50": 16.39,
-        "ma200": 18.77,
+        "ma200": 18.76,
         "atr14": 1.01,
-        "atr_pct": 0.0489,
+        "atr_pct": 0.0488,
         "gap50_pct": 26.3,
         "dist_to_stop_pct": -16.1,
         "vol20ma": 37748774,
@@ -6865,7 +6865,7 @@
         "earnings_score": 3.0,
         "health_score": 2.2,
         "eps_revision": "UP_STRONG",
-        "peg": 0.52,
+        "peg": 0.51,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -6955,7 +6955,7 @@
         "earnings_score": 3.8,
         "health_score": 3.7,
         "eps_revision": "UP_STRONG",
-        "peg": 1.16,
+        "peg": 1.13,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -7091,7 +7091,7 @@
         "earnings_score": 5.0,
         "health_score": 0.9,
         "eps_revision": "UP_STRONG",
-        "peg": 0.18,
+        "peg": 0.19,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -7534,7 +7534,7 @@
         "earnings_score": 5.0,
         "health_score": 1.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.12,
+        "peg": 0.13,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -7578,7 +7578,7 @@
         "earnings_score": 3.8,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.65,
+        "peg": 0.64,
         "steps_count": 5,
         "steps_list": [
           false,
