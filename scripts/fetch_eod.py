@@ -518,10 +518,15 @@ def main():
         nvda_entry,  nvda_zone,  nvda_reset,  nvda_step_pct  = _update_ticker(by_ticker, rank1_ticker, rank1_close,   rank1_hist, _today_iso)
         rank2_entry, rank2_zone, rank2_reset, rank2_step_pct = _update_ticker(by_ticker, rank2_ticker, rank2_close,   rank2_hist, _today_iso)
         qqq_entry,   qqq_zone,   qqq_reset,   qqq_step_pct   = _update_ticker(by_ticker, "QQQ",        qqq_eod_close, qqq,        _today_iso)
-        # 오늘 1등인 티커는 "1등 해본 적 있음"으로 영구 마킹 — 격차 10% 이내라는 이유만으로
+        # 오늘 1등인 티커는 "1등 해본 적 있음"으로 마킹 — 격차 10% 이내라는 이유만으로
         # 한 번도 1등을 탈환한 적 없는 2등주가 권장 비중(1:1 배분)에 잡히는 걸 막기 위함
         # (2026-08-04 확인: gap_within_10pct만으로는 부족, 실제 추월 이력이 있어야 함)
         nvda_entry["ever_rank1"] = True
+        # (2026-08-27 확인) 이 마킹은 영구가 아니라 "직전 역전 이후" 한정이어야 함 —
+        # 격차가 10%를 다시 넘어서면 2등주의 1등 이력은 리셋된다(사용자 확인). 안 그러면
+        # 예전에 잠깐 1등이었던 종목이 한참 뒤 격차만 우연히 좁혀져도 1:1 배분에 잡힘.
+        if gap_pct > 10.0:
+            rank2_entry["ever_rank1"] = False
         # 레거시 슬롯 필드는 현재 순위 기준으로 매 배치 파생(프론트가 nvda/qqq/rank2 키를 그대로 씀)
         last_allin_price["nvda"]             = nvda_entry["allin"]
         last_allin_price["nvda_prev_high"]   = nvda_entry["prev_high"]

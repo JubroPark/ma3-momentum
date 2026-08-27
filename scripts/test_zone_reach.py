@@ -138,7 +138,28 @@ def test_since_reset_on_recovery():
     print("OK — since reset on recovery passed")
 
 
+def update_ever_rank1(gap_pct, rank2_ever_rank1):
+    """fetch_eod.py의 ever_rank1 리셋 로직과 동일: 격차가 10%를 다시 넘으면 2등주의
+    '1등 해본 적 있음' 이력을 초기화한다(2026-08-27 확인 — 영구 마킹이면 예전에 잠깐
+    1등이었던 종목이 한참 뒤 격차만 우연히 좁혀져도 1:1 배분에 잘못 잡힘)."""
+    if gap_pct > 10.0:
+        return False
+    return rank2_ever_rank1
+
+
+def test_ever_rank1_resets_when_gap_exceeds_10pct():
+    # 과거에 1등이었던 이력이 있어도, 격차가 10%를 넘어서면 그 이력은 리셋되어야 함
+    assert update_ever_rank1(gap_pct=12.3, rank2_ever_rank1=True) is False
+    # 격차가 10% 이내로 유지되는 동안은 이력이 보존되어야 함
+    assert update_ever_rank1(gap_pct=9.9, rank2_ever_rank1=True) is True
+    # 애초에 1등이었던 적 없으면 격차가 좁혀져도 계속 False
+    assert update_ever_rank1(gap_pct=9.9, rank2_ever_rank1=False) is False
+
+    print("OK — ever_rank1 reset on gap > 10% passed")
+
+
 if __name__ == "__main__":
     test()
     test_allin_vs_prev_high()
     test_since_reset_on_recovery()
+    test_ever_rank1_resets_when_gap_exceeds_10pct()
