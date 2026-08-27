@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-08-26",
+  "as_of": "2026-08-27",
   "regime": "GREEN",
   "items": [
     {
@@ -2691,7 +2691,7 @@
         "atr_pct": 0.0453,
         "gap50_pct": -7.9,
         "dist_to_stop_pct": 0.8,
-        "vol20ma": 1033498,
+        "vol20ma": 1033594,
         "vol_ratio": 0.76,
         "growth_score": 1.0,
         "earnings_score": 2.8,
@@ -4260,14 +4260,11 @@
       "name": "Versamet Royalties Corporation",
       "name_ko": "버사멧 로열티스",
       "domain": "versamet.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 2.6,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 13.53,
       "trailing_stop_line": 10.49,
       "horizontal_support": 11.0,
@@ -4298,9 +4295,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (10.41 ≤ 10.49)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -0.8%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "YOU",
