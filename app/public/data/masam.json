@@ -16,7 +16,7 @@
     "gap_pct": 9.9,
     "overtake_detected": false,
     "gap_within_10pct": true,
-    "rank2_ever_rank1": true
+    "rank2_ever_rank1": false
   },
   "target_allocation": {
     "stock_pct": 100,
@@ -134,7 +134,7 @@
         "prev_high": 339.79,
         "lowest_close": 302.25,
         "since": "2026-07-06",
-        "ever_rank1": true
+        "ever_rank1": false
       },
       "QQQ": {
         "allin": 723.85,
