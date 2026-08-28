@@ -469,7 +469,17 @@ def main():
         target_zone = prev_zone - 2
         recovery_price = base * (1 - step * target_zone)
         reached_recovery = prev_zone >= 2 and close >= recovery_price
-        is_reset = reached_recovery or new_peak
+        # new_peak만으로 저점을 리셋하는 건 prev_zone==0(추적 중인 하락이 아예 없던 경우)일
+        # 때만 안전함 — 무해한 리셋(잃을 정보가 없음). prev_zone>=2일 땐 새 고점이 서면
+        # recovery_price(=새 고점 자체)를 항상 자명하게 만족해 reached_recovery도 함께
+        # True가 되므로 이 분기는 실질적으로 관여하지 않음(기존 문서화된 정상 동작).
+        # 문제는 prev_zone==1: 2구간 하락에 못 미쳐 reached_recovery는 구조적으로 항상
+        # False인데, 그 상태에서 직전 고점(prev_high, since-윈도우 국지적 최고가)을 살짝만
+        # 넘는 신고가가 나와도 new_peak이 발동해 "1구간 하락 → 완전 회복"으로 잘못
+        # 리셋됨(매뉴얼상 재매수는 "막바지 2구간 상승"만이 트리거, 신고가 경신이 아님 —
+        # 2026-08-29 확인). 이 경우엔 저점을 건드리지 않고 prev_high만 갱신(무조건 실행,
+        # 아래 506행)해서 구간이 1로 유지되도록 함.
+        is_reset = reached_recovery or (new_peak and prev_zone == 0)
         if is_reset:
             new_low = close
             # allin(올인 지점 기준가) 갱신은 reached_recovery(2구간 하락 후 실제 재매수)일 때만.

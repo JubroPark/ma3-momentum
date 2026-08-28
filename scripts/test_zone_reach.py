@@ -16,7 +16,10 @@ def update(prev_low, prev_high, close, step):
     """반환: (new_low, new_high, zone_reach). fetch_eod.py의 _update_ticker와 동일 로직.
     리셋 판정은 구간 "번호" 비교가 아니라 표에 적힌 목표 구간의 실제 가격 도달 여부로 함
     (zone_idx는 zone1 문턱만 넘으면 전부 0구간으로 뭉뚱그려서, 기준가 자체엔 못 미쳤는데도
-    리셋되는 버그가 있었음 — 2026-08-04 확인)."""
+    리셋되는 버그가 있었음 — 2026-08-04 확인).
+    new_peak만으로는 prev_zone==0일 때만 리셋 — prev_zone==1(2구간 하락에 못 미친 상태)에서
+    직전 고점을 살짝 넘는 신고가만으로 완전 리셋되던 버그 수정(2026-08-29 확인, 매뉴얼상
+    재매수는 "막바지 2구간 상승"만 트리거)."""
     new_peak = close > prev_high
     high = max(prev_high, close)
     base = high
@@ -24,7 +27,7 @@ def update(prev_low, prev_high, close, step):
     target_zone = prev_zone - 2
     recovery_price = base * (1 - step * target_zone)
     reached_recovery = prev_zone >= 2 and close >= recovery_price
-    is_reset = reached_recovery or new_peak
+    is_reset = reached_recovery or (new_peak and prev_zone == 0)
     new_low = close if is_reset else (min(prev_low, close) if prev_low else close)
     zone_reach = None
     if not is_reset and new_low < prev_low:
@@ -68,6 +71,14 @@ def test():
     # 반대로 종가가 실제 기준가(212.5) 이상으로 회복하면 정상적으로 리셋
     low, high, zr = update(prev_low=190.01, prev_high=212.5, close=212.5, step=0.05)
     assert low == 212.5, f"리셋 기대, 실제 low={low}"
+
+    # 실제 세션 리그레션(2026-08-29, NVDA): 직전고점 225.3에서 저점 208.48(1구간, 2구간 문턱
+    # -10%엔 못 미침)까지 하락 후 227.98로 반등 — 옛 직전고점(225.3)은 넘었지만 2구간 회복은
+    # 구조적으로 불가능(prev_zone=1<2)한 상태이므로 저점이 리셋되면 안 됨(매뉴얼: 재매수는
+    # "막바지 2구간 상승"만 트리거, 신고가 경신이 아님)
+    low, high, zr = update(prev_low=208.48, prev_high=225.3, close=227.98, step=0.05)
+    assert low == 208.48, f"1구간 하락 중 신고가만으로는 저점 유지 기대, 실제 low={low}"
+    assert high == 227.98, f"직전고점은 그래도 갱신 기대, 실제 high={high}"
 
     print("OK — all zone_reach cases passed")
 
