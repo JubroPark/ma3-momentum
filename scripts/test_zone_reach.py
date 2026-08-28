@@ -17,18 +17,23 @@ def update(prev_low, prev_high, close, step):
     리셋 판정은 구간 "번호" 비교가 아니라 표에 적힌 목표 구간의 실제 가격 도달 여부로 함
     (zone_idx는 zone1 문턱만 넘으면 전부 0구간으로 뭉뚱그려서, 기준가 자체엔 못 미쳤는데도
     리셋되는 버그가 있었음 — 2026-08-04 확인).
-    new_peak만으로는 prev_zone==0일 때만 리셋 — prev_zone==1(2구간 하락에 못 미친 상태)에서
-    직전 고점을 살짝 넘는 신고가만으로 완전 리셋되던 버그 수정(2026-08-29 확인, 매뉴얼상
-    재매수는 "막바지 2구간 상승"만 트리거)."""
-    new_peak = close > prev_high
-    high = max(prev_high, close)
-    base = high
+    base(구간/회복목표가 기준)는 어제까지의 직전고점(prev_high, 그대로 고정)으로 계산 —
+    오늘 신고가(new_high)를 기준으로 계산하면 회복 목표가가 가격을 따라 계속 올라가는
+    "움직이는 표적"이 되어 영영 도달 불가능해지는 버그가 있었음(2026-08-29 확인).
+    new_peak만으로는 prev_zone==0일 때만 리셋(무해) — prev_zone==1(2구간 하락에 못 미친
+    상태)에서 직전 고점을 살짝 넘는 신고가만으로 완전 리셋되던 버그 수정(매뉴얼상 재매수는
+    "막바지 2구간 상승"만 트리거). is_reset이 아니면 직전고점 자체도 갱신하지 않고 고정."""
+    old_high = prev_high
+    new_high = max(old_high, close)
+    new_peak = new_high > old_high
+    base = old_high
     prev_zone = zone_idx(prev_low, base, step)
     target_zone = prev_zone - 2
     recovery_price = base * (1 - step * target_zone)
     reached_recovery = prev_zone >= 2 and close >= recovery_price
     is_reset = reached_recovery or (new_peak and prev_zone == 0)
     new_low = close if is_reset else (min(prev_low, close) if prev_low else close)
+    high = new_high if is_reset else old_high
     zone_reach = None
     if not is_reset and new_low < prev_low:
         deepest = zone_idx(new_low, base, step)
@@ -74,11 +79,12 @@ def test():
 
     # 실제 세션 리그레션(2026-08-29, NVDA): 직전고점 225.3에서 저점 208.48(1구간, 2구간 문턱
     # -10%엔 못 미침)까지 하락 후 227.98로 반등 — 옛 직전고점(225.3)은 넘었지만 2구간 회복은
-    # 구조적으로 불가능(prev_zone=1<2)한 상태이므로 저점이 리셋되면 안 됨(매뉴얼: 재매수는
-    # "막바지 2구간 상승"만 트리거, 신고가 경신이 아님)
+    # 구조적으로 불가능(prev_zone=1<2)한 상태이므로 저점도 직전고점도 안 바뀌어야 함(매뉴얼:
+    # 재매수는 "막바지 2구간 상승"만 트리거, 신고가 경신이 아님). 직전고점까지 227.98로
+    # 갱신해버리면 회복 목표가(base*1.05)도 같이 밀려 올라가 영영 재매수가 불가능해짐
     low, high, zr = update(prev_low=208.48, prev_high=225.3, close=227.98, step=0.05)
     assert low == 208.48, f"1구간 하락 중 신고가만으로는 저점 유지 기대, 실제 low={low}"
-    assert high == 227.98, f"직전고점은 그래도 갱신 기대, 실제 high={high}"
+    assert high == 225.3, f"활성 하락 사이클 중엔 직전고점도 고정 기대, 실제 high={high}"
 
     print("OK — all zone_reach cases passed")
 
@@ -89,14 +95,17 @@ def update_allin(prev_low, prev_high, allin, close, step):
     실제 재매수)일 때만 갱신해야 함 — 아니면 신고가 찍을 때마다 prev_high와 allin이 같은
     값으로 붕괴해 '직전 고점'/'올인 지점' 두 탭이 항상 동일하게 표시되는 버그가 생김
     (2026-08-06 확인)."""
-    new_peak = close > prev_high
-    high = max(prev_high, close)
-    base = high
+    old_high = prev_high
+    new_high = max(old_high, close)
+    new_peak = new_high > old_high
+    base = old_high
     prev_zone = zone_idx(prev_low, base, step)
     target_zone = prev_zone - 2
     recovery_price = base * (1 - step * target_zone)
     reached_recovery = prev_zone >= 2 and close >= recovery_price
     new_allin = close if reached_recovery else allin
+    is_reset = reached_recovery or (new_peak and prev_zone == 0)
+    high = new_high if is_reset else old_high
     return new_allin, high
 
 
@@ -118,12 +127,16 @@ def test_allin_vs_prev_high():
 def update_since(prev_low, prev_high, allin, since, close, step, today):
     """entry['since'] 리셋 로직만 분리 재현. reached_recovery 때 since를 오늘로 리셋해야
     prev_high가 재매수 이전 히스토리를 계속 끌고 오지 않음 (2026-08-10 확인)."""
-    high = max(prev_high, close)
-    base = high
+    old_high = prev_high
+    new_high = max(old_high, close)
+    new_peak = new_high > old_high
+    base = old_high
     prev_zone = zone_idx(prev_low, base, step)
     target_zone = prev_zone - 2
     recovery_price = base * (1 - step * target_zone)
     reached_recovery = prev_zone >= 2 and close >= recovery_price
+    is_reset = reached_recovery or (new_peak and prev_zone == 0)
+    high = new_high if is_reset else old_high
     if reached_recovery:
         allin = close
         since = today

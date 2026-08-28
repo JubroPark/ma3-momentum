@@ -434,8 +434,10 @@ def main():
 
     def _update_ticker(by_ticker: dict, ticker: str, close: float, hist, today_iso: str):
         """티커별 진입가/직전고점/저점 스티키를 자기 자신의 이력으로만 갱신(순위 무관).
-        직전고점은 매 배치 해당 티커 자신의 전체 히스토리(자기 since일 이후)로 재계산해
-        배치가 하루 이틀 빠지더라도 스스로 정정됨.
+        직전고점(prev_high)은 활성 하락 사이클 중(구간>=1인데 아직 2구간 회복 전)엔 고정되고,
+        구간이 완전히 회복(is_reset)됐을 때만 그 시점의 새 고점으로 갱신됨 — 매 배치
+        신고가로 계속 밀어올리면 회복 목표가(recovery_price)도 같이 밀려 올라가 영영
+        도달 못 하는 "움직이는 표적" 버그가 생기기 때문(2026-08-29 확인).
         구간 그리드는 티커별 독립(max_pct_by_ticker) — 종목마다 리셋 시점이 달라짐.
         반환값: (entry, zone_reach, reset_from_zone, step_pct) — zone_reach는 오늘 새로 도달한
         최심 구간(신기록일 때만 정수, 아니면 None). reset_from_zone은 오늘 실제 재매수
@@ -450,52 +452,45 @@ def main():
             return entry, None, None, step * 100
         since_date = entry.get("since") or today_iso
         old_high = entry.get("prev_high", entry.get("allin", close))
+        prev_low = entry.get("lowest_close", 0)
+        # 구간/회복목표가는 "어제까지의 직전 고점"(old_high, 현재 진행 중인 하락 사이클의
+        # 고정 기준점)으로 계산해야 함 — 오늘 신고가로 이미 갱신된 새 고점을 기준으로
+        # 계산하면(예전엔 new_high를 썼음) 회복 목표가(recovery_price)가 매번 그 신고가를
+        # 따라 같이 올라가는 "움직이는 표적"이 되어, 2구간 하락에서 반등하는 도중에도
+        # 영영 목표가에 못 미치는 버그가 생김(2026-08-29 확인).
+        base = _base_of(close, entry.get("allin", 0), old_high)
+        prev_zone = _zone_idx(prev_low, base, step)
+        # 목표 구간의 실제 가격 도달 여부로 판정(구간 "번호" 비교 아님) — zone_idx는 "zone1
+        # 문턱만 넘으면 전부 0구간"으로 뭉뚱그려서, 기준가 자체엔 못 미쳤는데도 리셋되는
+        # 버그가 있었음(2026-08-04 확인). 목표 구간 가격 = base*(1-step*(prev_zone-2))
+        target_zone = prev_zone - 2
+        recovery_price = base * (1 - step * target_zone)
+        reached_recovery = prev_zone >= 2 and close >= recovery_price
         try:
             since_series = hist.loc[since_date:, "Close"]
             new_high = round(float(since_series.max()), 2) if not since_series.empty else max(old_high, close)
         except Exception:
             new_high = max(old_high, close)
         new_peak = new_high > old_high
-        base = _base_of(close, entry.get("allin", 0), new_high)
-        prev_low = entry.get("lowest_close", 0)
-        prev_zone = _zone_idx(prev_low, base, step)
-        # 저점 리셋 조건: (1) 막바지 2구간 상승 → 전량 재매수, (2) 오늘 전고점을 새로 경신
-        # (2)가 없으면 전고점 갱신 후에도 그 전고점에 도달하기 전의 옛 저점이 그대로 남아
-        # "전고점 대비 N구간 하락"으로 잘못 계산되는 버그가 생김 — 2026-07-31 확인
-        # (1)의 "2구간 상승"은 구간 번호(new_zone <= prev_zone-2) 비교가 아니라 표에 적힌
-        # 목표 구간의 실제 가격에 도달했는지로 판정해야 함 — zone_idx는 "zone1 문턱만 넘으면
-        # 전부 0구간"으로 뭉뚱그려서, 기준가(전고점) 자체엔 못 미쳤는데도 리셋되는 버그가
-        # 있었음(2026-08-04 확인). 목표 구간 가격 = base*(1-step*(prev_zone-2))
-        target_zone = prev_zone - 2
-        recovery_price = base * (1 - step * target_zone)
-        reached_recovery = prev_zone >= 2 and close >= recovery_price
-        # new_peak만으로 저점을 리셋하는 건 prev_zone==0(추적 중인 하락이 아예 없던 경우)일
-        # 때만 안전함 — 무해한 리셋(잃을 정보가 없음). prev_zone>=2일 땐 새 고점이 서면
-        # recovery_price(=새 고점 자체)를 항상 자명하게 만족해 reached_recovery도 함께
-        # True가 되므로 이 분기는 실질적으로 관여하지 않음(기존 문서화된 정상 동작).
-        # 문제는 prev_zone==1: 2구간 하락에 못 미쳐 reached_recovery는 구조적으로 항상
-        # False인데, 그 상태에서 직전 고점(prev_high, since-윈도우 국지적 최고가)을 살짝만
-        # 넘는 신고가가 나와도 new_peak이 발동해 "1구간 하락 → 완전 회복"으로 잘못
-        # 리셋됨(매뉴얼상 재매수는 "막바지 2구간 상승"만이 트리거, 신고가 경신이 아님 —
-        # 2026-08-29 확인). 이 경우엔 저점을 건드리지 않고 prev_high만 갱신(무조건 실행,
-        # 아래 506행)해서 구간이 1로 유지되도록 함.
+        # is_reset(저점을 오늘 종가로 완전 리셋) 조건: (1) 막바지 2구간 상승 → 전량 재매수,
+        # (2) prev_zone==0(추적 중인 하락이 아예 없던 경우)에서의 단순 신고가 — 무해한
+        # 리셋(잃을 정보가 없음). prev_zone>=2일 땐 새 고점이 서면 recovery_price(=새
+        # 고점 자체)를 항상 자명하게 만족해 reached_recovery도 함께 True가 되므로 (2)는
+        # 실질적으로 prev_zone==1에서만 의미가 갈림 — 거긴 2구간 하락에 못 미쳐
+        # reached_recovery가 구조적으로 항상 False라, 예전엔 여기서도 new_peak 단독으로
+        # 리셋시켜 "1구간 하락 → 완전 회복(100%/현금0%)"으로 잘못 표시됐음(매뉴얼상
+        # 재매수는 "막바지 2구간 상승"만이 트리거, 신고가 경신이 아님 — 2026-08-29 확인).
         is_reset = reached_recovery or (new_peak and prev_zone == 0)
         if is_reset:
             new_low = close
             # allin(올인 지점 기준가) 갱신은 reached_recovery(2구간 하락 후 실제 재매수)일 때만.
-            # new_peak(단순 신고가 경신)까지 여기 묶으면 prev_high도 매 신고가마다 같이
-            # 갱신되는 필드라서, 신고가를 찍을 때마다 올인 지점=직전 고점이 같은 값으로
-            # 붕괴해 두 탭이 항상 동일하게 표시되는 버그가 생김(2026-08-06 확인).
             if reached_recovery:
                 entry["allin"] = close
                 # since도 같이 리셋. 안 그러면 prev_high가 이번 재매수 이전(붕괴 전 옛
                 # 전고점) 히스토리를 계속 포함해서, 재매수 직후에도 prevHigh가 새 allin
                 # 보다 훨씬 높게 남아있게 되고, 프론트 자동전환(prevHigh > allin)이 재매수
                 # 직후부터 곧장 "직전 고점"으로 넘어가버려 사실상 매 사이클 무력화됨
-                # (2026-08-10 확인 — 이래서 프론트가 대신 eodClose > allin으로 비교하도록
-                # 바뀌어 있었는데, 그건 "신고가 찍고 눌림" 케이스에서 직전고점 유지가 안 되는
-                # 또 다른 버그였음. since를 재매수 시점으로 리셋하면 두 요구사항이 동시에
-                # 성립해서 프론트도 prevHigh > allin으로 되돌릴 수 있음)
+                # (2026-08-10 확인)
                 entry["since"] = today_iso
                 new_high = close
         else:
@@ -513,7 +508,12 @@ def main():
         # 기기(특히 이 전환을 직접 겪지 못하고 이미 회복된 뒤에 처음 접속한 기기)는 권장 비중
         # 변경 히스토리에서 이 전환을 영영 볼 수 없었음 (2026-08-06 확인)
         reset_from_zone = prev_zone if (reached_recovery and prev_zone > 0) else None
-        entry["prev_high"] = new_high
+        # prev_high(직전 고점) 갱신도 is_reset일 때만 — 활성 하락 사이클 중(prev_zone>=1인데
+        # reached_recovery는 아직인 상태)엔 옛 고점을 그대로 고정해야 함. 안 그러면 매 배치
+        # new_high로 갱신되면서(위 base가 old_high를 쓰도록 고쳤어도, 저장된 값 자체가
+        # 매일 올라가버리면) 다음 배치의 recovery_price 기준점도 같이 밀려 올라가 결국
+        # "재매수 목표가가 가격을 영원히 따라잡지 못하는" 동일한 문제가 재발함(2026-08-29 확인).
+        entry["prev_high"] = new_high if is_reset else old_high
         entry["lowest_close"] = new_low
         return entry, zone_reach, reset_from_zone, step * 100
 
