@@ -422,9 +422,6 @@ def main():
         }
         print(f"  올인 기준가: {rank1_ticker}={rank1_close:.2f} QQQ={qqq_eod_close:.2f} {rank2_ticker}={rank2_close:.2f} ({today})")
 
-    def _base_of(cur, allin, prev_high):
-        return prev_high if (allin > 0 and cur >= allin) else allin
-
     def _zone_idx(cur, base, step):
         if not cur or not base: return 0
         z = 0
@@ -458,7 +455,9 @@ def main():
         # 계산하면(예전엔 new_high를 썼음) 회복 목표가(recovery_price)가 매번 그 신고가를
         # 따라 같이 올라가는 "움직이는 표적"이 되어, 2구간 하락에서 반등하는 도중에도
         # 영영 목표가에 못 미치는 버그가 생김(2026-08-29 확인).
-        base = _base_of(close, entry.get("allin", 0), old_high)
+        allin = entry.get("allin", 0)
+        _used_prev_high = allin > 0 and close >= allin
+        base = old_high if _used_prev_high else allin
         prev_zone = _zone_idx(prev_low, base, step)
         # 목표 구간의 실제 가격 도달 여부로 판정(구간 "번호" 비교 아님) — zone_idx는 "zone1
         # 문턱만 넘으면 전부 0구간"으로 뭉뚱그려서, 기준가 자체엔 못 미쳤는데도 리셋되는
@@ -480,7 +479,14 @@ def main():
         # reached_recovery가 구조적으로 항상 False라, 예전엔 여기서도 new_peak 단독으로
         # 리셋시켜 "1구간 하락 → 완전 회복(100%/현금0%)"으로 잘못 표시됐음(매뉴얼상
         # 재매수는 "막바지 2구간 상승"만이 트리거, 신고가 경신이 아님 — 2026-08-29 확인).
-        is_reset = reached_recovery or (new_peak and prev_zone == 0)
+        # (2)는 base가 prev_high(직전고점)일 때만 허용 — base가 allin(올인가)로 잡혔을
+        # 때(오늘 종가가 잠깐 올인가 밑으로 눌렸을 때)까지 여기 걸리면, 하락 사이클 도중에도
+        # 기준이 allin으로 바뀌면서 prev_zone이 엉뚱하게 0으로 재계산돼(예: 저점이 마침
+        # allin 바로 위라 allin 기준 -5% 문턱을 못 넘음), since-윈도우 히스토리에서 늘
+        # 재계산되는 실제 과거 고점(예: 며칠 전 진짜 신고가)이 "무해한 신고가"로 오인돼
+        # 저점·직전고점이 통째로 리셋되는 버그가 있었음(2026-08-29 2차 확인, NVDA:
+        # 1구간 하락 중 종가가 하루 allin 밑으로 눌리자 prev_high가 227.98로 되돌아감).
+        is_reset = reached_recovery or (new_peak and prev_zone == 0 and _used_prev_high)
         if is_reset:
             new_low = close
             # allin(올인 지점 기준가) 갱신은 reached_recovery(2구간 하락 후 실제 재매수)일 때만.
