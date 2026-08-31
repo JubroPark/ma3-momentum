@@ -1,19 +1,19 @@
 {
-  "as_of": "2026-08-31T20:01:35Z",
-  "update_time": "05:01 KST",
+  "as_of": "2026-08-31T20:16:02Z",
+  "update_time": "05:16 KST",
   "nasdaq": {
     "price": 26370.89,
     "change_pct": -0.64,
-    "dist_to_masam_pct": 3.25,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -2.7,
     "last_masam_date": "2026-06-05"
   },
   "sp500": {
-    "price": 7686.38,
+    "price": 7686.14,
     "change_pct": -0.58
   },
   "dow": {
-    "price": 53186.32,
+    "price": 53185.9,
     "change_pct": -0.72
   },
   "rank1": {
@@ -21,8 +21,8 @@
     "name": "엔비디아",
     "domain": "nvidia.com",
     "si": "nvidia/76b900",
-    "price": 220.5,
-    "change_pct": -3.28,
+    "price": 220.78,
+    "change_pct": -3.16,
     "ath": 235.74,
     "intra_low": 190.01
   },
@@ -41,13 +41,13 @@
   },
   "hedges": {
     "TLT": 82.52,
-    "IAU": 83.72,
+    "IAU": 83.71,
     "GLD": 408.4,
     "TIP": 106.82
   },
   "mcap_live": {
     "NVDA": {
-      "change_pct": -3.28
+      "change_pct": -3.16
     },
     "AAPL": {
       "change_pct": 0.72
@@ -62,7 +62,7 @@
       "change_pct": 1.37
     },
     "TSM": {
-      "change_pct": -2.88
+      "change_pct": -2.8
     },
     "SPCX": {
       "change_pct": 2.0
@@ -83,16 +83,16 @@
       "change_pct": -3.38
     },
     "BRK-B": {
-      "change_pct": 0.08
+      "change_pct": 0.07
     },
     "MU": {
       "change_pct": 2.5
     },
     "LLY": {
-      "change_pct": -1.58
+      "change_pct": -1.55
     },
     "JPM": {
-      "change_pct": 0.55
+      "change_pct": 0.51
     },
     "000660.KS": {
       "change_pct": -4.43
@@ -104,16 +104,16 @@
       "change_pct": -1.25
     },
     "V": {
-      "change_pct": -0.06
+      "change_pct": -0.08
     },
     "ASML": {
       "change_pct": -2.25
     },
     "JNJ": {
-      "change_pct": 0.05
+      "change_pct": 0.03
     },
     "XOM": {
-      "change_pct": 2.9
+      "change_pct": 2.88
     },
     "688825.SS": {
       "change_pct": null
@@ -123,10 +123,10 @@
     }
   },
   "live_market": {
-    "vix": 14.98,
-    "vix_chg": 3.24,
-    "usd_krw": 1367.2,
-    "usd_krw_chg": -0.96,
+    "vix": 14.9,
+    "vix_chg": 2.69,
+    "usd_krw": 1367.9,
+    "usd_krw_chg": -0.91,
     "fear_greed": 50
   }
 }
