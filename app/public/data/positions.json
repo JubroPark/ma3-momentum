@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-08-31",
+  "as_of": "2026-09-01",
   "regime": "GREEN",
   "items": [
     {
@@ -118,7 +118,7 @@
         "price": 316.85,
         "ma50": 312.19,
         "ma200": 282.36,
-        "atr14": 6.12,
+        "atr14": 6.13,
         "atr_pct": 0.0193,
         "gap50_pct": 1.5,
         "dist_to_stop_pct": 14.2,
@@ -297,8 +297,8 @@
         "price": 370.34,
         "ma50": 385.29,
         "ma200": 368.63,
-        "atr14": 12.64,
-        "atr_pct": 0.0341,
+        "atr14": 12.66,
+        "atr_pct": 0.0342,
         "gap50_pct": -3.9,
         "dist_to_stop_pct": -3.9,
         "vol20ma": 19634258,
@@ -1317,8 +1317,8 @@
           false
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(-2.4%) + 탑픽점수 75",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "name_ko": "하우멧 에어로스페이스",
       "domain": "howmet.com",
       "weight_note": ""
@@ -2695,7 +2695,7 @@
         "atr_pct": 0.0457,
         "gap50_pct": -10.0,
         "dist_to_stop_pct": -2.5,
-        "vol20ma": 944846,
+        "vol20ma": 944893,
         "vol_ratio": 1.06,
         "growth_score": 1.0,
         "earnings_score": 2.8,
@@ -4139,7 +4139,7 @@
         "ma50": 22.37,
         "ma200": 17.94,
         "atr14": 1.65,
-        "atr_pct": 0.059,
+        "atr_pct": 0.0591,
         "gap50_pct": 24.8,
         "dist_to_stop_pct": 26.1,
         "vol20ma": 1082728,
@@ -5776,7 +5776,7 @@
       "trailing_stop_line": 63.2,
       "horizontal_support": 63.77,
       "cooldown_until": null,
-      "toppick_score": 71,
+      "toppick_score": 74,
       "metrics": {
         "price": 71.46,
         "ma50": 66.53,
@@ -5788,7 +5788,7 @@
         "vol20ma": 958843,
         "vol_ratio": 1.04,
         "growth_score": 4.0,
-        "earnings_score": 4.0,
+        "earnings_score": 4.5,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
         "peg": 0.32,
@@ -6477,8 +6477,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.87)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -6679,7 +6679,7 @@
         "ma50": 45.64,
         "ma200": 48.09,
         "atr14": 1.9,
-        "atr_pct": 0.035,
+        "atr_pct": 0.0351,
         "gap50_pct": 18.6,
         "dist_to_stop_pct": 0.8,
         "vol20ma": 3240260,
@@ -7158,12 +7158,13 @@
       "name": "CarGurus, Inc.",
       "name_ko": "카구루스",
       "domain": "cargurus.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 4.45,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 39.03,
       "trailing_stop_line": 31.22,
@@ -7195,8 +7196,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.46)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+0.9%) — 2차 진입",
       "weight_note": ""
     },
     {
