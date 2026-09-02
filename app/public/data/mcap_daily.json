@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-01",
+  "as_of": "2026-09-02",
   "rank1_ticker": "NVDA",
   "items": [
     {
@@ -118,9 +118,9 @@
       "ticker_display": "005930.KS",
       "slug": "005930.KS",
       "name": "Samsung",
-      "mcap_usd": 1246870198112,
+      "mcap_usd": 1213429231203,
       "is_leader": false,
-      "gap_pct_from_rank1": 76.3
+      "gap_pct_from_rank1": 76.9
     },
     {
       "rank": 13,
@@ -154,6 +154,16 @@
     },
     {
       "rank": 16,
+      "ticker": "TCEHY",
+      "ticker_display": "TCEHY",
+      "slug": "TCEHY",
+      "name": "Tencent",
+      "mcap_usd": 1016968052736,
+      "is_leader": false,
+      "gap_pct_from_rank1": 80.6
+    },
+    {
+      "rank": 17,
       "ticker": "JPM",
       "ticker_display": "JPM",
       "slug": "JPM",
@@ -163,17 +173,17 @@
       "gap_pct_from_rank1": 82.0
     },
     {
-      "rank": 17,
+      "rank": 18,
       "ticker": "000660.KS",
       "ticker_display": "000660.KS",
       "slug": "000660.KS",
       "name": "SK Hynix",
-      "mcap_usd": 874317440307,
+      "mcap_usd": 848495951517,
       "is_leader": false,
-      "gap_pct_from_rank1": 83.3
+      "gap_pct_from_rank1": 83.8
     },
     {
-      "rank": 18,
+      "rank": 19,
       "ticker": "WMT",
       "ticker_display": "WMT",
       "slug": "WMT",
@@ -183,7 +193,7 @@
       "gap_pct_from_rank1": 83.9
     },
     {
-      "rank": 19,
+      "rank": 20,
       "ticker": "AMD",
       "ticker_display": "AMD",
       "slug": "AMD",
@@ -193,7 +203,7 @@
       "gap_pct_from_rank1": 85.7
     },
     {
-      "rank": 20,
+      "rank": 21,
       "ticker": "V",
       "ticker_display": "V",
       "slug": "V",
@@ -203,7 +213,7 @@
       "gap_pct_from_rank1": 86.7
     },
     {
-      "rank": 21,
+      "rank": 22,
       "ticker": "XOM",
       "ticker_display": "XOM",
       "slug": "XOM",
@@ -213,7 +223,7 @@
       "gap_pct_from_rank1": 87.1
     },
     {
-      "rank": 22,
+      "rank": 23,
       "ticker": "JNJ",
       "ticker_display": "JNJ",
       "slug": "JNJ",
@@ -223,7 +233,7 @@
       "gap_pct_from_rank1": 87.6
     },
     {
-      "rank": 23,
+      "rank": 24,
       "ticker": "ASML",
       "ticker_display": "ASML",
       "slug": "ASML",
@@ -233,7 +243,7 @@
       "gap_pct_from_rank1": 87.8
     },
     {
-      "rank": 24,
+      "rank": 25,
       "ticker": "688825.SS",
       "ticker_display": "688825.SS",
       "slug": "688825.SS",
@@ -241,16 +251,6 @@
       "mcap_usd": 596237372470,
       "is_leader": false,
       "gap_pct_from_rank1": 88.6
-    },
-    {
-      "rank": 25,
-      "ticker": "MA",
-      "ticker_display": "MA",
-      "slug": "MA",
-      "name": "Mastercard",
-      "mcap_usd": 509049339904,
-      "is_leader": false,
-      "gap_pct_from_rank1": 90.3
     }
   ]
 }
