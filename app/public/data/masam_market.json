@@ -6,38 +6,38 @@
   "qe_active": true,
   "walcl_trend": "UP",
   "walcl_trillion": 6.73,
-  "treasury_10y": 4.75,
-  "treasury_10y_prev": 4.73,
-  "treasury_10y_change": 0.02,
+  "treasury_10y": 4.79,
+  "treasury_10y_prev": 4.75,
+  "treasury_10y_change": 0.04,
   "treasury_10y_trend": "UNKNOWN",
   "dff_trend": "UNKNOWN",
-  "treasury_30y": 5.25,
-  "treasury_30y_10y_spread": 0.5,
+  "treasury_30y": 5.27,
+  "treasury_30y_10y_spread": 0.48,
   "wresbal_trillion": 2.92,
   "dollar_index": 118.7479,
   "inflation_expectation_5y5y": 2.33,
   "treast_trillion": 4.55,
   "term_premium_10y": 0.8751,
   "qe_state": "QE_ON",
-  "treasury_10y_as_of": "2026-08-31",
-  "treasury_30y_as_of": "2026-08-31",
+  "treasury_10y_as_of": "2026-09-01",
+  "treasury_30y_as_of": "2026-09-01",
   "dollar_index_as_of": "2026-08-28",
-  "inflation_expectation_5y5y_as_of": "2026-09-01",
+  "inflation_expectation_5y5y_as_of": "2026-09-02",
   "term_premium_10y_as_of": "2026-08-28",
   "walcl_trillion_as_of": "2026-08-26",
   "treast_trillion_as_of": "2026-08-26",
   "wresbal_trillion_as_of": "2026-08-26",
   "dff_chg_20d": 0.0,
   "dff_chg_dir": "FLAT",
-  "treasury_10y_chg_20d": 0.05,
+  "treasury_10y_chg_20d": 0.16,
   "treasury_10y_chg_dir": "UP",
-  "treasury_30y_chg_20d": 0.02,
+  "treasury_30y_chg_20d": 0.09,
   "treasury_30y_chg_dir": "UP",
-  "treasury_30y_10y_spread_chg_20d": -0.03,
+  "treasury_30y_10y_spread_chg_20d": -0.07,
   "treasury_30y_10y_spread_chg_dir": "DOWN",
   "dollar_index_chg_20d": -0.9555,
   "dollar_index_chg_dir": "DOWN",
-  "inflation_expectation_5y5y_chg_20d": 0.06,
+  "inflation_expectation_5y5y_chg_20d": 0.07,
   "inflation_expectation_5y5y_chg_dir": "UP",
   "term_premium_10y_chg_20d": 0.007,
   "term_premium_10y_chg_dir": "UP",
@@ -47,24 +47,24 @@
   "wresbal_trillion_chg_dir": "DOWN",
   "treast_trillion_chg_4w": 0.03,
   "treast_trillion_chg_dir": "UP",
-  "vix": 16.34,
+  "vix": 15.2,
   "fear_greed": 62,
   "usd_krw": 1315.5,
   "market_sentiment": "위험선호",
-  "spy_ma200_label": "MA200 (+7.9%)",
+  "spy_ma200_label": "MA200 (+8.0%)",
   "history": {
     "dff": [
       3.63,
       3.63,
       3.63,
       3.63,
+      3.62,
+      3.62,
+      3.62,
+      3.62,
+      3.62,
+      3.62,
       3.63,
-      3.62,
-      3.62,
-      3.62,
-      3.62,
-      3.62,
-      3.62,
       3.63,
       3.63,
       3.63,
@@ -178,7 +178,6 @@
       6.73
     ],
     "treasury_10y": [
-      4.53,
       4.55,
       4.45,
       4.48,
@@ -235,10 +234,10 @@
       4.66,
       4.67,
       4.73,
-      4.75
+      4.75,
+      4.79
     ],
     "treasury_30y": [
-      5.01,
       5.03,
       4.95,
       4.97,
@@ -295,10 +294,10 @@
       5.18,
       5.19,
       5.22,
-      5.25
+      5.25,
+      5.27
     ],
     "treasury_30y_10y_spread": [
-      0.48,
       0.48,
       0.5,
       0.49,
@@ -355,7 +354,8 @@
       0.52,
       0.52,
       0.49,
-      0.5
+      0.5,
+      0.48
     ],
     "wresbal_trillion": [
       3.33,
@@ -480,7 +480,6 @@
       118.7479
     ],
     "inflation_expectation_5y5y": [
-      2.24,
       2.18,
       2.23,
       2.24,
@@ -537,6 +536,7 @@
       2.35,
       2.32,
       2.31,
+      2.33,
       2.33
     ],
     "treast_trillion": [
@@ -662,7 +662,6 @@
       0.8751
     ],
     "vix": [
-      16.64,
       18.7,
       18.58,
       18.67,
@@ -689,10 +688,12 @@
       15.45,
       15.21,
       14.51,
+      14.43,
       14.92,
-      16.34
+      16.34,
+      15.2
     ]
   },
-  "vix_chg_20d": 0.48,
-  "vix_chg_dir": "UP"
+  "vix_chg_20d": -0.61,
+  "vix_chg_dir": "DOWN"
 }
