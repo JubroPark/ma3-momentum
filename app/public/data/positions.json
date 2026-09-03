@@ -1331,8 +1331,8 @@
       "avg_price": null,
       "weight": 0.0,
       "deployed_tranches": [],
-      "recent_high": 176.32,
-      "trailing_stop_line": 141.06,
+      "recent_high": 88.16,
+      "trailing_stop_line": 70.53,
       "horizontal_support": 138.2,
       "cooldown_until": null,
       "toppick_score": 87,
@@ -1343,8 +1343,8 @@
         "atr14": 2.83,
         "atr_pct": 0.0345,
         "gap50_pct": 1.9,
-        "dist_to_stop_pct": -71.9,
-        "vol20ma": 11171930,
+        "dist_to_stop_pct": 14.1,
+        "vol20ma": 11203299,
         "vol_ratio": 0.91,
         "growth_score": 4.5,
         "earnings_score": 5.0,
@@ -1361,8 +1361,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "name_ko": "암페놀",
       "domain": "amphenol.com",
       "weight_note": ""
@@ -2692,7 +2692,7 @@
         "atr_pct": 0.0425,
         "gap50_pct": -8.0,
         "dist_to_stop_pct": -3.6,
-        "vol20ma": 809150,
+        "vol20ma": 809167,
         "vol_ratio": 0.9,
         "growth_score": 1.0,
         "earnings_score": 2.8,
@@ -3479,14 +3479,11 @@
       "name": "Liquidia Corporation",
       "name_ko": "리퀴디아",
       "domain": "liquidia.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 4.75,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 91.03,
       "trailing_stop_line": 69.0,
       "horizontal_support": 53.06,
@@ -3517,9 +3514,9 @@
           false
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (68.63 ≤ 69.00)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -0.5%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "COCO",
