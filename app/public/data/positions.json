@@ -1199,7 +1199,7 @@
       "trailing_stop_line": 456.54,
       "horizontal_support": 457.4,
       "cooldown_until": null,
-      "toppick_score": 52,
+      "toppick_score": 57,
       "metrics": {
         "price": 560.56,
         "ma50": 534.63,
@@ -1211,7 +1211,7 @@
         "vol20ma": 376888,
         "vol_ratio": 0.98,
         "growth_score": 2.0,
-        "earnings_score": 1.5,
+        "earnings_score": 2.3,
         "health_score": 3.0,
         "eps_revision": "UP",
         "peg": 1.16,
@@ -6789,8 +6789,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.2%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
