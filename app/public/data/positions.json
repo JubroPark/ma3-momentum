@@ -1560,7 +1560,7 @@
       "trailing_stop_line": 438.9,
       "horizontal_support": 417.34,
       "cooldown_until": null,
-      "toppick_score": 74,
+      "toppick_score": 72,
       "metrics": {
         "price": 321.0,
         "ma50": 404.74,
@@ -1575,7 +1575,7 @@
         "earnings_score": 3.8,
         "health_score": 2.2,
         "eps_revision": "UP_STRONG",
-        "peg": 0.17,
+        "peg": 0.03,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -7952,8 +7952,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.53)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     }
   ]
