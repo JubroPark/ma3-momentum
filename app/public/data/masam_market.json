@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-09-04",
+  "as_of": "2026-09-07",
   "rate_env": "NON_ZERO",
   "dff": 3.63,
   "dff_change_text": "동결",
@@ -47,7 +47,7 @@
   "wresbal_trillion_chg_dir": "DOWN",
   "treast_trillion_chg_4w": 0.02,
   "treast_trillion_chg_dir": "UP",
-  "vix": 14.53,
+  "vix": 15.3,
   "fear_greed": 62,
   "usd_krw": 1315.5,
   "market_sentiment": "위험선호",
@@ -662,7 +662,6 @@
       0.8751
     ],
     "vix": [
-      18.67,
       18.21,
       20.66,
       17.09,
@@ -691,9 +690,10 @@
       16.34,
       15.2,
       14.32,
-      14.53
+      14.53,
+      15.3
     ]
   },
-  "vix_chg_20d": -0.37,
+  "vix_chg_20d": -0.16,
   "vix_chg_dir": "DOWN"
 }
