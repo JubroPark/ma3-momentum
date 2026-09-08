@@ -1,7 +1,7 @@
 {
-  "as_of": "2026-09-05",
+  "as_of": "2026-09-08",
   "total_screened": 2757,
-  "qualified": 320,
+  "qualified": 327,
   "items": [
     {
       "symbol": "PLTR",
@@ -39,7 +39,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 4.5,
-      "market_cap": 107688771584,
+      "market_cap": 107275575296,
       "sector": "Communication Services"
     },
     {
@@ -65,7 +65,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 2.5,
-      "market_cap": 64249298944,
+      "market_cap": 64634892288,
       "sector": "Healthcare"
     },
     {
@@ -78,7 +78,7 @@
       "growth_score": 4.5,
       "earnings_score": 5.0,
       "health_score": 4.0,
-      "market_cap": 192484655104,
+      "market_cap": 192786563072,
       "sector": "Technology"
     },
     {
@@ -147,6 +147,19 @@
       "sector": "Communication Services"
     },
     {
+      "symbol": "WDC",
+      "name": "Western Digital Corporation",
+      "name_ko": "웨스턴 디지털",
+      "domain": "esterndigital.com",
+      "toppick_score": 85,
+      "moat_score": 3.9,
+      "growth_score": 4.5,
+      "earnings_score": 4.5,
+      "health_score": 4.0,
+      "market_cap": 168538456064,
+      "sector": "Technology"
+    },
+    {
       "symbol": "CDNS",
       "name": "Cadence Design Systems, Inc.",
       "name_ko": "케이던스 디자인 시스템즈",
@@ -156,7 +169,7 @@
       "growth_score": 4.0,
       "earnings_score": 5.0,
       "health_score": 3.0,
-      "market_cap": 80607535104,
+      "market_cap": 80731348992,
       "sector": "Technology"
     },
     {
@@ -208,7 +221,7 @@
       "growth_score": 3.5,
       "earnings_score": 5.0,
       "health_score": 3.2,
-      "market_cap": 35771379712,
+      "market_cap": 35770564608,
       "sector": "Consumer Cyclical"
     },
     {
@@ -288,19 +301,6 @@
       "health_score": 4.0,
       "market_cap": 3643235328,
       "sector": "Basic Materials"
-    },
-    {
-      "symbol": "WDC",
-      "name": "Western Digital Corporation",
-      "name_ko": "웨스턴 디지털",
-      "domain": "esterndigital.com",
-      "toppick_score": 79,
-      "moat_score": 2.9,
-      "growth_score": 4.5,
-      "earnings_score": 4.5,
-      "health_score": 4.0,
-      "market_cap": 168538456064,
-      "sector": "Technology"
     },
     {
       "symbol": "HOOD",
@@ -455,7 +455,7 @@
       "growth_score": 3.5,
       "earnings_score": 3.3,
       "health_score": 3.5,
-      "market_cap": 1024931856384,
+      "market_cap": 1024490143744,
       "sector": "Healthcare"
     },
     {
@@ -563,19 +563,6 @@
       "sector": "Healthcare"
     },
     {
-      "symbol": "PATH",
-      "name": "UiPath, Inc.",
-      "name_ko": "유아이패스",
-      "domain": "uipath.com",
-      "toppick_score": 77,
-      "moat_score": 3.4,
-      "growth_score": 3.5,
-      "earnings_score": 5.0,
-      "health_score": 2.8,
-      "market_cap": 7870246400,
-      "sector": "Technology"
-    },
-    {
       "symbol": "BB",
       "name": "BlackBerry Limited",
       "name_ko": "블랙베리",
@@ -611,7 +598,7 @@
       "growth_score": 3.5,
       "earnings_score": 4.0,
       "health_score": 3.5,
-      "market_cap": 7561325056,
+      "market_cap": 7578898944,
       "sector": "Communication Services"
     },
     {
@@ -628,19 +615,6 @@
       "sector": "Healthcare"
     },
     {
-      "symbol": "GFI",
-      "name": "Gold Fields Limited",
-      "name_ko": "골드 필즈 ADR",
-      "domain": "goldfields.com",
-      "toppick_score": 76,
-      "moat_score": 3.4,
-      "growth_score": 4.5,
-      "earnings_score": 3.3,
-      "health_score": 4.5,
-      "market_cap": 42228494336,
-      "sector": "Basic Materials"
-    },
-    {
       "symbol": "AG",
       "name": "First Majestic Silver Corp.",
       "name_ko": "퍼스트 머제스틱 실버",
@@ -652,6 +626,19 @@
       "health_score": 3.7,
       "market_cap": 10336245760,
       "sector": "Basic Materials"
+    },
+    {
+      "symbol": "PATH",
+      "name": "UiPath, Inc.",
+      "name_ko": "유아이패스",
+      "domain": "uipath.com",
+      "toppick_score": 76,
+      "moat_score": 3.4,
+      "growth_score": 3.5,
+      "earnings_score": 5.0,
+      "health_score": 2.3,
+      "market_cap": 7870246400,
+      "sector": "Technology"
     },
     {
       "symbol": "YOU",
@@ -906,7 +893,7 @@
       "name_ko": "시에나",
       "domain": "ciena.com",
       "toppick_score": 74,
-      "moat_score": 3.3,
+      "moat_score": 3.25,
       "growth_score": 4.5,
       "earnings_score": 3.8,
       "health_score": 2.2,
@@ -979,19 +966,6 @@
       "sector": "Technology"
     },
     {
-      "symbol": "WT",
-      "name": "WisdomTree, Inc.",
-      "name_ko": "위즈덤트리",
-      "domain": "isdomtree.com",
-      "toppick_score": 74,
-      "moat_score": 2.9,
-      "growth_score": 4.5,
-      "earnings_score": 3.8,
-      "health_score": 3.5,
-      "market_cap": 3771136256,
-      "sector": "Financial Services"
-    },
-    {
       "symbol": "CSCO",
       "name": "Cisco Systems, Inc.",
       "name_ko": "시스코 시스템즈",
@@ -1027,7 +1001,7 @@
       "growth_score": 5.0,
       "earnings_score": 3.0,
       "health_score": 2.0,
-      "market_cap": 16461308928,
+      "market_cap": 16428734464,
       "sector": "Technology"
     },
     {
@@ -1107,6 +1081,19 @@
       "health_score": 3.2,
       "market_cap": 44539502592,
       "sector": "Healthcare"
+    },
+    {
+      "symbol": "GFI",
+      "name": "Gold Fields Limited",
+      "name_ko": "골드 필즈 ADR",
+      "domain": "goldfields.com",
+      "toppick_score": 73,
+      "moat_score": 3.4,
+      "growth_score": 4.5,
+      "earnings_score": 2.8,
+      "health_score": 4.5,
+      "market_cap": 42228494336,
+      "sector": "Basic Materials"
     },
     {
       "symbol": "AGI",
@@ -1248,8 +1235,21 @@
       "growth_score": 2.0,
       "earnings_score": 4.0,
       "health_score": 3.8,
-      "market_cap": 5938231296,
+      "market_cap": 6044999168,
       "sector": "Technology"
+    },
+    {
+      "symbol": "MRX",
+      "name": "Marex Group Limited",
+      "name_ko": "마렉스 UK 홀딩스",
+      "domain": "marex.com",
+      "toppick_score": 72,
+      "moat_score": 2.65,
+      "growth_score": 4.5,
+      "earnings_score": 4.5,
+      "health_score": 1.2,
+      "market_cap": 5630029312,
+      "sector": "Financial Services"
     },
     {
       "symbol": "LB",
@@ -1263,6 +1263,19 @@
       "health_score": 3.7,
       "market_cap": 6670200320,
       "sector": "Energy"
+    },
+    {
+      "symbol": "WT",
+      "name": "WisdomTree, Inc.",
+      "name_ko": "위즈덤트리",
+      "domain": "isdomtree.com",
+      "toppick_score": 72,
+      "moat_score": 2.6,
+      "growth_score": 4.5,
+      "earnings_score": 3.8,
+      "health_score": 3.5,
+      "market_cap": 3771136256,
+      "sector": "Financial Services"
     },
     {
       "symbol": "ASML",
@@ -1288,19 +1301,6 @@
       "earnings_score": 3.0,
       "health_score": 3.8,
       "market_cap": 236019728384,
-      "sector": "Technology"
-    },
-    {
-      "symbol": "MPWR",
-      "name": "Monolithic Power Systems, Inc.",
-      "name_ko": "모놀리식 파워 시스템즈",
-      "domain": "monolithicpower.com",
-      "toppick_score": 71,
-      "moat_score": 4.05,
-      "growth_score": 4.0,
-      "earnings_score": 3.0,
-      "health_score": 2.5,
-      "market_cap": 60144152576,
       "sector": "Technology"
     }
   ]
