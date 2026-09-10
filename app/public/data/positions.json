@@ -6850,14 +6850,11 @@
       "name": "MACOM Technology Solutions Hold",
       "name_ko": "M/A-컴 테크놀로지 솔루션스 홀딩스",
       "domain": "macom.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 3.95,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 409.68,
       "trailing_stop_line": 327.74,
       "horizontal_support": 260.85,
@@ -6888,9 +6885,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (286.12 ≤ 327.74)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -14.5%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "MGY",
