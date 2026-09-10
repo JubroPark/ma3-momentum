@@ -1883,7 +1883,7 @@
         "earnings_score": 2.8,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 3.62,
+        "peg": 3.51,
         "steps_count": 2,
         "steps_list": [
           false,
@@ -2367,7 +2367,7 @@
       "trailing_stop_line": 847.12,
       "horizontal_support": 810.74,
       "cooldown_until": null,
-      "toppick_score": 83,
+      "toppick_score": 86,
       "metrics": {
         "price": 984.04,
         "ma50": 930.73,
@@ -2379,7 +2379,7 @@
         "vol20ma": 276926,
         "vol_ratio": 0.82,
         "growth_score": 4.5,
-        "earnings_score": 4.5,
+        "earnings_score": 5.0,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
         "peg": 0.39,
@@ -4467,8 +4467,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.3%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -6390,8 +6390,8 @@
           false
         ]
       },
-      "next_action": "BUY_3",
-      "reason": "지지선 근접(+2.6%) + 탑픽점수 73",
+      "next_action": "HOLD",
+      "reason": "3차 보유 중",
       "weight_note": ""
     },
     {
@@ -6748,8 +6748,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "지지선 이탈 (8.29 < 8.95)",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -7476,14 +7476,11 @@
       "name": "Astronics Corporation",
       "name_ko": "아스트로닉스",
       "domain": "astronics.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 2.7,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 93.45,
       "trailing_stop_line": 74.64,
       "horizontal_support": 69.45,
@@ -7514,9 +7511,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (73.49 ≤ 74.64)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -1.6%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "FIGR",
@@ -7655,12 +7652,13 @@
       "name": "Bending Spoons S.p.A.",
       "name_ko": "벤딩 스푼스",
       "domain": "bendingspoons.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 3.55,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 53.44,
       "trailing_stop_line": 37.41,
@@ -7692,8 +7690,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.99)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+2.9%) — 2차 진입",
       "weight_note": ""
     },
     {
