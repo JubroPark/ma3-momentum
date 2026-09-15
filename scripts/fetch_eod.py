@@ -10,6 +10,7 @@ import calendar
 import urllib.request
 from datetime import date, timedelta
 from pathlib import Path
+import pandas as pd
 import yfinance as yf
 
 DATA = Path(__file__).parent.parent / "app/public/data"
@@ -63,6 +64,23 @@ def fetch_history(ticker: str, period: str = "1y"):
     hist = t.history(period=period, auto_adjust=True)
     if hist.empty:
         sys.exit(f"[오류] {ticker} 가격 조회 실패")
+    if math.isnan(hist["Close"].iloc[-1]):
+        # yfinance가 긴 기간(period= 또는 여러 행에 걸친 start~end)을 조회하면
+        # 최신 종가를 NaN으로 잘못 반환하는 버그가 있음(Yahoo 서버엔 실제 값이
+        # 있는데도 발생 — 2026-09-15 확인, NVDA/AAPL/MSFT/QQQ 재현·^IXIC는
+        # 미재현). 요청 구간에 그 직전 행이 하나라도 같이 포함되면 재현되고,
+        # "누락된 날짜만 딱" 요청(start=마지막 유효일+1일)하면 정상 값이 나오는
+        # 것까지 확인함 — 단순히 최근 N일로 재조회하는 걸로는 안 고쳐짐(그 N일
+        # 구간 안에 직전 유효 행이 같이 딸려오면 똑같이 NaN 재현).
+        hist = hist[hist["Close"].notna()]
+        if hist.empty:
+            sys.exit(f"[오류] {ticker} 가격 조회 실패")
+        gap_start = hist.index[-1].date() + timedelta(days=1)
+        recent = t.history(start=gap_start, end=date.today() + timedelta(days=1), auto_adjust=True)
+        recent = recent[recent["Close"].notna()]
+        if recent.empty:
+            sys.exit(f"[오류] {ticker} 가격 조회 실패(재시도 후에도 NaN)")
+        hist = pd.concat([hist, recent[~recent.index.isin(hist.index)]])
     return hist
 
 
