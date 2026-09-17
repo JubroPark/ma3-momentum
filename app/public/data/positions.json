@@ -2689,7 +2689,7 @@
         "atr_pct": 0.0372,
         "gap50_pct": -7.2,
         "dist_to_stop_pct": -7.5,
-        "vol20ma": 820460,
+        "vol20ma": 820494,
         "vol_ratio": 0.79,
         "growth_score": 1.0,
         "earnings_score": 2.8,
@@ -6260,12 +6260,13 @@
       "name": "Arm Holdings plc",
       "name_ko": "암 홀딩스 ADR",
       "domain": "arm.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 3.75,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 439.46,
       "trailing_stop_line": 317.03,
@@ -6297,8 +6298,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.57)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+1.1%) — 2차 진입",
       "weight_note": ""
     },
     {
@@ -7430,8 +7431,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.42)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
