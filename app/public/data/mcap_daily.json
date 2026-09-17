@@ -8,7 +8,7 @@
       "ticker_display": "NVDA",
       "slug": "NVDA",
       "name": "NVIDIA",
-      "mcap_usd": 5165043154944,
+      "mcap_usd": 5296402989056,
       "is_leader": true,
       "gap_pct_from_rank1": 0.0
     },
@@ -18,9 +18,9 @@
       "ticker_display": "AAPL",
       "slug": "AAPL",
       "name": "Apple",
-      "mcap_usd": 4851251544064,
+      "mcap_usd": 4918238773248,
       "is_leader": false,
-      "gap_pct_from_rank1": 6.1
+      "gap_pct_from_rank1": 7.1
     },
     {
       "rank": 3,
@@ -28,9 +28,9 @@
       "ticker_display": "GOOG",
       "slug": "GOOG",
       "name": "Alphabet (Google)",
-      "mcap_usd": 4150350577664,
+      "mcap_usd": 4203184128000,
       "is_leader": false,
-      "gap_pct_from_rank1": 19.6
+      "gap_pct_from_rank1": 20.6
     },
     {
       "rank": 4,
@@ -38,9 +38,9 @@
       "ticker_display": "MSFT",
       "slug": "MSFT",
       "name": "Microsoft",
-      "mcap_usd": 3640745000960,
+      "mcap_usd": 3696065511424,
       "is_leader": false,
-      "gap_pct_from_rank1": 29.5
+      "gap_pct_from_rank1": 30.2
     },
     {
       "rank": 5,
@@ -48,9 +48,9 @@
       "ticker_display": "AMZN",
       "slug": "AMZN",
       "name": "Amazon",
-      "mcap_usd": 2653001613312,
+      "mcap_usd": 2709413953536,
       "is_leader": false,
-      "gap_pct_from_rank1": 48.6
+      "gap_pct_from_rank1": 48.8
     },
     {
       "rank": 6,
@@ -58,9 +58,9 @@
       "ticker_display": "TSM",
       "slug": "TSM",
       "name": "TSMC",
-      "mcap_usd": 2166493937664,
+      "mcap_usd": 2231532257280,
       "is_leader": false,
-      "gap_pct_from_rank1": 58.1
+      "gap_pct_from_rank1": 57.9
     },
     {
       "rank": 7,
@@ -68,7 +68,7 @@
       "ticker_display": "SPCX",
       "slug": "SPCX",
       "name": "SpaceX",
-      "mcap_usd": 1988866998272,
+      "mcap_usd": 2040671371264,
       "is_leader": false,
       "gap_pct_from_rank1": 61.5
     },
@@ -78,29 +78,29 @@
       "ticker_display": "META",
       "slug": "META",
       "name": "Meta Platforms (Facebook)",
-      "mcap_usd": 1715261407232,
+      "mcap_usd": 1738188914688,
       "is_leader": false,
-      "gap_pct_from_rank1": 66.8
+      "gap_pct_from_rank1": 67.2
     },
     {
       "rank": 9,
-      "ticker": "2222.SR",
-      "ticker_display": "2222.SR",
-      "slug": "2222.SR",
-      "name": "Saudi Aramco",
-      "mcap_usd": 1653935572986,
-      "is_leader": false,
-      "gap_pct_from_rank1": 68.0
-    },
-    {
-      "rank": 10,
       "ticker": "AVGO",
       "ticker_display": "AVGO",
       "slug": "AVGO",
       "name": "Broadcom",
-      "mcap_usd": 1620695187456,
+      "mcap_usd": 1657881624576,
       "is_leader": false,
-      "gap_pct_from_rank1": 68.6
+      "gap_pct_from_rank1": 68.7
+    },
+    {
+      "rank": 10,
+      "ticker": "2222.SR",
+      "ticker_display": "2222.SR",
+      "slug": "2222.SR",
+      "name": "Saudi Aramco",
+      "mcap_usd": 1646031466547,
+      "is_leader": false,
+      "gap_pct_from_rank1": 68.9
     },
     {
       "rank": 11,
@@ -108,9 +108,9 @@
       "ticker_display": "TSLA",
       "slug": "TSLA",
       "name": "Tesla",
-      "mcap_usd": 1414253903872,
+      "mcap_usd": 1446324338688,
       "is_leader": false,
-      "gap_pct_from_rank1": 72.6
+      "gap_pct_from_rank1": 72.7
     },
     {
       "rank": 12,
@@ -118,29 +118,29 @@
       "ticker_display": "005930.KS",
       "slug": "005930.KS",
       "name": "Samsung",
-      "mcap_usd": 1216056777437,
+      "mcap_usd": 1200516415891,
       "is_leader": false,
-      "gap_pct_from_rank1": 76.5
+      "gap_pct_from_rank1": 77.3
     },
     {
       "rank": 13,
-      "ticker": "BRK-B",
-      "ticker_display": "BRK-B",
-      "slug": "BRK-B",
-      "name": "Berkshire Hathaway",
-      "mcap_usd": 1112740855808,
-      "is_leader": false,
-      "gap_pct_from_rank1": 78.5
-    },
-    {
-      "rank": 14,
       "ticker": "MU",
       "ticker_display": "MU",
       "slug": "MU",
       "name": "Micron Technology",
-      "mcap_usd": 1046439198720,
+      "mcap_usd": 1103981838336,
       "is_leader": false,
-      "gap_pct_from_rank1": 79.7
+      "gap_pct_from_rank1": 79.2
+    },
+    {
+      "rank": 14,
+      "ticker": "BRK-B",
+      "ticker_display": "BRK-B",
+      "slug": "BRK-B",
+      "name": "Berkshire Hathaway",
+      "mcap_usd": 1090049409024,
+      "is_leader": false,
+      "gap_pct_from_rank1": 79.4
     },
     {
       "rank": 15,
@@ -148,9 +148,9 @@
       "ticker_display": "LLY",
       "slug": "LLY",
       "name": "Eli Lilly",
-      "mcap_usd": 1014641131520,
+      "mcap_usd": 1027678404608,
       "is_leader": false,
-      "gap_pct_from_rank1": 80.4
+      "gap_pct_from_rank1": 80.6
     },
     {
       "rank": 16,
@@ -158,9 +158,9 @@
       "ticker_display": "JPM",
       "slug": "JPM",
       "name": "JPMorgan Chase",
-      "mcap_usd": 927494373376,
+      "mcap_usd": 928531021824,
       "is_leader": false,
-      "gap_pct_from_rank1": 82.0
+      "gap_pct_from_rank1": 82.5
     },
     {
       "rank": 17,
@@ -168,29 +168,29 @@
       "ticker_display": "000660.KS",
       "slug": "000660.KS",
       "name": "SK Hynix",
-      "mcap_usd": 908345447354,
+      "mcap_usd": 896878542405,
       "is_leader": false,
-      "gap_pct_from_rank1": 82.4
+      "gap_pct_from_rank1": 83.1
     },
     {
       "rank": 18,
-      "ticker": "WMT",
-      "ticker_display": "WMT",
-      "slug": "WMT",
-      "name": "Walmart",
-      "mcap_usd": 855493509120,
-      "is_leader": false,
-      "gap_pct_from_rank1": 83.4
-    },
-    {
-      "rank": 19,
       "ticker": "AMD",
       "ticker_display": "AMD",
       "slug": "AMD",
       "name": "AMD",
-      "mcap_usd": 836643454976,
+      "mcap_usd": 889845841920,
       "is_leader": false,
-      "gap_pct_from_rank1": 83.8
+      "gap_pct_from_rank1": 83.2
+    },
+    {
+      "rank": 19,
+      "ticker": "WMT",
+      "ticker_display": "WMT",
+      "slug": "WMT",
+      "name": "Walmart",
+      "mcap_usd": 849843257344,
+      "is_leader": false,
+      "gap_pct_from_rank1": 84.0
     },
     {
       "rank": 20,
@@ -198,9 +198,9 @@
       "ticker_display": "V",
       "slug": "V",
       "name": "Visa",
-      "mcap_usd": 692543815680,
+      "mcap_usd": 690676760576,
       "is_leader": false,
-      "gap_pct_from_rank1": 86.6
+      "gap_pct_from_rank1": 87.0
     },
     {
       "rank": 21,
@@ -208,9 +208,9 @@
       "ticker_display": "XOM",
       "slug": "XOM",
       "name": "Exxon Mobil",
-      "mcap_usd": 671557484544,
+      "mcap_usd": 671351898112,
       "is_leader": false,
-      "gap_pct_from_rank1": 87.0
+      "gap_pct_from_rank1": 87.3
     },
     {
       "rank": 22,
@@ -218,9 +218,9 @@
       "ticker_display": "JNJ",
       "slug": "JNJ",
       "name": "Johnson & Johnson",
-      "mcap_usd": 644117692416,
+      "mcap_usd": 651202789376,
       "is_leader": false,
-      "gap_pct_from_rank1": 87.5
+      "gap_pct_from_rank1": 87.7
     },
     {
       "rank": 23,
@@ -228,29 +228,29 @@
       "ticker_display": "ASML",
       "slug": "ASML",
       "name": "ASML",
-      "mcap_usd": 615412662272,
+      "mcap_usd": 625956290560,
       "is_leader": false,
-      "gap_pct_from_rank1": 88.1
+      "gap_pct_from_rank1": 88.2
     },
     {
       "rank": 24,
-      "ticker": "688825.SS",
-      "ticker_display": "688825.SS",
-      "slug": "688825.SS",
-      "name": "CXMT",
-      "mcap_usd": 575349229502,
-      "is_leader": false,
-      "gap_pct_from_rank1": 88.9
-    },
-    {
-      "rank": 25,
       "ticker": "INTC",
       "ticker_display": "INTC",
       "slug": "INTC",
       "name": "Intel",
-      "mcap_usd": 534160932864,
+      "mcap_usd": 575128272896,
       "is_leader": false,
-      "gap_pct_from_rank1": 89.7
+      "gap_pct_from_rank1": 89.1
+    },
+    {
+      "rank": 25,
+      "ticker": "688825.SS",
+      "ticker_display": "688825.SS",
+      "slug": "688825.SS",
+      "name": "CXMT",
+      "mcap_usd": 565560069096,
+      "is_leader": false,
+      "gap_pct_from_rank1": 89.3
     }
   ]
 }
