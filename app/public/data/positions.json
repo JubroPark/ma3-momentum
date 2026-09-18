@@ -1805,8 +1805,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.89)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "name_ko": "넷앱",
       "domain": "netapp.com",
       "weight_note": ""
@@ -2294,8 +2294,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "지지선 이탈 (146.23 < 154.06)",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -2341,8 +2341,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.9%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
@@ -6124,10 +6124,10 @@
       "name": "Intuitive Surgical, Inc.",
       "name_ko": "인튜이티브 서지컬",
       "domain": "intuitive.com",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 3.2,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -6161,9 +6161,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.10)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (393.33 ≤ 474.28)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -20.6%)"
     },
     {
       "symbol": "HOOD",
@@ -6261,14 +6261,11 @@
       "name": "Arm Holdings plc",
       "name_ko": "암 홀딩스 ADR",
       "domain": "arm.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 3.75,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 439.46,
       "trailing_stop_line": 323.17,
       "horizontal_support": 200.89,
@@ -6299,9 +6296,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (275.61 ≤ 323.17)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -17.3%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "TAL",
@@ -6897,14 +6894,11 @@
       "name": "Magnolia Oil & Gas Corporation",
       "name_ko": "매그놀리아 오일 & 가스",
       "domain": "magnoliaoilgas.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 2.95,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 31.94,
       "trailing_stop_line": 25.55,
       "horizontal_support": 23.4,
@@ -6935,9 +6929,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (25.18 ≤ 25.55)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -1.5%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "LB",
@@ -7708,12 +7702,13 @@
       "name": "Keysight Technologies Inc.",
       "name_ko": "키사이트 테크놀로지스",
       "domain": "keysight.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 3.9,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 373.34,
       "trailing_stop_line": 298.67,
@@ -7745,8 +7740,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.48)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+2.7%) — 2차 진입",
       "weight_note": ""
     },
     {
@@ -7927,8 +7922,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.99)",
+      "next_action": "HOLD",
+      "reason": "1차 보유 중",
       "weight_note": ""
     },
     {
@@ -7936,14 +7931,11 @@
       "name": "UiPath, Inc.",
       "name_ko": "유아이패스",
       "domain": "uipath.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 3.4,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 19.29,
       "trailing_stop_line": 13.5,
       "horizontal_support": 9.2,
@@ -7974,19 +7966,19 @@
           false
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (13.39 ≤ 13.50)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -0.8%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "HMY",
       "name": "Harmony Gold Mining Company Lim",
       "name_ko": "하모니 골드 마이닝 ADR",
       "domain": "harmony.co.za",
-      "status": "ENTRY_1",
+      "status": "TRIM",
       "moat_score": 2.5,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.075,
       "deployed_tranches": [
         1
       ],
@@ -8020,9 +8012,9 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 2.30)",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (19.92 ≤ 20.42)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -2.5%)"
     },
     {
       "symbol": "FIX",
