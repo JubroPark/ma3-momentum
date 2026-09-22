@@ -2579,10 +2579,10 @@
       "name": "Innodata Inc.",
       "name_ko": "이노데이터",
       "domain": "innodata.com",
-      "status": "ENTRY_2",
+      "status": "TRIM",
       "moat_score": 2.8,
       "avg_price": null,
-      "weight": 0.7,
+      "weight": 0.175,
       "deployed_tranches": [
         1,
         2
@@ -2617,9 +2617,9 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.8%) — 2차 진입",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (61.05 ≤ 97.20)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -59.2%)"
     },
     {
       "symbol": "EXEL",
@@ -4070,10 +4070,10 @@
       "name": "BlackBerry Limited",
       "name_ko": "블랙베리",
       "domain": "blackberry.com",
-      "status": "ENTRY_2",
+      "status": "TRIM",
       "moat_score": 3.45,
       "avg_price": null,
-      "weight": 0.7,
+      "weight": 0.175,
       "deployed_tranches": [
         1,
         2
@@ -4108,9 +4108,9 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+0.7%) — 2차 진입",
-      "weight_note": ""
+      "next_action": "TRIM_HALF",
+      "reason": "트레일링 스탑 터치 (8.53 ≤ 10.25)",
+      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -20.2%)"
     },
     {
       "symbol": "AYA",
@@ -7443,12 +7443,13 @@
       "name": "Global-E Online Ltd.",
       "name_ko": "글로벌E 온라인",
       "domain": "global-e.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 2.3,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 42.36,
       "trailing_stop_line": 33.89,
@@ -7480,8 +7481,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.33)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+1.9%) — 2차 진입",
       "weight_note": ""
     },
     {
