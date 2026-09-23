@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-09-23T13:01:42Z",
-  "update_time": "22:01 KST",
+  "as_of": "2026-09-23T13:15:59Z",
+  "update_time": "22:15 KST",
   "nasdaq": {
     "price": null,
     "change_pct": null,
-    "dist_to_masam_pct": null,
+    "dist_to_masam_pct": 0.0,
     "from_ath_pct": null,
     "last_masam_date": "2026-06-05"
   },
@@ -123,8 +123,8 @@
     }
   },
   "live_market": {
-    "vix": 14.32,
-    "vix_chg": -3.7,
+    "vix": 14.29,
+    "vix_chg": -3.9,
     "usd_krw": 1366.3,
     "usd_krw_chg": -0.54,
     "fear_greed": 35
