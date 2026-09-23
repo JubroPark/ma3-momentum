@@ -7,37 +7,37 @@
   "walcl_trend": "DOWN",
   "walcl_trillion": 6.75,
   "treasury_10y": 4.96,
-  "treasury_10y_prev": 5.01,
-  "treasury_10y_change": -0.05,
+  "treasury_10y_prev": 4.96,
+  "treasury_10y_change": 0.0,
   "treasury_10y_trend": "UP",
   "dff_trend": "UP",
   "treasury_30y": 5.29,
   "treasury_30y_10y_spread": 0.33,
   "wresbal_trillion": 3.01,
   "dollar_index": 119.5133,
-  "inflation_expectation_5y5y": 2.34,
+  "inflation_expectation_5y5y": 2.36,
   "treast_trillion": 4.55,
   "term_premium_10y": 0.9595,
   "qe_state": "QT",
-  "treasury_10y_as_of": "2026-09-21",
-  "treasury_30y_as_of": "2026-09-21",
+  "treasury_10y_as_of": "2026-09-22",
+  "treasury_30y_as_of": "2026-09-22",
   "dollar_index_as_of": "2026-09-18",
-  "inflation_expectation_5y5y_as_of": "2026-09-22",
+  "inflation_expectation_5y5y_as_of": "2026-09-23",
   "term_premium_10y_as_of": "2026-09-18",
   "walcl_trillion_as_of": "2026-09-16",
   "treast_trillion_as_of": "2026-09-16",
   "wresbal_trillion_as_of": "2026-09-16",
   "dff_chg_20d": 0.25,
   "dff_chg_dir": "UP",
-  "treasury_10y_chg_20d": 0.22,
+  "treasury_10y_chg_20d": 0.26,
   "treasury_10y_chg_dir": "UP",
-  "treasury_30y_chg_20d": 0.02,
+  "treasury_30y_chg_20d": 0.06,
   "treasury_30y_chg_dir": "UP",
   "treasury_30y_10y_spread_chg_20d": -0.2,
   "treasury_30y_10y_spread_chg_dir": "DOWN",
   "dollar_index_chg_20d": 1.2585,
   "dollar_index_chg_dir": "UP",
-  "inflation_expectation_5y5y_chg_20d": 0.02,
+  "inflation_expectation_5y5y_chg_20d": 0.03,
   "inflation_expectation_5y5y_chg_dir": "UP",
   "term_premium_10y_chg_20d": 0.1117,
   "term_premium_10y_chg_dir": "UP",
@@ -47,11 +47,11 @@
   "wresbal_trillion_chg_dir": "UP",
   "treast_trillion_chg_4w": 0.01,
   "treast_trillion_chg_dir": "UP",
-  "vix": 14.21,
+  "vix": 15.18,
   "fear_greed": 62,
   "usd_krw": 1315.5,
   "market_sentiment": "위험선호",
-  "spy_ma200_label": "MA200 (+12.7%)",
+  "spy_ma200_label": "MA200 (+11.7%)",
   "history": {
     "dff": [
       3.63,
@@ -108,7 +108,7 @@
       3.63,
       3.63,
       3.63,
-      3.63,
+      3.88,
       3.88,
       3.88,
       3.88,
@@ -178,7 +178,6 @@
       6.75
     ],
     "treasury_10y": [
-      4.44,
       4.48,
       4.49,
       4.48,
@@ -235,10 +234,10 @@
       5.01,
       4.94,
       5.01,
+      4.96,
       4.96
     ],
     "treasury_30y": [
-      4.91,
       4.97,
       4.98,
       4.99,
@@ -295,10 +294,10 @@
       5.35,
       5.29,
       5.34,
+      5.29,
       5.29
     ],
     "treasury_30y_10y_spread": [
-      0.47,
       0.49,
       0.49,
       0.51,
@@ -354,6 +353,7 @@
       0.36,
       0.34,
       0.35,
+      0.33,
       0.33,
       0.33
     ],
@@ -480,7 +480,6 @@
       119.5133
     ],
     "inflation_expectation_5y5y": [
-      2.2,
       2.22,
       2.21,
       2.22,
@@ -537,7 +536,8 @@
       2.34,
       2.35,
       2.35,
-      2.34
+      2.34,
+      2.36
     ],
     "treast_trillion": [
       4.21,
@@ -662,7 +662,6 @@
       0.9595
     ],
     "vix": [
-      14.55,
       14.63,
       14.25,
       15.19,
@@ -691,9 +690,9 @@
       15.44,
       14.81,
       14.87,
-      14.21
+      15.18
     ]
   },
-  "vix_chg_20d": -1.24,
+  "vix_chg_20d": -0.27,
   "vix_chg_dir": "DOWN"
 }
