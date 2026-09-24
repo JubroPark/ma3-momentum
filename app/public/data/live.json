@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-09-24T22:03:57Z",
-  "update_time": "07:03 KST",
+  "as_of": "2026-09-24T23:03:07Z",
+  "update_time": "08:03 KST",
   "nasdaq": {
     "price": 26939.37,
     "change_pct": 0.01,
@@ -64,11 +64,11 @@
     "TSM": {
       "change_pct": 1.03
     },
-    "SPCX": {
-      "change_pct": -0.22
-    },
     "META": {
       "change_pct": 4.5
+    },
+    "SPCX": {
+      "change_pct": -0.22
     },
     "AVGO": {
       "change_pct": -1.3
@@ -106,17 +106,17 @@
     "V": {
       "change_pct": 1.79
     },
-    "ASML": {
-      "change_pct": -1.27
+    "INTC": {
+      "change_pct": 3.91
     },
     "XOM": {
       "change_pct": 0.56
     },
+    "ASML": {
+      "change_pct": -1.27
+    },
     "JNJ": {
       "change_pct": 0.56
-    },
-    "INTC": {
-      "change_pct": 3.91
     },
     "688825.SS": {
       "change_pct": -4.13
@@ -125,8 +125,8 @@
   "live_market": {
     "vix": 15.67,
     "vix_chg": 3.23,
-    "usd_krw": 1365.1,
-    "usd_krw_chg": 1.09,
+    "usd_krw": 1366.5,
+    "usd_krw_chg": 0.3,
     "fear_greed": 36
   }
 }
