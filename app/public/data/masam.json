@@ -13,7 +13,7 @@
   "leader_status": {
     "rank1_ticker": "NVDA",
     "rank2_ticker": "AAPL",
-    "gap_pct": 9.6,
+    "gap_pct": 8.4,
     "overtake_detected": false,
     "gap_within_10pct": true,
     "rank2_ever_rank1": false
@@ -41,7 +41,7 @@
     "qqq_pct": 0,
     "nvda_lowest_close": 208.48,
     "qqq_lowest_close": 704.54,
-    "rank2_lowest_close": 302.25
+    "rank2_lowest_close": 341.07
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -62,21 +62,21 @@
       "label": "8거래일 연속 상승",
       "met": false,
       "grade": "중",
-      "detail": "1일 연속"
+      "detail": "2일 연속"
     },
     {
       "id": 3,
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-4.7%"
+      "detail": "-4.5%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-0.7%"
+      "detail": "-0.6%"
     },
     {
       "id": 5,
@@ -90,7 +90,7 @@
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-0.7% (기준: -30%)"
+      "detail": "-0.6% (기준: -30%)"
     }
   ],
   "additional_buy": {
@@ -116,11 +116,11 @@
   "last_allin_price": {
     "nvda": 219.22,
     "qqq": 723.85,
-    "rank2": 312.66,
+    "rank2": 341.07,
     "date": "2026-07-06",
     "nvda_prev_high": 225.3,
     "qqq_prev_high": 732.07,
-    "rank2_prev_high": 339.79,
+    "rank2_prev_high": 341.07,
     "by_ticker": {
       "NVDA": {
         "allin": 219.22,
@@ -130,10 +130,10 @@
         "ever_rank1": true
       },
       "AAPL": {
-        "allin": 312.66,
-        "prev_high": 339.79,
-        "lowest_close": 302.25,
-        "since": "2026-07-06",
+        "allin": 341.07,
+        "prev_high": 341.07,
+        "lowest_close": 341.07,
+        "since": "2026-09-25",
         "ever_rank1": false
       },
       "QQQ": {
@@ -152,8 +152,8 @@
   },
   "released_date": "2026-07-06",
   "eod_close": {
-    "nvda": 224.58,
-    "qqq": 741.1,
-    "rank2": 335.92
+    "nvda": 225.07,
+    "qqq": 744.5,
+    "rank2": 341.07
   }
 }
