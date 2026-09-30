@@ -2619,7 +2619,7 @@ function initMaxPctUI(rateEnv) {
     const r1  = live.rank1;
     const qqq = live.qqq;
     if (typeof RANGE_DATA !== 'undefined') {
-      if (r1) {
+      if (r1 && r1.price) {
         RANGE_DATA.nvda.cur             = r1.price.toFixed(2);
         RANGE_DATA.nvda.curFrom         = RANGE_DATA.nvda.cur;
         RANGE_DATA.nvda.high            = (r1.ath || 235.47).toFixed(2);

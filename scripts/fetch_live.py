@@ -50,11 +50,13 @@ def fetch_quote(ticker: str) -> Optional[dict]:
         # 아래 existing_live 폴백의 null이 무한히 재생산되는 사고로 번짐(2026-08-18
         # 확인, 전 종목 24시간+ null). 여유 있게 5일치를 받아 마지막 2개 실제
         # 거래일 행을 쓰도록 변경.
-        hist = t.history(period="5d", auto_adjust=True)
-        if len(hist) < 2:
+        # 마지막 행이 NaN으로 오는 yfinance period= 버그(2026-09-15/09-30 확인) 방어 —
+        # NaN 행을 버리고 유효한 마지막 2행을 씀. 2행 미만이면 None → 호출부가 기존 값으로 폴백.
+        close = t.history(period="5d", auto_adjust=True)["Close"].dropna()
+        if len(close) < 2:
             return None
-        price = float(hist["Close"].iloc[-1])
-        prev  = float(hist["Close"].iloc[-2])
+        price = float(close.iloc[-1])
+        prev  = float(close.iloc[-2])
         chg = (price - prev) / prev * 100
         return {"price": round(price, 2), "change_pct": round(chg, 2)}
     except Exception:
