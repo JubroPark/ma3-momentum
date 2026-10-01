@@ -2,7 +2,7 @@
   "as_of": "2026-10-01",
   "mode": "NORMAL",
   "rate_env": "NON_ZERO",
-  "qe_active": false,
+  "qe_active": true,
   "treasury_10y_trend": "UP",
   "masam": {
     "month_count": 0,
@@ -13,7 +13,7 @@
   "leader_status": {
     "rank1_ticker": "NVDA",
     "rank2_ticker": "AAPL",
-    "gap_pct": 11.9,
+    "gap_pct": 13.5,
     "overtake_detected": false,
     "gap_within_10pct": false,
     "rank2_ever_rank1": false
@@ -62,14 +62,14 @@
       "label": "8거래일 연속 상승",
       "met": false,
       "grade": "중",
-      "detail": "1일 연속"
+      "detail": "2일 연속"
     },
     {
       "id": 3,
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-3.1%"
+      "detail": "-2.1%"
     },
     {
       "id": 4,
@@ -152,8 +152,8 @@
   },
   "released_date": "2026-07-06",
   "eod_close": {
-    "nvda": 228.38,
-    "qqq": 739.77,
-    "rank2": 333.02
+    "nvda": 230.86,
+    "qqq": 742.03,
+    "rank2": 330.32
   }
 }
