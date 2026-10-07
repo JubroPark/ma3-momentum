@@ -38,7 +38,7 @@ def update(prev_low, prev_high, close, step, allin=0, hist_max=None):
     prev_zone = zone_idx(prev_low, base, step)
     target_zone = prev_zone - 2
     recovery_price = base * (1 - step * target_zone)
-    reached_recovery = prev_zone >= 2 and close >= recovery_price
+    reached_recovery = prev_zone >= 1 and close >= recovery_price
     is_reset = reached_recovery or (new_peak and prev_zone == 0 and used_prev_high)
     new_low = close if is_reset else (min(prev_low, close) if prev_low else close)
     high = new_high if is_reset else old_high
@@ -107,6 +107,14 @@ def test():
     assert low == 208.48, f"allin 밑 눌림 중 저점 유지 기대, 실제 low={low}"
     assert high == 225.3, f"allin 밑 눌림 중 직전고점 유지 기대, 실제 high={high}"
 
+    # 실제 세션 리그레션(2026-10-07, NVDA): 1구간(저점 208.48)에서 2구간 상승 = 기준가+1구간
+    # (225.3*1.05=236.57) 도달 시 재매수 리셋돼야 함 — prev_zone>=2 조건 때문에 238.90에도
+    # 리셋 안 되던 버그(표의 ▲ "올인" 행과 불일치)
+    low, high, zr = update(prev_low=208.48, prev_high=225.3, close=238.90, step=0.05, allin=219.22, hist_max=238.90)
+    assert low == 238.90 and high == 238.90, f"1구간→+5% 회복 리셋 기대, 실제 low={low} high={high}"
+    low, high, zr = update(prev_low=208.48, prev_high=225.3, close=236.0, step=0.05, allin=219.22, hist_max=236.0)
+    assert low == 208.48 and high == 225.3, f"236.57 미달이면 유지 기대, 실제 low={low} high={high}"
+
     print("OK — all zone_reach cases passed")
 
 
@@ -123,7 +131,7 @@ def update_allin(prev_low, prev_high, allin, close, step):
     prev_zone = zone_idx(prev_low, base, step)
     target_zone = prev_zone - 2
     recovery_price = base * (1 - step * target_zone)
-    reached_recovery = prev_zone >= 2 and close >= recovery_price
+    reached_recovery = prev_zone >= 1 and close >= recovery_price
     new_allin = close if reached_recovery else allin
     is_reset = reached_recovery or (new_peak and prev_zone == 0)
     high = new_high if is_reset else old_high
@@ -155,7 +163,7 @@ def update_since(prev_low, prev_high, allin, since, close, step, today):
     prev_zone = zone_idx(prev_low, base, step)
     target_zone = prev_zone - 2
     recovery_price = base * (1 - step * target_zone)
-    reached_recovery = prev_zone >= 2 and close >= recovery_price
+    reached_recovery = prev_zone >= 1 and close >= recovery_price
     is_reset = reached_recovery or (new_peak and prev_zone == 0)
     high = new_high if is_reset else old_high
     if reached_recovery:

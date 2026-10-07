@@ -482,7 +482,7 @@ def main():
         # 버그가 있었음(2026-08-04 확인). 목표 구간 가격 = base*(1-step*(prev_zone-2))
         target_zone = prev_zone - 2
         recovery_price = base * (1 - step * target_zone)
-        reached_recovery = prev_zone >= 2 and close >= recovery_price
+        reached_recovery = prev_zone >= 1 and close >= recovery_price
         try:
             since_series = hist.loc[since_date:, "Close"]
             new_high = round(float(since_series.max()), 2) if not since_series.empty else max(old_high, close)
