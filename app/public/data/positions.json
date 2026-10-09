@@ -2378,8 +2378,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -2665,19 +2665,19 @@
       "weight": 0.0,
       "deployed_tranches": [],
       "recent_high": 33.5,
-      "trailing_stop_line": 26.8,
+      "trailing_stop_line": 25.86,
       "horizontal_support": 26.89,
       "cooldown_until": null,
       "toppick_score": 55,
       "metrics": {
-        "price": null,
-        "ma50": 26.42,
-        "ma200": 25.21,
-        "atr14": 1.12,
-        "atr_pct": 0,
-        "gap50_pct": null,
-        "dist_to_stop_pct": null,
-        "vol20ma": 1135531,
+        "price": 24.11,
+        "ma50": 26.38,
+        "ma200": 25.2,
+        "atr14": 1.1,
+        "atr_pct": 0.0456,
+        "gap50_pct": -8.6,
+        "dist_to_stop_pct": -7.3,
+        "vol20ma": 1135639,
         "vol_ratio": 0.92,
         "growth_score": 1.0,
         "earnings_score": 2.8,
@@ -5328,7 +5328,7 @@
         "earnings_score": 5.0,
         "health_score": 1.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.52,
+        "peg": 0.5,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -5671,7 +5671,7 @@
       "trailing_stop_line": 153.24,
       "horizontal_support": 151.3,
       "cooldown_until": null,
-      "toppick_score": 83,
+      "toppick_score": 87,
       "metrics": {
         "price": 170.5,
         "ma50": 169.99,
@@ -5744,8 +5744,8 @@
           true
         ]
       },
-      "next_action": "BUY_2",
-      "reason": "50MA 지지 근접 (+1.9%) — 2차 진입",
+      "next_action": "HOLD",
+      "reason": "2차 보유 중",
       "weight_note": ""
     },
     {
