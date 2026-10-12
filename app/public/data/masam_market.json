@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-10",
+  "as_of": "2026-10-12",
   "rate_env": "NON_ZERO",
   "dff": 3.88,
   "dff_change_text": "인상",
@@ -47,11 +47,11 @@
   "wresbal_trillion_chg_dir": "UP",
   "treast_trillion_chg_4w": 0.02,
   "treast_trillion_chg_dir": "UP",
-  "vix": 14.84,
+  "vix": 15.21,
   "fear_greed": 62,
   "usd_krw": 1315.5,
   "market_sentiment": "위험선호",
-  "spy_ma200_label": "MA200 (+11.8%)",
+  "spy_ma200_label": "MA200 (+10.9%)",
   "history": {
     "dff": [
       3.63,
@@ -668,7 +668,6 @@
       1.0847
     ],
     "vix": [
-      14.92,
       16.34,
       15.2,
       14.32,
@@ -697,9 +696,10 @@
       15.01,
       15.08,
       15.41,
-      14.84
+      14.84,
+      15.21
     ]
   },
-  "vix_chg_20d": -1.0,
+  "vix_chg_20d": -1.89,
   "vix_chg_dir": "DOWN"
 }
