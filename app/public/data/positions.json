@@ -79,9 +79,9 @@
         "vol20ma": 21962550,
         "vol_ratio": 1.13,
         "growth_score": 1.5,
-        "earnings_score": 1.8,
+        "earnings_score": 2.3,
         "health_score": 2.5,
-        "eps_revision": "UP",
+        "eps_revision": "UP_STRONG",
         "peg": null,
         "steps_count": 5,
         "steps_list": [
@@ -93,7 +93,7 @@
           true
         ]
       },
-      "toppick_score": 49,
+      "toppick_score": 52,
       "name_ko": "메타",
       "weight_note": ""
     },
@@ -5671,7 +5671,7 @@
       "trailing_stop_line": 151.89,
       "horizontal_support": 151.3,
       "cooldown_until": null,
-      "toppick_score": 87,
+      "toppick_score": 83,
       "metrics": {
         "price": 162.23,
         "ma50": 170.76,
