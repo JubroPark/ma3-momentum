@@ -147,18 +147,23 @@ def main():
     gspc_q  = fetch_quote("^GSPC")
     dji_q   = fetch_quote("^DJI")
     last_masam_date = masam_json.get("masam", {}).get("last_masam_date")
-    # NORMAL 모드에서 올인 집행 후엔 올인 날짜부터 장중 저가 재측정
+    # NORMAL 모드에서 올인 집행 후엔 종목별 최근 올인 날짜(by_ticker.since)부터 장중 저가 재측정
+    # ponytail: since는 fetch_eod가 위기 해제 올인·2구간 회복 재매수 때 갱신 — 공통 date만
+    # 쓰면 종목별 재매수 이후에도 옛 올인일부터의 저가가 남아있었음(2026-10-14 확인)
     lap = masam_json.get("last_allin_price")
-    if masam_json.get("mode") == "NORMAL" and isinstance(lap, dict) and lap.get("date"):
-        low_since_date = lap["date"]
-    else:
-        low_since_date = last_masam_date
+    is_normal_allin = masam_json.get("mode") == "NORMAL" and isinstance(lap, dict) and lap.get("date")
+
+    def low_since(ticker: str) -> Optional[str]:
+        if not is_normal_allin:
+            return last_masam_date
+        return lap.get("by_ticker", {}).get(ticker, {}).get("since") or lap["date"]
+
     rank1_q = fetch_quote(rank1_ticker)
     rank2_q = fetch_quote(rank2_ticker)
     qqq_q   = fetch_quote("QQQ")
-    rank1_extra = fetch_ohlc_ath(rank1_ticker, since_date=low_since_date)
-    rank2_extra = fetch_ohlc_ath(rank2_ticker, since_date=low_since_date)
-    qqq_extra   = fetch_ohlc_ath("QQQ", since_date=low_since_date)
+    rank1_extra = fetch_ohlc_ath(rank1_ticker, since_date=low_since(rank1_ticker))
+    rank2_extra = fetch_ohlc_ath(rank2_ticker, since_date=low_since(rank2_ticker))
+    qqq_extra   = fetch_ohlc_ath("QQQ", since_date=low_since("QQQ"))
     ixic_extra  = fetch_ohlc_ath("^IXIC")
 
     # 마삼까지 거리
