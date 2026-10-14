@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-10-14T04:50:53Z",
-  "update_time": "13:50 KST",
+  "as_of": "2026-10-14T13:01:41Z",
+  "update_time": "22:01 KST",
   "nasdaq": {
     "price": 27204.38,
     "change_pct": -0.15,
@@ -74,13 +74,13 @@
       "change_pct": 0.73
     },
     "2222.SR": {
-      "change_pct": 0.23
+      "change_pct": -1.55
     },
     "TSLA": {
       "change_pct": -0.74
     },
     "005930.KS": {
-      "change_pct": 2.8
+      "change_pct": 0.0
     },
     "BRK-B": {
       "change_pct": 0.58
@@ -101,7 +101,7 @@
       "change_pct": -0.86
     },
     "000660.KS": {
-      "change_pct": 1.11
+      "change_pct": -1.66
     },
     "V": {
       "change_pct": 1.74
@@ -123,10 +123,10 @@
     }
   },
   "live_market": {
-    "vix": 15.27,
-    "vix_chg": 0.39,
-    "usd_krw": 1336.8,
-    "usd_krw_chg": 0.2,
+    "vix": 15.79,
+    "vix_chg": 3.41,
+    "usd_krw": 1340.0,
+    "usd_krw_chg": 0.44,
     "fear_greed": 45
   }
 }
