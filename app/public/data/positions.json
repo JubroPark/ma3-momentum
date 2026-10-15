@@ -5338,8 +5338,8 @@
           true
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -8049,8 +8049,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "지지선 이탈 (1541.68 < 1555.54)",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
