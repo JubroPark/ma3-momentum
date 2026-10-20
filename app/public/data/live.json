@@ -1,19 +1,19 @@
 {
-  "as_of": "2026-10-20T20:01:27Z",
-  "update_time": "05:01 KST",
+  "as_of": "2026-10-20T20:15:58Z",
+  "update_time": "05:15 KST",
   "nasdaq": {
     "price": 26424.82,
     "change_pct": -0.02,
-    "dist_to_masam_pct": 3.12,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -4.3,
     "last_masam_date": "2026-06-05"
   },
   "sp500": {
-    "price": 7712.75,
-    "change_pct": 0.29
+    "price": 7712.57,
+    "change_pct": 0.28
   },
   "dow": {
-    "price": 52497.42,
+    "price": 52495.88,
     "change_pct": 1.02
   },
   "rank1": {
@@ -41,9 +41,9 @@
   },
   "hedges": {
     "TLT": 80.13,
-    "IAU": 77.42,
-    "GLD": 377.62,
-    "TIP": 105.47
+    "IAU": 77.44,
+    "GLD": 377.65,
+    "TIP": 105.48
   },
   "mcap_live": {
     "NVDA": {
@@ -62,7 +62,7 @@
       "change_pct": 0.07
     },
     "TSM": {
-      "change_pct": 1.21
+      "change_pct": 1.16
     },
     "SPCX": {
       "change_pct": -0.11
@@ -80,10 +80,10 @@
       "change_pct": 1.54
     },
     "BRK-B": {
-      "change_pct": 1.49
+      "change_pct": 1.43
     },
     "LLY": {
-      "change_pct": 3.59
+      "change_pct": 3.49
     },
     "005930.KS": {
       "change_pct": -2.98
@@ -95,16 +95,16 @@
       "change_pct": -0.72
     },
     "JPM": {
-      "change_pct": 0.58
+      "change_pct": 0.52
     },
     "AMD": {
       "change_pct": -0.62
     },
     "V": {
-      "change_pct": 1.05
+      "change_pct": 0.91
     },
     "XOM": {
-      "change_pct": -0.22
+      "change_pct": -0.24
     },
     "000660.KS": {
       "change_pct": -4.23
@@ -113,20 +113,20 @@
       "change_pct": -0.99
     },
     "JNJ": {
-      "change_pct": 2.22
+      "change_pct": 2.19
     },
     "MA": {
-      "change_pct": 0.67
+      "change_pct": 0.65
     },
     "ABBV": {
-      "change_pct": 2.22
+      "change_pct": 2.23
     }
   },
   "live_market": {
-    "vix": 17.48,
-    "vix_chg": -5.21,
-    "usd_krw": 1325.6,
-    "usd_krw_chg": -0.59,
+    "vix": 17.44,
+    "vix_chg": -5.42,
+    "usd_krw": 1325.8,
+    "usd_krw_chg": -0.57,
     "fear_greed": 26
   }
 }
