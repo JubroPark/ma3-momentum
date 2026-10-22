@@ -1,19 +1,19 @@
 {
-  "as_of": "2026-10-22T20:01:31Z",
-  "update_time": "05:01 KST",
+  "as_of": "2026-10-22T20:15:54Z",
+  "update_time": "05:15 KST",
   "nasdaq": {
     "price": 26008.86,
     "change_pct": -2.6,
-    "dist_to_masam_pct": 3.35,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -5.8,
     "last_masam_date": "2026-06-05"
   },
   "sp500": {
-    "price": 7663.4,
+    "price": 7663.43,
     "change_pct": -1.21
   },
   "dow": {
-    "price": 52866.85,
+    "price": 52867.98,
     "change_pct": 0.02
   },
   "rank1": {
@@ -40,9 +40,9 @@
     "intra_low": 701.9
   },
   "hedges": {
-    "TLT": 81.73,
+    "TLT": 81.74,
     "IAU": 75.66,
-    "GLD": 369.08,
+    "GLD": 369.0,
     "TIP": 106.33
   },
   "mcap_live": {
@@ -56,13 +56,13 @@
       "change_pct": -3.15
     },
     "MSFT": {
-      "change_pct": -2.14
+      "change_pct": -2.23
     },
     "AMZN": {
       "change_pct": -4.57
     },
     "TSM": {
-      "change_pct": -4.54
+      "change_pct": -4.52
     },
     "SPCX": {
       "change_pct": -9.14
@@ -80,10 +80,10 @@
       "change_pct": -3.08
     },
     "BRK-B": {
-      "change_pct": 1.48
+      "change_pct": 1.5
     },
     "LLY": {
-      "change_pct": 2.82
+      "change_pct": 2.83
     },
     "005930.KS": {
       "change_pct": -4.03
@@ -101,32 +101,32 @@
       "change_pct": -8.1
     },
     "V": {
-      "change_pct": 1.58
+      "change_pct": 1.59
     },
     "XOM": {
-      "change_pct": 0.03
+      "change_pct": 0.08
     },
     "000660.KS": {
       "change_pct": -5.49
     },
     "ASML": {
-      "change_pct": -6.97
+      "change_pct": -6.93
     },
     "JNJ": {
-      "change_pct": 3.82
+      "change_pct": 3.81
     },
     "MA": {
-      "change_pct": 1.64
+      "change_pct": 1.7
     },
     "ABBV": {
-      "change_pct": -0.0
+      "change_pct": 0.03
     }
   },
   "live_market": {
-    "vix": 19.77,
-    "vix_chg": 18.53,
-    "usd_krw": 1325.8,
-    "usd_krw_chg": 0.14,
-    "fear_greed": 19
+    "vix": 19.07,
+    "vix_chg": 14.33,
+    "usd_krw": 1325.6,
+    "usd_krw_chg": 0.13,
+    "fear_greed": 20
   }
 }
