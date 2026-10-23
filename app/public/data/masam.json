@@ -3,7 +3,7 @@
   "mode": "NORMAL",
   "rate_env": "NON_ZERO",
   "qe_active": true,
-  "treasury_10y_trend": "UNKNOWN",
+  "treasury_10y_trend": "DOWN",
   "masam": {
     "month_count": 0,
     "last_masam_date": "2026-06-05",
@@ -13,7 +13,7 @@
   "leader_status": {
     "rank1_ticker": "NVDA",
     "rank2_ticker": "AAPL",
-    "gap_pct": 0.8,
+    "gap_pct": 0.4,
     "overtake_detected": false,
     "gap_within_10pct": true,
     "rank2_ever_rank1": false
@@ -39,9 +39,9 @@
       "AAPL": 50
     },
     "qqq_pct": 0,
-    "nvda_lowest_close": 212.21,
-    "qqq_lowest_close": 704.47,
-    "rank2_lowest_close": 348.22
+    "nvda_lowest_close": 210.96,
+    "qqq_lowest_close": 704.4,
+    "rank2_lowest_close": 347.73
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -69,28 +69,28 @@
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-11.3%"
+      "detail": "-11.8%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-5.8%"
+      "detail": "-6.0%"
     },
     {
       "id": 5,
       "label": "2구간 V자(+10%)",
       "met": false,
       "grade": "중",
-      "detail": "+6.4% (필요: +10%)"
+      "detail": "+6.2% (필요: +10%)"
     },
     {
       "id": 6,
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-5.8% (기준: -30%)"
+      "detail": "-6.0% (기준: -30%)"
     }
   ],
   "additional_buy": {
@@ -125,21 +125,21 @@
       "NVDA": {
         "allin": 238.9,
         "prev_high": 239.24,
-        "lowest_close": 212.21,
+        "lowest_close": 210.96,
         "since": "2026-10-05",
         "ever_rank1": true
       },
       "AAPL": {
         "allin": 341.07,
         "prev_high": 348.22,
-        "lowest_close": 348.22,
+        "lowest_close": 347.73,
         "since": "2026-09-25",
         "ever_rank1": false
       },
       "QQQ": {
         "allin": 756.2,
         "prev_high": 759.66,
-        "lowest_close": 704.47,
+        "lowest_close": 704.4,
         "since": "2026-10-05"
       },
       "GOOGL": {
@@ -152,8 +152,8 @@
   },
   "released_date": "2026-07-06",
   "eod_close": {
-    "nvda": 212.21,
-    "qqq": 704.47,
-    "rank2": 348.22
+    "nvda": 210.96,
+    "qqq": 704.4,
+    "rank2": 347.73
   }
 }
