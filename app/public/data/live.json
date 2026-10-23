@@ -1,20 +1,20 @@
 {
-  "as_of": "2026-10-23T20:01:32Z",
-  "update_time": "05:01 KST",
+  "as_of": "2026-10-23T20:11:54Z",
+  "update_time": "05:11 KST",
   "nasdaq": {
     "price": 25955.34,
     "change_pct": -0.21,
-    "dist_to_masam_pct": 3.08,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -6.0,
     "last_masam_date": "2026-06-05"
   },
   "sp500": {
-    "price": 7623.63,
+    "price": 7623.68,
     "change_pct": -0.52
   },
   "dow": {
-    "price": 52214.63,
-    "change_pct": -1.24
+    "price": 52215.16,
+    "change_pct": -1.23
   },
   "rank1": {
     "ticker": "NVDA",
@@ -123,8 +123,8 @@
     }
   },
   "live_market": {
-    "vix": 19.76,
-    "vix_chg": 3.84,
+    "vix": 19.77,
+    "vix_chg": 3.89,
     "usd_krw": 1323.7,
     "usd_krw_chg": -0.14,
     "fear_greed": 21
