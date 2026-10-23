@@ -8061,14 +8061,11 @@
       "name": "Synopsys, Inc.",
       "name_ko": "시놉시스",
       "domain": "synopsys.com",
-      "status": "TRIM",
+      "status": "EXIT",
       "moat_score": 3.15,
       "avg_price": null,
-      "weight": 0.175,
-      "deployed_tranches": [
-        1,
-        2
-      ],
+      "weight": 0.0,
+      "deployed_tranches": [],
       "recent_high": 534.56,
       "trailing_stop_line": 424.32,
       "horizontal_support": 444.82,
@@ -8099,9 +8096,9 @@
           true
         ]
       },
-      "next_action": "TRIM_HALF",
-      "reason": "트레일링 스탑 터치 (422.48 ≤ 424.32)",
-      "weight_note": "트레일링 스탑 근접 — 비중 절반 축소 (dist -0.4%)"
+      "next_action": "EXIT",
+      "reason": "2차 스탑 터치 — 청산",
+      "weight_note": ""
     },
     {
       "symbol": "IRDM",
