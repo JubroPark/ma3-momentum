@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-10-27T20:15:52Z",
-  "update_time": "05:15 KST",
+  "as_of": "2026-10-27T20:25:08Z",
+  "update_time": "05:25 KST",
   "nasdaq": {
     "price": 26477.81,
     "change_pct": 1.18,
@@ -42,7 +42,7 @@
   "hedges": {
     "TLT": 81.63,
     "IAU": 76.33,
-    "GLD": 372.28,
+    "GLD": 372.26,
     "TIP": 106.31
   },
   "mcap_live": {
@@ -80,7 +80,7 @@
       "change_pct": 4.04
     },
     "BRK-B": {
-      "change_pct": -1.0
+      "change_pct": -1.02
     },
     "LLY": {
       "change_pct": 0.22
@@ -101,7 +101,7 @@
       "change_pct": 5.45
     },
     "XOM": {
-      "change_pct": -2.53
+      "change_pct": -2.51
     },
     "V": {
       "change_pct": -0.57
@@ -119,14 +119,14 @@
       "change_pct": -0.59
     },
     "ABBV": {
-      "change_pct": -0.1
+      "change_pct": -0.12
     }
   },
   "live_market": {
-    "vix": 17.66,
-    "vix_chg": -3.97,
-    "usd_krw": 1326.2,
-    "usd_krw_chg": 0.34,
+    "vix": 17.51,
+    "vix_chg": -4.79,
+    "usd_krw": 1325.8,
+    "usd_krw_chg": 0.31,
     "fear_greed": 33
   }
 }
