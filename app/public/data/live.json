@@ -1,19 +1,19 @@
 {
-  "as_of": "2026-10-29T20:01:28Z",
-  "update_time": "05:01 KST",
+  "as_of": "2026-10-29T20:15:56Z",
+  "update_time": "05:15 KST",
   "nasdaq": {
     "price": 26184.72,
     "change_pct": -1.38,
-    "dist_to_masam_pct": 3.1,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -5.1,
     "last_masam_date": "2026-06-05"
   },
   "sp500": {
-    "price": 7720.23,
-    "change_pct": -0.31
+    "price": 7720.39,
+    "change_pct": -0.3
   },
   "dow": {
-    "price": 52342.62,
+    "price": 52342.56,
     "change_pct": -0.25
   },
   "rank1": {
@@ -28,9 +28,9 @@
   },
   "rank2": {
     "ticker": "AAPL",
-    "price": 348.92,
+    "price": 348.91,
     "change_pct": 1.48,
-    "ath": 348.92,
+    "ath": 348.91,
     "intra_low": 325.81
   },
   "qqq": {
@@ -41,7 +41,7 @@
   },
   "hedges": {
     "TLT": 81.49,
-    "IAU": 75.56,
+    "IAU": 75.57,
     "GLD": 368.57,
     "TIP": 106.44
   },
@@ -62,10 +62,10 @@
       "change_pct": -4.25
     },
     "TSM": {
-      "change_pct": -1.79
+      "change_pct": -1.75
     },
     "SPCX": {
-      "change_pct": -0.96
+      "change_pct": -0.92
     },
     "AVGO": {
       "change_pct": -1.94
@@ -77,13 +77,13 @@
       "change_pct": -0.23
     },
     "META": {
-      "change_pct": 1.99
+      "change_pct": 1.96
     },
     "BRK-B": {
-      "change_pct": 0.37
+      "change_pct": 0.3
     },
     "LLY": {
-      "change_pct": 6.52
+      "change_pct": 6.63
     },
     "005930.KS": {
       "change_pct": -4.13
@@ -92,7 +92,7 @@
       "change_pct": -4.98
     },
     "AMD": {
-      "change_pct": -2.07
+      "change_pct": -2.08
     },
     "WMT": {
       "change_pct": 2.09
@@ -104,29 +104,29 @@
       "change_pct": 2.62
     },
     "V": {
-      "change_pct": 2.5
+      "change_pct": 2.48
     },
     "XOM": {
-      "change_pct": 0.71
+      "change_pct": 0.7
     },
     "JNJ": {
-      "change_pct": 1.5
+      "change_pct": 1.53
     },
     "ASML": {
       "change_pct": 0.77
     },
     "MA": {
-      "change_pct": 4.13
+      "change_pct": 4.16
     },
     "ABBV": {
-      "change_pct": 1.62
+      "change_pct": 1.74
     }
   },
   "live_market": {
-    "vix": 16.64,
-    "vix_chg": -1.6,
-    "usd_krw": 1339.1,
-    "usd_krw_chg": 0.93,
-    "fear_greed": 33
+    "vix": 16.44,
+    "vix_chg": -2.78,
+    "usd_krw": 1338.8,
+    "usd_krw_chg": 0.91,
+    "fear_greed": 35
   }
 }
