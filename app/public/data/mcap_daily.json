@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-10-29",
+  "as_of": "2026-10-30",
   "rank1_ticker": "NVDA",
   "items": [
     {
@@ -118,7 +118,7 @@
       "ticker_display": "LLY",
       "slug": "LLY",
       "name": "Eli Lilly",
-      "mcap_usd": 1224985149440,
+      "mcap_usd": 1224457191424,
       "is_leader": false,
       "gap_pct_from_rank1": 76.3
     },
@@ -138,9 +138,9 @@
       "ticker_display": "005930.KS",
       "slug": "005930.KS",
       "name": "Samsung",
-      "mcap_usd": 1140045849941,
+      "mcap_usd": 1077392513067,
       "is_leader": false,
-      "gap_pct_from_rank1": 77.9
+      "gap_pct_from_rank1": 79.1
     },
     {
       "rank": 15,
@@ -158,9 +158,9 @@
       "ticker_display": "WMT",
       "slug": "WMT",
       "name": "Walmart",
-      "mcap_usd": 964917067776,
+      "mcap_usd": 961966702592,
       "is_leader": false,
-      "gap_pct_from_rank1": 81.3
+      "gap_pct_from_rank1": 81.4
     },
     {
       "rank": 17,
@@ -184,16 +184,6 @@
     },
     {
       "rank": 19,
-      "ticker": "000660.KS",
-      "ticker_display": "000660.KS",
-      "slug": "000660.KS",
-      "name": "SK Hynix",
-      "mcap_usd": 812036414547,
-      "is_leader": false,
-      "gap_pct_from_rank1": 84.3
-    },
-    {
-      "rank": 20,
       "ticker": "V",
       "ticker_display": "V",
       "slug": "V",
@@ -203,7 +193,7 @@
       "gap_pct_from_rank1": 85.1
     },
     {
-      "rank": 21,
+      "rank": 20,
       "ticker": "XOM",
       "ticker_display": "XOM",
       "slug": "XOM",
@@ -211,6 +201,16 @@
       "mcap_usd": 753672323072,
       "is_leader": false,
       "gap_pct_from_rank1": 85.4
+    },
+    {
+      "rank": 21,
+      "ticker": "000660.KS",
+      "ticker_display": "000660.KS",
+      "slug": "000660.KS",
+      "name": "SK Hynix",
+      "mcap_usd": 741794729436,
+      "is_leader": false,
+      "gap_pct_from_rank1": 85.6
     },
     {
       "rank": 22,
