@@ -1030,8 +1030,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "name_ko": "포티넷",
       "domain": "fortinet.com",
       "weight_note": ""
@@ -8400,12 +8400,13 @@
       "name": "Extreme Networks, Inc.",
       "name_ko": "익스트림 네트웍스",
       "domain": "extremenetworks.com",
-      "status": "ENTRY_1",
+      "status": "ENTRY_2",
       "moat_score": 3.95,
       "avg_price": null,
-      "weight": 0.3,
+      "weight": 0.7,
       "deployed_tranches": [
-        1
+        1,
+        2
       ],
       "recent_high": 33.71,
       "trailing_stop_line": 25.36,
@@ -8437,8 +8438,8 @@
           true
         ]
       },
-      "next_action": "BUY_1",
-      "reason": "50MA 위 돌파 + 거래량 확인 (vol_ratio 1.53)",
+      "next_action": "BUY_2",
+      "reason": "50MA 지지 근접 (+0.6%) — 2차 진입",
       "weight_note": ""
     }
   ]
