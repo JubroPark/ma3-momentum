@@ -11,10 +11,10 @@
     "panic_end_dday": null
   },
   "leader_status": {
-    "rank1_ticker": "AAPL",
-    "rank2_ticker": "NVDA",
-    "gap_pct": 1.2,
-    "overtake_detected": false,
+    "rank1_ticker": "NVDA",
+    "rank2_ticker": "AAPL",
+    "gap_pct": 2.9,
+    "overtake_detected": true,
     "gap_within_10pct": true,
     "rank2_ever_rank1": true
   },
@@ -39,9 +39,9 @@
       "AAPL": 50
     },
     "qqq_pct": 0,
-    "nvda_lowest_close": 338.32,
+    "nvda_lowest_close": 202.06,
     "qqq_lowest_close": 681.09,
-    "rank2_lowest_close": 202.06
+    "rank2_lowest_close": 331.9
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -62,35 +62,35 @@
       "label": "8거래일 연속 상승",
       "met": false,
       "grade": "중",
-      "detail": "0일 연속"
+      "detail": "1일 연속"
     },
     {
       "id": 3,
       "label": "1등주 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-3.0%"
+      "detail": "-13.6%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-8.8%"
+      "detail": "-8.1%"
     },
     {
       "id": 5,
       "label": "2구간 V자(+10%)",
       "met": false,
       "grade": "중",
-      "detail": "+3.0% (필요: +10%)"
+      "detail": "+3.8% (필요: +10%)"
     },
     {
       "id": 6,
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-8.8% (기준: -30%)"
+      "detail": "-8.1% (기준: -30%)"
     }
   ],
   "additional_buy": {
@@ -111,16 +111,16 @@
       30
     ]
   },
-  "recommended_action": "리밸런싱 유지 — 1등주(AAPL) 집중",
+  "recommended_action": "리밸런싱 유지 — 1등주(NVDA) 집중",
   "alerts": [],
   "last_allin_price": {
-    "nvda": 341.07,
+    "nvda": 238.9,
     "qqq": 756.2,
-    "rank2": 238.9,
+    "rank2": 341.07,
     "date": "2026-07-06",
-    "nvda_prev_high": 348.91,
+    "nvda_prev_high": 239.24,
     "qqq_prev_high": 759.66,
-    "rank2_prev_high": 239.24,
+    "rank2_prev_high": 348.91,
     "by_ticker": {
       "NVDA": {
         "allin": 238.9,
@@ -132,7 +132,7 @@
       "AAPL": {
         "allin": 341.07,
         "prev_high": 348.91,
-        "lowest_close": 338.32,
+        "lowest_close": 331.9,
         "since": "2026-09-25",
         "ever_rank1": true
       },
@@ -152,8 +152,8 @@
   },
   "released_date": "2026-07-06",
   "eod_close": {
-    "nvda": 338.32,
-    "qqq": 681.09,
-    "rank2": 202.06
+    "nvda": 206.69,
+    "qqq": 685.28,
+    "rank2": 331.9
   }
 }
