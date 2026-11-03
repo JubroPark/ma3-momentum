@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-11-03T21:28:57Z",
-  "update_time": "06:28 KST",
+  "as_of": "2026-11-03T22:11:48Z",
+  "update_time": "07:11 KST",
   "nasdaq": {
     "price": 25372.01,
     "change_pct": 0.83,
-    "dist_to_masam_pct": 3.05,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -8.1,
     "last_masam_date": "2026-06-05"
   },
@@ -17,21 +17,21 @@
     "change_pct": -0.38
   },
   "rank1": {
-    "ticker": "AAPL",
+    "ticker": "NVDA",
     "name": "엔비디아",
     "domain": "nvidia.com",
     "si": "nvidia/76b900",
-    "price": 331.9,
-    "change_pct": -1.9,
-    "ath": 348.91,
-    "intra_low": 325.33
-  },
-  "rank2": {
-    "ticker": "NVDA",
     "price": 206.69,
     "change_pct": 2.29,
     "ath": 239.24,
     "intra_low": 200.92
+  },
+  "rank2": {
+    "ticker": "AAPL",
+    "price": 331.9,
+    "change_pct": -1.9,
+    "ath": 348.91,
+    "intra_low": 325.33
   },
   "qqq": {
     "price": 685.28,
@@ -42,15 +42,15 @@
   "hedges": {
     "TLT": 81.11,
     "IAU": 73.67,
-    "GLD": 359.3,
+    "GLD": 359.26,
     "TIP": 106.1
   },
   "mcap_live": {
-    "AAPL": {
-      "change_pct": -1.9
-    },
     "NVDA": {
       "change_pct": 2.29
+    },
+    "AAPL": {
+      "change_pct": -1.9
     },
     "MSFT": {
       "change_pct": 2.74
@@ -70,14 +70,14 @@
     "2222.SR": {
       "change_pct": 0.69
     },
-    "TSLA": {
-      "change_pct": -1.32
-    },
     "META": {
       "change_pct": 2.36
     },
     "AVGO": {
       "change_pct": 3.07
+    },
+    "TSLA": {
+      "change_pct": -1.32
     },
     "LLY": {
       "change_pct": -0.11
@@ -86,7 +86,7 @@
       "change_pct": 0.17
     },
     "005930.KS": {
-      "change_pct": 1.78
+      "change_pct": -4.15
     },
     "WMT": {
       "change_pct": -2.22
@@ -97,14 +97,14 @@
     "JPM": {
       "change_pct": -0.76
     },
-    "V": {
-      "change_pct": -1.2
-    },
     "AMD": {
       "change_pct": 3.65
     },
+    "V": {
+      "change_pct": -1.2
+    },
     "000660.KS": {
-      "change_pct": 3.81
+      "change_pct": -5.03
     },
     "XOM": {
       "change_pct": -1.23
@@ -123,10 +123,10 @@
     }
   },
   "live_market": {
-    "vix": 20.81,
-    "vix_chg": -1.61,
-    "usd_krw": 1344.7,
-    "usd_krw_chg": 1.44,
+    "vix": 20.83,
+    "vix_chg": -1.51,
+    "usd_krw": 1343.2,
+    "usd_krw_chg": 1.33,
     "fear_greed": 19
   }
 }
