@@ -6,6 +6,7 @@ import json
 import math
 import sys
 import re
+import time
 import calendar
 import urllib.request
 from datetime import date, timedelta
@@ -283,8 +284,16 @@ def scrape_top_companies(n: int = 30) -> list:
     """companiesmarketcap.com 메인 페이지에서 상위 n개 기업 스크래핑."""
     url = "https://companiesmarketcap.com/"
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=15) as r:
-        html = r.read().decode("utf-8", errors="replace")
+    for attempt in range(3):  # 일시적 타임아웃 대비 최대 3회 시도
+        try:
+            with urllib.request.urlopen(req, timeout=30) as r:
+                html = r.read().decode("utf-8", errors="replace")
+            break
+        except OSError as e:  # URLError·TimeoutError 모두 OSError 하위
+            if attempt == 2:
+                raise
+            print(f"  스크래핑 재시도 {attempt + 1}/2 ({e})")
+            time.sleep(5)
     pattern = (
         r'company-logo[^>]+src="/img/company-logos/64/([^"]+?)\.png"'
         r'.*?company-name">([^<]+)</div>'
