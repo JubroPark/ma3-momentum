@@ -1,15 +1,5 @@
 [
   {
-    "date": "2026-10-05",
-    "type": "zone_reset",
-    "text": "NVDA 구간 회복 — 1구간→0구간 (전량 재매수)"
-  },
-  {
-    "date": "2026-10-05",
-    "type": "zone_reset",
-    "text": "QQQ 구간 회복 — 1구간→0구간 (전량 재매수)"
-  },
-  {
     "date": "2026-10-12",
     "type": "zone_reach",
     "text": "NVDA 직전고점 대비 1구간(5.0%) 하락 도달"
@@ -68,5 +58,10 @@
     "date": "2026-11-04",
     "type": "rank2_swap",
     "text": "2등주가 AAPL → NVDA로 바뀌었습니다"
+  },
+  {
+    "date": "2026-11-05",
+    "type": "masam_mode",
+    "text": "NORMAL → CRISIS 전환"
   }
 ]
