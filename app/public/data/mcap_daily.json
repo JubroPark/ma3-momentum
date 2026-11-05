@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-04",
+  "as_of": "2026-11-05",
   "rank1_ticker": "AAPL",
   "items": [
     {
@@ -134,16 +134,6 @@
     },
     {
       "rank": 14,
-      "ticker": "005930.KS",
-      "ticker_display": "005930.KS",
-      "slug": "005930.KS",
-      "name": "Samsung",
-      "mcap_usd": 1071250025088,
-      "is_leader": false,
-      "gap_pct_from_rank1": 78.9
-    },
-    {
-      "rank": 15,
       "ticker": "WMT",
       "ticker_display": "WMT",
       "slug": "WMT",
@@ -151,6 +141,16 @@
       "mcap_usd": 1024801964032,
       "is_leader": false,
       "gap_pct_from_rank1": 79.8
+    },
+    {
+      "rank": 15,
+      "ticker": "005930.KS",
+      "ticker_display": "005930.KS",
+      "slug": "005930.KS",
+      "name": "Samsung",
+      "mcap_usd": 1008596586932,
+      "is_leader": false,
+      "gap_pct_from_rank1": 80.1
     },
     {
       "rank": 16,
@@ -194,16 +194,6 @@
     },
     {
       "rank": 20,
-      "ticker": "000660.KS",
-      "ticker_display": "000660.KS",
-      "slug": "000660.KS",
-      "name": "SK Hynix",
-      "mcap_usd": 742859007367,
-      "is_leader": false,
-      "gap_pct_from_rank1": 85.4
-    },
-    {
-      "rank": 21,
       "ticker": "XOM",
       "ticker_display": "XOM",
       "slug": "XOM",
@@ -211,6 +201,16 @@
       "mcap_usd": 690489982976,
       "is_leader": false,
       "gap_pct_from_rank1": 86.4
+    },
+    {
+      "rank": 21,
+      "ticker": "000660.KS",
+      "ticker_display": "000660.KS",
+      "slug": "000660.KS",
+      "name": "SK Hynix",
+      "mcap_usd": 685388556145,
+      "is_leader": false,
+      "gap_pct_from_rank1": 86.5
     },
     {
       "rank": 22,
