@@ -17,8 +17,8 @@
       "trailing_stop_line": 190.09,
       "horizontal_support": 110.0,
       "cooldown_until": null,
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "metrics": {
         "price": 181.6,
         "ma50": 220.59,
@@ -931,7 +931,7 @@
         "earnings_score": 4.0,
         "health_score": 4.5,
         "eps_revision": "UP_STRONG",
-        "peg": 1.62,
+        "peg": 1.57,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -1289,7 +1289,7 @@
         "earnings_score": 4.5,
         "health_score": 2.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.85,
+        "peg": 0.8,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -2183,7 +2183,7 @@
         "earnings_score": 3.8,
         "health_score": 3.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.28,
+        "peg": 0.26,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -2617,7 +2617,7 @@
       "trailing_stop_line": 58.2,
       "horizontal_support": 48.21,
       "cooldown_until": null,
-      "toppick_score": 74,
+      "toppick_score": 71,
       "metrics": {
         "price": 68.71,
         "ma50": 60.64,
@@ -2629,10 +2629,10 @@
         "vol20ma": 2770380,
         "vol_ratio": 1.58,
         "growth_score": 2.5,
-        "earnings_score": 4.0,
+        "earnings_score": 3.5,
         "health_score": 4.3,
-        "eps_revision": "UP_STRONG",
-        "peg": 0.94,
+        "eps_revision": "UP",
+        "peg": 0.89,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -2661,7 +2661,7 @@
       "trailing_stop_line": 23.45,
       "horizontal_support": 26.89,
       "cooldown_until": null,
-      "toppick_score": 57,
+      "toppick_score": 54,
       "metrics": {
         "price": 14.82,
         "ma50": 23.69,
@@ -2672,7 +2672,7 @@
         "dist_to_stop_pct": -58.2,
         "vol20ma": 1566243,
         "vol_ratio": 1.94,
-        "growth_score": 2.0,
+        "growth_score": 1.5,
         "earnings_score": 2.3,
         "health_score": 3.2,
         "eps_revision": "UP_STRONG",
@@ -3792,7 +3792,7 @@
         "earnings_score": 3.8,
         "health_score": 2.4,
         "eps_revision": "UP_STRONG",
-        "peg": 1.11,
+        "peg": 0.92,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -4500,7 +4500,7 @@
       "trailing_stop_line": 276.61,
       "horizontal_support": 145.59,
       "cooldown_until": null,
-      "toppick_score": 72,
+      "toppick_score": 70,
       "metrics": {
         "price": 156.12,
         "ma50": 141.91,
@@ -4512,7 +4512,7 @@
         "vol20ma": 1442285,
         "vol_ratio": 0.91,
         "growth_score": 4.0,
-        "earnings_score": 3.8,
+        "earnings_score": 3.3,
         "health_score": 2.2,
         "eps_revision": "UP_STRONG",
         "peg": 0.08,
@@ -5314,7 +5314,7 @@
         "earnings_score": 4.5,
         "health_score": 1.6,
         "eps_revision": "UP_STRONG",
-        "peg": 0.54,
+        "peg": 0.47,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -6260,13 +6260,13 @@
         "earnings_score": 3.8,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 2.03,
-        "steps_count": 4,
+        "peg": 1.77,
+        "steps_count": 5,
         "steps_list": [
           true,
           true,
           true,
-          false,
+          true,
           true,
           false
         ]
@@ -6917,8 +6917,8 @@
       "avg_price": null,
       "weight": 0.0,
       "deployed_tranches": [],
-      "recent_high": 89.71,
-      "trailing_stop_line": 62.8,
+      "recent_high": 89.59,
+      "trailing_stop_line": 62.71,
       "horizontal_support": 74.21,
       "cooldown_until": null,
       "toppick_score": 72,
@@ -6929,7 +6929,7 @@
         "atr14": 4.27,
         "atr_pct": 0.069,
         "gap50_pct": -25.5,
-        "dist_to_stop_pct": -1.5,
+        "dist_to_stop_pct": -1.3,
         "vol20ma": 372340,
         "vol_ratio": 3.47,
         "growth_score": 4.0,
@@ -6947,8 +6947,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -7859,8 +7859,8 @@
       "avg_price": null,
       "weight": 0.0,
       "deployed_tranches": [],
-      "recent_high": 77.15,
-      "trailing_stop_line": 60.11,
+      "recent_high": 74.63,
+      "trailing_stop_line": 58.15,
       "horizontal_support": 34.01,
       "cooldown_until": null,
       "toppick_score": 72,
@@ -7871,7 +7871,7 @@
         "atr14": 2.59,
         "atr_pct": 0.0442,
         "gap50_pct": -15.4,
-        "dist_to_stop_pct": -2.7,
+        "dist_to_stop_pct": 0.7,
         "vol20ma": 2391990,
         "vol_ratio": 1.66,
         "growth_score": 4.0,
@@ -7889,8 +7889,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
@@ -8010,7 +8010,7 @@
         "earnings_score": 5.0,
         "health_score": 3.2,
         "eps_revision": "UP_STRONG",
-        "peg": 0.34,
+        "peg": 0.3,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -8409,7 +8409,7 @@
         "earnings_score": 3.8,
         "health_score": 2.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.29,
+        "peg": 0.27,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -8497,7 +8497,7 @@
         "earnings_score": 3.8,
         "health_score": 1.2,
         "eps_revision": "UP_STRONG",
-        "peg": 0.24,
+        "peg": 0.23,
         "steps_count": 4,
         "steps_list": [
           true,
