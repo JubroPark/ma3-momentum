@@ -1,10 +1,10 @@
 {
-  "as_of": "2026-11-06T21:15:23Z",
-  "update_time": "06:15 KST",
+  "as_of": "2026-11-06T21:56:11Z",
+  "update_time": "06:56 KST",
   "nasdaq": {
     "price": 24579.42,
     "change_pct": 1.09,
-    "dist_to_masam_pct": 2.83,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -10.9,
     "last_masam_date": "2026-11-06"
   },
@@ -89,7 +89,7 @@
       "change_pct": -1.72
     },
     "005930.KS": {
-      "change_pct": -7.57
+      "change_pct": -6.35
     },
     "JPM": {
       "change_pct": -0.84
@@ -101,7 +101,7 @@
       "change_pct": 5.12
     },
     "XOM": {
-      "change_pct": 0.36
+      "change_pct": 0.34
     },
     "AMD": {
       "change_pct": 11.04
@@ -110,7 +110,7 @@
       "change_pct": 1.43
     },
     "000660.KS": {
-      "change_pct": -9.46
+      "change_pct": -10.44
     },
     "MA": {
       "change_pct": -0.49
@@ -123,10 +123,10 @@
     }
   },
   "live_market": {
-    "vix": 25.67,
-    "vix_chg": -8.91,
-    "usd_krw": 1363.3,
-    "usd_krw_chg": 1.73,
+    "vix": 25.64,
+    "vix_chg": -9.01,
+    "usd_krw": 1363.8,
+    "usd_krw_chg": 1.77,
     "fear_greed": 22
   }
 }
