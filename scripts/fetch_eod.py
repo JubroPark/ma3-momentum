@@ -116,7 +116,7 @@ def consecutive_up_days(hist) -> int:
 
 # ── 마삼 상태 머신 ─────────────────────────────────────────────────────────────
 
-def update_masam_state(existing: dict, today: date, ixic_chg: float) -> dict:
+def update_masam_state(existing: dict, today: date, ixic_chg: float, session: date) -> dict:
     m = existing.get("masam", {})
     mode = existing.get("mode", "NORMAL")
 
@@ -146,14 +146,15 @@ def update_masam_state(existing: dict, today: date, ixic_chg: float) -> dict:
         if today >= date.fromisoformat(crisis_end_str):
             mode = "NORMAL"
 
-    # 오늘 마삼 여부
-    is_masam = ixic_chg <= -3.0
+    # 마삼 여부 — 날짜는 나스닥 거래일(session) 기준. 배치가 하루 여러 번 돌아도 같은 거래일은 1회만
+    # (2026-11-05 하락 1회가 실행 3번에 3회로 집계된 버그)
+    is_masam = ixic_chg <= -3.0 and last_masam != session
     if is_masam:
-        if last_masam and (last_masam.year, last_masam.month) == (today.year, today.month):
+        if last_masam and (last_masam.year, last_masam.month) == (session.year, session.month):
             month_count += 1
         else:
             month_count = 1
-        last_masam = today
+        last_masam = session
         if month_count >= 4:
             mode = "PANIC"
         elif mode == "NORMAL":
@@ -390,7 +391,7 @@ def main():
 
     # 3. 마삼 상태 업데이트
     prev_mode = existing_masam.get("mode", "NORMAL")
-    new_masam_state, new_mode = update_masam_state(existing_masam, today, ixic_chg)
+    new_masam_state, new_mode = update_masam_state(existing_masam, today, ixic_chg, ixic.index[-1].date())
     print(f"  모드: {prev_mode} → {new_mode}  (이번 달 마삼 {new_masam_state['month_count']}회)")
 
     # 위기/공황 → 평상시 전환 당일 기록
