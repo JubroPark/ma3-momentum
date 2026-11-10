@@ -816,7 +816,7 @@
         <div style="display:flex;align-items:center;gap:16px;padding:13px 15px;border-bottom:1px solid var(--line);">
           <div style="flex:1;min-width:0;">
             <div style="font-size:13.8px;font-weight:700;color:var(--txt-1);">1등주 전고점 돌파</div>
-            <div style="font-size:12px;color:var(--txt-3);margin-top:3px;">NVDA 사상 최고치 상향 돌파</div>
+            <div id="cond3Sub" style="font-size:12px;color:var(--txt-3);margin-top:3px;">1등주 사상 최고치 상향 돌파</div>
           </div>
           <div style="text-align:right;flex:none;">
             <div style="font-size:12px;font-weight:700;color:var(--up);">미충족</div>
@@ -2843,6 +2843,9 @@ function initMaxPctUI(rateEnv) {
           if (detailEl) detailEl.textContent = cond.detail || '';
         });
       }
+      const cond3Sub = document.getElementById('cond3Sub');
+      const _r1 = masam.leader_status && masam.leader_status.rank1_ticker;
+      if (cond3Sub && _r1) cond3Sub.textContent = _r1 + ' 사상 최고치 상향 돌파';
     }
 
     // 11. 모멘텀 경제지표: 국면 + 신규 진입 가능 여부

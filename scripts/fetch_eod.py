@@ -133,7 +133,10 @@ def update_masam_state(existing: dict, today: date, ixic_chg: float, session: da
     panic_end_str = m.get("panic_end_dday")
 
     # 모드가 NORMAL이지만 최근 마삼이 위기 기간 내라면 모드 복구
-    if mode == "NORMAL" and last_masam:
+    # 단, 그 마삼 이후 올인 트리거로 조기 해제됐다면(released_date > 마지막 마삼) 복구하지 않음
+    released_str = existing.get("released_date")
+    early_released = bool(released_str and last_masam and date.fromisoformat(released_str) > last_masam)
+    if mode == "NORMAL" and last_masam and not early_released:
         implied_crisis_end = add_months(last_masam, 1) + timedelta(days=1)
         if today < implied_crisis_end:
             mode = "CRISIS"
@@ -417,6 +420,24 @@ def main():
     rank2_close = require_valid(f"{rank2_ticker} 종가", latest_close(rank2_hist))
     rank1_ath   = require_valid(f"{rank1_ticker} ATH", float(yf.Ticker(rank1_ticker).history(period="max", auto_adjust=False)["Close"].max()))
     qqq_eod_close = require_valid("QQQ 종가", latest_close(qqq))
+
+    # 5a. 위기 조기 해제: 올인 트리거 1개 이상 충족 → CRISIS 즉시 종료(§6-2 "또는 조기 트리거", §6-3 단일 신호 = 올인)
+    # ⑤ V자는 프론트와 같이 제외(EOD 계산값 오류 가능성). PANIC은 올인 후 완전 홀드(panic_hold) 미구현이라 제외.
+    # (2026-11-09 AAPL 전고 돌파로 ③ 충족됐는데 CRISIS·말뚝 비중이 유지되던 문제)
+    if new_mode == "CRISIS":
+        _early = calc_all_in_conditions(
+            mode=new_mode,
+            last_masam=date.fromisoformat(new_masam_state["last_masam_date"]) if new_masam_state.get("last_masam_date") else None,
+            today=today, consec_up=consec_up, ixic_close=ixic_close, ixic_ath=ixic_ath,
+            rank1_close=rank1_close, rank1_ath=rank1_ath, ixic_crisis_low=0, rate_env=rate_env,
+        )
+        _met = [c["label"] for c in _early if c["met"] and c["id"] != 5]
+        if _met:
+            print(f"  올인 트리거 충족({', '.join(_met)}) → CRISIS 조기 해제")
+            new_mode = "NORMAL"
+            new_masam_state = {**new_masam_state, "crisis_end_dday": None}
+            _is_crisis_release = True
+            released_date = today.isoformat()
 
     # 5b/5c. 올인 기준가·직전 고점·리밸런싱 저점: "슬롯"(1등주/2등주)이 아니라
     # 티커 심볼(by_ticker) 단위로 추적한다.
