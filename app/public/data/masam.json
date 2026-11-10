@@ -1,13 +1,13 @@
 {
   "as_of": "2026-11-10",
-  "mode": "CRISIS",
+  "mode": "NORMAL",
   "rate_env": "NON_ZERO",
   "qe_active": true,
   "treasury_10y_trend": "DOWN",
   "masam": {
     "month_count": 1,
     "last_masam_date": "2026-11-05",
-    "crisis_end_dday": "2026-12-06",
+    "crisis_end_dday": null,
     "panic_end_dday": null
   },
   "leader_status": {
@@ -16,18 +16,18 @@
     "gap_pct": 15.3,
     "overtake_detected": false,
     "gap_within_10pct": false,
-    "rank2_ever_rank1": true
+    "rank2_ever_rank1": false
   },
   "target_allocation": {
-    "stock_pct": 50,
-    "hedge_pct": 50,
+    "stock_pct": 100,
+    "hedge_pct": 0,
     "cash_pct": 0,
-    "label": "말뚝 50% + 헤지 50%"
+    "label": "1등주 집중"
   },
   "hedge_allocation": {
-    "type": "DOLLAR",
-    "rationale": "비제로 + QE + DFF 상승 또는 불명확 (인상 리스크)",
-    "exit_trigger": "DFF 하락 전환 또는 QE 종료"
+    "type": "NONE",
+    "rationale": "평상시 — 헤지 불필요",
+    "exit_trigger": ""
   },
   "rebalancing": {
     "cash_raised_pct": 0,
@@ -39,9 +39,9 @@
       "AAPL": 50
     },
     "qqq_pct": 0,
-    "nvda_lowest_close": 0,
-    "qqq_lowest_close": 0,
-    "rank2_lowest_close": 0
+    "nvda_lowest_close": 350.69,
+    "qqq_lowest_close": 679.35,
+    "rank2_lowest_close": 178.67
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -111,46 +111,40 @@
       30
     ]
   },
-  "recommended_action": "말뚝박기 유지 — 하락 시 분할 매수",
+  "recommended_action": "리밸런싱 유지 — 1등주(AAPL) 집중",
   "alerts": [],
   "last_allin_price": {
-    "nvda": 341.07,
-    "qqq": 756.2,
-    "rank2": 238.9,
-    "date": "2026-07-06",
-    "nvda_prev_high": 349.51,
-    "qqq_prev_high": 759.66,
-    "rank2_prev_high": 239.24,
+    "date": "2026-11-10",
     "by_ticker": {
-      "NVDA": {
-        "allin": 238.9,
-        "prev_high": 239.24,
-        "lowest_close": 200.13,
-        "since": "2026-10-05",
+      "AAPL": {
+        "allin": 350.69,
+        "prev_high": 350.69,
+        "lowest_close": 350.69,
+        "since": "2026-11-10",
         "ever_rank1": true
       },
-      "AAPL": {
-        "allin": 341.07,
-        "prev_high": 349.51,
-        "lowest_close": 349.51,
-        "since": "2026-09-25",
-        "ever_rank1": true
+      "NVDA": {
+        "allin": 178.67,
+        "prev_high": 178.67,
+        "lowest_close": 178.67,
+        "since": "2026-11-10",
+        "ever_rank1": false
       },
       "QQQ": {
-        "allin": 756.2,
-        "prev_high": 759.66,
-        "lowest_close": 681.09,
-        "since": "2026-10-05"
-      },
-      "GOOGL": {
-        "allin": 373.51,
-        "prev_high": 377.65,
-        "lowest_close": 377.65,
-        "since": "2026-08-03"
+        "allin": 679.35,
+        "prev_high": 679.35,
+        "lowest_close": 679.35,
+        "since": "2026-11-10"
       }
-    }
+    },
+    "nvda": 350.69,
+    "nvda_prev_high": 350.69,
+    "rank2": 178.67,
+    "rank2_prev_high": 178.67,
+    "qqq": 679.35,
+    "qqq_prev_high": 679.35
   },
-  "released_date": "2026-07-06",
+  "released_date": "2026-11-10",
   "eod_close": {
     "nvda": 350.69,
     "qqq": 679.35,
