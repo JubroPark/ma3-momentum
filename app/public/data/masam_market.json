@@ -47,11 +47,11 @@
   "wresbal_trillion_chg_dir": "DOWN",
   "treast_trillion_chg_4w": 0.01,
   "treast_trillion_chg_dir": "UP",
-  "vix": 19.92,
+  "vix": 21.0,
   "fear_greed": 62,
   "usd_krw": 1315.5,
   "market_sentiment": "중립",
-  "spy_ma200_label": "MA200 (-0.3%)",
+  "spy_ma200_label": "MA200 (-1.0%)",
   "history": {
     "dff": [
       3.63,
@@ -662,7 +662,6 @@
       0.9089
     ],
     "vix": [
-      16.04,
       16.34,
       16.39,
       15.31,
@@ -691,9 +690,10 @@
       16.61,
       28.18,
       25.64,
-      19.92
+      19.92,
+      21.0
     ]
   },
-  "vix_chg_20d": 4.71,
+  "vix_chg_20d": 5.73,
   "vix_chg_dir": "UP"
 }
