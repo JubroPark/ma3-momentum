@@ -147,7 +147,7 @@
 
 > **GitHub Actions cron 주의**: scheduled workflow가 active 상태임에도 cron이 조용히 멈추는 버그 발생 이력 있음(2026-06-22 확인). 워크플로우 파일 변경 푸시로 재등록. push 충돌 방지를 위해 커밋 후 `git pull --rebase origin main && git push` 사용.
 >
-> **수동 갱신 버튼**: `POST /api/refresh` → GitHub workflow_dispatch(live.yml + eod.yml 동시 트리거) → 35초 후 앱 자동 새로고침. 모든 탭 topbar 우측 원형 버튼(`mdi-light:refresh`, 23px).
+> **수동 갱신 버튼**: `POST /api/refresh` → GitHub workflow_dispatch(live.yml + eod.yml 동시 트리거) → 35초 후 앱 자동 새로고침. 모든 탭 topbar 우측 원형 버튼(`mdi-light:refresh`, 23px). ⚠️ **장중에 누르면 EOD도 돌아 장중 시세가 종가로 저장됨**(2026-11-10 수동 EOD로 실제 발생 — §6-2 조기 트리거 항목 참고). `fetch_eod.py`에 장중 실행 가드 없음 — §7-9.
 >
 > **live.yml 크론이 서머타임 기준으로만 짜여있던 버그 (2026-07-28 수정)**: 미 정규장은 EDT(서머타임) 13:30~20:00 UTC / EST(비서머타임) 14:30~21:00 UTC로 매년 두 번 바뀌는데, 크론은 EDT만 가정해 13:00~20:15 UTC로 고정돼 있었음 → 겨울철엔 장마감 직전 45분(20:15~21:00 UTC)을 못 잡음. 13:00~21:15 UTC 전체로 확장해 양쪽 다 커버(장외 시간에 도는 여분의 실행은 무해 — 프론트가 정규장 시간 가드로 걸러냄).
 >
@@ -321,6 +321,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 
 ### 7-9. 미구현 / 다음 작업 예정
 
+- **EOD 장중 실행 가드**: `/api/refresh`가 장중에도 eod.yml을 dispatch함 → 장중 시세가 EOD로 저장되어 올인·재매수·마삼 판정이 오염될 수 있음. 미 정규장 중이면 `fetch_eod.py`를 건너뛰거나 refresh에서 eod dispatch를 장 마감 후로 한정 필요
 - **마삼 `panic_hold` 연결**: masam.json에 필드 존재하나 fetch_eod.py 미연결. 공황 후 올인 집행 신호 입력(UI) + 전고점 경신 자동 감지 → 홀드 해제 로직 필요
 
 ---
