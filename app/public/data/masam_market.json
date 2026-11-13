@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-12",
+  "as_of": "2026-11-13",
   "rate_env": "NON_ZERO",
   "dff": 3.88,
   "dff_change_text": "동결",
@@ -15,14 +15,14 @@
   "treasury_30y_10y_spread": 0.37,
   "wresbal_trillion": 2.96,
   "dollar_index": 121.8803,
-  "inflation_expectation_5y5y": 2.15,
+  "inflation_expectation_5y5y": 2.17,
   "treast_trillion": 4.59,
   "term_premium_10y": 0.8738,
   "qe_state": "QE_ON",
   "treasury_10y_as_of": "2026-11-10",
   "treasury_30y_as_of": "2026-11-10",
   "dollar_index_as_of": "2026-11-06",
-  "inflation_expectation_5y5y_as_of": "2026-11-10",
+  "inflation_expectation_5y5y_as_of": "2026-11-12",
   "term_premium_10y_as_of": "2026-11-06",
   "walcl_trillion_as_of": "2026-11-11",
   "treast_trillion_as_of": "2026-11-11",
@@ -37,7 +37,7 @@
   "treasury_30y_10y_spread_chg_dir": "UP",
   "dollar_index_chg_20d": 0.4334,
   "dollar_index_chg_dir": "UP",
-  "inflation_expectation_5y5y_chg_20d": -0.18,
+  "inflation_expectation_5y5y_chg_20d": -0.17,
   "inflation_expectation_5y5y_chg_dir": "DOWN",
   "term_premium_10y_chg_20d": -0.1956,
   "term_premium_10y_chg_dir": "DOWN",
@@ -480,8 +480,6 @@
       121.8803
     ],
     "inflation_expectation_5y5y": [
-      2.32,
-      2.34,
       2.34,
       2.32,
       2.33,
@@ -537,7 +535,8 @@
       2.22,
       2.17,
       2.19,
-      2.15
+      2.15,
+      2.17
     ],
     "treast_trillion": [
       4.2,
