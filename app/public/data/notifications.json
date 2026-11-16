@@ -1,25 +1,5 @@
 [
   {
-    "date": "2026-10-12",
-    "type": "zone_reach",
-    "text": "NVDA 직전고점 대비 1구간(5.0%) 하락 도달"
-  },
-  {
-    "date": "2026-10-14",
-    "type": "zone_reach",
-    "text": "QQQ 직전고점 대비 1구간(2.5%) 하락 도달"
-  },
-  {
-    "date": "2026-10-16",
-    "type": "zone_reach",
-    "text": "NVDA 직전고점 대비 2구간(10.0%) 하락 도달"
-  },
-  {
-    "date": "2026-10-16",
-    "type": "zone_reach",
-    "text": "QQQ 직전고점 대비 2구간(5.0%) 하락 도달"
-  },
-  {
     "date": "2026-10-30",
     "type": "zone_reach",
     "text": "QQQ 직전고점 대비 3구간(7.5%) 하락 도달"
@@ -73,5 +53,15 @@
     "date": "2026-11-10",
     "type": "zone_reach",
     "text": "NVDA 직전고점 대비 1구간(5.0%) 하락 도달"
+  },
+  {
+    "date": "2026-11-16",
+    "type": "zone_reach",
+    "text": "QQQ 직전고점 대비 1구간(2.5%) 하락 도달"
+  },
+  {
+    "date": "2026-11-16",
+    "type": "rank2_swap",
+    "text": "2등주가 NVDA → MSFT로 바뀌었습니다"
   }
 ]
