@@ -128,7 +128,7 @@
         "earnings_score": 2.3,
         "health_score": 3.5,
         "eps_revision": "UP",
-        "peg": 2.81,
+        "peg": 2.79,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -440,7 +440,7 @@
         "earnings_score": 2.8,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.32,
+        "peg": 0.31,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -484,7 +484,7 @@
         "earnings_score": 5.0,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.13,
+        "peg": 0.12,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -1333,7 +1333,7 @@
         "earnings_score": 5.0,
         "health_score": 2.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.56,
+        "peg": 0.54,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -1691,7 +1691,7 @@
         "earnings_score": 5.0,
         "health_score": 1.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.36,
+        "peg": 0.34,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -1830,7 +1830,7 @@
         "earnings_score": 4.0,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.29,
+        "peg": 1.31,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -1874,7 +1874,7 @@
         "earnings_score": 3.3,
         "health_score": 4.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.98,
+        "peg": 0.93,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -2480,7 +2480,7 @@
       "trailing_stop_line": 557.4,
       "horizontal_support": 615.0,
       "cooldown_until": null,
-      "toppick_score": 78,
+      "toppick_score": 75,
       "metrics": {
         "price": 294.36,
         "ma50": 359.05,
@@ -2492,10 +2492,10 @@
         "vol20ma": 284665,
         "vol_ratio": 0.8,
         "growth_score": 4.5,
-        "earnings_score": 5.0,
+        "earnings_score": 4.5,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.48,
+        "peg": 0.46,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -2633,7 +2633,7 @@
         "earnings_score": 3.5,
         "health_score": 4.3,
         "eps_revision": "UP",
-        "peg": 0.87,
+        "peg": 0.84,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -3793,7 +3793,7 @@
         "earnings_score": 3.8,
         "health_score": 2.4,
         "eps_revision": "UP_STRONG",
-        "peg": 1.22,
+        "peg": 1.15,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -3884,7 +3884,7 @@
         "earnings_score": 3.0,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 1.21,
+        "peg": 1.17,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -4545,7 +4545,7 @@
       "trailing_stop_line": 27.36,
       "horizontal_support": 23.52,
       "cooldown_until": null,
-      "toppick_score": 44,
+      "toppick_score": 41,
       "metrics": {
         "price": 19.94,
         "ma50": 24.14,
@@ -4557,17 +4557,17 @@
         "vol20ma": 9091850,
         "vol_ratio": 1.06,
         "growth_score": 0.5,
-        "earnings_score": 2.5,
+        "earnings_score": 2.0,
         "health_score": 3.8,
-        "eps_revision": "UP",
-        "peg": 3.74,
-        "steps_count": 1,
+        "eps_revision": "DOWN",
+        "peg": 3.6,
+        "steps_count": 0,
         "steps_list": [
           false,
           false,
           false,
           false,
-          true,
+          false,
           false
         ]
       },
@@ -4809,7 +4809,7 @@
       "trailing_stop_line": 39.81,
       "horizontal_support": 37.04,
       "cooldown_until": null,
-      "toppick_score": 59,
+      "toppick_score": 56,
       "metrics": {
         "price": 36.49,
         "ma50": 40.62,
@@ -4821,10 +4821,10 @@
         "vol20ma": 8158655,
         "vol_ratio": 1.0,
         "growth_score": 2.5,
-        "earnings_score": 3.5,
+        "earnings_score": 3.0,
         "health_score": 3.5,
         "eps_revision": "UP",
-        "peg": 1.81,
+        "peg": 1.76,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -5033,7 +5033,7 @@
       "trailing_stop_line": 42.81,
       "horizontal_support": 33.35,
       "cooldown_until": null,
-      "toppick_score": 71,
+      "toppick_score": 68,
       "metrics": {
         "price": 35.16,
         "ma50": 38.11,
@@ -5045,17 +5045,17 @@
         "vol20ma": 3830405,
         "vol_ratio": 0.92,
         "growth_score": 4.5,
-        "earnings_score": 2.8,
+        "earnings_score": 2.3,
         "health_score": 4.5,
-        "eps_revision": "UP",
+        "eps_revision": "DOWN",
         "peg": 0.09,
-        "steps_count": 4,
+        "steps_count": 3,
         "steps_list": [
           true,
           false,
           true,
           true,
-          true,
+          false,
           false
         ]
       },
@@ -5092,7 +5092,7 @@
         "earnings_score": 1.8,
         "health_score": 3.5,
         "eps_revision": "DOWN",
-        "peg": 0.54,
+        "peg": 0.51,
         "steps_count": 1,
         "steps_list": [
           false,
@@ -5256,7 +5256,7 @@
       "trailing_stop_line": 223.81,
       "horizontal_support": 204.25,
       "cooldown_until": null,
-      "toppick_score": 56,
+      "toppick_score": 53,
       "metrics": {
         "price": 240.19,
         "ma50": 247.18,
@@ -5268,10 +5268,10 @@
         "vol20ma": 629255,
         "vol_ratio": 0.82,
         "growth_score": 2.5,
-        "earnings_score": 2.8,
+        "earnings_score": 2.3,
         "health_score": 3.5,
-        "eps_revision": "UP_STRONG",
-        "peg": 0.8,
+        "eps_revision": "UP",
+        "peg": 0.78,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -5535,7 +5535,7 @@
         "earnings_score": 2.8,
         "health_score": 4.5,
         "eps_revision": "UP",
-        "peg": 0.35,
+        "peg": 0.33,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -5711,7 +5711,7 @@
         "earnings_score": 3.8,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.27,
+        "peg": 0.25,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -5843,7 +5843,7 @@
         "earnings_score": 2.3,
         "health_score": 3.2,
         "eps_revision": "UP_STRONG",
-        "peg": 4.06,
+        "peg": 4.05,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -6392,7 +6392,7 @@
         "earnings_score": 3.8,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.2,
+        "peg": 0.19,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -6533,7 +6533,7 @@
         "earnings_score": 3.3,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 1.39,
+        "peg": 1.38,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -6973,7 +6973,7 @@
         "earnings_score": 3.0,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
-        "peg": 1.61,
+        "peg": 1.52,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -7455,7 +7455,7 @@
       "trailing_stop_line": 65.41,
       "horizontal_support": 69.45,
       "cooldown_until": null,
-      "toppick_score": 48,
+      "toppick_score": 45,
       "metrics": {
         "price": 55.75,
         "ma50": 64.16,
@@ -7467,7 +7467,7 @@
         "vol20ma": 663975,
         "vol_ratio": 0.81,
         "growth_score": 1.5,
-        "earnings_score": 3.0,
+        "earnings_score": 2.5,
         "health_score": 2.2,
         "eps_revision": "UP",
         "peg": null,
@@ -7558,7 +7558,7 @@
         "earnings_score": 3.8,
         "health_score": 3.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.44,
+        "peg": 0.43,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -8004,7 +8004,7 @@
         "earnings_score": 5.0,
         "health_score": 3.2,
         "eps_revision": "UP_STRONG",
-        "peg": 0.35,
+        "peg": 0.33,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -8048,7 +8048,7 @@
         "earnings_score": 3.8,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.9,
+        "peg": 0.87,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -8224,7 +8224,7 @@
         "earnings_score": 3.8,
         "health_score": 3.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.6,
+        "peg": 0.57,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -8404,7 +8404,7 @@
         "earnings_score": 3.8,
         "health_score": 2.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.34,
+        "peg": 0.33,
         "steps_count": 5,
         "steps_list": [
           false,
@@ -8536,7 +8536,7 @@
         "earnings_score": 3.8,
         "health_score": 1.2,
         "eps_revision": "UP_STRONG",
-        "peg": 0.24,
+        "peg": 0.23,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -8932,7 +8932,7 @@
         "earnings_score": 5.0,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.52,
+        "peg": 0.53,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -9075,8 +9075,8 @@
           false
         ]
       },
-      "next_action": "EXIT",
-      "reason": "2차 스탑 터치 — 청산",
+      "next_action": "HOLD",
+      "reason": "EXIT 상태 유지",
       "weight_note": ""
     },
     {
