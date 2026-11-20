@@ -1,6 +1,42 @@
 {
-  "as_of": "2026-11-20T02:12:05Z",
-  "update_time": "11:12 KST",
+  "as_of": "2026-11-20T09:15:04Z",
+  "update_time": "18:15 KST",
+  "quote_dates": {
+    "^IXIC": "2026-11-19",
+    "^GSPC": "2026-11-19",
+    "^DJI": "2026-11-19",
+    "AAPL": "2026-11-19",
+    "MSFT": "2026-11-19",
+    "QQQ": "2026-11-19",
+    "TLT": "2026-11-19",
+    "IAU": "2026-11-19",
+    "GLD": "2026-11-19",
+    "TIP": "2026-11-19",
+    "^VIX": "2026-11-20",
+    "USDKRW=X": "2026-11-20",
+    "NVDA": "2026-11-19",
+    "GOOGL": "2026-11-19",
+    "AMZN": "2026-11-19",
+    "SPCX": "2026-11-19",
+    "TSM": "2026-11-19",
+    "2222.SR": "2026-11-19",
+    "AVGO": "2026-11-19",
+    "META": "2026-11-19",
+    "TSLA": "2026-11-19",
+    "BRK-B": "2026-11-19",
+    "LLY": "2026-11-19",
+    "WMT": "2026-11-19",
+    "005930.KS": "2026-11-20",
+    "JPM": "2026-11-19",
+    "AMD": "2026-11-19",
+    "MU": "2026-11-19",
+    "V": "2026-11-19",
+    "XOM": "2026-11-19",
+    "JNJ": "2026-11-19",
+    "000660.KS": "2026-11-20",
+    "MA": "2026-11-19",
+    "ASML": "2026-11-19"
+  },
   "nasdaq": {
     "price": 23879.2,
     "change_pct": -2.25,
@@ -21,112 +57,112 @@
     "name": "엔비디아",
     "domain": "nvidia.com",
     "si": "nvidia/76b900",
-    "price": 352.45,
-    "change_pct": 0.15,
+    "price": 349.21,
+    "change_pct": -0.92,
     "ath": 356.27,
     "intra_low": 346.2
   },
   "rank2": {
     "ticker": "MSFT",
-    "price": 508.29,
-    "change_pct": 0.4,
+    "price": 498.3,
+    "change_pct": -1.78,
     "ath": 555.8,
-    "intra_low": 496.51
+    "intra_low": 495.55
   },
   "qqq": {
-    "price": 659.51,
-    "change_pct": 0.39,
+    "price": 645.04,
+    "change_pct": -2.19,
     "ath": 759.66,
-    "intra_low": 646.64
+    "intra_low": 644.34
   },
   "hedges": {
-    "TLT": 80.22,
-    "IAU": 69.96,
-    "GLD": 341.19,
-    "TIP": 104.9
+    "TLT": 80.35,
+    "IAU": 68.72,
+    "GLD": 335.18,
+    "TIP": 105.03
   },
   "mcap_live": {
     "AAPL": {
-      "change_pct": 0.15
+      "change_pct": -0.92
     },
     "MSFT": {
-      "change_pct": 0.4
+      "change_pct": -1.78
     },
     "NVDA": {
-      "change_pct": -2.89
+      "change_pct": -3.3
     },
     "GOOGL": {
-      "change_pct": 0.8
+      "change_pct": -3.46
     },
     "AMZN": {
-      "change_pct": 3.82
+      "change_pct": -3.87
     },
     "SPCX": {
-      "change_pct": 1.27
+      "change_pct": -3.53
     },
     "TSM": {
-      "change_pct": 0.81
+      "change_pct": -2.9
     },
     "2222.SR": {
-      "change_pct": 0.23
+      "change_pct": 0.15
     },
     "AVGO": {
-      "change_pct": 3.64
+      "change_pct": -2.09
     },
     "META": {
-      "change_pct": -0.4
+      "change_pct": -3.27
     },
     "TSLA": {
-      "change_pct": 0.95
+      "change_pct": -2.43
     },
     "ANT": {
       "change_pct": null
     },
     "BRK-B": {
-      "change_pct": -2.07
+      "change_pct": -0.45
     },
     "LLY": {
-      "change_pct": -2.32
+      "change_pct": -2.29
     },
     "WMT": {
-      "change_pct": -0.13
+      "change_pct": -1.04
     },
     "005930.KS": {
-      "change_pct": -5.94
+      "change_pct": -7.01
     },
     "JPM": {
-      "change_pct": -1.77
+      "change_pct": -1.2
     },
     "AMD": {
-      "change_pct": 5.31
+      "change_pct": -7.72
     },
     "MU": {
-      "change_pct": -1.0
+      "change_pct": -2.1
     },
     "V": {
-      "change_pct": -0.37
+      "change_pct": -3.12
     },
     "XOM": {
-      "change_pct": -3.97
+      "change_pct": -1.03
     },
     "JNJ": {
-      "change_pct": -2.15
+      "change_pct": -2.04
     },
     "000660.KS": {
-      "change_pct": -6.59
+      "change_pct": -5.92
     },
     "MA": {
-      "change_pct": -0.37
+      "change_pct": -2.62
     },
     "ASML": {
-      "change_pct": 0.88
+      "change_pct": -2.8
     }
   },
   "live_market": {
-    "vix": 28.44,
-    "vix_chg": 15.8,
-    "usd_krw": 1338.2,
-    "usd_krw_chg": 0.58,
-    "fear_greed": 19
+    "vix": 28.8,
+    "vix_chg": 1.27,
+    "usd_krw": 1336.0,
+    "usd_krw_chg": 0.42,
+    "fear_greed": 17
   }
 }

@@ -42,6 +42,13 @@ def save_json(path: Path, data: dict) -> None:
     path.write_text(json.dumps(_sanitize_nan(data), ensure_ascii=False, indent=2), encoding="utf-8")
 
 
+# ponytail: 종목별 마지막 시세 날짜 — 야후가 최신 거래일 행을 빠뜨려 하루 전 종가가
+# 오는 경우(2026-11-20 02:12 UTC, 11-19 행 누락 → AAPL·QQQ 등 미국 종목 전부 11-18 값)
+# 기존보다 오래된 날짜면 None을 돌려 호출부가 기존 값으로 폴백하게 함. main()이 채움.
+_PREV_DATES: dict = {}
+_NEW_DATES: dict = {}
+
+
 def fetch_quote(ticker: str) -> Optional[dict]:
     try:
         t = yf.Ticker(ticker)
@@ -55,6 +62,11 @@ def fetch_quote(ticker: str) -> Optional[dict]:
         close = t.history(period="5d", auto_adjust=True)["Close"].dropna()
         if len(close) < 2:
             return None
+        last = close.index[-1].date().isoformat()
+        if last < _PREV_DATES.get(ticker, ""):
+            print(f"  ⚠ {ticker} 시세 역행({last} < {_PREV_DATES[ticker]}) — 기존 값 유지")
+            return None
+        _NEW_DATES[ticker] = last
         price = float(close.iloc[-1])
         prev  = float(close.iloc[-2])
         chg = (price - prev) / prev * 100
@@ -80,7 +92,7 @@ def fetch_fear_greed() -> Optional[int]:
         return None
 
 
-def fetch_mcap_live() -> dict:
+def fetch_mcap_live(prev: dict) -> dict:
     """mcap_daily.json의 ticker 목록에서 change_pct만 수집. mcap_usd는 daily 기준.
     ponytail: fast_info의 last_price/previous_close는 야후 캐시 타이밍에 따라
     fetch_quote()의 종가 대 종가 등락률과 어긋나는 경우가 확인됨(2026-08-02, AAPL
@@ -90,7 +102,7 @@ def fetch_mcap_live() -> dict:
     for item in mcap_daily.get("items", []):
         ticker = item["ticker"]
         q = fetch_quote(ticker)
-        result[ticker] = {"change_pct": q["change_pct"] if q else None}
+        result[ticker] = {"change_pct": q["change_pct"] if q else prev.get(ticker, {}).get("change_pct")}
     return result
 
 
@@ -135,6 +147,7 @@ def main():
     print(f"[Live 배치] {now_utc.strftime('%Y-%m-%dT%H:%M:%SZ')}")
 
     existing_live = load_json(LIVE)
+    _PREV_DATES.update(existing_live.get("quote_dates", {}))
     masam_json = load_json(DATA / "masam.json")
 
     # 1등주 / 2등주
@@ -161,9 +174,10 @@ def main():
     rank1_q = fetch_quote(rank1_ticker)
     rank2_q = fetch_quote(rank2_ticker)
     qqq_q   = fetch_quote("QQQ")
-    rank1_extra = fetch_ohlc_ath(rank1_ticker, since_date=low_since(rank1_ticker))
-    rank2_extra = fetch_ohlc_ath(rank2_ticker, since_date=low_since(rank2_ticker))
-    qqq_extra   = fetch_ohlc_ath("QQQ", since_date=low_since("QQQ"))
+    # 시세가 역행(None)이면 장중 저가도 같은 누락 데이터라 기존 값 유지
+    rank1_extra = fetch_ohlc_ath(rank1_ticker, since_date=low_since(rank1_ticker)) if rank1_q else {}
+    rank2_extra = fetch_ohlc_ath(rank2_ticker, since_date=low_since(rank2_ticker)) if rank2_q else {}
+    qqq_extra   = fetch_ohlc_ath("QQQ", since_date=low_since("QQQ")) if qqq_q else {}
     ixic_extra  = fetch_ohlc_ath("^IXIC")
 
     # 마삼까지 거리
@@ -188,7 +202,7 @@ def main():
     vix_q     = fetch_quote("^VIX")
     usdkrw_q  = fetch_quote("USDKRW=X")
     fear_greed = fetch_fear_greed()
-    mcap_live  = fetch_mcap_live()
+    mcap_live  = fetch_mcap_live(existing_live.get("mcap_live", {}))
     print(f"  VIX: {vix_q}  USD/KRW: {usdkrw_q}  F&G: {fear_greed}")
 
     # 1등주 / 2등주 메타 (기존 값 유지)
@@ -215,6 +229,7 @@ def main():
     live_out = {
         "as_of": now_utc.strftime("%Y-%m-%dT%H:%M:%SZ"),
         "update_time": update_kst,
+        "quote_dates": {**_PREV_DATES, **_NEW_DATES},
         "nasdaq": {
             "price": ixic_q["price"] if ixic_q else existing_live.get("nasdaq", {}).get("price"),
             "change_pct": ixic_q["change_pct"] if ixic_q else None,
