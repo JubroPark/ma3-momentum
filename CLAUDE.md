@@ -159,6 +159,10 @@
 >
 > **장중 배치가 같은 yfinance `period=` NaN 버그로 `live.json` 시세를 null로 저장 → 앱 전체 "데이터를 불러오지 못했습니다" 배너 (2026-09-30 확인·수정)**: 09:17 KST(00:17 UTC) 배치 1회만 NVDA·AAPL·QQQ·헤지 4종이 전부 `null`(`^IXIC`만 정상). `fetch_quote()`가 `period="5d"` 마지막 행이 NaN이어도 `float()`로 그대로 변환 → `None`이 아니라 NaN이라 호출부의 `existing_live` 폴백이 안 걸렸고, `_sanitize_nan()`이 null로 바꿔 저장. 프론트 `r1.price.toFixed(2)`가 null에서 예외 → `initFromData()` 전체 중단. 그날 마지막 장중 배치라 다음 세션까지 null이 고정됨. **수정**: (1) `fetch_quote()`가 `Close.dropna()` 후 유효 2행 미만이면 None(→ 기존 값 폴백). (2) `app.html`의 `if (r1)` → `if (r1 && r1.price)`. `test_fetch_quote.py`에 회귀 테스트. **주의**: 이 `fetch_quote()` 수정은 NaN 꼬리일 때 하루 전 종가를 최신값으로 쓰므로(§5 `fetch_history()`처럼 gap-fill 재조회는 안 함) 값이 하루 늦을 수 있으나 null보다 낫고 다음 배치에서 자동 정정됨. `fetch_ohlc_ath()`(`period="max"/"1y"`)는 점검 완료(2026-09-30): `Close.max()`/`Low.min()`이 NaN을 건너뛰므로 NaN 꼬리가 와도 null·크래시는 안 남고, 그날 종가만 ATH에서 빠졌다가 다음 배치에서 정정됨 — 수정 불필요.
 >
+> **야후가 최신 거래일 행을 빠뜨려 `live.json`이 하루 전 종가로 역행 (2026-11-20 확인·수정)**: 5시간 늦게 돈 예약 live 실행(02:12 UTC)에서 `history(period="5d")`에 11-19 행이 NaN도 아니고 **아예 없이** 와서, AAPL·QQQ·MSFT·헤지 등 미국 종목이 11-18 종가(AAPL 352.45, QQQ 659.51)와 11-17 대비 등락률로 덮어써짐(`^IXIC`만 정상). 07:30~08:59 KST에는 맞던 값이 뒤로 간 것. 장외 시간이라 다음 live(13:00 UTC)까지 고정됨. EOD(`masam.json`의 `eod_close`)는 정상이라 모드·구간 판정엔 영향 없었고 "현재가" 표시만 틀림. **수정**: `fetch_quote()`가 종목별 마지막 행 날짜를 `live.json`의 `quote_dates`에 저장하고, 그보다 오래된 날짜가 오면 None(→ 기존 값 폴백, 로그 "시세 역행"). 이때 같은 누락 데이터에서 나오는 `fetch_ohlc_ath()`(장중 저가·ATH)도 건너뜀. `fetch_mcap_live()`도 실패 시 null 대신 기존 `change_pct` 유지. `test_fetch_quote.py`에 회귀 테스트. 당일 `live.json`은 로컬에서 `python3 scripts/fetch_live.py` 재실행으로 정정(00e77b56). **증상 구분**: 화면 현재가가 EOD 종가와 다르면 먼저 `git show <커밋>:app/public/data/live.json`으로 시점별 값을 비교하고 실제 종가(yfinance)와 대조할 것.
+>
+> **`live.json` `rank1`의 `name`·`domain`·`si` 제거 (2026-11-20)**: 직전 `live.json` 값을 그대로 물려받아 1등주가 NVDA→AAPL로 바뀐 뒤에도 "엔비디아/nvidia.com"으로 남아 있었음. 읽는 코드가 없어 삭제(d96d0927). 화면의 종목 이름·로고는 `companies.json` 기준. **live.json에 종목 메타를 다시 넣을 땐 직전 값 상속 말고 ticker로 `companies.json`에서 조회할 것.**
+>
 > **장중 저가(`intra_low`) 측정 시작일을 종목별 올인일로 (2026-10-14 수정)**: `fetch_live.py`가 NORMAL 모드에서 `last_allin_price.date`(공통, 최초 위기해제 올인일 07-06)부터 장중 Low 최솟값을 구해서, 종목별 재매수(2구간 회복) 이후에도 옛 올인일 이후 저가(NVDA $189.80)가 "장중 저가"로 계속 표시됐음. `by_ticker[티커].since`(위기해제 올인·재매수 때 `fetch_eod.py`가 당일로 갱신 = 종목별 최근 올인일)부터 측정하도록 변경, 없으면 공통 `date`로 폴백. CRISIS/PANIC은 기존대로 `last_masam_date`부터.
 >
 > **1등주 교체(오버테이크) 후유증 (2026-07-28 확인 · 2026-07-31 원인 정정)**: 리더가 바뀌어도 자동으로 안 따라가는 필드가 있음.
@@ -340,7 +344,7 @@ GREEN 정상 / YELLOW 1차 보수적·경고 / RED 신규 매수 차단(기존 3
 | `transitions.json` | append-only 상태 전이 기록 | B |
 | `momentum_market.json` | 국면 GREEN/YELLOW/RED·SPX·NDX 추세·매수 게이트 | B |
 | `params.json` | 전략별 파라미터 · 부록 Z 옵션 토글 상태 | 공통 |
-| `live.json` | 준실시간 표시값(현재가·등락률·거리·헤지 시세) — 표시 전용 | 공통 |
+| `live.json` | 준실시간 표시값(현재가·등락률·거리·헤지 시세) — 표시 전용. `quote_dates`=종목별 마지막 시세 날짜(역행 가드용) | 공통 |
 | `notifications.json` | 알림 히스토리(마삼 모드 전환·시총 순위 역전), 최근 30일 유지 — `fetch_eod.py`가 전일 대비 diff해서 append | A |
 
 ### masam.json 핵심 필드
