@@ -128,7 +128,7 @@
         "earnings_score": 2.3,
         "health_score": 3.5,
         "eps_revision": "UP",
-        "peg": 2.76,
+        "peg": 2.78,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -170,7 +170,7 @@
         "earnings_score": 5.0,
         "health_score": 4.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.34,
+        "peg": 0.35,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -264,7 +264,7 @@
         "earnings_score": 2.8,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 2.69,
+        "peg": 2.75,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -737,7 +737,7 @@
       "trailing_stop_line": 87.48,
       "horizontal_support": 75.23,
       "cooldown_until": null,
-      "toppick_score": 71,
+      "toppick_score": 74,
       "metrics": {
         "price": 58.46,
         "ma50": 67.82,
@@ -749,9 +749,9 @@
         "vol20ma": 39516885,
         "vol_ratio": 0.96,
         "growth_score": 2.5,
-        "earnings_score": 3.5,
+        "earnings_score": 4.0,
         "health_score": 4.0,
-        "eps_revision": "UP",
+        "eps_revision": "UP_STRONG",
         "peg": 0.36,
         "steps_count": 3,
         "steps_list": [
@@ -960,7 +960,7 @@
       "trailing_stop_line": 155.89,
       "horizontal_support": 172.64,
       "cooldown_until": null,
-      "toppick_score": 41,
+      "toppick_score": 44,
       "metrics": {
         "price": 181.15,
         "ma50": 179.05,
@@ -972,17 +972,17 @@
         "vol20ma": 3133505,
         "vol_ratio": 1.21,
         "growth_score": 0.5,
-        "earnings_score": 0.8,
+        "earnings_score": 1.3,
         "health_score": 3.8,
-        "eps_revision": "DOWN",
+        "eps_revision": "UP",
         "peg": null,
-        "steps_count": 3,
+        "steps_count": 4,
         "steps_list": [
           false,
           true,
           false,
           true,
-          false,
+          true,
           true
         ]
       },
@@ -1066,7 +1066,7 @@
         "earnings_score": 3.5,
         "health_score": 2.2,
         "eps_revision": "UP",
-        "peg": 1.32,
+        "peg": 1.33,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -1377,7 +1377,7 @@
         "earnings_score": 2.3,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
-        "peg": 2.35,
+        "peg": 2.45,
         "steps_count": 2,
         "steps_list": [
           false,
@@ -1647,7 +1647,7 @@
         "earnings_score": 2.3,
         "health_score": 3.5,
         "eps_revision": "UP",
-        "peg": 2.3,
+        "peg": 2.35,
         "steps_count": 2,
         "steps_list": [
           false,
@@ -1691,7 +1691,7 @@
         "earnings_score": 5.0,
         "health_score": 1.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.32,
+        "peg": 0.33,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -1739,7 +1739,7 @@
         "earnings_score": 3.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.48,
+        "peg": 0.49,
         "steps_count": 6,
         "steps_list": [
           true,
@@ -1918,7 +1918,7 @@
         "earnings_score": 1.0,
         "health_score": 2.7,
         "eps_revision": "DOWN",
-        "peg": 0.56,
+        "peg": 0.57,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -2052,7 +2052,7 @@
         "earnings_score": 3.8,
         "health_score": 3.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.43,
+        "peg": 0.45,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -2451,7 +2451,7 @@
         "earnings_score": 3.8,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.33,
+        "peg": 0.34,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -2480,7 +2480,7 @@
       "trailing_stop_line": 557.4,
       "horizontal_support": 615.0,
       "cooldown_until": null,
-      "toppick_score": 75,
+      "toppick_score": 78,
       "metrics": {
         "price": 295.85,
         "ma50": 352.26,
@@ -2492,10 +2492,10 @@
         "vol20ma": 278290,
         "vol_ratio": 1.35,
         "growth_score": 4.5,
-        "earnings_score": 4.5,
+        "earnings_score": 5.0,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.46,
+        "peg": 0.48,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -2583,7 +2583,7 @@
         "earnings_score": 4.5,
         "health_score": 2.6,
         "eps_revision": "UP_STRONG",
-        "peg": 1.08,
+        "peg": 1.12,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -2853,7 +2853,7 @@
         "earnings_score": 3.0,
         "health_score": 3.0,
         "eps_revision": "UP",
-        "peg": 12.14,
+        "peg": 12.49,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -3120,7 +3120,7 @@
         "earnings_score": 4.0,
         "health_score": 3.8,
         "eps_revision": "UP_STRONG",
-        "peg": 1.94,
+        "peg": 1.99,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -3391,7 +3391,7 @@
         "earnings_score": 3.8,
         "health_score": 2.0,
         "eps_revision": "UP_STRONG",
-        "peg": 0.33,
+        "peg": 0.34,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -3435,7 +3435,7 @@
         "earnings_score": 5.0,
         "health_score": 2.1,
         "eps_revision": "UP_STRONG",
-        "peg": 0.59,
+        "peg": 0.6,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -3523,7 +3523,7 @@
         "earnings_score": 4.0,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.73,
+        "peg": 0.76,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -3790,7 +3790,7 @@
         "earnings_score": 3.8,
         "health_score": 2.4,
         "eps_revision": "UP_STRONG",
-        "peg": 1.11,
+        "peg": 1.21,
         "steps_count": 4,
         "steps_list": [
           true,
@@ -3928,7 +3928,7 @@
         "earnings_score": 5.0,
         "health_score": 1.2,
         "eps_revision": "UP_STRONG",
-        "peg": 0.18,
+        "peg": 0.19,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -4107,7 +4107,7 @@
         "earnings_score": 3.8,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.14,
+        "peg": 0.15,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -4375,7 +4375,7 @@
         "earnings_score": 4.5,
         "health_score": 2.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.37,
+        "peg": 0.38,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -4671,7 +4671,7 @@
       "trailing_stop_line": 37.97,
       "horizontal_support": 30.68,
       "cooldown_until": null,
-      "toppick_score": 42,
+      "toppick_score": 45,
       "metrics": {
         "price": null,
         "ma50": 34.73,
@@ -4683,17 +4683,17 @@
         "vol20ma": 960636,
         "vol_ratio": 1.23,
         "growth_score": 1.5,
-        "earnings_score": 2.0,
+        "earnings_score": 2.5,
         "health_score": 2.0,
-        "eps_revision": "DOWN",
+        "eps_revision": "UP",
         "peg": null,
-        "steps_count": 2,
+        "steps_count": 3,
         "steps_list": [
           true,
           false,
           false,
           true,
-          false,
+          true,
           false
         ]
       },
@@ -4818,7 +4818,7 @@
         "earnings_score": 3.0,
         "health_score": 3.5,
         "eps_revision": "UP",
-        "peg": 1.61,
+        "peg": 1.66,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -5837,7 +5837,7 @@
         "earnings_score": 2.3,
         "health_score": 3.2,
         "eps_revision": "UP_STRONG",
-        "peg": 3.68,
+        "peg": 3.84,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -5976,7 +5976,7 @@
         "earnings_score": 5.0,
         "health_score": 3.3,
         "eps_revision": "UP_STRONG",
-        "peg": 0.22,
+        "peg": 0.23,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -6527,7 +6527,7 @@
         "earnings_score": 3.3,
         "health_score": 3.5,
         "eps_revision": "UP_STRONG",
-        "peg": 1.31,
+        "peg": 1.33,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -6747,7 +6747,7 @@
         "earnings_score": 4.0,
         "health_score": 2.7,
         "eps_revision": "UP_STRONG",
-        "peg": 0.94,
+        "peg": 0.97,
         "steps_count": 3,
         "steps_list": [
           false,
@@ -7099,7 +7099,7 @@
         "earnings_score": 3.5,
         "health_score": 4.3,
         "eps_revision": "UP",
-        "peg": 1.19,
+        "peg": 1.22,
         "steps_count": 2,
         "steps_list": [
           false,
@@ -7772,7 +7772,7 @@
         "earnings_score": 4.5,
         "health_score": 3.2,
         "eps_revision": "UP_STRONG",
-        "peg": 1.09,
+        "peg": 1.15,
         "steps_count": 4,
         "steps_list": [
           false,
@@ -8039,7 +8039,7 @@
         "earnings_score": 3.8,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.85,
+        "peg": 0.86,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -8303,7 +8303,7 @@
         "earnings_score": 5.0,
         "health_score": 2.5,
         "eps_revision": "UP_STRONG",
-        "peg": 0.71,
+        "peg": 0.76,
         "steps_count": 3,
         "steps_list": [
           true,
@@ -8567,7 +8567,7 @@
         "earnings_score": 3.8,
         "health_score": 1.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.09,
+        "peg": 0.1,
         "steps_count": 5,
         "steps_list": [
           true,
@@ -8807,7 +8807,7 @@
       "name": "Royal Gold, Inc.",
       "name_ko": "로얄 골드",
       "domain": "royalgold.com",
-      "status": "WATCH",
+      "status": "REMOVED",
       "moat_score": 2.7,
       "avg_price": null,
       "weight": 0.0,
@@ -8843,7 +8843,7 @@
         ]
       },
       "next_action": "HOLD",
-      "reason": "RED 국면 — 신규 매수 차단",
+      "reason": "REMOVED 상태 유지",
       "weight_note": ""
     },
     {
@@ -9366,12 +9366,56 @@
         "earnings_score": 3.0,
         "health_score": 1.8,
         "eps_revision": "UP_STRONG",
-        "peg": 0.49,
+        "peg": 0.5,
         "steps_count": 4,
         "steps_list": [
           true,
           false,
           true,
+          true,
+          true,
+          false
+        ]
+      },
+      "next_action": "HOLD",
+      "reason": "RED 국면 — 신규 매수 차단",
+      "weight_note": ""
+    },
+    {
+      "symbol": "POWL",
+      "name": "Powell Industries, Inc.",
+      "name_ko": "파월 인더스트리스",
+      "domain": "powellind.com",
+      "status": "WATCH",
+      "moat_score": 1.8,
+      "avg_price": null,
+      "weight": 0.0,
+      "deployed_tranches": [],
+      "recent_high": 321.6,
+      "trailing_stop_line": 225.12,
+      "horizontal_support": 143.16,
+      "cooldown_until": null,
+      "toppick_score": 70,
+      "metrics": {
+        "price": 158.75,
+        "ma50": 169.44,
+        "ma200": 213.1,
+        "atr14": 12.07,
+        "atr_pct": 0.076,
+        "gap50_pct": -6.3,
+        "dist_to_stop_pct": -41.8,
+        "vol20ma": 858135,
+        "vol_ratio": 1.03,
+        "growth_score": 4.0,
+        "earnings_score": 5.0,
+        "health_score": 2.7,
+        "eps_revision": "UP_STRONG",
+        "peg": 0.44,
+        "steps_count": 3,
+        "steps_list": [
+          true,
+          false,
+          false,
           true,
           true,
           false
