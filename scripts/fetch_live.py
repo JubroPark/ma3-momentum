@@ -205,13 +205,10 @@ def main():
     mcap_live  = fetch_mcap_live(existing_live.get("mcap_live", {}))
     print(f"  VIX: {vix_q}  USD/KRW: {usdkrw_q}  F&G: {fear_greed}")
 
-    # 1등주 / 2등주 메타 (기존 값 유지)
+    # 1등주 / 2등주
     prev_rank1 = existing_live.get("rank1", {})
     rank1_info = {
         "ticker": rank1_ticker,
-        "name": prev_rank1.get("name", rank1_ticker),
-        "domain": prev_rank1.get("domain", ""),
-        "si": prev_rank1.get("si", ""),
         "price": rank1_q["price"] if rank1_q else prev_rank1.get("price"),
         "change_pct": rank1_q["change_pct"] if rank1_q else prev_rank1.get("change_pct"),
         "ath": rank1_extra.get("ath", prev_rank1.get("ath")),
