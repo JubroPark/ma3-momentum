@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-11-23T19:01:25Z",
-  "update_time": "04:01 KST",
+  "as_of": "2026-11-23T19:15:51Z",
+  "update_time": "04:15 KST",
   "quote_dates": {
     "^IXIC": "2026-11-23",
     "^GSPC": "2026-11-23",
@@ -40,128 +40,128 @@
     "ABBV": "2026-11-23"
   },
   "nasdaq": {
-    "price": 24089.45,
-    "change_pct": 6.51,
-    "dist_to_masam_pct": 3.1,
-    "from_ath_pct": -12.7,
+    "price": 24140.3,
+    "change_pct": 6.73,
+    "dist_to_masam_pct": 3.31,
+    "from_ath_pct": -12.5,
     "last_masam_date": "2026-11-20"
   },
   "sp500": {
-    "price": 7241.23,
-    "change_pct": 4.79
+    "price": 7252.0,
+    "change_pct": 4.94
   },
   "dow": {
-    "price": 49661.2,
-    "change_pct": 3.14
+    "price": 49724.9,
+    "change_pct": 3.28
   },
   "rank1": {
     "ticker": "AAPL",
-    "price": 349.22,
-    "change_pct": 1.94,
+    "price": 350.21,
+    "change_pct": 2.23,
     "ath": 356.27,
     "intra_low": 340.56
   },
   "rank2": {
     "ticker": "MSFT",
-    "price": 496.52,
-    "change_pct": 2.48,
+    "price": 496.71,
+    "change_pct": 2.52,
     "ath": 555.8,
     "intra_low": 481.03
   },
   "qqq": {
-    "price": 650.51,
-    "change_pct": 6.91,
+    "price": 651.62,
+    "change_pct": 7.1,
     "ath": 759.66,
     "intra_low": 606.23
   },
   "hedges": {
-    "TLT": 81.59,
-    "IAU": 68.56,
-    "GLD": 334.34,
-    "TIP": 105.6
+    "TLT": 81.58,
+    "IAU": 68.67,
+    "GLD": 334.86,
+    "TIP": 105.58
   },
   "mcap_live": {
     "AAPL": {
-      "change_pct": 1.94
+      "change_pct": 2.23
     },
     "MSFT": {
-      "change_pct": 2.48
+      "change_pct": 2.52
     },
     "GOOGL": {
-      "change_pct": 6.83
+      "change_pct": 6.86
     },
     "NVDA": {
-      "change_pct": 31.19
+      "change_pct": 31.13
     },
     "AMZN": {
-      "change_pct": 4.55
+      "change_pct": 4.46
     },
     "SPCX": {
-      "change_pct": 5.57
+      "change_pct": 5.7
     },
     "2222.SR": {
       "change_pct": -0.46
     },
     "TSM": {
-      "change_pct": 14.89
+      "change_pct": 14.87
     },
     "AVGO": {
-      "change_pct": 2.04
+      "change_pct": 2.3
     },
     "META": {
-      "change_pct": 6.63
+      "change_pct": 6.93
     },
     "TSLA": {
-      "change_pct": 12.0
+      "change_pct": 12.4
     },
     "BRK-B": {
-      "change_pct": 0.45
+      "change_pct": 0.5
     },
     "LLY": {
-      "change_pct": 1.13
+      "change_pct": 1.18
     },
     "ANT": {
-      "change_pct": -1.06
+      "change_pct": -1.42
     },
     "WMT": {
-      "change_pct": 0.95
+      "change_pct": 1.05
     },
     "005930.KS": {
       "change_pct": -3.06
     },
     "JPM": {
-      "change_pct": 2.51
+      "change_pct": 2.54
     },
     "V": {
-      "change_pct": 2.17
+      "change_pct": 2.32
     },
     "AMD": {
-      "change_pct": 6.71
+      "change_pct": 6.64
     },
     "MU": {
-      "change_pct": 18.99
+      "change_pct": 19.39
     },
     "XOM": {
-      "change_pct": -1.18
+      "change_pct": -1.31
     },
     "JNJ": {
-      "change_pct": 0.19
+      "change_pct": 0.37
     },
     "000660.KS": {
       "change_pct": -2.52
     },
     "MA": {
-      "change_pct": 1.91
+      "change_pct": 2.01
     },
     "ABBV": {
-      "change_pct": 0.69
+      "change_pct": 1.01
     }
   },
   "live_market": {
-    "vix": 27.11,
-    "vix_chg": -24.46,
-    "usd_krw": 1341.4,
-    "usd_krw_chg": 0.5,
+    "vix": 27.52,
+    "vix_chg": -23.32,
+    "usd_krw": 1341.9,
+    "usd_krw_chg": 0.53,
     "fear_greed": 17
   }
 }
