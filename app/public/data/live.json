@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-11-24T22:55:45Z",
-  "update_time": "07:55 KST",
+  "as_of": "2026-11-24T23:21:16Z",
+  "update_time": "08:21 KST",
   "quote_dates": {
     "^IXIC": "2026-11-24",
     "^GSPC": "2026-11-24",
@@ -42,7 +42,7 @@
   "nasdaq": {
     "price": 23733.54,
     "change_pct": -1.48,
-    "dist_to_masam_pct": 3.45,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -14.0,
     "last_masam_date": "2026-11-20"
   },
@@ -160,8 +160,8 @@
   "live_market": {
     "vix": 26.36,
     "vix_chg": -0.98,
-    "usd_krw": 1341.2,
-    "usd_krw_chg": -0.23,
+    "usd_krw": 1340.9,
+    "usd_krw_chg": -0.25,
     "fear_greed": 17
   }
 }
