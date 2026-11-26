@@ -64,16 +64,6 @@
     },
     {
       "rank": 7,
-      "ticker": "2222.SR",
-      "ticker_display": "2222.SR",
-      "slug": "2222.SR",
-      "name": "Saudi Aramco",
-      "mcap_usd": 1748820317132,
-      "is_leader": false,
-      "gap_pct_from_rank1": 66.2
-    },
-    {
-      "rank": 8,
       "ticker": "SPCX",
       "ticker_display": "SPCX",
       "slug": "SPCX",
@@ -81,6 +71,16 @@
       "mcap_usd": 1730770894848,
       "is_leader": false,
       "gap_pct_from_rank1": 66.5
+    },
+    {
+      "rank": 8,
+      "ticker": "2222.SR",
+      "ticker_display": "2222.SR",
+      "slug": "2222.SR",
+      "name": "Saudi Aramco",
+      "mcap_usd": 1701374993026,
+      "is_leader": false,
+      "gap_pct_from_rank1": 67.1
     },
     {
       "rank": 9,
@@ -154,16 +154,6 @@
     },
     {
       "rank": 16,
-      "ticker": "005930.KS",
-      "ticker_display": "005930.KS",
-      "slug": "005930.KS",
-      "name": "Samsung",
-      "mcap_usd": 843412051598,
-      "is_leader": false,
-      "gap_pct_from_rank1": 83.7
-    },
-    {
-      "rank": 17,
       "ticker": "JPM",
       "ticker_display": "JPM",
       "slug": "JPM",
@@ -171,6 +161,16 @@
       "mcap_usd": 841137782784,
       "is_leader": false,
       "gap_pct_from_rank1": 83.7
+    },
+    {
+      "rank": 17,
+      "ticker": "005930.KS",
+      "ticker_display": "005930.KS",
+      "slug": "005930.KS",
+      "name": "Samsung",
+      "mcap_usd": 830319829185,
+      "is_leader": false,
+      "gap_pct_from_rank1": 83.9
     },
     {
       "rank": 18,
@@ -188,7 +188,7 @@
       "ticker_display": "MU",
       "slug": "MU",
       "name": "Micron Technology",
-      "mcap_usd": 680268201984,
+      "mcap_usd": 682379247616,
       "is_leader": false,
       "gap_pct_from_rank1": 86.8
     },
@@ -238,9 +238,9 @@
       "ticker_display": "000660.KS",
       "slug": "000660.KS",
       "name": "SK Hynix",
-      "mcap_usd": 559865602203,
+      "mcap_usd": 552716906139,
       "is_leader": false,
-      "gap_pct_from_rank1": 89.2
+      "gap_pct_from_rank1": 89.3
     },
     {
       "rank": 25,
