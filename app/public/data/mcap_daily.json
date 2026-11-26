@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-25",
+  "as_of": "2026-11-26",
   "rank1_ticker": "AAPL",
   "items": [
     {
@@ -64,6 +64,16 @@
     },
     {
       "rank": 7,
+      "ticker": "2222.SR",
+      "ticker_display": "2222.SR",
+      "slug": "2222.SR",
+      "name": "Saudi Aramco",
+      "mcap_usd": 1748820317132,
+      "is_leader": false,
+      "gap_pct_from_rank1": 66.2
+    },
+    {
+      "rank": 8,
       "ticker": "SPCX",
       "ticker_display": "SPCX",
       "slug": "SPCX",
@@ -71,16 +81,6 @@
       "mcap_usd": 1730770894848,
       "is_leader": false,
       "gap_pct_from_rank1": 66.5
-    },
-    {
-      "rank": 8,
-      "ticker": "2222.SR",
-      "ticker_display": "2222.SR",
-      "slug": "2222.SR",
-      "name": "Saudi Aramco",
-      "mcap_usd": 1693274421638,
-      "is_leader": false,
-      "gap_pct_from_rank1": 67.2
     },
     {
       "rank": 9,
@@ -168,9 +168,9 @@
       "ticker_display": "005930.KS",
       "slug": "005930.KS",
       "name": "Samsung",
-      "mcap_usd": 827374549296,
+      "mcap_usd": 838562132186,
       "is_leader": false,
-      "gap_pct_from_rank1": 84.0
+      "gap_pct_from_rank1": 83.8
     },
     {
       "rank": 18,
@@ -238,9 +238,9 @@
       "ticker_display": "000660.KS",
       "slug": "000660.KS",
       "name": "SK Hynix",
-      "mcap_usd": 540620085311,
+      "mcap_usd": 557764773497,
       "is_leader": false,
-      "gap_pct_from_rank1": 89.5
+      "gap_pct_from_rank1": 89.2
     },
     {
       "rank": 25,
