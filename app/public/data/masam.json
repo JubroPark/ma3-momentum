@@ -1,33 +1,33 @@
 {
   "as_of": "2026-11-27",
-  "mode": "CRISIS",
+  "mode": "NORMAL",
   "rate_env": "NON_ZERO",
   "qe_active": false,
-  "treasury_10y_trend": "UNKNOWN",
+  "treasury_10y_trend": "DOWN",
   "masam": {
     "month_count": 2,
     "last_masam_date": "2026-11-20",
-    "crisis_end_dday": "2026-12-21",
+    "crisis_end_dday": null,
     "panic_end_dday": null
   },
   "leader_status": {
     "rank1_ticker": "AAPL",
     "rank2_ticker": "MSFT",
-    "gap_pct": 29.6,
+    "gap_pct": 29.8,
     "overtake_detected": false,
     "gap_within_10pct": false,
     "rank2_ever_rank1": false
   },
   "target_allocation": {
-    "stock_pct": 50,
-    "hedge_pct": 50,
+    "stock_pct": 100,
+    "hedge_pct": 0,
     "cash_pct": 0,
-    "label": "말뚝 50% + 헤지 50%"
+    "label": "1등주 집중"
   },
   "hedge_allocation": {
-    "type": "DOLLAR",
-    "rationale": "비제로 + QE_OFF + 10Y 상승 또는 불명확",
-    "exit_trigger": "10Y 하락 전환 또는 QE 시작"
+    "type": "NONE",
+    "rationale": "평상시 — 헤지 불필요",
+    "exit_trigger": ""
   },
   "rebalancing": {
     "cash_raised_pct": 0,
@@ -40,9 +40,9 @@
       "MSFT": 50
     },
     "qqq_pct": 0,
-    "nvda_lowest_close": 0,
-    "qqq_lowest_close": 0,
-    "rank2_lowest_close": 0
+    "nvda_lowest_close": 358.54,
+    "qqq_lowest_close": 650.99,
+    "rank2_lowest_close": 492.85
   },
   "staking": {
     "rate_env": "NON_ZERO",
@@ -63,35 +63,35 @@
       "label": "8거래일 연속 상승",
       "met": false,
       "grade": "중",
-      "detail": "0일 연속"
+      "detail": "1일 연속"
     },
     {
       "id": 3,
       "label": "1등주 전고 돌파",
-      "met": false,
+      "met": true,
       "grade": "강",
-      "detail": "-0.2%"
+      "detail": "+0.0%"
     },
     {
       "id": 4,
       "label": "나스닥 전고 돌파",
       "met": false,
       "grade": "강",
-      "detail": "-14.5%"
+      "detail": "-12.6%"
     },
     {
       "id": 5,
       "label": "2구간 V자(+10%)",
       "met": false,
       "grade": "중",
-      "detail": "+4.3% (필요: +10%)"
+      "detail": "+6.7% (필요: +10%)"
     },
     {
       "id": 6,
       "label": "긴급 올인(-30%)",
       "met": false,
       "grade": "강",
-      "detail": "-14.5% (기준: -30%)"
+      "detail": "-12.6% (기준: -30%)"
     }
   ],
   "additional_buy": {
@@ -112,50 +112,43 @@
       30
     ]
   },
-  "recommended_action": "말뚝박기 유지 — 하락 시 분할 매수",
+  "recommended_action": "리밸런싱 유지 — 1등주(AAPL) 집중",
   "alerts": [],
   "last_allin_price": {
-    "date": "2026-11-10",
+    "date": "2026-11-27",
     "by_ticker": {
       "AAPL": {
-        "allin": 350.69,
-        "prev_high": 356.27,
-        "lowest_close": 349.21,
-        "since": "2026-11-10",
+        "allin": 358.54,
+        "prev_high": 358.54,
+        "lowest_close": 358.54,
+        "since": "2026-11-27",
         "ever_rank1": true
       },
-      "NVDA": {
-        "allin": 178.67,
-        "prev_high": 178.67,
-        "lowest_close": 162.85,
-        "since": "2026-11-10",
+      "MSFT": {
+        "allin": 492.85,
+        "prev_high": 492.85,
+        "lowest_close": 492.85,
+        "since": "2026-11-27",
         "ever_rank1": false
       },
       "QQQ": {
-        "allin": 679.35,
-        "prev_high": 690.38,
-        "lowest_close": 645.04,
-        "since": "2026-11-10"
-      },
-      "MSFT": {
-        "allin": 517.99,
-        "prev_high": 517.99,
-        "lowest_close": 498.3,
-        "since": "2026-11-16",
-        "ever_rank1": false
+        "allin": 650.99,
+        "prev_high": 650.99,
+        "lowest_close": 650.99,
+        "since": "2026-11-27"
       }
     },
-    "nvda": 350.69,
-    "nvda_prev_high": 356.27,
-    "rank2": 517.99,
-    "rank2_prev_high": 517.99,
-    "qqq": 679.35,
-    "qqq_prev_high": 690.38
+    "nvda": 358.54,
+    "nvda_prev_high": 358.54,
+    "rank2": 492.85,
+    "rank2_prev_high": 492.85,
+    "qqq": 650.99,
+    "qqq_prev_high": 650.99
   },
-  "released_date": "2026-11-10",
+  "released_date": "2026-11-27",
   "eod_close": {
-    "nvda": 355.58,
-    "qqq": 633.93,
-    "rank2": 489.93
+    "nvda": 358.54,
+    "qqq": 650.99,
+    "rank2": 492.85
   }
 }
