@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-11-27T18:01:32Z",
-  "update_time": "03:01 KST",
+  "as_of": "2026-11-27T18:15:55Z",
+  "update_time": "03:15 KST",
   "quote_dates": {
     "^IXIC": "2026-11-27",
     "^GSPC": "2026-11-27",
@@ -42,16 +42,16 @@
   "nasdaq": {
     "price": 24129.5,
     "change_pct": 2.31,
-    "dist_to_masam_pct": 3.63,
+    "dist_to_masam_pct": 3.09,
     "from_ath_pct": -12.6,
     "last_masam_date": "2026-11-20"
   },
   "sp500": {
-    "price": 7298.11,
-    "change_pct": 1.61
+    "price": 7297.49,
+    "change_pct": 1.6
   },
   "dow": {
-    "price": 50775.95,
+    "price": 50774.94,
     "change_pct": 1.18
   },
   "rank1": {
@@ -76,9 +76,9 @@
   },
   "hedges": {
     "TLT": 81.27,
-    "IAU": 68.54,
-    "GLD": 334.26,
-    "TIP": 105.67
+    "IAU": 68.23,
+    "GLD": 334.4,
+    "TIP": 105.68
   },
   "mcap_live": {
     "AAPL": {
@@ -97,7 +97,7 @@
       "change_pct": 3.96
     },
     "TSM": {
-      "change_pct": 3.31
+      "change_pct": 2.34
     },
     "2222.SR": {
       "change_pct": 0.46
@@ -115,10 +115,10 @@
       "change_pct": 3.82
     },
     "LLY": {
-      "change_pct": 0.21
+      "change_pct": 0.02
     },
     "BRK-B": {
-      "change_pct": 0.36
+      "change_pct": 0.59
     },
     "ANT": {
       "change_pct": 10.98
@@ -130,10 +130,10 @@
       "change_pct": 4.55
     },
     "JPM": {
-      "change_pct": 2.07
+      "change_pct": 1.92
     },
     "V": {
-      "change_pct": 1.32
+      "change_pct": 1.4
     },
     "MU": {
       "change_pct": 7.6
@@ -142,26 +142,26 @@
       "change_pct": 4.56
     },
     "JNJ": {
-      "change_pct": 0.7
+      "change_pct": 0.84
     },
     "XOM": {
-      "change_pct": 1.48
+      "change_pct": 1.33
     },
     "000660.KS": {
       "change_pct": 7.45
     },
     "MA": {
-      "change_pct": 1.08
+      "change_pct": 1.07
     },
     "ABBV": {
-      "change_pct": -0.84
+      "change_pct": -0.59
     }
   },
   "live_market": {
-    "vix": 24.74,
-    "vix_chg": -7.69,
-    "usd_krw": 1333.8,
-    "usd_krw_chg": -0.68,
-    "fear_greed": 24
+    "vix": 24.14,
+    "vix_chg": -9.93,
+    "usd_krw": 1334.1,
+    "usd_krw_chg": -0.66,
+    "fear_greed": 25
   }
 }
