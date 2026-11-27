@@ -1,6 +1,6 @@
 {
-  "as_of": "2026-11-27T18:31:19Z",
-  "update_time": "03:31 KST",
+  "as_of": "2026-11-27T18:45:59Z",
+  "update_time": "03:45 KST",
   "quote_dates": {
     "^IXIC": "2026-11-27",
     "^GSPC": "2026-11-27",
@@ -76,9 +76,9 @@
   },
   "hedges": {
     "TLT": 81.27,
-    "IAU": 68.23,
+    "IAU": 68.54,
     "GLD": 334.4,
-    "TIP": 105.68
+    "TIP": 105.67
   },
   "mcap_live": {
     "AAPL": {
@@ -97,7 +97,7 @@
       "change_pct": 3.96
     },
     "TSM": {
-      "change_pct": 2.35
+      "change_pct": 3.21
     },
     "2222.SR": {
       "change_pct": 0.46
@@ -118,7 +118,7 @@
       "change_pct": 0.02
     },
     "BRK-B": {
-      "change_pct": 0.59
+      "change_pct": 0.25
     },
     "ANT": {
       "change_pct": 10.98
@@ -130,10 +130,10 @@
       "change_pct": 4.55
     },
     "JPM": {
-      "change_pct": 1.92
+      "change_pct": 1.96
     },
     "V": {
-      "change_pct": 1.4
+      "change_pct": 1.22
     },
     "MU": {
       "change_pct": 7.6
@@ -142,10 +142,10 @@
       "change_pct": 4.56
     },
     "JNJ": {
-      "change_pct": 0.84
+      "change_pct": 0.57
     },
     "XOM": {
-      "change_pct": 1.54
+      "change_pct": 1.33
     },
     "000660.KS": {
       "change_pct": 7.45
@@ -154,14 +154,14 @@
       "change_pct": 1.07
     },
     "ABBV": {
-      "change_pct": -0.59
+      "change_pct": -0.88
     }
   },
   "live_market": {
     "vix": 23.81,
     "vix_chg": -11.16,
-    "usd_krw": 1333.2,
-    "usd_krw_chg": -0.73,
+    "usd_krw": 1333.3,
+    "usd_krw_chg": -0.72,
     "fear_greed": 25
   }
 }
