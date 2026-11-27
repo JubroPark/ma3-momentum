@@ -1,5 +1,5 @@
 {
-  "as_of": "2026-11-26",
+  "as_of": "2026-11-27",
   "rank1_ticker": "AAPL",
   "items": [
     {
@@ -64,6 +64,16 @@
     },
     {
       "rank": 7,
+      "ticker": "2222.SR",
+      "ticker_display": "2222.SR",
+      "slug": "2222.SR",
+      "name": "Saudi Aramco",
+      "mcap_usd": 1756359720446,
+      "is_leader": false,
+      "gap_pct_from_rank1": 66.0
+    },
+    {
+      "rank": 8,
       "ticker": "SPCX",
       "ticker_display": "SPCX",
       "slug": "SPCX",
@@ -71,16 +81,6 @@
       "mcap_usd": 1730770894848,
       "is_leader": false,
       "gap_pct_from_rank1": 66.5
-    },
-    {
-      "rank": 8,
-      "ticker": "2222.SR",
-      "ticker_display": "2222.SR",
-      "slug": "2222.SR",
-      "name": "Saudi Aramco",
-      "mcap_usd": 1701374993026,
-      "is_leader": false,
-      "gap_pct_from_rank1": 67.1
     },
     {
       "rank": 9,
@@ -154,6 +154,16 @@
     },
     {
       "rank": 16,
+      "ticker": "005930.KS",
+      "ticker_display": "005930.KS",
+      "slug": "005930.KS",
+      "name": "Samsung",
+      "mcap_usd": 862934182951,
+      "is_leader": false,
+      "gap_pct_from_rank1": 83.3
+    },
+    {
+      "rank": 17,
       "ticker": "JPM",
       "ticker_display": "JPM",
       "slug": "JPM",
@@ -161,16 +171,6 @@
       "mcap_usd": 841137782784,
       "is_leader": false,
       "gap_pct_from_rank1": 83.7
-    },
-    {
-      "rank": 17,
-      "ticker": "005930.KS",
-      "ticker_display": "005930.KS",
-      "slug": "005930.KS",
-      "name": "Samsung",
-      "mcap_usd": 830319829185,
-      "is_leader": false,
-      "gap_pct_from_rank1": 83.9
     },
     {
       "rank": 18,
@@ -224,6 +224,16 @@
     },
     {
       "rank": 23,
+      "ticker": "000660.KS",
+      "ticker_display": "000660.KS",
+      "slug": "000660.KS",
+      "name": "SK Hynix",
+      "mcap_usd": 575703161998,
+      "is_leader": false,
+      "gap_pct_from_rank1": 88.9
+    },
+    {
+      "rank": 24,
       "ticker": "MA",
       "ticker_display": "MA",
       "slug": "MA",
@@ -231,16 +241,6 @@
       "mcap_usd": 574950080512,
       "is_leader": false,
       "gap_pct_from_rank1": 88.9
-    },
-    {
-      "rank": 24,
-      "ticker": "000660.KS",
-      "ticker_display": "000660.KS",
-      "slug": "000660.KS",
-      "name": "SK Hynix",
-      "mcap_usd": 552716906139,
-      "is_leader": false,
-      "gap_pct_from_rank1": 89.3
     },
     {
       "rank": 25,
